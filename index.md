@@ -1,30 +1,62 @@
 ---
 title: Home
 layout: home
+nav_order: 1
 ---
 
-This is a *bare-minimum* template to create a Jekyll site that uses the [Just the Docs] theme. You can easily set the created site to be published on [GitHub Pages] – the [README] file explains how to do that, along with other details.
+# What's Doc Detective?
 
-If [Jekyll] is installed on your computer, you can also build and preview the created site *locally*. This lets you test changes before committing them, and avoids waiting for GitHub Pages.[^1] And you will be able to deploy your local build to a different platform than GitHub Pages.
+In the current software development ecosystem, documentation needs regular revision and can rapidly become inaccurate. This back-and-forth of updating code and documentation can feel like an accelerating treadmill that prevents you from being as effective as possible.
 
-More specifically, the created site:
+Doc Detective simplifies keeping documentation up-do-date by running tests against a user interface to verify the accuracy of documentation. If there is a discrepancy between the interface and the expected results, Doc Detective can point out the specific error. Successfully implemented tests result in documentation that consistency matches the product and a means to proactively identify and fix issues that arise.
 
-- uses a gem-based approach, i.e. uses a `Gemfile` and loads the `just-the-docs` gem
-- uses the [GitHub Pages / Actions workflow] to build and publish the site on GitHub Pages
+## What can Doc Detective do?
 
-Other than that, you're free to customize sites that you create with this template, however you like. You can easily change the versions of `just-the-docs` and Jekyll it uses, as well as adding further plugins.
+Doc Detective can do a lot, especially with a bit of creativity.
 
-[Browse our documentation][Just the Docs] to learn more about how to use this theme.
+### Test documentation for accuracy/freshness
 
-To get started with creating a site, just click "[use this template]"!
+Doc Detective’s core strength is the ability to systematically check each and every element of your documentation for adherence to the reality of your product. Each of the following items can be inspected:
 
-----
+- Existence of page elements
+- Written text (such as a heading or a button string)
+- Screenshots
+- Links
+- API endpoints, functionality, and responses
+- Anything you can write a script to verify
 
-[^1]: [It can take up to 10 minutes for changes to your site to publish after you push the changes to GitHub](https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/creating-a-github-pages-site-with-jekyll#creating-your-site).
+### Generate screenshots or video to accompany documentation
 
-[Just the Docs]: https://just-the-docs.github.io/just-the-docs/
-[GitHub Pages]: https://docs.github.com/en/pages
-[README]: https://github.com/just-the-docs/just-the-docs-template/blob/main/README.md
-[Jekyll]: https://jekyllrb.com
-[GitHub Pages / Actions workflow]: https://github.blog/changelog/2022-07-27-github-pages-custom-github-actions-workflows-beta/
-[use this template]: https://github.com/just-the-docs/just-the-docs-template/generate
+When Doc Detective runs tests, it can take screenshots and make recordings. You can include this media in the documentation to compliment written processes, aiding the readers who prefer visual media while making sure your videos and images are up-to-date.
+
+### Generate tests when updating documentation
+
+After you write new documentation, Doc Detective can scan it and generate the necessary tests to verify its accuracy.
+
+### Analyze the test coverage of your documentation and suggest solutions
+
+Doc Detective ties specific tests to each line of your documentation. As a result, it can identify portions that are underserved and provide recommendations on next steps.
+
+## What can’t Doc Detective do?
+
+It’s important to know your limits, and Doc Detective’s too.
+
+### Write your documentation
+
+Doc Detective doesn’t scan your code or generate documentation. It verifies the accuracy of documentation by running tests against your product.
+
+### Write your code
+
+While Doc Detective can write tests from scanning your documentation, it can’t write code for you. Sorry.
+
+## Who is Doc Detective for?
+
+As an open-source and accessible project, Doc Detective is for anyone who is interested! More specifically, here are some groups who could benefit:
+
+- **Small teams:** There’s often limited personnel or budget dedicated to a project, and documentation takes a backseat as a result. With Doc Detective, you can spend less time reviewing published documentation and trust that it is still functional and accurate for the end user.
+- **Large teams:** The more people you have contributing to a project, the faster it can change shape. In cases where development is outpacing documentation, Doc Detective keeps a watchful eye on the changes made and note any inconsistencies.
+- **Anything in between:** You can be a team of one or of one thousand and still find a use for Doc Detective. When it comes time to address the documentation of your project, look to Doc Detective to ease the burden and help bring consistency and accuracyto the end user.
+
+## Next steps
+
+Want to take Doc Detective for a spin? Check out the [Get Started](https://github.com/doc-detective/doc-detective/blob/main/docs/get-started.md) guide.

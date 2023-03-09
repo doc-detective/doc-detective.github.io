@@ -1,8 +1,22 @@
-title: Just the Docs Template
-description: A starter template for a Jeykll site using the Just the Docs theme!
+title: Doc Detective
+description: Doc Detective concepts, guides, and other content.
 theme: just-the-docs
+url: https://doc-detective.github.io
 
-url: https://just-the-docs.github.io
+github_username: doc-detective
 
-aux_links:
-  Template Repository: https://github.com/just-the-docs/just-the-docs-template
+enable_copy_code_button: true
+
+mermaid:
+  version: "9.1.3"
+
+callouts:
+  warning:
+    title: Warning
+    color: red
+  highlight:
+    color: yellow
+  note:
+    title: Note
+    color: purple
+
