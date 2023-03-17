@@ -1,0 +1,28 @@
+{
+  "name": "doc-detective.github.io",
+  "version": "1.0.0",
+  "description": "Doc Detective documentation",
+  "main": "npm run start",
+  "scripts": {
+    "start": "npm i && npm run watch",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "bundle install && npm run json2md",
+    "build": "bundle exec jekyll build",
+    "watch": "bundle exec jekyll serve",
+    "json2md": "jsonschema2md -d node_modules/doc-detective-common/src/schemas -o _include/schemas -x _include/schemas -n"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/doc-detective/doc-detective.github.io.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/doc-detective/doc-detective.github.io/issues"
+  },
+  "homepage": "https://github.com/doc-detective/doc-detective.github.io#readme",
+  "dependencies": {
+    "@adobe/jsonschema2md": "^7.1.5",
+    "doc-detective-common": "^1.1.0"
+  }
+}
