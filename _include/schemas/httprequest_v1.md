@@ -159,7 +159,7 @@ The default value is:
 
 ## method
 
-
+Method of the HTTP request
 
 `method`
 
@@ -196,7 +196,7 @@ The default value is:
 
 ## requestHeaders
 
-
+Headers to include in the HTTP request, in key/value format.
 
 `requestHeaders`
 
@@ -218,7 +218,7 @@ The default value is:
 
 ## responseHeaders
 
-
+Headers expected in the response, in key/value format. If one or more `responseHeaders` entries aren't present in the response, the action fails.
 
 `responseHeaders`
 
@@ -240,7 +240,7 @@ The default value is:
 
 ## requestParams
 
-
+URL parameters to include in the HTTP request, in key/value format.
 
 `requestParams`
 
@@ -262,7 +262,7 @@ The default value is:
 
 ## responseParams
 
-
+URL parameters expected in the response, in key/value format. If one or more `responseParams` entries aren't present in the response, the action fails.
 
 `responseParams`
 

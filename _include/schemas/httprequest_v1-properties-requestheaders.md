@@ -4,7 +4,7 @@
 undefined#/properties/requestHeaders
 ```
 
-
+Headers to include in the HTTP request, in key/value format.
 
 | Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                         |
 | :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :--------------------------------------------------------------------------------- |

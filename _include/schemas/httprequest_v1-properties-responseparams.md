@@ -4,7 +4,7 @@
 undefined#/properties/responseParams
 ```
 
-
+URL parameters expected in the response, in key/value format. If one or more `responseParams` entries aren't present in the response, the action fails.
 
 | Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                                         |
 | :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :--------------------------------------------------------------------------------- |

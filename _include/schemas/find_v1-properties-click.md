@@ -16,12 +16,12 @@ Click an element specified by a CSS sepector.
 
 # click Properties
 
-| Property            | Type      | Required | Nullable       | Defined by                                                                                              |
-| :------------------ | :-------- | :------- | :------------- | :------------------------------------------------------------------------------------------------------ |
-| [alignH](#alignh)   | `string`  | Optional | cannot be null | [find](find_v1-properties-click-properties-alignh.md "undefined#/properties/click/properties/alignH")   |
-| [alignV](#alignv)   | `string`  | Optional | cannot be null | [find](find_v1-properties-click-properties-alignv.md "undefined#/properties/click/properties/alignV")   |
-| [offsetX](#offsetx) | `integer` | Optional | cannot be null | [find](find_v1-properties-click-properties-offsetx.md "undefined#/properties/click/properties/offsetX") |
-| [offsetY](#offsety) | `integer` | Optional | cannot be null | [find](find_v1-properties-click-properties-offsety.md "undefined#/properties/click/properties/offsetY") |
+| Property            | Type      | Required | Nullable       | Defined by                                                                              |
+| :------------------ | :-------- | :------- | :------------- | :-------------------------------------------------------------------------------------- |
+| [alignH](#alignh)   | `string`  | Optional | cannot be null | [find](click_v1-properties-alignh.md "undefined#/properties/click/properties/alignH")   |
+| [alignV](#alignv)   | `string`  | Optional | cannot be null | [find](click_v1-properties-alignv.md "undefined#/properties/click/properties/alignV")   |
+| [offsetX](#offsetx) | `integer` | Optional | cannot be null | [find](click_v1-properties-offsetx.md "undefined#/properties/click/properties/offsetX") |
+| [offsetY](#offsety) | `integer` | Optional | cannot be null | [find](click_v1-properties-offsety.md "undefined#/properties/click/properties/offsetY") |
 
 ## alignH
 
@@ -35,7 +35,7 @@ Horizantal alignment of the mouse to the element.
 
 *   cannot be null
 
-*   defined in: [find](find_v1-properties-click-properties-alignh.md "undefined#/properties/click/properties/alignH")
+*   defined in: [find](click_v1-properties-alignh.md "undefined#/properties/click/properties/alignH")
 
 ### alignH Type
 
@@ -63,7 +63,7 @@ Vertical alignment of the mouse to the element.
 
 *   cannot be null
 
-*   defined in: [find](find_v1-properties-click-properties-alignv.md "undefined#/properties/click/properties/alignV")
+*   defined in: [find](click_v1-properties-alignv.md "undefined#/properties/click/properties/alignV")
 
 ### alignV Type
 
@@ -91,7 +91,7 @@ Number of pixels to offset the mouse along the X axis, relative to the element c
 
 *   cannot be null
 
-*   defined in: [find](find_v1-properties-click-properties-offsetx.md "undefined#/properties/click/properties/offsetX")
+*   defined in: [find](click_v1-properties-offsetx.md "undefined#/properties/click/properties/offsetX")
 
 ### offsetX Type
 
@@ -109,7 +109,7 @@ Number of pixels to offset the mouse along the Y axis, relative to the element c
 
 *   cannot be null
 
-*   defined in: [find](find_v1-properties-click-properties-offsety.md "undefined#/properties/click/properties/offsetY")
+*   defined in: [find](click_v1-properties-offsety.md "undefined#/properties/click/properties/offsetY")
 
 ### offsetY Type
 

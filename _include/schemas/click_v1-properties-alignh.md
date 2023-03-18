@@ -1,14 +1,14 @@
-# Untitled string in click Schema
+# Untitled string in find Schema
 
 ```txt
-undefined#/properties/alignH
+undefined#/properties/click/properties/alignH
 ```
 
 Horizantal alignment of the mouse to the element.
 
-| Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                             |
-| :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :--------------------------------------------------------------------- |
-| Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [click\_v1.schema.json\*](click_v1.schema.json "open original schema") |
+| Abstract            | Extensible | Status         | Identifiable            | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                           |
+| :------------------ | :--------- | :------------- | :---------------------- | :---------------- | :-------------------- | :------------------ | :------------------------------------------------------------------- |
+| Can be instantiated | No         | Unknown status | Unknown identifiability | Forbidden         | Allowed               | none                | [find\_v1.schema.json\*](find_v1.schema.json "open original schema") |
 
 ## alignH Type
 
