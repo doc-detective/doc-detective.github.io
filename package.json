@@ -5,13 +5,14 @@
   "main": "npm run start",
   "scripts": {
     "start": "npm i && npm run watch",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "preinstall": "npm upgrade doc-detective-common",
     "postinstall": "bundle install && npm run json2md",
     "build": "bundle exec jekyll build",
-    "watch": "bundle exec jekyll serve",
+    "watch": "bundle exec jekyll serve --livereload",
     "json2md": "jsonschema2md -d node_modules/doc-detective-common/src/schemas -o _include/schemas -x _include/schemas -n"
   },
+  "precommit": "test",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/doc-detective/doc-detective.github.io.git"
@@ -24,6 +25,8 @@
   "homepage": "https://github.com/doc-detective/doc-detective.github.io#readme",
   "dependencies": {
     "@adobe/jsonschema2md": "^7.1.5",
-    "doc-detective-common": "^1.1.0"
+    "doc-detective-common": "^1.1.0",
+    "jest": "^29.5.0",
+    "pre-commit": "^1.2.2"
   }
 }
