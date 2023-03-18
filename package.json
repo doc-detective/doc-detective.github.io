@@ -6,6 +6,7 @@
   "scripts": {
     "start": "npm i && npm run watch",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "preinstall": "npm upgrade doc-detective-common",
     "postinstall": "bundle install && npm run json2md",
     "build": "bundle exec jekyll build",
     "watch": "bundle exec jekyll serve",
