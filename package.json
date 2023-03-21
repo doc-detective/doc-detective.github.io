@@ -7,7 +7,7 @@
     "start": "npm i && npm run watch",
     "test": "jest",
     "preinstall": "npm upgrade doc-detective-common",
-    "postinstall": "bundle install && npm run json2md",
+    "postinstall": "bundle install",
     "build": "bundle exec jekyll build",
     "watch": "bundle exec jekyll serve --livereload",
     "json2md": "jsonschema2md -d node_modules/doc-detective-common/src/schemas -o _include/schemas -x _include/schemas -n"

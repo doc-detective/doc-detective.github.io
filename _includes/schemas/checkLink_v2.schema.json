@@ -1,0 +1,54 @@
+{
+  "title": "checkLink",
+  "type": "object",
+  "description": "Check if a URL returns an acceptable status code from a GET request.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "ID of the step."
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of the step."
+    },
+    "action": {
+      "type": "string",
+      "const": "checkLink",
+      "description": "Action to perform."
+    },
+    "url": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL to check.",
+      "pattern": "^(http://|https://).*",
+      "transform": ["trim"]
+    },
+    "statusCodes": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "integer"
+          }
+        ]
+      },
+      "default": [200]
+    }
+  },
+  "dynamicDefaults": {
+    "id": "uuid"
+  },
+  "required": ["action", "url"],
+  "additionalProperties": false,
+  "examples": [
+    {
+      "action": "checkLink",
+      "url": "https://www.google.com"
+    },
+    {
+      "action": "checkLink",
+      "url": "https://www.google.com",
+      "statusCodes": [200]
+    }
+  ]
+}
