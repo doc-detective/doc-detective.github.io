@@ -13,9 +13,9 @@
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [
-    4000,
-    35729
-  ]
+        4000,
+   		35729
+  	]
 
 	// Uncomment the next line to run commands after the container is created.
 	// "postCreateCommand": "jekyll --version"
