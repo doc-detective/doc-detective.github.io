@@ -9,6 +9,15 @@ parent: Reference
 
 Load environment variables from a `.env` file.
 
+## Fields
+
+Field | Type | Description
+:-- | :-- | :--
+id | string | ID of the step.
+description | string | Description of the step.
+action | string | Action to perform.
+path | string | Path to the `.env` file.
+
 ## Examples
 
 ```json

@@ -9,6 +9,15 @@ parent: Reference
 
 A Doc Detective test.
 
+## Fields
+
+Field | Type | Description
+:-- | :-- | :--
+id | string | Unique identifier for the test.
+description | string | Description of the test.
+contexts | array | Application/platform sets to run the test in. Overrides `contexts` defined at the config-level and spec-level.
+steps | array | undefined
+
 ## Examples
 
 ```json

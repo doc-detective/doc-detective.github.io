@@ -9,6 +9,15 @@ parent: Reference
 
 
 
+## Fields
+
+Field | Type | Description
+:-- | :-- | :--
+id | string | Unique identifier for the test specification.
+description | string | Description of the test specification.
+contexts | array | Application/platform sets to run tests in. Overrides `contexts` defined at the config-level.
+tests | array | undefined
+
 ## Examples
 
 ```json

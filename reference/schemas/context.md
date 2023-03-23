@@ -9,6 +9,13 @@ parent: Reference
 
 An application and supported platforms.
 
+## Fields
+
+Field | Type | Description
+:-- | :-- | :--
+app | object | The application to run.
+platforms | array | Supported platforms for the application.
+
 ## Examples
 
 ```json

@@ -23,8 +23,17 @@ async function main() {
     schema = updateRefPaths(schema, dirPath);
     // Dereference schema
     schema = await parser.dereference(schema);
-    // Fields
+    // Format
     // TODO
+    // Fields
+    let fields = ["## Fields", "", "Field | Type | Description", ":-- | :-- | :--"];
+    const keys = Object.keys(schema.properties);
+    for (const key in keys) {
+      let field = keys[key];
+      let property = schema.properties[field];
+      fields.push(`${field} | ${property.type} | ${property.description}`);
+    }
+    fields.push("");
     // Examples
     let examples = ["## Examples", ""];
     for (const example in schema.examples) {
@@ -36,6 +45,7 @@ async function main() {
       ];
       examples = examples.concat(snippet);
     }
+    // Metadata
     let metadata = [
       "---",
       `title: ${schema.title}`,
@@ -44,8 +54,14 @@ async function main() {
       "parent: Reference",
       "---",
     ];
+    // Heading
     let heading = ["", `# ${schema.title}`, "", schema.description, ""];
-    let output = metadata.concat(heading).concat(examples).join("\n");
+    // Putting it all together
+    let output = metadata
+      .concat(heading)
+      .concat(fields)
+      .concat(examples)
+      .join("\n");
     // Identify output path
     const outputPath = path.resolve(
       `${__dirname}/../reference/schemas/${schema.title}.md`

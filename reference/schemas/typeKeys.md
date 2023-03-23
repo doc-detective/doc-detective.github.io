@@ -9,6 +9,15 @@ parent: Reference
 
 Type keys. To type special keys, begin and end the string with `$` and use the [special key's enum](). For example, to type the Escape key, enter `$ESCAPE$`.
 
+## Fields
+
+Field | Type | Description
+:-- | :-- | :--
+id | string | ID of the step.
+description | string | Description of the step.
+action | string | The action to perform.
+keys | undefined | String of keys to enter.
+
 ## Examples
 
 ```json
