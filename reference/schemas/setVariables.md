@@ -7,6 +7,13 @@ parent: Reference
 
 # setVariables
 
+Load environment variables from a `.env` file.
+
+## Examples
+
 ```json
-{% include schemas/setVariables_v2.schema.json %}
+{
+  "action": "setVariables",
+  "path": ".env"
+}
 ```

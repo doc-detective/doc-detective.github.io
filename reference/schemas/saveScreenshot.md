@@ -7,6 +7,19 @@ parent: Reference
 
 # saveScreenshot
 
+Takes a screenshot in PNG format.
+
+## Examples
+
 ```json
-{% include schemas/saveScreenshot_v2.schema.json %}
+{
+  "action": "saveScreenshot"
+}
+```
+
+```json
+{
+  "action": "saveScreenshot",
+  "path": "results.png"
+}
 ```

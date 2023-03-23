@@ -7,6 +7,19 @@ parent: Reference
 
 # wait
 
+Pause before performing the next action.
+
+## Examples
+
 ```json
-{% include schemas/wait_v2.schema.json %}
+{
+  "action": "wait"
+}
+```
+
+```json
+{
+  "action": "wait",
+  "duration": 5000
+}
 ```

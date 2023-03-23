@@ -7,6 +7,25 @@ parent: Reference
 
 # find
 
+Check if an element exists with the specified CSS selector.
+
+## Examples
+
 ```json
-{% include schemas/find_v2.schema.json %}
+{
+  "action": "find",
+  "selector": "[title=Search]"
+}
+```
+
+```json
+{
+  "action": "find",
+  "selector": "[title=Search]",
+  "timeout": 10000,
+  "matchText": "Search",
+  "moveTo": true,
+  "click": true,
+  "typeKeys": "shorthair cat"
+}
 ```

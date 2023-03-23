@@ -7,6 +7,23 @@ parent: Reference
 
 # checkLink
 
+Check if a URL returns an acceptable status code from a GET request.
+
+## Examples
+
 ```json
-{% include schemas/checkLink_v2.schema.json %}
+{
+  "action": "checkLink",
+  "url": "https://www.google.com"
+}
+```
+
+```json
+{
+  "action": "checkLink",
+  "url": "https://www.google.com",
+  "statusCodes": [
+    200
+  ]
+}
 ```
