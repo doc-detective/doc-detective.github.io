@@ -13,10 +13,10 @@ parent: Reference
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
-id | string | Unique identifier for the test specification. | 
-description | string | Description of the test specification. | 
-contexts | array | Application/platform sets to run tests in. Overrides `contexts` defined at the config-level. | 
-tests | array | undefined | 
+id | string |  Optional. Unique identifier for the test specification. | 
+description | string |  Optional. Description of the test specification. | 
+contexts | array |  Optional. Application/platform sets to run tests in. Overrides `contexts` defined at the config-level. | 
+tests | array |  Required. undefined | 
 
 ## Examples
 

@@ -94,6 +94,12 @@ function parseField(schema, fieldName) {
   let property = schema.properties[fieldName];
   let type = property.type;
   let description = property.description;
+  // Get required
+  if (schema.required.includes(fieldName)) {
+    description = "Required. " + description;
+  } else { 
+    description = "Optional. " + description;
+  }
   // Get enums
   if (property.enum) {
     let enums = `<br><br>Accepted values: \`${property.enum.join("`, `")}\``;
@@ -129,6 +135,6 @@ function parseField(schema, fieldName) {
     defaultValue = `\`${property.default}\``;
   }
   if (debug) console.log(defaultValue);
-  details.push(`${fieldName} | ${type} | ${description} | ${defaultValue}`);
+  details.push(`${fieldName} | ${type} |  ${description} | ${defaultValue}`);
   return details;
 }

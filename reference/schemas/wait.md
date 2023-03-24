@@ -13,10 +13,10 @@ Pause before performing the next action.
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
-id | string | ID of the step. | Generated UUID
-description | string | Description of the step. | 
-action | string | The action to perform. | 
-duration | number | Milliseconds to wait. | `500`
+id | string |  Optional. ID of the step. | Generated UUID
+description | string |  Optional. Description of the step. | 
+action | string |  Required. The action to perform. | 
+duration | number |  Optional. Milliseconds to wait. | `500`
 
 ## Examples
 

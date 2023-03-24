@@ -13,11 +13,11 @@ Check if a URL returns an acceptable status code from a GET request.
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
-id | string | ID of the step. | Generated UUID
-description | string | Description of the step. | 
-action | string | Action to perform. | 
-url | string | URL to check. | 
-statusCodes | array | undefined | `[200]`
+id | string |  Optional. ID of the step. | Generated UUID
+description | string |  Optional. Description of the step. | 
+action | string |  Required. Action to perform. | 
+url | string |  Required. URL to check. | 
+statusCodes | array |  Optional. undefined | `[200]`
 
 ## Examples
 

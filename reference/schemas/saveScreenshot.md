@@ -13,10 +13,10 @@ Takes a screenshot in PNG format.
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
-id | string | ID of the step. | Generated UUID
-description | string | Description of the step. | 
-action | string | The action to perform. | 
-path | string | File path of the PNG file. If not specified, the file path is your media directory and the file name is the ID of the step. | 
+id | string |  Optional. ID of the step. | Generated UUID
+description | string |  Optional. Description of the step. | 
+action | string |  Required. The action to perform. | 
+path | string |  Optional. File path of the PNG file. If not specified, the file path is your media directory and the file name is the ID of the step. | 
 
 ## Examples
 

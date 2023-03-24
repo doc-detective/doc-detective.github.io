@@ -13,10 +13,10 @@ Type keys. To type special keys, begin and end the string with `$` and use the [
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
-id | string | ID of the step. | 
-description | string | Description of the step. | 
-action | string | The action to perform. | 
-keys | undefined | String of keys to enter. | 
+id | string |  Optional. ID of the step. | 
+description | string |  Optional. Description of the step. | 
+action | string |  Required. The action to perform. | 
+keys | undefined |  Required. String of keys to enter. | 
 
 ## Examples
 
