@@ -13,11 +13,11 @@ Perform a native shell command.
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
-id | string | ID of the step. | undefined
-description | string | Description of the step. | undefined
-action | string | undefined | undefined
-command | string | Command to perform in the machine's default shell. | undefined
-args | array | Arguments for the command. | 
+id | string | ID of the step. | 
+description | string | Description of the step. | 
+action | string | undefined | 
+command | string | Command to perform in the machine's default shell. | 
+args | array | Arguments for the command. | `[]`
 
 ## Examples
 

@@ -9,7 +9,7 @@
     "preinstall": "npm upgrade doc-detective-common",
     "postinstall": "bundle install",
     "build": "bundle exec jekyll build",
-    "watch": "bundle exec jekyll serve --livereload",
+    "watch": "bundle exec jekyll serve --livereload --trace",
     "json2md": "jsonschema2md -d node_modules/doc-detective-common/src/schemas -o _include/schemas -x _include/schemas -n"
   },
   "precommit": "test",

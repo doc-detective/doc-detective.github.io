@@ -2,8 +2,6 @@ const fs = require("fs");
 const path = require("path");
 const parser = require("@apidevtools/json-schema-ref-parser");
 const { exit } = require("process");
-// const { schemas } = require("doc-detective-common");
-// const { schemas } = require("doc-detective-common");
 
 main();
 // console.log(schemas);
@@ -91,13 +89,35 @@ function updateRefPaths(schema, dirPath) {
 }
 
 function parseField(schema, fieldName) {
+  debug = false;
   let details = [];
   let property = schema.properties[fieldName];
   let type = property.type;
   let description = property.description;
-  let defaultValue = property.default;
-  details.push(
-    `${fieldName} | ${type} | ${description} | ${defaultValue}`
-  );
+  if (fieldName === "method") debug = true;
+  if (debug) console.log(property.default);
+  let defaultValue;
+  if (
+    // JSON object
+    typeof property.default === "object" &&
+    !Array.isArray(property.default)
+  ) {
+    defaultValue = `\`${JSON.stringify(property.default)}\``;
+  } else if (
+    // Array
+    typeof property.default === "object" &&
+    Array.isArray(property.default)
+  ) {
+    defaultValue = `\`${JSON.stringify(property.default)}\``;
+  } else if (
+    // String or number
+    property.default === undefined
+  ) {
+    defaultValue = "";
+  } else {
+    defaultValue = `\`${property.default}\``;
+  }
+  if (debug) console.log(defaultValue);
+  details.push(`${fieldName} | ${type} | ${description} | ${defaultValue}`);
   return details;
 }

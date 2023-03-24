@@ -13,8 +13,8 @@ An application and supported platforms.
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
-app | object | The application to run. | undefined
-platforms | array | Supported platforms for the application. | undefined
+app | object | The application to run. | 
+platforms | array | Supported platforms for the application. | 
 
 ## Examples
 
