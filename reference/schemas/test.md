@@ -13,7 +13,7 @@ A Doc Detective test.
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
-id | string | Unique identifier for the test. | 
+id | string | Unique identifier for the test. | Generated UUID
 description | string | Description of the test. | 
 contexts | array | Application/platform sets to run the test in. Overrides `contexts` defined at the config-level and spec-level. | 
 steps | array | undefined | 

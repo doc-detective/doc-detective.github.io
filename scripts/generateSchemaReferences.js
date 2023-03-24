@@ -96,7 +96,7 @@ function parseField(schema, fieldName) {
   let description = property.description;
   // Get enums
   if (property.enum) {
-    let enums = `<br><br>Accepted values: \`${property.enum.join("\`, \`")}\``;
+    let enums = `<br><br>Accepted values: \`${property.enum.join("`, `")}\``;
     description = description + enums;
   }
   let defaultValue;
@@ -113,11 +113,19 @@ function parseField(schema, fieldName) {
   ) {
     defaultValue = `\`${JSON.stringify(property.default)}\``;
   } else if (
-    // String or number
+    // UUID
+    schema.dynamicDefaults &&
+    Object.keys(schema.dynamicDefaults).includes(fieldName) &&
+    schema.dynamicDefaults[fieldName] === "uuid"
+  ) {
+    defaultValue = "Generated UUID";
+  } else if (
+    // Undefined
     property.default === undefined
   ) {
     defaultValue = "";
   } else {
+    // Default
     defaultValue = `\`${property.default}\``;
   }
   if (debug) console.log(defaultValue);

@@ -13,7 +13,7 @@ Perform a generic HTTP request, for example to an API.
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
-id | string | ID of the step. | 
+id | string | ID of the step. | Generated UUID
 description | string | Description of the step. | 
 action | string | Aciton to perform. | 
 url | string | URL for the HTTP request. | 

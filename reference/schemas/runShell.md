@@ -13,7 +13,7 @@ Perform a native shell command.
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
-id | string | ID of the step. | 
+id | string | ID of the step. | Generated UUID
 description | string | Description of the step. | 
 action | string | undefined | 
 command | string | Command to perform in the machine's default shell. | 

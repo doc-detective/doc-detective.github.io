@@ -13,7 +13,7 @@ Load environment variables from a `.env` file.
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
-id | string | ID of the step. | 
+id | string | ID of the step. | Generated UUID
 description | string | Description of the step. | 
 action | string | Action to perform. | 
 path | string | Path to the `.env` file. | 
