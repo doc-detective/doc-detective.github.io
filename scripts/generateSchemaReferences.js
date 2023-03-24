@@ -88,16 +88,22 @@ function updateRefPaths(schema, dirPath) {
   return schema;
 }
 
-function parseField(schema, fieldName) {
+function parseField(schema, fieldName, fieldNameBase) {
   debug = false;
   let details = [];
+  let name;
+  if (fieldNameBase) {
+    name = `${fieldNameBase}.${fieldName}`;
+  } else {
+    name = fieldName;
+  }
   let property = schema.properties[fieldName];
   let type = property.type;
   let description = property.description;
   // Get required
   if (schema.required.includes(fieldName)) {
     description = "Required. " + description;
-  } else { 
+  } else {
     description = "Optional. " + description;
   }
   // Get enums
@@ -134,7 +140,16 @@ function parseField(schema, fieldName) {
     // Default
     defaultValue = `\`${property.default}\``;
   }
-  if (debug) console.log(defaultValue);
-  details.push(`${fieldName} | ${type} |  ${description} | ${defaultValue}`);
+  details.push(`${name} | ${type} |  ${description} | ${defaultValue}`);
+  console.log(property.properties);
+  // Parse child object
+  if (property.properties) {
+    const keys = Object.keys(property.properties);
+    for (const key in keys) {
+      let field = keys[key];
+      let fieldDetails = parseField(property, field, name);
+      details.push(fieldDetails);
+    }
+  }
   return details;
 }
