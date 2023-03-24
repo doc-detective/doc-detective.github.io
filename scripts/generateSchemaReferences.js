@@ -94,8 +94,11 @@ function parseField(schema, fieldName) {
   let property = schema.properties[fieldName];
   let type = property.type;
   let description = property.description;
-  if (fieldName === "method") debug = true;
-  if (debug) console.log(property.default);
+  // Get enums
+  if (property.enum) {
+    let enums = `<br><br>Accepted values: \`${property.enum.join("\`, \`")}\``;
+    description = description + enums;
+  }
   let defaultValue;
   if (
     // JSON object

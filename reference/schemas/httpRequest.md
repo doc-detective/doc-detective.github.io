@@ -18,7 +18,7 @@ description | string | Description of the step. |
 action | string | Aciton to perform. | 
 url | string | URL for the HTTP request. | 
 statusCodes | array | undefined | `[200]`
-method | string | Method of the HTTP request | `get`
+method | string | Method of the HTTP request<br><br>Accepted values: `get`, `put`, `post`, `patch`, `delete` | `get`
 requestHeaders | object | Headers to include in the HTTP request, in key/value format. | `{}`
 responseHeaders | object | Headers expected in the response, in key/value format. If one or more `responseHeaders` entries aren't present in the response, the step fails. | `{}`
 requestParams | object | URL parameters to include in the HTTP request, in key/value format. | `{}`
