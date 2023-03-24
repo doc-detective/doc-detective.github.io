@@ -26,12 +26,17 @@ async function main() {
     // Format
     // TODO
     // Fields
-    let fields = ["## Fields", "", "Field | Type | Description", ":-- | :-- | :--"];
+    let fields = [
+      "## Fields",
+      "",
+      "Field | Type | Description | Default",
+      ":-- | :-- | :-- | :--",
+    ];
     const keys = Object.keys(schema.properties);
     for (const key in keys) {
       let field = keys[key];
-      let property = schema.properties[field];
-      fields.push(`${field} | ${property.type} | ${property.description}`);
+      let fieldDetails = parseField(schema, field);
+      fields = fields.concat(fieldDetails);
     }
     fields.push("");
     // Examples
@@ -83,4 +88,16 @@ function updateRefPaths(schema, dirPath) {
     }
   }
   return schema;
+}
+
+function parseField(schema, fieldName) {
+  let details = [];
+  let property = schema.properties[fieldName];
+  let type = property.type;
+  let description = property.description;
+  let defaultValue = property.default;
+  details.push(
+    `${fieldName} | ${type} | ${description} | ${defaultValue}`
+  );
+  return details;
 }

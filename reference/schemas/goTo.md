@@ -11,12 +11,12 @@ Navigate to a specified URL.
 
 ## Fields
 
-Field | Type | Description
-:-- | :-- | :--
-id | string | ID of the step.
-description | string | Description of the step.
-action | string | Action to perform.
-url | string | URL to navigate to.
+Field | Type | Description | Default
+:-- | :-- | :-- | :--
+id | string | ID of the step. | undefined
+description | string | Description of the step. | undefined
+action | string | Action to perform. | undefined
+url | string | URL to navigate to. | undefined
 
 ## Examples
 

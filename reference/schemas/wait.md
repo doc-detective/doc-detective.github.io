@@ -11,12 +11,12 @@ Pause before performing the next action.
 
 ## Fields
 
-Field | Type | Description
-:-- | :-- | :--
-id | string | ID of the step.
-description | string | Description of the step.
-action | string | The action to perform.
-duration | number | Milliseconds to wait.
+Field | Type | Description | Default
+:-- | :-- | :-- | :--
+id | string | ID of the step. | undefined
+description | string | Description of the step. | undefined
+action | string | The action to perform. | undefined
+duration | number | Milliseconds to wait. | 500
 
 ## Examples
 

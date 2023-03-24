@@ -11,12 +11,12 @@ Takes a screenshot in PNG format.
 
 ## Fields
 
-Field | Type | Description
-:-- | :-- | :--
-id | string | ID of the step.
-description | string | Description of the step.
-action | string | The action to perform.
-path | string | File path of the PNG file. If not specified, the file path is your media directory and the file name is the ID of the step.
+Field | Type | Description | Default
+:-- | :-- | :-- | :--
+id | string | ID of the step. | undefined
+description | string | Description of the step. | undefined
+action | string | The action to perform. | undefined
+path | string | File path of the PNG file. If not specified, the file path is your media directory and the file name is the ID of the step. | undefined
 
 ## Examples
 
