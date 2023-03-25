@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const parser = require("@apidevtools/json-schema-ref-parser");
 const { exit } = require("process");
+const { type } = require("os");
 
 main();
 // console.log(schemas);
@@ -98,7 +99,7 @@ function parseField(schema, fieldName, fieldNameBase) {
     name = fieldName;
   }
   let property = schema.properties[fieldName];
-  let type = property.type;
+  let type = getTypes(property);
   let description = property.description;
   // Get required
   if (schema.required.includes(fieldName)) {
@@ -141,7 +142,6 @@ function parseField(schema, fieldName, fieldNameBase) {
     defaultValue = `\`${property.default}\``;
   }
   details.push(`${name} | ${type} |  ${description} | ${defaultValue}`);
-  console.log(property.properties);
   // Parse child object
   if (property.properties) {
     const keys = Object.keys(property.properties);
@@ -152,4 +152,30 @@ function parseField(schema, fieldName, fieldNameBase) {
     }
   }
   return details;
+}
+
+function getTypes(property) {
+  // TODO: Include supported subtypes within array
+  let type;
+  let types = [];
+  // Get types
+  if (!property.type && (property.anyOf || property.oneOf)) {
+    typesArray = property.anyOf || property.oneOf;
+    typesArray.forEach((item) => {
+      if (!types.includes(item.type)) types.push(item.type);
+    });
+  } else if (property.type) {
+    types.push(property.type);
+  }
+
+  // Output type string
+  if (types.length > 1) {
+    type = "One of";
+    types.forEach((typeItem) => {
+      type = type + `<br>- ${typeItem}`
+    });
+  } else { 
+    type = types[0];
+  }
+  return type;
 }
