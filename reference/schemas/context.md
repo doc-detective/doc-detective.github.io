@@ -9,6 +9,8 @@ parent: Reference
 
 An application and supported platforms.
 
+If no contexts are specified but a context is required by one or more tests, Doc Detective attempts to identify a supported context in the current environment and run tests against it. For browsers, context priority is Firefox > Chrome > Chromium.
+
 ## Fields
 
 Field | Type | Description | Default
