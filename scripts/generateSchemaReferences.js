@@ -1,25 +1,29 @@
 const fs = require("fs");
 const path = require("path");
 const parser = require("@apidevtools/json-schema-ref-parser");
-const { exit } = require("process");
-const { type } = require("os");
+const { schemas } = require("doc-detective-common");
+// const { exit } = require("process");
 
 main();
-// console.log(schemas);
 
 async function main() {
-  const dirPath = path.resolve(`${__dirname}/../_includes/schemas`);
-  const files = fs.readdirSync(dirPath);
-  for await (const file of files) {
-    const filePath = path.resolve(`${dirPath}/${file}`);
-    // Load from file
-    let schema = fs.readFileSync(filePath).toString();
-    // Convert to JSON
-    schema = JSON.parse(schema);
-    // Set ID
-    schema.$id = `${filePath}`;
-    // Update references to current relative path
-    schema = updateRefPaths(schema, dirPath);
+  const schemasToGenerate = [
+    "checkLink_v2",
+    "config_v2",
+    "context_v2",
+    "find_v2",
+    "goTo_v2",
+    "httpRequest_v2",
+    "runShell_v2",
+    "saveScreenshot_v2",
+    "setVariables_v2",
+    "spec_v2",
+    "test_v2",
+    "typeKeys_v2",
+    "wait_v2"
+  ];
+  for await (const key of schemasToGenerate) {
+    schema = schemas[key];
     // Dereference schema
     schema = await parser.dereference(schema);
     // Format
@@ -73,20 +77,7 @@ async function main() {
     // Write file
     fs.writeFileSync(outputPath, output);
   }
-  console.log("Documents generated.");
-}
-
-// Prepend path to referenced relative paths
-function updateRefPaths(schema, dirPath) {
-  for (let [key, value] of Object.entries(schema)) {
-    if (typeof value === "object") {
-      updateRefPaths(value, dirPath);
-    }
-    if (key === "$ref") {
-      schema[key] = `${dirPath}/${value}`;
-    }
-  }
-  return schema;
+  console.log("References generated.");
 }
 
 function parseField(schema, fieldName, fieldNameBase) {
@@ -102,7 +93,7 @@ function parseField(schema, fieldName, fieldNameBase) {
   let type = getTypes(property);
   let description = property.description;
   // Get required
-  if (schema.required.includes(fieldName)) {
+  if (schema.required && schema.required.includes(fieldName)) {
     description = "Required. " + description;
   } else {
     description = "Optional. " + description;
