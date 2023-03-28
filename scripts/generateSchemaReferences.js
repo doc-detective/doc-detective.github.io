@@ -125,7 +125,8 @@ function parseField(schema, fieldName, fieldNameBase) {
     defaultValue = "Generated UUID";
   } else if (
     // Undefined
-    property.default === undefined
+    property.default === undefined ||
+    property.default === ""
   ) {
     defaultValue = "";
   } else {
@@ -133,6 +134,7 @@ function parseField(schema, fieldName, fieldNameBase) {
     defaultValue = `\`${property.default}\``;
   }
   details.push(`${name} | ${type} |  ${description} | ${defaultValue}`);
+
   // Parse child objects
   // Check if has child properties
   if (type === "object") {
