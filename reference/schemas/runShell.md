@@ -15,9 +15,9 @@ Field | Type | Description | Default
 :-- | :-- | :-- | :--
 id | string |  Optional. ID of the step. | Generated UUID
 description | string |  Optional. Description of the step. | 
-action | string |  Required. undefined | 
+action | string |  Required. The action to perform. | 
 command | string |  Required. Command to perform in the machine's default shell. | 
-args | array |  Optional. Arguments for the command. | `[]`
+args | array of strings |  Optional. Arguments for the command. | `[]`
 
 ## Examples
 

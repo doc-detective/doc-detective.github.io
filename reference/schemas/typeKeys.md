@@ -16,7 +16,7 @@ Field | Type | Description | Default
 id | string |  Optional. ID of the step. | 
 description | string |  Optional. Description of the step. | 
 action | string |  Required. The action to perform. | 
-keys | One of<br>- string<br>- array |  Required. String of keys to enter. | 
+keys | One of<br>- string<br>- array of strings |  Required. String of keys to enter. | 
 
 ## Examples
 

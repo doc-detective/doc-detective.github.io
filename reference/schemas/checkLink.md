@@ -17,7 +17,7 @@ id | string |  Optional. ID of the step. | Generated UUID
 description | string |  Optional. Description of the step. | 
 action | string |  Required. Action to perform. | 
 url | string |  Required. URL to check. | 
-statusCodes | array |  Optional. undefined | `[200]`
+statusCodes | array of integers |  Optional. Accepted status codes. If the specified URL returns a code other than what is specified here, the action fails. | `[200]`
 
 ## Examples
 

@@ -21,7 +21,7 @@ timeout | integer |  Optional. Max duration in milliseconds to wait for the elem
 matchText | string |  Optional. Text that the element shuold contain. If the element doesn't contain the text, the step fails. | 
 moveTo | boolean |  Optional. Move to the element. If the element isn't visible, it's scrolled into view. Only runs the if the test is being recorded. | 
 click | boolean |  Optional. Click the element. | 
-typeKeys | One of<br>- string<br>- object |  Optional. Type keys after finding the element. If you want to type in the element, make the element active with the `click` parameter. | 
+typeKeys | One of<br>- string<br>- object |  Optional. Type keys after finding the element. Either a string or an object with a `keys` field as defined in [`typeKeys`](/reference/schemas/typeKeys).<br><br>To type in the element, make the element active with the `click` parameter. | 
 
 ## Examples
 

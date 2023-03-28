@@ -18,7 +18,7 @@ Field | Type | Description | Default
 app | object |  Required. The application to run. | 
 app.name | string |  Required. Name of the application.<br><br>Accepted values: `firefox`, `chrome` | 
 app.path | string |  Optional. Path to the application. If not specified, defaults to typical install paths per platform. If specified but the path is invalid, the context is skipped. | 
-platforms | array |  Required. Supported platforms for the application. | 
+platforms | array of strings |  Required. Supported platforms for the application. | 
 
 ## Examples
 

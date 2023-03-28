@@ -1,11 +1,14 @@
 const fs = require("fs");
 const path = require("path");
 const parser = require("@apidevtools/json-schema-ref-parser");
-const { schemas } = require("../../doc-detective-common");
+const { schemas } = require("doc-detective-common");
 const { exit } = require("process");
 // const { exit } = require("process");
 
 main();
+
+// TODO: Add `minimum` values
+// TODO: Add `maximum` values
 
 async function main() {
   const schemasToGenerate = [

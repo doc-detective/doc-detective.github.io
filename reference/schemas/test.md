@@ -15,8 +15,8 @@ Field | Type | Description | Default
 :-- | :-- | :-- | :--
 id | string |  Optional. Unique identifier for the test. | Generated UUID
 description | string |  Optional. Description of the test. | 
-contexts | array |  Optional. Application/platform sets to run the test in. Overrides `contexts` defined at the config-level and spec-level. | 
-steps | array |  Required. undefined | 
+contexts | array of object([context](/reference/schemas/context)) |  Optional. Application/platform sets to run the test in. Overrides `contexts` defined at the config-level and spec-level. | 
+steps | array of <br>-&nbsp;object([checkLink](/reference/schemas/checkLink))<br>-&nbsp;object([goTo](/reference/schemas/goTo))<br>-&nbsp;object([httpRequest](/reference/schemas/httpRequest))<br>-&nbsp;object([runShell](/reference/schemas/runShell))<br>-&nbsp;object([saveScreenshot](/reference/schemas/saveScreenshot))<br>-&nbsp;object([setVariables](/reference/schemas/setVariables))<br>-&nbsp;object([typeKeys](/reference/schemas/typeKeys))<br>-&nbsp;object([find](/reference/schemas/find))<br>-&nbsp;object([wait](/reference/schemas/wait)) |  Required. Actions to perform as part of the test. Performed in the sequence defined. If one or more actions fail, the test fails. | 
 
 ## Examples
 
