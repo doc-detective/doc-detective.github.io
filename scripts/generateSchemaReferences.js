@@ -1,7 +1,8 @@
 const fs = require("fs");
 const path = require("path");
 const parser = require("@apidevtools/json-schema-ref-parser");
-const { schemas } = require("doc-detective-common");
+const { schemas } = require("../../doc-detective-common");
+const { exit } = require("process");
 // const { exit } = require("process");
 
 main();
@@ -90,7 +91,7 @@ function parseField(schema, fieldName, fieldNameBase) {
     name = fieldName;
   }
   let property = schema.properties[fieldName];
-  let type = getTypes(property);
+  let typeDetails = getTypes(property);
   let description = property.description;
   // Get required
   if (schema.required && schema.required.includes(fieldName)) {
@@ -133,11 +134,12 @@ function parseField(schema, fieldName, fieldNameBase) {
     // Default
     defaultValue = `\`${property.default}\``;
   }
-  details.push(`${name} | ${type} |  ${description} | ${defaultValue}`);
-
+  details.push(
+    `${name} | ${typeDetails.type} |  ${description} | ${defaultValue}`
+  );
   // Parse child objects
   // Check if has child properties
-  if (type === "object") {
+  if (typeDetails.type === "object") {
     let childProperties;
     if (property.properties) childProperties = [property.properties];
     if (property.anyOf || property.oneOf) {
@@ -155,8 +157,8 @@ function parseField(schema, fieldName, fieldNameBase) {
     }
   }
   // Check if any array items are internally defined objects
-  if (type === "array") {
-    let itemsArray = getItems(property);
+  if (typeDetails.types.includes("array")) {
+    let itemsArray = getItems(property, "object");
     for (const index in itemsArray) {
       const item = itemsArray[index];
       if (item.type === "object" && !item.title) {
@@ -173,21 +175,20 @@ function parseField(schema, fieldName, fieldNameBase) {
   return details;
 }
 
-function getItems(property) {
+function getItems(property, typeFilter) {
   let items;
-  if (property.items) {
+  if (property.items && (property.items.anyOf || property.items.oneOf)) {
+    items = property.items.anyOf || property.items.oneOf;
+  } else if (property.items) {
     items = [property.items];
-    if (property.items.anyOf || property.items.oneOf) {
-      let xOfArray = property.items.anyOf || property.items.oneOf;
-      items = xOfArray.filter((item) => item.type === "object");
-    }
   }
-  if (property.anyOf || property.oneOf) {
-    if (property.anyOf.items || property.oneOf.items) {
-      let xOfArray = property.anyOf.items || property.oneOf.items;
-      items = xOfArray.filter((item) => item.type === "object");
-    }
+  if (
+    (property.anyOf && property.anyOf.items) ||
+    (property.oneOf && property.oneOf.items)
+  ) {
+    items = property.anyOf.items || property.oneOf.items;
   }
+  if (typeFilter) items = items.filter((item) => item.type === typeFilter);
   return items;
 }
 
@@ -197,22 +198,54 @@ function getTypes(property) {
   let types = [];
   // Get types
   if (!property.type && (property.anyOf || property.oneOf)) {
-    typesArray = property.anyOf || property.oneOf;
-    typesArray.forEach((item) => {
-      if (!types.includes(item.type)) types.push(item.type);
-    });
+    xOfArray = property.anyOf || property.oneOf;
+    types = xOfArray.filter((xOf) => xOf.type);
+    if (types.length > 1) {
+      type = "One of";
+      for (const item of types) {
+        type = type + `<br>- ${item.type}`;
+        if (item.type === "array") {
+          subTypes = getArraySubTypes(item, 1);
+          type = type + subTypes;
+        }
+      }
+    } else {
+      type = types[0];
+    }
   } else if (property.type) {
-    types.push(property.type);
+    type = property.type;
+    types = [type];
+    if (type === "array") {
+      subTypes = getArraySubTypes(property, 0);
+      type = type + subTypes;
+    }
   }
 
-  // Output type string
-  if (types.length > 1) {
-    type = "One of";
-    types.forEach((typeItem) => {
-      type = type + `<br>- ${typeItem}`;
-    });
+  return { type, types };
+}
+
+function getArraySubTypes(property, depth) {
+  let subTypes = " of ";
+  let itemsArray = getItems(property);
+  if (itemsArray.length > 1) {
+    let spaces = "";
+    if (Number(depth) === 1) spaces = "&nbsp;&nbsp;";
+    for (const index in itemsArray) {
+      item = itemsArray[index];
+      if (item.type === "object" && item.title) {
+        subTypes = `${subTypes}<br>${spaces}-&nbsp;${item.type}([${item.title}](/reference/schemas/${item.title}))`;
+      } else {
+        subTypes = `${subTypes}<br>${spaces}- ${item.type}s`;
+      }
+    }
   } else {
-    type = types[0];
+    item = itemsArray[0];
+    if (item.type === "object" && item.title) {
+      subTypes = `${subTypes}${item.type}([${item.title}](/reference/schemas/${item.title}))`;
+    } else {
+      subTypes = subTypes + item.type + "s";
+    }
   }
-  return type;
+
+  return subTypes;
 }
