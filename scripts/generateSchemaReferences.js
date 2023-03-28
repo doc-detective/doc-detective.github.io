@@ -20,7 +20,7 @@ async function main() {
     "spec_v2",
     "test_v2",
     "typeKeys_v2",
-    "wait_v2"
+    "wait_v2",
   ];
   for await (const key of schemasToGenerate) {
     schema = schemas[key];
@@ -133,13 +133,23 @@ function parseField(schema, fieldName, fieldNameBase) {
     defaultValue = `\`${property.default}\``;
   }
   details.push(`${name} | ${type} |  ${description} | ${defaultValue}`);
-  // Parse child object
-  if (property.properties) {
-    const keys = Object.keys(property.properties);
-    for (const key in keys) {
-      let field = keys[key];
-      let fieldDetails = parseField(property, field, name);
-      details.push(fieldDetails);
+  // Parse child objects
+  // Check if has child properties
+  if (type === "object") {
+    let childProperties;
+    if (property.properties) childProperties = [property.properties];
+    if (property.anyOf || property.oneOf) {
+      let xOfArray = property.anyOf || property.oneOf;
+      childProperties = xOfArray.filter((item) => item.property);
+    }
+    for (const prop in childProperties) {
+      property.properties = childProperties[prop];
+      const keys = Object.keys(property.properties);
+      for (const key in keys) {
+        let field = keys[key];
+        let fieldDetails = parseField(property, field, name);
+        details.push(fieldDetails);
+      }
     }
   }
   return details;
@@ -163,9 +173,9 @@ function getTypes(property) {
   if (types.length > 1) {
     type = "One of";
     types.forEach((typeItem) => {
-      type = type + `<br>- ${typeItem}`
+      type = type + `<br>- ${typeItem}`;
     });
-  } else { 
+  } else {
     type = types[0];
   }
   return type;
