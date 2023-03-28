@@ -154,7 +154,41 @@ function parseField(schema, fieldName, fieldNameBase) {
       }
     }
   }
+  // Check if any array items are internally defined objects
+  if (type === "array") {
+    let itemsArray = getItems(property);
+    for (const index in itemsArray) {
+      const item = itemsArray[index];
+      if (item.type === "object" && !item.title) {
+        // console.log(item);
+        const keys = Object.keys(item.properties);
+        for (const key in keys) {
+          let field = keys[key];
+          let fieldDetails = parseField(item, field, name);
+          details.push(fieldDetails);
+        }
+      }
+    }
+  }
   return details;
+}
+
+function getItems(property) {
+  let items;
+  if (property.items) {
+    items = [property.items];
+    if (property.items.anyOf || property.items.oneOf) {
+      let xOfArray = property.items.anyOf || property.items.oneOf;
+      items = xOfArray.filter((item) => item.type === "object");
+    }
+  }
+  if (property.anyOf || property.oneOf) {
+    if (property.anyOf.items || property.oneOf.items) {
+      let xOfArray = property.anyOf.items || property.oneOf.items;
+      items = xOfArray.filter((item) => item.type === "object");
+    }
+  }
+  return items;
 }
 
 function getTypes(property) {
