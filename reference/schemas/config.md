@@ -44,7 +44,9 @@ fileTypes.testIgnoreStatement | string |  Required. Text for an in-document test
 fileTypes.testEndStatement | string |  Required. Text for an in-document test end statement. | 
 fileTypes.stepStatementOpen | string |  Required. Opening of an in-document step statement. | 
 fileTypes.stepStatementClose | string |  Required. Close of an in-document step statement. | 
-fileTypes.markup | array of objects |  Required. Markup types and associated regex patterns to find in documentation source files. | ,fileTypes.markup.name | string |  Required. Name of the markup type. | ,fileTypes.markup.regex | array of strings |  Required. Regex patterns to find the markup type in documentation source files. | 
+fileTypes.markup | array of objects |  Required. Markup types and associated regex patterns to find in documentation source files. | 
+fileTypes.markup.name | string |  Required. Name of the markup type. | 
+fileTypes.markup.regex | array of strings |  Required. Regex patterns to find the markup type in documentation source files. | 
 integrations | object |  Optional. Options for connecting to external services. | `{}`
 telemetry | object |  Optional. Options around sending telemetry for Doc Detective usage. | 
 telemetry.send | boolean |  Required. If `true`, sends Doc Detective telemetry. | `false`

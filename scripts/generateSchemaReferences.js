@@ -69,6 +69,7 @@ async function main() {
     // Heading
     let heading = ["", `# ${schema.title}`, "", schema.description, ""];
     // Putting it all together
+    if (schema.title === "config") console.log(fields)
     let output = metadata
       .concat(heading)
       .concat(fields)
@@ -155,8 +156,10 @@ function parseField(schema, fieldName, fieldNameBase) {
       for (const key in keys) {
         let field = keys[key];
         let fieldDetails = parseField(property, field, name);
-        details.push(fieldDetails);
-      }
+        for (const detail in fieldDetails) (
+          details.push(fieldDetails[detail])
+        )
+    }
     }
   }
   // Check if any array items are internally defined objects
@@ -170,11 +173,14 @@ function parseField(schema, fieldName, fieldNameBase) {
         for (const key in keys) {
           let field = keys[key];
           let fieldDetails = parseField(item, field, name);
-          details.push(fieldDetails);
+          for (const detail in fieldDetails) (
+            details.push(fieldDetails[detail])
+          )
         }
       }
     }
   }
+  // console.log(details);
   return details;
 }
 
