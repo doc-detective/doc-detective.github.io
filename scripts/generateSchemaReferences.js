@@ -3,7 +3,6 @@ const path = require("path");
 const parser = require("@apidevtools/json-schema-ref-parser");
 const { schemas } = require("doc-detective-common");
 const { exit } = require("process");
-// const { exit } = require("process");
 
 main();
 
@@ -65,11 +64,28 @@ async function main() {
       "nav_order: 1",
       "parent: Reference",
       "---",
+      "",
+      `<details open markdown="block">`,
+      "<summary>",
+      "Table of contents",
+      "</summary>",
+      "{: .text-delta }",
+      "- TOC",
+      "{:toc}",
+      "</details>",
     ];
     // Heading
-    let heading = ["", `# ${schema.title}`, "", schema.description, ""];
+    let heading = [
+      "",
+      `# ${schema.title}`,
+      "{: .no_toc}",
+      "",
+      "## Description",
+      "",
+      schema.description,
+      "",
+    ];
     // Putting it all together
-    if (schema.title === "config") console.log(fields)
     let output = metadata
       .concat(heading)
       .concat(fields)
@@ -156,10 +172,8 @@ function parseField(schema, fieldName, fieldNameBase) {
       for (const key in keys) {
         let field = keys[key];
         let fieldDetails = parseField(property, field, name);
-        for (const detail in fieldDetails) (
-          details.push(fieldDetails[detail])
-        )
-    }
+        for (const detail in fieldDetails) details.push(fieldDetails[detail]);
+      }
     }
   }
   // Check if any array items are internally defined objects
@@ -173,9 +187,7 @@ function parseField(schema, fieldName, fieldNameBase) {
         for (const key in keys) {
           let field = keys[key];
           let fieldDetails = parseField(item, field, name);
-          for (const detail in fieldDetails) (
-            details.push(fieldDetails[detail])
-          )
+          for (const detail in fieldDetails) details.push(fieldDetails[detail]);
         }
       }
     }
@@ -234,7 +246,7 @@ function getTypes(property) {
 }
 
 function getArraySubTypes(property, depth) {
-  let subTypes = " of ";
+  let subTypes = "&nbsp;of&nbsp;";
   let itemsArray = getItems(property);
   if (itemsArray.length > 1) {
     let spaces = "";
@@ -257,4 +269,73 @@ function getArraySubTypes(property, depth) {
   }
 
   return subTypes;
+}
+
+// TODO: Figure out formatting for oneOfs with arrays/objects
+function getSchemaFormat(schema, depth) {
+  let format = ["{"];
+  if (!depth) depth = 1;
+  // console.log(Object.keys(schema.properties));
+  // exit()
+  let properties = schema.properties;
+  for (const [key, value] of Object.entries(properties)) {
+    console.log({ key, value });
+    const typeDetails = getTypes(value);
+    console.log(typeDetails.types);
+    if (typeDetails.types.length > 1) {
+      format.push(`${"  ".repeat(depth)}// One of`);
+      for (const type of typeDetails.types) {
+        value.type = type.type;
+        if (type.items) value.items = type.items;
+        if (type.properties) value.properties = type.properties;
+        
+        // console.log(getFormatDescription(key, value, depth))
+        // exit()
+        format.push(getFormatDescription(key, value, depth).replace(`"${key}":`,""));
+      }
+      format.push(`${"  ".repeat(depth)}// End one of`);
+    } else {
+      format.push(getFormatDescription(key, value, depth));
+    }
+  }
+  // Remove trailing comma from last item
+  format[format.length - 1] = format[format.length - 1].slice(0, -1);
+  format.push("}");
+  // Make text
+  format = format.join("\n");
+  // Make json
+  console.log(format);
+  return format;
+}
+
+// TODO: Figure out formatting for oneOfs with arrays/objects
+function getFormatDescription(name, property, depth) {
+  let description = [];
+  if (!depth) depth = 1;
+  if (property.type === "object" && property.title) {
+    description.push(`${"  ".repeat(depth)}"${name}": {`);
+    depth = depth + 1;
+    description.push(
+      `${"  ".repeat(depth)}object([${property.title}](/reference/schemas/${
+        property.title
+      }))`
+    );
+    depth = depth - 1;
+    description.push(`${"  ".repeat(depth)}},`);
+  } else if (property.type === "object" && !property.title) {
+    description.push(`${"  ".repeat(depth)}"${name}": {`);
+    depth = depth + 1;
+    description.push(`${"  ".repeat(depth)}object`);
+    depth = depth - 1;
+    description.push(`${"  ".repeat(depth)}},`);
+  } else if (property.type === "array") {
+    description.push(`${"  ".repeat(depth)}"${name}": [ ${property.type} ],`);
+  } else if (property.type === "string" && property.const) {
+    description.push(`${"  ".repeat(depth)}"${name}": "${property.const}",`);
+  } else {
+    description.push(`${"  ".repeat(depth)}"${name}": ${property.type},`);
+  }
+  console.log(description);
+  description = description.join("\n");
+  return description;
 }
