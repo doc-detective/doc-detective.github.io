@@ -5,7 +5,19 @@ nav_order: 1
 parent: Reference
 ---
 
+<details open markdown="block">
+<summary>
+Table of contents
+</summary>
+{: .text-delta }
+- TOC
+{:toc}
+</details>
+
 # runShell
+{: .no_toc}
+
+## Description
 
 Perform a native shell command.
 

@@ -224,7 +224,7 @@ function getTypes(property) {
     if (types.length > 1) {
       type = "One of";
       for (const item of types) {
-        type = type + `<br>- ${item.type}`;
+        type = type + `<br>-&nbsp;${item.type}`;
         if (item.type === "array") {
           subTypes = getArraySubTypes(item, 1);
           type = type + subTypes;
@@ -246,7 +246,7 @@ function getTypes(property) {
 }
 
 function getArraySubTypes(property, depth) {
-  let subTypes = "&nbsp;of&nbsp;";
+  let subTypes = " of ";
   let itemsArray = getItems(property);
   if (itemsArray.length > 1) {
     let spaces = "";

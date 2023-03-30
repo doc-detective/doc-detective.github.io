@@ -5,7 +5,19 @@ nav_order: 1
 parent: Reference
 ---
 
+<details open markdown="block">
+<summary>
+Table of contents
+</summary>
+{: .text-delta }
+- TOC
+{:toc}
+</details>
+
 # config
+{: .no_toc}
+
+## Description
 
 Configuration options for Doc Detective operations.
 
@@ -13,26 +25,26 @@ Configuration options for Doc Detective operations.
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
-input | One of<br>- string<br>- array of strings |  Optional. Path(s) to test specifications and documentation source files. May be paths to specific files or to directories to scan for files. | `.`
+input | One of<br>-&nbsp;string<br>-&nbsp;array of strings |  Optional. Path(s) to test specifications and documentation source files. May be paths to specific files or to directories to scan for files. | `.`
 output | string |  Optional. Path of the directory in which to store the output of Doc Detective commands. | `.`
 recursive | boolean |  Optional. If `true` searches `input`, `setup`, and `cleanup` paths recursively for test specificaions and source files. | `true`
 envVariables | string |  Optional. Path to a `.env` file to load before performing a Doc Detective operation. | 
 runTests | object |  Optional. Options for running tests. When running tests, values set here override general configuration options. | 
-runTests.input | One of<br>- string<br>- array of strings |  Optional. Path(s) to test specifications and documentation source files. May be paths to specific files or to directories to scan for files. | `.`
+runTests.input | One of<br>-&nbsp;string<br>-&nbsp;array of strings |  Optional. Path(s) to test specifications and documentation source files. May be paths to specific files or to directories to scan for files. | `.`
 runTests.output | string |  Optional. Path of the directory in which to store the output of Doc Detective commands. | `.`
-runTests.setup | One of<br>- string<br>- array of strings |  Optional. Path(s) to test specifications to perform before those specified by `input`. Useful for setting up testing environments. | 
-runTests.cleanup | One of<br>- string<br>- array of strings |  Optional. Path(s) to test specifications to perform after those specified by `input`. Useful for cleaning up testing environments. | 
+runTests.setup | One of<br>-&nbsp;string<br>-&nbsp;array of strings |  Optional. Path(s) to test specifications to perform before those specified by `input`. Useful for setting up testing environments. | 
+runTests.cleanup | One of<br>-&nbsp;string<br>-&nbsp;array of strings |  Optional. Path(s) to test specifications to perform after those specified by `input`. Useful for cleaning up testing environments. | 
 runTests.recursive | boolean |  Optional. If `true` searches `input`, `setup`, and `cleanup` paths recursively for test specificaions and source files. | `true`
 runTests.mediaDirectory | string |  Optional. Path of the directory in which to store output media files. | `.`
 runTests.downloadDirectory | string |  Optional. Path of the directory in which to store downloaded files. | `.`
 runTests.contexts | array of object([context](/reference/schemas/context)) |  Optional. Application/platform sets to run tests in. If no contexts are specified but a context is required by one or more tests, Doc Detective attempts to identify a supported context in the current environment and run tests against it. See [context](/reference/schemas/context). | `[{}]`
 runCoverage | object |  Optional. Options for performing test coverage analysis on documentation source files.  When performing coveration analysis, values set here override general condiguration options. | 
-runCoverage.input | One of<br>- string<br>- array of strings |  Optional. Path(s) to test specifications and documentation source files. May be paths to specific files or to directories to scan for files. | `.`
+runCoverage.input | One of<br>-&nbsp;string<br>-&nbsp;array of strings |  Optional. Path(s) to test specifications and documentation source files. May be paths to specific files or to directories to scan for files. | `.`
 runCoverage.output | string |  Optional. Path of the directory in which to store the output of Doc Detective commands. | `.`
 runCoverage.recursive | boolean |  Optional. If `true` searches `input`, `setup`, and `cleanup` paths recursively for test specificaions and source files. | `true`
 runCoverage.markup | array of strings |  Optional. Markup types to include when performing this operation. If no markup types are specified, the operation includes all markup types as defined in `fileTypes`. | `[]`
 suggestTests | object |  Optional. Options for suggesting tests based on documentation source files.  When suggesting tests, values set here override general condiguration options. | 
-suggestTests.input | One of<br>- string<br>- array of strings |  Optional. Path(s) to test specifications and documentation source files. May be paths to specific files or to directories to scan for files. | `.`
+suggestTests.input | One of<br>-&nbsp;string<br>-&nbsp;array of strings |  Optional. Path(s) to test specifications and documentation source files. May be paths to specific files or to directories to scan for files. | `.`
 suggestTests.output | string |  Optional. Path of the directory in which to store the output of Doc Detective commands. | `.`
 suggestTests.recursive | boolean |  Optional. If `true` searches `input`, `setup`, and `cleanup` paths recursively for test specificaions and source files. | `true`
 suggestTests.markup | array of strings |  Optional. Markup types to include when performing this operation. If no markup types are specified, the operation includes all markup types as defined in `fileTypes`. | `[]`
