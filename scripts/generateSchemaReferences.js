@@ -65,11 +65,28 @@ async function main() {
       "nav_order: 1",
       "parent: Reference",
       "---",
+      "",
+      `<details open markdown="block">`,
+      "<summary>",
+      "Table of contents",
+      "</summary>",
+      "{: .text-delta }",
+      "- TOC",
+      "{:toc}",
+      "</details>",
     ];
     // Heading
-    let heading = ["", `# ${schema.title}`, "", schema.description, ""];
+    let heading = [
+      "",
+      `# ${schema.title}`,
+      "{: .no_toc}",
+      "",
+      "## Description",
+      "",
+      schema.description,
+      "",
+    ];
     // Putting it all together
-    if (schema.title === "config") console.log(fields)
     let output = metadata
       .concat(heading)
       .concat(fields)
@@ -234,7 +251,7 @@ function getTypes(property) {
 }
 
 function getArraySubTypes(property, depth) {
-  let subTypes = " of ";
+  let subTypes = "&nbsp;of&nbsp;";
   let itemsArray = getItems(property);
   if (itemsArray.length > 1) {
     let spaces = "";
