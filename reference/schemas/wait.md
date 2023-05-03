@@ -28,7 +28,7 @@ Field | Type | Description | Default
 id | string |  Optional. ID of the step. | Generated UUID
 description | string |  Optional. Description of the step. | 
 action | string |  Required. The action to perform. | 
-duration | number |  Optional. Milliseconds to wait. | `500`
+duration | number |  Optional. Milliseconds to wait. | `5000`
 
 ## Examples
 
