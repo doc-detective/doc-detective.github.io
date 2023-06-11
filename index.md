@@ -27,7 +27,7 @@ Doc Detective’s core strength is the ability to systematically check each and 
 
 ### Generate screenshots or video to accompany documentation
 
-When Doc Detective runs tests, it can take screenshots and make recordings. You can include this media in the documentation to compliment written processes, aiding the readers who prefer visual media while making sure your videos and images are up-to-date.
+When Doc Detective runs tests, it can take screenshots and make recordings. You can include this media in the documentation to complement written processes, aiding the readers who prefer visual media while making sure your videos and images are up-to-date.
 
 ### Generate tests when updating documentation
 
