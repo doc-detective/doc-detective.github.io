@@ -59,4 +59,4 @@ As an open-source and accessible project, Doc Detective is for anyone who is int
 
 ## Next steps
 
-Want to take Doc Detective for a spin? Check out the [Get Started](https://github.com/doc-detective/doc-detective/blob/main/docs/get-started.md) guide.
+Want to take Doc Detective for a spin? [Get started](/get-started).
