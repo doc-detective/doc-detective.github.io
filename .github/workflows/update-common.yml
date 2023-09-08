@@ -4,6 +4,11 @@ on:
   repository_dispatch:
     types:
       - update-common-package-event
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'The doc-detective-common version.'
+        required: false
 
 jobs:
   update:
