@@ -1,0 +1,25 @@
+name: Update doc-detective-common version
+
+on:
+  repository_dispatch:
+    types:
+      - update-common-package-event
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install specific version of doc-detective-common
+      run: |
+        npm install common@${{ github.event.client_payload.version }}
+
+    - name: Commit and push if there are changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add -A
+        git commit -m "Update doc-detective-common package to version ${{ github.event.client_payload.version }}" || echo "No changes to commit"
+        git push
