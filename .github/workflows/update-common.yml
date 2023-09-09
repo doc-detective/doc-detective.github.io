@@ -31,6 +31,6 @@ jobs:
         npm install doc-detective-common@${{ github.event.client_payload.version || github.event.inputs.version }}
 
     - name: Regenerate references
-      run: npm run genReferences
+      run: npm i
 
     - uses: stefanzweifel/git-auto-commit-action@v4
