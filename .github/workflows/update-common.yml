@@ -12,6 +12,8 @@ on:
 
 jobs:
   update:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
@@ -19,12 +21,6 @@ jobs:
 
     - name: Install specific version of doc-detective-common
       run: |
-        npm install common@${{ github.event.client_payload.version }}
+        npm install doc-detective-common@${{ github.event.client_payload.version || github.event.inputs.version }}
 
-    - name: Commit and push if there are changes
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add -A
-        git commit -m "Update doc-detective-common package to version ${{ github.event.client_payload.version }}" || echo "No changes to commit"
-        git push
+    - uses: stefanzweifel/git-auto-commit-action@v4
