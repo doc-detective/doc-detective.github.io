@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Setup Ruby
       uses: ruby/setup-ruby@v1
@@ -29,5 +29,8 @@ jobs:
     - name: Install specific version of doc-detective-common
       run: |
         npm install doc-detective-common@${{ github.event.client_payload.version || github.event.inputs.version }}
+
+    - name: Regenerate references
+      run: npm i
 
     - uses: stefanzweifel/git-auto-commit-action@v4
