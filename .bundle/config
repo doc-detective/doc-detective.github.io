@@ -1,2 +1,4 @@
 ---
-BUNDLE_PATH: "vendor/bundle"
+BUNDLE_PATH: "/home/runner/work/doc-detective.github.io/doc-detective.github.io/vendor/bundle"
+BUNDLE_DEPLOYMENT: "true"
+BUNDLE_JOBS: "4"
