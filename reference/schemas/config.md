@@ -37,7 +37,7 @@ runTests.cleanup | One of<br>-&nbsp;string<br>-&nbsp;array of strings |  Optiona
 runTests.recursive | boolean |  Optional. If `true` searches `input`, `setup`, and `cleanup` paths recursively for test specificaions and source files. | 
 runTests.mediaDirectory | string |  Optional. Path of the directory in which to store output media files. | `.`
 runTests.downloadDirectory | string |  Optional. Path of the directory in which to store downloaded files. | `.`
-runTests.contexts | array of object([context](/reference/schemas/context)) |  Optional. Application/platform sets to run tests in. If no contexts are specified but a context is required by one or more tests, Doc Detective attempts to identify a supported context in the current environment and run tests against it. See [context](/reference/schemas/context). | 
+runTests.contexts | array of object([context](/reference/schemas/context)) |  Optional. Application/platform sets to run tests in. If no contexts are specified but a context is required by one or more tests, Doc Detective attempts to identify a supported context in the current environment and run tests against it. See [context](/reference/schemas/context). | `[{"app":{"name":"firefox","options":{"width":1200,"height":800,"headless":true}},"platforms":["linux","mac","windows"]}]`
 runCoverage | object |  Optional. Options for performing test coverage analysis on documentation source files.  When performing coveration analysis, values set here override general configuration options. | 
 runCoverage.input | One of<br>-&nbsp;string<br>-&nbsp;array of strings |  Optional. Path(s) to test specifications and documentation source files. May be paths to specific files or to directories to scan for files. | 
 runCoverage.output | string |  Optional. Path of the directory in which to store the output of Doc Detective commands. | `.`
@@ -338,7 +338,11 @@ logLevel | string |  Optional. Amount of detail to output when performing an ope
       {
         "app": {
           "name": "firefox",
-          "path": ""
+          "options": {
+            "width": 1200,
+            "height": 800,
+            "headless": true
+          }
         },
         "platforms": [
           "linux",
