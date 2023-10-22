@@ -28,6 +28,7 @@ Field | Type | Description | Default
 id | string |  Optional. Unique identifier for the test. | Generated UUID
 description | string |  Optional. Description of the test. | 
 file | string |  Optional. Path to the file that the test is associated with. | 
+detectSteps | boolean |  Optional. Whether or not to detect steps in input files based on markup regex. Defaults to `true`. | 
 contexts | array of object([context](/reference/schemas/context)) |  Optional. Application/platform sets to run the test in. Overrides `contexts` defined at the config-level and spec-level. | 
 setup | string |  Optional. Path to a test specification to perform before this test, while maintaining this test's context. Useful for setting up testing environments. Only the `steps` property is used from the first test in the setup spec. | 
 cleanup | string |  Optional. Path to a test specification to perform after this test, while maintaining this test's context. Useful for cleaning up testing environments. Only the `steps` property is used from the first test in the cleanup spec. | 

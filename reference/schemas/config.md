@@ -60,7 +60,9 @@ fileTypes.stepStatementClose | string |  Required. Close of an in-document step 
 fileTypes.markup | array of objects |  Required. Markup types and associated regex patterns to find in documentation source files. | 
 fileTypes.markup.name | string |  Required. Name of the markup type. | 
 fileTypes.markup.regex | array of strings |  Required. Regex patterns to find the markup type in documentation source files. | 
-fileTypes.markup.actions | array of strings |  Optional. Actions that apply to the markup type. | 
+fileTypes.markup.actions | array of <br>- strings<br>- objects |  Optional. Actions that apply to the markup type. | 
+fileTypes.markup.actions.name | string |  Required. Name of the action.<br><br>Accepted values: `checkLink`, `find`, `goTo`, `httpRequest`, `runShell`, `saveScreenshot`, `setVariables`, `typeKeys`, `wait` | 
+fileTypes.markup.actions.params | object |  Optional. Parameters for the action. | 
 integrations | object |  Optional. Options for connecting to external services. | 
 telemetry | object |  Optional. Options around sending telemetry for Doc Detective usage. | 
 telemetry.send | boolean |  Required. If `true`, sends Doc Detective telemetry. | `false`
@@ -173,7 +175,13 @@ logLevel | string |  Optional. Amount of detail to output when performing an ope
             "\\*\\*.+?\\*\\*"
           ],
           "actions": [
-            "find"
+            {
+              "name": "find",
+              "params": {
+                "moveTo": true,
+                "click": true
+              }
+            }
           ]
         },
         {
