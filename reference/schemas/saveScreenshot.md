@@ -28,7 +28,8 @@ Field | Type | Description | Default
 id | string |  Optional. ID of the step. | Generated UUID
 description | string |  Optional. Description of the step. | 
 action | string |  Required. The action to perform. | 
-path | string |  Optional. File path of the PNG file. If not specified, the file path is your media directory and the file name is the ID of the step. | 
+path | string |  Optional. Relative file path of the PNG file from `directory`. If not specified, the file name is the ID of the step. | 
+directory | string |  Optional. Directory of the PNG file. Attempts to creatr the directory if it doesn't exist. If not specified, the directory is your media directory. | 
 
 ## Examples
 
@@ -42,5 +43,13 @@ path | string |  Optional. File path of the PNG file. If not specified, the file
 {
   "action": "saveScreenshot",
   "path": "results.png"
+}
+```
+
+```json
+{
+  "action": "saveScreenshot",
+  "path": "results.png",
+  "directory": "static/images"
 }
 ```
