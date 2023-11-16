@@ -25,7 +25,7 @@ Type keys. To type special keys, begin and end the string with `$` and use the [
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
-id | string |  Optional. ID of the step. | 
+id | string |  Optional. ID of the step. | Generated UUID
 description | string |  Optional. Description of the step. | 
 action | string |  Required. The action to perform. | 
 keys | One of<br>-&nbsp;string<br>-&nbsp;array of strings |  Required. String of keys to enter. | 
