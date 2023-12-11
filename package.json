@@ -6,7 +6,7 @@
   "scripts": {
     "start": "npm i && npm run watch",
     "test": "jest",
-    "preinstall": "npm upgrade doc-detective-common",
+    "preinstall": "gem install bundler",
     "postinstall": "bundle install && npm run genReferences",
     "build": "bundle exec jekyll build",
     "watch": "bundle exec jekyll serve --livereload --trace",
