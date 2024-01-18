@@ -29,6 +29,7 @@ id | string |  Optional. ID of the step. | Generated UUID
 description | string |  Optional. Description of the step. | 
 action | string |  Required. The action to perform. | 
 keys | One of<br>-&nbsp;string<br>-&nbsp;array of strings |  Required. String of keys to enter. | 
+delay | number |  Optional. Delay in milliseconds between each key press. Only valid during a recording. | `100`
 
 ## Examples
 
@@ -45,5 +46,16 @@ keys | One of<br>-&nbsp;string<br>-&nbsp;array of strings |  Required. String of
   "keys": [
     "$ENTER$"
   ]
+}
+```
+
+```json
+{
+  "action": "typeKeys",
+  "keys": [
+    "kittens",
+    "$ENTER$"
+  ],
+  "delay": 500
 }
 ```
