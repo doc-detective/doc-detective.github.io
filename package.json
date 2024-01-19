@@ -1,6 +1,6 @@
 {
   "name": "doc-detective.github.io",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Doc Detective documentation",
   "main": "npm run start",
   "scripts": {
@@ -25,9 +25,9 @@
   "homepage": "https://github.com/doc-detective/doc-detective.github.io#readme",
   "dependencies": {
     "@adobe/jsonschema2md": "^7.1.5",
-    "@apidevtools/json-schema-ref-parser": "^10.1.0",
+    "@apidevtools/json-schema-ref-parser": "^11.1.0",
     "doc-detective-common": "^1.11.0",
-    "jest": "^29.5.0",
+    "jest": "^29.7.0",
     "pre-commit": "^1.2.2"
   }
 }

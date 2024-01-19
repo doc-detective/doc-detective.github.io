@@ -20,6 +20,8 @@ async function main() {
     "runShell_v2",
     "saveScreenshot_v2",
     "setVariables_v2",
+    "startRecording_v2",
+    "stopRecording_v2",
     "spec_v2",
     "test_v2",
     "typeKeys_v2",
