@@ -28,12 +28,13 @@ If no contexts are specified but a context is required by one or more tests, Doc
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
 app | object |  Required. The application to run. | 
-app.name | string |  Required. Name of the application.<br><br>Accepted values: `firefox`, `chrome` | 
+app.name | string |  Required. Name of the application.<br><br>Accepted values: `chrome`, `firefox`, `safari` | 
 app.path | string |  Optional. Path to the application. If not specified, defaults to typical install paths per platform. If specified but the path is invalid, the context is skipped. | 
 app.options | object |  Optional. Options to pass to the app. Only works when `name` is `firefox` or `chrome`. | 
 app.options.width | integer |  Optional. Width of the window in pixels. | 
 app.options.height | integer |  Optional. Height of the window in pixels. | 
-app.options.headless | boolean |  Optional. If `true`, runs the browser in headless mode. | 
+app.options.headless | boolean |  Optional. If `true`, runs the browser in headless mode. Not supported by Safari. | 
+app.options.driverPath | string |  Optional. Path to the browser driver. If not specified, defaults to internally managed dependencies. | 
 platforms | array of strings |  Required. Supported platforms for the application. | 
 
 ## Examples
@@ -41,7 +42,7 @@ platforms | array of strings |  Required. Supported platforms for the applicatio
 ```json
 {
   "app": {
-    "name": "firefox"
+    "name": "chrome"
   },
   "platforms": [
     "linux"
@@ -56,7 +57,8 @@ platforms | array of strings |  Required. Supported platforms for the applicatio
     "options": {
       "width": 800,
       "height": 600,
-      "headless": false
+      "headless": false,
+      "driverPath": "/usr/bin/geckodriver"
     }
   },
   "platforms": [
@@ -70,11 +72,9 @@ platforms | array of strings |  Required. Supported platforms for the applicatio
 ```json
 {
   "app": {
-    "name": "chrome"
+    "name": "safari"
   },
   "platforms": [
-    "linux",
-    "windows",
     "mac"
   ]
 }
