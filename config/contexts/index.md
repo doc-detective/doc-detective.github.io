@@ -15,24 +15,34 @@ Each context is name up of an `app` and a `platform` array. When Doc Detective r
 
 You can specify contexts at three different levels, in order of precedence:
 
-- **Config**: You can specify contexts in the `config` object. These contexts apply to all tests in the suite.
-- **Spec**: You can specify contexts in a [test specification](/reference/schemas/specification) object. These contexts override config-level contexts and apply to all tests in the spec.
-- **Test**: You can specify contexts in a [test](/reference/schemas/test) object. These contexts override config- and spec-level contexts and apply only to that test.
+- **Config**: You can specify contexts in the [`config`](/reference/schemas/config) object. These contexts apply to all tests in the suite.
+- **Spec**: You can specify contexts in a [`specification`](/reference/schemas/specification) object. These contexts override config-level contexts and apply to all tests in the spec.
+- **Test**: You can specify contexts in a [`test`](/reference/schemas/test) object. These contexts override config- and spec-level contexts and apply only to that test.
 
-When you specify contexts, you use a `contexts` array. For example:
+When you specify contexts, you use a `contexts` array. For example, the following JSON specifies three contexts:
 
 ```json
 {
   "contexts": [
     {
-      "app": "chrome",
+      "app": {
+        "name": "chrome"
+      },
       "platform": ["windows","mac","linux"]
     },
     {
-      "app": "firefox",
+      "app": {
+        "firefox"
+      },
       "platform": ["windows","mac","linux"]
+    },
+    {
+      "app": {
+        "name": "safari"
+      },
+      "platform": ["mac"]
     }
-]
+  ]
 }
 ```
 
@@ -49,9 +59,24 @@ Doc Detective can perform tests on a variety of apps. The following apps are sup
 
 Chrome is the default browser for Doc Detective, and Doc Detective manages a Chrome instance internally, so you don't need to install anything extra.
 
+Chrome is the only browser that supports recording test runs with the [`startRecording`](/reference/schemas/startRecording) action.
+
 #### Custom path
 
-You can specify a Chrome installation on your system if you want to use a specific version of Chrome or a Chromium derivative.
+You can specify a Chrome installation on your system if you want to use a specific version of Chrome or a Chromium derivative. If you specify a custom path, you must also specify a path to a matching ChromeDriver executable. For example:
+
+```json
+{
+  "app": {
+    "name": "chrome",
+    "options": {
+      "path": "/path/to/chrome",
+      "driver": "/path/to/chromedriver"
+    }
+  },
+  "platform": ["windows","mac","linux"]
+}
+```
 
 ### Firefox
 
