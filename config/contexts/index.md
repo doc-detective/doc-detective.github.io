@@ -1,9 +1,3 @@
----
-title: Contexts
-layout: default
-nav_order: 4
-parent: Configuration
----
 
 # Contexts
 
@@ -57,7 +51,7 @@ Doc Detective can perform tests on a variety of apps. The following apps are sup
 
 ### Chrome
 
-Chrome is the default browser for Doc Detective, and Doc Detective manages a Chrome instance internally, so you don't need to install anything extra.
+Chrome is available on Windows, macOS, and Linux. Doc Detective manages and runs a Chrome instance internally, so you don't need to install anything extra.
 
 Chrome is the only browser that supports recording test runs with the [`startRecording`](/reference/schemas/startRecording) action.
 
@@ -80,9 +74,27 @@ You can specify a Chrome installation on your system if you want to use a specif
 
 ### Firefox
 
+Firefox is available on Windows, macOS, and Linux. Doc Detective manages and runs a Firefox instance internally, so you don't need to install anything extra.
+
 ### Safari
 
+Safari is only available on macOS. Doc Detective runs tests in a sandboxed instance of your local Safari browser.
+
+Before you run tests on Safari, you need to enable SafariDriver with the following command in a terminal:
+
+```bash
+safaridriver --enable
+```
+
+**Note:** SafariDriver is enabled by default in GitHub Actions.
+
+If Doc Detective isn't running tests in Safari, make sure
+- SafariDriver is enabled.
+- the **Enable automation** option is selected the Safari's **Develop** menu.
+
 ### Edge
+
+Edge is available on Windows, macOS, and Linux. edge is installed by default on Windows, but you must manually install it on macOS and Linux. If Edge is installed, Doc Detective can automatically detect and run tests in your local installation.
 
 ## Platforms
 
