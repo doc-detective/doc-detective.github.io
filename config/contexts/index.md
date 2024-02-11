@@ -9,6 +9,8 @@ parent: Configuration
 
 Doc Detective uses contexts to determine which tests to run. A context is a set of conditions that must be met in order for a test to run. For example, a context might specify that a test should only run in Safari on macOS.
 
+By default, Doc Detective runs tests in Chrome on Windows, macOS, and Linux. You can specify custom contexts to run tests in other apps.
+
 Each context is name up of an `app` object and a `platforms` array. When Doc Detective runs tests, it checks the associated contexts to see if the app is available and if it's running on a specified platform. If the conditions are met, the test runs in that context. You can specify multiple contexts for a test, and Doc Detective will run the test in each context that is met.
 
 For comprehensive options, see the [context](/reference/schemas/context) reference.
@@ -251,6 +253,8 @@ For example, the following context specifies that tests should only run on macOS
 
 ## Examples
 
+### Contexts
+
 Here are some examples of contexts:
 
 - Run tests in Chrome on Windows, macOS, and Linux:
@@ -296,3 +300,94 @@ Here are some examples of contexts:
     "platforms": ["windows"]
   }
   ```
+
+### In a config
+
+You can specify contexts in the `config` object. These contexts apply to all tests in the suite.
+
+- Run all tests in each of the apps that are available by default on each platform:
+
+  ```json
+  {
+    "input":".",
+    "contexts": [
+      {
+        "app": {
+          "name": "chrome"
+        },
+        "platforms": ["windows","mac","linux"]
+      },
+      {
+        "app": {
+          "name": "firefox"
+        },
+        "platforms": ["windows","mac","linux"]
+      },
+      {
+        "app": {
+          "name": "safari"
+        },
+        "platforms": ["mac"]
+      },
+      {
+        "app": {
+          "name": "edge"
+        },
+        "platforms": ["windows"]
+      }
+    ]
+  }
+  ```
+
+### In a specification
+
+You can specify contexts in the `specification` object. These contexts override config-level contexts and apply to all tests in the spec.
+
+This example runs all tests in the spec with Chrome on Windows and macOS:
+
+```json
+{
+  "contexts": [
+    {
+      "app": {
+        "name": "chrome"
+      },
+      "platforms": ["windows","mac"]
+    }
+  ],
+  "tests": [
+    ...
+  ]
+}
+```
+
+### In a test
+
+You can specify contexts in the `test` object. These contexts override config- and spec-level contexts and apply only to that test.
+
+This example runs a single test in Chrome on Windows:
+
+```json
+{
+  "name": "Spec name",
+  "tests": [
+    {
+      "name": "Test name",
+      "contexts": [
+        {
+          "app": {
+            "name": "chrome"
+          },
+          "platforms": ["windows"]
+        }
+      ],
+      "steps": [
+        ...
+      ]
+    },
+    {
+      ...
+    }
+  ]
+}
+```
