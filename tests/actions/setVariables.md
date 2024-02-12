@@ -8,7 +8,7 @@ grand_parent: Tests
 
 # setVariables
 
-The `setVariables` action sets environment variables from a `.env` file. This action is useful accessing sensitive information, such as API keys or other credentials, without hardcoding them into your tests.
+The `setVariables` action sets environment variables from a `.env` file. This action is useful for accessing sensitive information, such as API keys or other credentials, without hardcoding them into your tests.
 
 For comprehensive options, see the [setVariables](/reference/schemas/setVariables) reference.
 
