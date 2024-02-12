@@ -47,3 +47,4 @@ For comprehensive options, see the [goTo](/reference/schemas/goTo) reference.
     }
   ]
 }
+```
