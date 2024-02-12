@@ -17,7 +17,7 @@
 1.  Start the local server:
 
     ```bash
-    npm start
+    npm run start
     ```
 1.  Make your changes.
 
