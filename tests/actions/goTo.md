@@ -12,6 +12,8 @@ The `goTo` action navigates to a URL. This action is useful for starting a test 
 
 You can also specify an `origin` to navigate to a URL relative to a specific path.
 
+For comprehensive options, see the [goTo](/reference/schemas/goTo) reference.
+
 ## Examples
 
 ```json
@@ -20,7 +22,7 @@ You can also specify an `origin` to navigate to a URL relative to a specific pat
     {
       "steps": [
         {
-          "description": "Navigate to example.com",
+          "description": "Navigate to example.com.",
           "action": "goTo",
           "url": "https://example.com"
         }
@@ -29,3 +31,19 @@ You can also specify an `origin` to navigate to a URL relative to a specific pat
   ]
 }
 ```
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Navigate to with an origin.",
+          "action": "goTo",
+          "url": "/search",
+          "origin": "https://www.google.com"
+        }
+      ]
+    }
+  ]
+}
