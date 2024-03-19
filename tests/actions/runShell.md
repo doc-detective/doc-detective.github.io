@@ -8,7 +8,7 @@ grand_parent: Tests
 
 # runShell
 
-The `runShell` action runs a shell command or script on the local machine and evaluates the results. `runShell` is useful for extending the capabilities of Doc Detective to anything you can script.
+The `runShell` action runs a shell command or script on the local machine and evaluates the results, extending Doc Detective's testing capabilities to anything you can script.
 
 > For comprehensive options, see the [runShell](/reference/schemas/runShell) reference.
 
