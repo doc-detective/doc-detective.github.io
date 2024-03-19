@@ -19,7 +19,7 @@ The `runShell` action runs a shell command or script on the local machine and ev
 - **Exit code**: The command's exit code is checked against a list of expected exit codes set in the `exitCodes` parameter. If the command's exit code exists in the list of expected codes, the step passes. `exitCodes` defaults to `[0]`. You can specify non-zero exit codes to test for failure conditions.
 - **Output**: If the expected output (as set in the `output` parameter) exists in the command's actual output (both stdout and stderr), the step passes. You can specify expected output as a string or a regular expression. To use a regular expression, the string must start and end with a forward slash, like in `/^hello world.*/`.
 
-You can also set variables based on the command's output. This is useful for capturing the output of a command and using it in subsequent steps.
+You can also set variables based on the command's output with the `setVariables` parameter. This is useful for capturing the output of a command and using it in subsequent steps.
 
 ## Examples
 
