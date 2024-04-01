@@ -25,6 +25,7 @@ Configuration options for Doc Detective operations.
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
+defaultCommand | string |  Optional. Default command to run when no command is specified.<br><br>Accepted values: `runTests`, `runCoverage` | 
 input | One of<br>-&nbsp;string<br>-&nbsp;array of strings |  Optional. Path(s) to test specifications and documentation source files. May be paths to specific files or to directories to scan for files. | `.`
 output | string |  Optional. Path of the directory in which to store the output of Doc Detective commands. | `.`
 recursive | boolean |  Optional. If `true` searches `input`, `setup`, and `cleanup` paths recursively for test specificaions and source files. | `true`
@@ -65,8 +66,8 @@ fileTypes.markup.actions | array of <br>- strings<br>- objects |  Optional. Acti
 fileTypes.markup.actions.name | string |  Required. Name of the action.<br><br>Accepted values: `checkLink`, `find`, `goTo`, `httpRequest`, `runShell`, `saveScreenshot`, `setVariables`, `typeKeys`, `wait` | 
 fileTypes.markup.actions.params | object |  Optional. Parameters for the action. | 
 integrations | object |  Optional. Options for connecting to external services. | 
-telemetry | object |  Optional. Options around sending telemetry for Doc Detective usage. | 
-telemetry.send | boolean |  Required. If `true`, sends Doc Detective telemetry. | `false`
+telemetry | object |  Optional. Options around sending telemetry for Doc Detective usage. | `{"send":true}`
+telemetry.send | boolean |  Required. If `true`, sends Doc Detective telemetry. | `true`
 telemetry.userId | string |  Optional. Identifier for the organization, group, or individual running Doc Detective. | 
 logLevel | string |  Optional. Amount of detail to output when performing an operation.<br><br>Accepted values: `silent`, `error`, `warning`, `info`, `debug` | `info`
 
@@ -85,6 +86,7 @@ logLevel | string |  Optional. Amount of detail to output when performing an ope
 
 ```json
 {
+  "defaultCommand": "runTests",
   "envVariables": "",
   "input": ".",
   "output": ".",
@@ -145,12 +147,6 @@ logLevel | string |  Optional. Amount of detail to output when performing an ope
     ]
   },
   "runCoverage": {
-    "recursive": true,
-    "input": ".",
-    "output": ".",
-    "markup": []
-  },
-  "suggestTests": {
     "recursive": true,
     "input": ".",
     "output": ".",
@@ -314,7 +310,7 @@ logLevel | string |  Optional. Amount of detail to output when performing an ope
   ],
   "integrations": {},
   "telemetry": {
-    "send": false,
+    "send": true,
     "userId": "Doc Detective"
   }
 }
@@ -362,14 +358,6 @@ logLevel | string |  Optional. Amount of detail to output when performing an ope
     ]
   },
   "runCoverage": {
-    "recursive": true,
-    "input": [
-      "."
-    ],
-    "output": ".",
-    "markup": []
-  },
-  "suggestTests": {
     "recursive": true,
     "input": [
       "."
@@ -529,7 +517,7 @@ logLevel | string |  Optional. Amount of detail to output when performing an ope
   ],
   "integrations": {},
   "telemetry": {
-    "send": false,
+    "send": true,
     "userId": "Doc Detective"
   }
 }
