@@ -12,7 +12,7 @@ Validate your content with Doc Detective:
 npx doc-detective
 ```
 
-See the [Get started](/get-started) for more.
+See the [Get started](/get-started) guide for more.
 
 ## What is Doc Detective?
 
