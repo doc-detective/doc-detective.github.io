@@ -4,11 +4,11 @@ layout: default
 nav_order: 1
 ---
 
-# What's Doc Detective?
+# Doc Detective
 
-In the current software development ecosystem, documentation needs regular revision and can rapidly become inaccurate. This back-and-forth of updating code and documentation can feel like an accelerating treadmill that prevents you from being as effective as possible.
+Doc Detective is doc content testing framework that makes it easy to keep your docs accurate and up-to-date. You write tests, and Doc Detective runs them directly against your product to make sure your docs match your user experience. Whether it’s a UI-based process or a series of API calls, Doc Detective can help you find doc bugs before your users do.
 
-Doc Detective simplifies keeping documentation up-do-date by running tests against a user interface to verify the accuracy of documentation. If there is a discrepancy between the interface and the expected results, Doc Detective can point out the specific error. Successfully implemented tests result in documentation that consistency matches the product and a means to proactively identify and fix issues that arise.
+Doc Detective ingests test specifications and text files, parses them for testable actions, then executes those actions in a browser. The results (PASS/FAIL and context) are output as a JSON object so that other pieces of infrastructure can parse and manipulate them as needed.
 
 ## What can Doc Detective do?
 
