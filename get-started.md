@@ -10,9 +10,9 @@ Downloading and running Doc Detective is simple, but lets walk through it and ru
 
 1. Install prerequisites:
 
-   - [Node.js](https://nodejs.org/) (tested on v18 and v20)
+   - [Node.js](https://nodejs.org/) v18 or v20
 
-1. In a terminal, install Doc Detective globally:
+2. In a terminal, install Doc Detective globally:
 
     ```bash
     npm i -g doc-detective
