@@ -27,6 +27,7 @@ To test a few samples, clone the repo and navigate to the `samples` directory:
 ```bash
 git clone https://github.com/doc-detective/doc-detective.git
 cd doc-detective/samples
+npm i
 ```
 
 ## Run tests
