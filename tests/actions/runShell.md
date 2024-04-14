@@ -1,7 +1,7 @@
 ---
 title: runShell
 layout: default
-nav_order: 9
+nav_order: 1
 parent: Actions
 grand_parent: Tests
 ---
@@ -10,7 +10,7 @@ grand_parent: Tests
 
 The `runShell` action runs a shell command or script on the local machine and evaluates the results, extending Doc Detective's testing capabilities to anything you can script.
 
-> For comprehensive options, see the [runShell](/reference/schemas/runShell) reference.
+> For comprehensive options, see the [`runShell`](/reference/schemas/runShell) reference.
 
 `runShell` uses your device's native shell (`cmd` on Windows, `bash` on macOS and Linux) to execute the command. The command is executed in the context of the current user.
 
