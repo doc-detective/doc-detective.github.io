@@ -146,7 +146,9 @@ Doc Detective automatically generates tests based on your documentation source f
 
 Detected tests are generated based on the test patterns you define in your config. Doc Detective reads your documentation source files, looking for test patterns, and extracts the tests and steps from the files.
 
-Detected tests use the same structure as inline tests, but they are generated automatically by Doc Detective. You can't edit detected tests directly, but you can update your documentation source files to change the tests.
+Detected tests are generated automatically by Doc Detective. You can't edit detected tests directly, but you can update your documentation source files to change the tests.
+
+You can use inline tests to supplement detected tests and declare steps that might not be covered in your content, such starting or stopping a recording.
 
 Detected tests are useful for keeping your tests in sync with your documentation. When you update your documentation, Doc Detective automatically updates the tests based on the new content.
 
