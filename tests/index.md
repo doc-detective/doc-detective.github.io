@@ -28,7 +28,7 @@ Tests tell Doc Detective what actions to perform, how, and where. Tests are made
     -   [**typeKeys**](/tests/actions/typeKeys.html): Type keys. To type special keys, begin and end the string with `$` and use the special key’s enum. For example, to type the Escape key, enter `$ESCAPE$`.
     -   [**wait**](/tests/actions/wait.html): Pause before performing the next action.
 
-## Defining a test
+## Define a test
 
 You can define test specs in multiple ways:
 
@@ -154,7 +154,7 @@ Detected tests are useful for keeping your tests in sync with your documentation
 
 <!-- TODO: Example forthcoming -->
 
-## Running tests
+## Run tests
 
 Doc Detective's `runTest` command runs your tests. Input files are read from your config's `input` and `runTests.input` properties, but you can also specify input files directly in the command with the `--input` flag.
 
@@ -168,4 +168,12 @@ This example runs all test specs in a file named `doc-content.md` in the `sample
 
 ```bash
 npx doc-detective runTests --input ./samples/doc-content.md
+```
+
+## Read the results
+
+Doc Detective outputs test results to a `testResults-<timestamp>.json` file in your `output` or `runTests.output` directory. You can also specify your output directory with the `--output` flag:
+
+```bash
+npx doc-detective runTests --input ./samples/doc-content.md --output ./samples/
 ```
