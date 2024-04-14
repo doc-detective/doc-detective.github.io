@@ -12,12 +12,20 @@ The `setVariables` action sets environment variables from a `.env` file. This ac
 
 For comprehensive options, see the [setVariables](/reference/schemas/setVariables) reference.
 
-## Examples
+## Example
 
 ```json
 {
-  "description": "Set environment variables from a .env file.",
-  "action": "setVariables",
-  "path": "./secrets.env"
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Set environment variables from a .env file.",
+          "action": "setVariables",
+          "path": "./secrets.env"
+        }
+      ]
+    }
+  ]
 }
 ```
