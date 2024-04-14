@@ -15,37 +15,68 @@ You can also specify
 - an `origin` to navigate to a URL relative to a specific path.
 - `statusCodes` to set acceptable HTTP status codes.
 
-For comprehensive options, see the [checkLink](/reference/schemas/checkLink) reference.
+> For comprehensive options, see the [checkLink](/reference/schemas/checkLink) reference.
 
 ## Examples
 
-```json
-{
-  "description": "Check if Google is up.",   
-  "action": "checkLink",
-  "url": "https://www.google.com"
-}
+Here are a few ways you might you the `checkLink` action:
 
-```
+### Check if a link is valid
 
 ```json
 {
-  "description": "Check if Google is up with extra status codes.",
-  "action": "checkLink",
-  "url": "https://www.google.com",
-  "statusCodes": [
-    200,
-    201,
-    202
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Check if Google is up.",   
+          "action": "checkLink",
+          "url": "https://www.google.com"
+        }
+      ],
+    }
   ]
 }
 ```
 
+### Check for one of a set of status code responses
+
 ```json
 {
-  "description": "Check if Google is up with an origin.",
-  "action": "checkLink",
-  "url": "/search",
-  "origin": "https://www.google.com"
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Check if Google is up with extra status codes.",
+          "action": "checkLink",
+          "url": "https://www.google.com",
+          "statusCodes": [
+            200,
+            201,
+            202
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Check a link with a separate origin and URL path
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Check if Google is up with an origin.",
+          "action": "checkLink",
+          "url": "/search",
+          "origin": "https://www.google.com"
+        }
+      ]
+    }
+  ]
 }
 ```
