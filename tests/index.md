@@ -18,13 +18,13 @@ Tests tell Doc Detective what actions to perform, how, and where. Tests are made
   Each step has an action, which is a command that tells Doc Detective what to do. Actions can have additional properties that further define the action.
 
     -   [**checkLink**](/tests/actions/checkLink.html): Check if a URL returns an acceptable status code from a GET request.
-    -   [**find**](/reference/schemas/find.html): Check if an element exists with the specified selector.
+    -   [**find**](/tests/actions/find.html): Check if an element exists with the specified selector.
     -   [**goTo**](/tests/actions/goTo.html): Navigate to a specified URL.
-    -   [**httpRequest**](/reference/schemas/httpRequest.html): Perform a generic HTTP request, for example to an API.
+    -   [**httpRequest**](/tests/actions/httpRequest.html): Perform a generic HTTP request, for example to an API.
     -   [**runShell**](/tests/actions/runShell.html): Perform a native shell command.
-    -   [**saveScreenshot**](/reference/schemas/saveScreenshot.html): Take a screenshot in PNG format.
+    -   [**saveScreenshot**](/tests/actions/saveScreenshot.html): Take a screenshot in PNG format.
     -   [**setVariables**](/tests/actions/setVariables.html): Load environment variables from a `.env` file.
-    -   [**startRecording**](/reference/schemas/startRecording.html) and [**stopRecording**](/tests/actions/stopRecording.html): Capture a video of test execution.
+    -   [**startRecording**](/tests/actions/startRecording.html) and [**stopRecording**](/tests/actions/stopRecording.html): Capture a video of test execution.
     -   [**typeKeys**](/tests/actions/typeKeys.html): Type keys. To type special keys, begin and end the string with `$` and use the special key’s enum. For example, to type the Escape key, enter `$ESCAPE$`.
     -   [**wait**](/tests/actions/wait.html): Pause before performing the next action.
 

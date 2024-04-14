@@ -8,4 +8,4 @@ parent: Tests
 
 # Actions
 
-Actions are the building blocks of tests. They are the steps that Doc Detective takes to test your app. This section covers the various actions available to you.
+Actions are the commands performed in each step of a test. Each action has a specific purpose, such as checking a link, finding an element, or navigating to a URL.
