@@ -6,7 +6,7 @@ parent: Actions
 grand_parent: Tests
 ---
 
-# find
+# httpRequest
 
 The `httpRequest` action makes arbitrary HTTP calls, allowing you to call and validate APIs and use web services.
 
