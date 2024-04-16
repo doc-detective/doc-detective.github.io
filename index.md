@@ -12,7 +12,7 @@ Validate your content with Doc Detective:
 npx doc-detective
 ```
 
-See the [Get started](/get-started) guide for more. Come chat with up on [Discord](https://discord.gg/uAfSjVH7yr)!
+See the [Get started](/get-started) guide for more. Come chat on [Discord](https://discord.gg/uAfSjVH7yr)!
 
 ## What is Doc Detective?
 
