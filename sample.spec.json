@@ -1,0 +1,59 @@
+{
+    "id": "Sample Doc Detective Test Specification",
+    "tests": [
+      {
+        "id": "Sample Doc Detective Test",
+        "description": "This test includes nearly every property across all actions.",
+        "steps": [
+          {
+            "action": "runShell",
+            "command": "echo",
+            "args": ["$USER"]
+          },
+          {
+            "action": "checkLink",
+            "url": "https://www.duckduckgo.com"
+          },
+          {
+            "action": "httpRequest",
+            "url": "https://reqres.in/api/users",
+            "method": "post",
+            "requestData": {
+              "name": "morpheus",
+              "job": "leader"
+            },
+            "responseData": {
+              "name": "morpheus",
+              "job": "leader"
+            },
+            "statusCodes": [200, 201]
+          },
+          {
+            "action": "goTo",
+            "url": "https://www.google.com"
+          },
+          {
+            "action": "find",
+            "selector": "[title=Search]",
+            "timeout": 10000,
+            "moveTo": true,
+            "click": true,
+            "typeKeys": {
+              "keys": ["kittens", "$ENTER$"]
+            }
+          },
+          {
+            "action": "wait"
+          },
+          {
+            "action": "saveScreenshot",
+            "path": "kitten-search-results.png",
+            "directory": "samples",
+            "maxVariation": 5,
+            "overwrite": "byVariation"
+          }
+        ]
+      }
+    ]
+  }
+  
