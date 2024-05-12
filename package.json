@@ -25,7 +25,7 @@
   "dependencies": {
     "@adobe/jsonschema2md": "^7.1.5",
     "@apidevtools/json-schema-ref-parser": "^11.5.4",
-    "doc-detective-common": "^1.15.0",
+    "doc-detective-common": "^1.16.0",
     "jest": "^29.7.0"
   }
 }
