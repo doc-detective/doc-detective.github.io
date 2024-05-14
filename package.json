@@ -1,6 +1,6 @@
 {
   "name": "doc-detective.github.io",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Doc Detective documentation",
   "main": "npm run start",
   "scripts": {

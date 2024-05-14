@@ -14,19 +14,19 @@ Tests tell Doc Detective what actions to perform, how, and where. Tests are made
 - **Test specification**: The highest-level component, test specifications (or specs) are collection of tests that should run together. [Contexts](/config/contexts) defined in the spec are shared by all tests in the spec. Test specifications are equivalent to test suites in other testing frameworks.
 - **Test**: A test to run within a spec. Each test has a name, and a set of steps to perform. Tests are equivalent to test cases in other testing frameworks.
 - **Steps**: A step is a single action to perform within a test. Each individual step acts as an assertion that the step completes as expected. Steps are equivalent to assertions in other testing frameworks.
-  
+
   Each step has an action, which is a command that tells Doc Detective what to do. Actions can have additional properties that further define the action.
 
-    -   [**checkLink**](/tests/actions/checkLink.html): Check if a URL returns an acceptable status code from a GET request.
-    -   [**find**](/tests/actions/find.html): Check if an element exists with the specified selector.
-    -   [**goTo**](/tests/actions/goTo.html): Navigate to a specified URL.
-    -   [**httpRequest**](/tests/actions/httpRequest.html): Perform a generic HTTP request, for example to an API.
-    -   [**runShell**](/tests/actions/runShell.html): Perform a native shell command.
-    -   [**saveScreenshot**](/tests/actions/saveScreenshot.html): Take a screenshot in PNG format.
-    -   [**setVariables**](/tests/actions/setVariables.html): Load environment variables from a `.env` file.
-    -   [**startRecording**](/tests/actions/startRecording.html) and [**stopRecording**](/tests/actions/stopRecording.html): Capture a video of test execution.
-    -   [**typeKeys**](/tests/actions/typeKeys.html): Type keys. To type special keys, begin and end the string with `$` and use the special key’s enum. For example, to type the Escape key, enter `$ESCAPE$`.
-    -   [**wait**](/tests/actions/wait.html): Pause before performing the next action.
+  - [**checkLink**](/tests/actions/checkLink.html): Check if a URL returns an acceptable status code from a GET request.
+  - [**find**](/tests/actions/find.html): Check if an element exists with the specified selector.
+  - [**goTo**](/tests/actions/goTo.html): Navigate to a specified URL.
+  - [**httpRequest**](/tests/actions/httpRequest.html): Perform a generic HTTP request, for example to an API.
+  - [**runShell**](/tests/actions/runShell.html): Perform a native shell command.
+  - [**saveScreenshot**](/tests/actions/saveScreenshot.html): Take a screenshot in PNG format.
+  - [**setVariables**](/tests/actions/setVariables.html): Load environment variables from a `.env` file.
+  - [**startRecording**](/tests/actions/startRecording.html) and [**stopRecording**](/tests/actions/stopRecording.html): Capture a video of test execution.
+  - [**typeKeys**](/tests/actions/typeKeys.html): Type keys. To type special keys, begin and end the string with `$` and use the special key’s enum. For example, to type the Escape key, enter `$ESCAPE$`.
+  - [**wait**](/tests/actions/wait.html): Pause before performing the next action.
 
 ## Define a test
 
@@ -63,7 +63,7 @@ Test specs in standalone JSON files use the following basic structure:
 
 > For comprehensive options, see [`specification`](/reference/schemas/specification).
 
-Here's an example test for performing a Google search and saving a screenshot of the results: 
+Here's an example test for performing a Google search and saving a screenshot of the results:
 
 ```json
 {
@@ -120,39 +120,257 @@ If you declare a step without declaring a test, Doc Detective automatically crea
 Here's an example of an inline test for performing a Google search and saving a screenshot of the results:
 
 ```markdown
-[comment]: # (test {"id": "kitten-search"})
+[comment]: # 'test {"id": "kitten-search"}'
 
 To search for American Shorthair kittens,
 
 1. Go to [Google](https://www.google.com).
 
-   [comment]: # (step {"action":"goTo", "url":"https://www.google.com"})
+   [comment]: # 'step {"action":"goTo", "url":"https://www.google.com"}'
 
 2. In the search bar, enter "American Shorthair kittens", then press Enter.
 
-   [comment]: # (step { "action": "find", "selector": "[title=Search]", "click": true })
-   [comment]: # (step { "action": "typeKeys", "keys": ["American Shorthair kittens", "$ENTER$"] })
-   [comment]: # (step { "action": "wait", "duration": 5000 })
+   [comment]: # 'step { "action": "find", "selector": "[title=Search]", "click": true }'
+   [comment]: # 'step { "action": "typeKeys", "keys": ["American Shorthair kittens", "$ENTER$"] }'
+   [comment]: # 'step { "action": "wait", "duration": 5000 }'
 
 ![Search results](search-results.png)
 
-[comment]: # (step { "action": "saveScreenshot", "path": "search-results.png" })
-[comment]: # (test end)
+[comment]: # 'step { "action": "saveScreenshot", "path": "search-results.png" }'
+[comment]: # "test end"
 ```
 
 ### Detected tests
 
-Doc Detective automatically generates tests based on your documentation source files and your `fileTypes` configuration. Detected tests are useful for large, complex test suites that you want to keep in sync with your documentation.
+Doc Detective can automatically generate tests based on your documentation source files and your `fileTypes` configuration. Detected tests are useful for large, complex test suites that you want to keep in sync with your documentation. Test detection works by setting `runTests.detectSteps` to `true` and defining markup patterns and associated actions in the `fileTypes.markup` array in your [config](/reference/schemas/config), which Doc Detective uses to extract steps from your doc source files. You can define multiple test patterns in your config to extract different types of tests from your documentation.
 
-Detected tests are generated based on the test patterns you define in your config. Doc Detective reads your documentation source files, looking for test patterns, and extracts the tests and steps from the files.
+Detected tests are useful for keeping your tests in sync with your documentation. When you update your documentation, Doc Detective automatically updates the tests based on the new content. Detected tests are generated automatically. You can't edit detected tests directly, but you can update your config or documentation source files to change the tests.
 
-Detected tests are generated automatically by Doc Detective. You can't edit detected tests directly, but you can update your documentation source files to change the tests.
+> You can mix detected tests with [inline tests](#inline-json) to declare steps that might not be covered in your content, such starting or stopping a recording.
 
-You can use inline tests to supplement detected tests and declare steps that might not be covered in your content, such starting or stopping a recording.
+For example, markup for Markdown files might look like this:
 
-Detected tests are useful for keeping your tests in sync with your documentation. When you update your documentation, Doc Detective automatically updates the tests based on the new content.
+```json
+{
+  ...
+  "runTests": {
+    "detectSteps": true
+  },
+  "fileTypes": [
+    {
+      ...
+      "markup": [
+        {
+          "name": "Hyperlink",
+          "regex": ["(?<!!)\\[.+?\\]\\(.+?\\)"],
+          "actions": ["checkLink"]
+        },
+        {
+          "name": "Navigation link",
+          "regex": [
+            "(?:[Cc]hose|[Oo]pen|[Cc]lick|[Nn]avigate to|[Gg]o to)(?<!!)\\[.+?\\]\\(.+?\\)"
+          ],
+          "actions": ["goTo"]
+        },
+        {
+          "name": "Onscreen text",
+          "regex": ["\\*\\*.+?\\*\\*"],
+          "actions": ["find"]
+        },
+        {
+          "name": "Click",
+          "regex": ["(?:[Cc]lick|[Pp]ress|[Cc]hoose|[Tt]ap)\\*\\*(.+?)\\*\\*"],
+          "actions": [{
+            "action": "find",
+            "description": "Click $1",
+            "selector": "$1",
+            "click": true
+          }]
+        },
+        {
+          "name": "Image",
+          "regex": ["!\\[.+?\\]\\(.+?\\)"],
+          "actions": [
+            {
+              "action": "saveScreenshot",
+              "directory": "samples",
+              "maxVariation": 5,
+              "overwrite": "byVariation"
+            }
+          ]
+        }
+      ]
+      ...
+    }
+  ],
+  ...
+}
+```
 
-<!-- TODO: Example forthcoming -->
+The `regex` property defines the regular expression patterns to match, and the `actions` property defines the actions to perform when the pattern is detected. With the above config, Doc Detective would take the following Markdown and generate tests for every hyperlink, navigation link, onscreen text, and image.
+
+Markdown:
+
+```markdown
+To get started,
+
+1. Go to [Acme Console](https://console.acme.com).
+2. Press **Search**.
+
+![Search results](search-results.png)
+```
+
+Detected tests:
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "action": "goTo",
+          "url": "https://console.acme.com"
+        },
+        {
+          "action": "find",
+          "selector": "aria/Search",
+          "click": true
+        },
+        {
+          "action": "saveScreenshot",
+          "path": "search-results.png"
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Default actions
+
+If you only need to perform simple steps, you can define actions using a shorthand of only specifying the action name. Doc Detective uses default actions, substituting the first capture group (or if there are no capture groups, the entire match) from the regex pattern into the most common location for the action. In the above example, the config generates a `goTo` action for every Markdown hyperlink preceded by a navigation verb.
+
+The default actions are as follows:
+
+#### `checkLink`
+
+Check that the match returns a valid status code.
+
+```json
+{
+  "action": "checkLink",
+  "url": "$1"
+}
+```
+
+#### `goTo`
+
+Open the match as a URL in a browser.
+
+```json
+{
+  "action": "goTo",
+  "url": "$1"
+}
+```
+
+#### `find`
+
+Find an element on the current page that has an ARIA label that equals the match.
+
+```json
+{
+  "action": "find",
+  "selector": "aria/$1"
+}
+```
+
+#### `saveScreenshot`
+
+Save a screenshot to a path equalling the match.
+
+```json
+{
+  "action": "saveScreenshot",
+  "path": "$1"
+}
+```
+
+#### `typeKeys`
+
+Type the match into the current page.
+
+```json
+{
+  "action": "typeKeys",
+  "keys": "$1"
+}
+```
+
+#### `httpRequest`
+
+Make an GET request to the match.
+
+```json
+{
+  "action": "httpRequest",
+  "url": "$1"
+}
+```
+
+#### `runShell`
+
+Run the match as a shell command.
+
+```json
+{
+  "action": "runShell",
+  "command": "$1"
+}
+```
+
+#### `startRecording`
+
+Start recording a video to a path equalling the match.
+
+```json
+{
+  "action": "startRecording",
+  "path": "$1"
+}
+```
+
+#### `stopRecording`
+
+Stop recording a video.
+
+```json
+{
+  "action": "stopRecording"
+}
+```
+
+#### `wait`
+
+Wait for the specified duration.
+
+```json
+{
+  "action": "wait",
+  "duration": "$1"
+}
+```
+
+#### `setVariables`
+
+Load environment variables from an `.env` file, where the path is the match.
+
+```json
+{
+  "action": "setVariables",
+  "path": "$1"
+}
+```
 
 ## Run tests
 
@@ -169,6 +387,16 @@ This example runs all test specs in a file named `doc-content.md` in the `sample
 ```bash
 npx doc-detective runTests --input ./samples/doc-content.md
 ```
+
+### Run remotely-hosted tests
+
+You can run tests hosted remotely by specifying the URL of the test file with the `--input` argument. For example, to run tests from a file hosted at `https://doc-detective.com/sample.spec.json`, run the following command:
+
+```bash
+npx doc-detective runTests --input https://doc-detective.com/sample.spec.json
+```
+
+These tests run the same way as local tests, but Doc Detective fetches the test file from the specified URL and stores it in a temporary directory. The URL must be accessible to the machine running the tests.
 
 ## Read the results
 

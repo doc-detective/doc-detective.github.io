@@ -58,6 +58,16 @@ You can override config options with command-line arguments. For example, to run
 npx doc-detective runTests --config .doc-detective.json --input tests.spec.json
 ```
 
+### Run remotely-hosted tests
+
+You can run tests hosted remotely by specifying the URL of the test file with the `--input` argument. For example, to run tests from a file hosted at `https://doc-detective.com/sample.spec.json`, run the following command:
+
+```bash
+npx doc-detective runTests --input https://doc-detective.com/sample.spec.json
+```
+
+These tests run the same way as local tests, but Doc Detective fetches the test file from the specified URL and stores it in a temporary directory. The URL must be accessible to the machine running the tests.
+
 ## Check your test coverage
 
 You can check the test coverage of your documentation source files with the `runCoverage` command, specifying the source file or directory of source files with the `--input` argument. Doc Detective identifies potential areas of test coverage with file-format-specific regex, and supports CommonMark syntax natively. If you want to test coverage of a file with different syntax, update your the `fileTypes` object of your [config](/reference/schemas/config.html) file accordingly.
