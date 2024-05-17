@@ -10,7 +10,7 @@ Downloading and running Doc Detective is simple, but lets walk through it and ru
 
 1. Install prerequisites:
 
-   - [Node.js](https://nodejs.org/) v18 or v20
+   - [Node.js](https://nodejs.org/) v18 or later
 
 2. In a terminal, install Doc Detective globally:
 
@@ -18,11 +18,17 @@ Downloading and running Doc Detective is simple, but lets walk through it and ru
     npm i -g doc-detective
     ```
 
-    If you don't install Doc Detective globally, you'll be prompted to install the first time you run an `npx` command.
+3. Run a test:
+
+    ```bash
+    npx doc-detective runTests --input https://doc-detective.com/sample.spec.json
+    ```
+
+Congratulations! You've run your first test with Doc Detective.
 
 ## Get sample files
 
-To test a few samples, clone the repo and navigate to the `samples` directory:
+To get a few samples, [view the samples on GitHub](https://github.com/doc-detective/doc-detective/tree/main/samples) or clone the repo and navigate to the `samples` directory:
 
 ```bash
 git clone https://github.com/doc-detective/doc-detective.git
