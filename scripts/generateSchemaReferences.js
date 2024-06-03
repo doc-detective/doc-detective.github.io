@@ -118,6 +118,8 @@ function parseField(schema, fieldName, fieldNameBase) {
   // Get required
   if (schema.required && schema.required.includes(fieldName)) {
     description = "Required. " + description;
+  } else if (property.deprecated){
+    description = "Deprecated. " + description;
   } else {
     description = "Optional. " + description;
   }
