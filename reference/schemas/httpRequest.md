@@ -35,7 +35,7 @@ timeout | integer |  Optional. Timeout for the HTTP request, in milliseconds. | 
 requestHeaders | object |  Optional. Headers to include in the HTTP request, in key/value format. | `{}`
 responseHeaders | object |  Optional. Headers expected in the response, in key/value format. If one or more `responseHeaders` entries aren't present in the response, the step fails. | `{}`
 requestParams | object |  Optional. URL parameters to include in the HTTP request, in key/value format. | `{}`
-responseParams | object |  Optional. URL parameters expected in the response, in key/value format. If one or more `responseParams` entries aren't present in the response, the step fails. | `{}`
+responseParams | object |  Optional. DEPRECATED. | `{}`
 requestData | object |  Optional. JSON object to include as the body of the HTTP request. | `{}`
 responseData | object |  Optional. JSON object expected in the response. If one or more key/value pairs aren't present in the response, the step fails. | `{}`
 allowAdditionalFields | boolean |  Optional. If `false`, the step fails when the response data contains fields not specified in `responseData`. | `true`
