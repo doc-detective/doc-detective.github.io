@@ -5,19 +5,11 @@ nav_order: 1
 parent: Reference
 ---
 
-<details open markdown="block">
-<summary>
-Table of contents
-</summary>
-{: .text-delta }
-- TOC
-{:toc}
-</details>
 
 # runShell
-{: .no_toc}
 
-## Description
+
+
 
 Perform a native shell command.
 
@@ -36,7 +28,7 @@ savePath | string |  Optional. File path to save the command's output, relative 
 saveDirectory | string |  Optional. Directory to save the command's output. If the directory doesn't exist, creates the directory. If not specified, the directory is your media directory. | 
 maxVariation | integer |  Optional. Allowed variation in percentage of text different between the current output and previously saved output. If the difference between the current output and the previous output is greater than `maxVariation`, the step fails. If output doesn't exist at `savePath`, this value is ignored. | `0`
 overwrite | string |  Optional. If `true`, overwrites the existing output at `savePath` if it exists.
-If `byVariation`, overwrites the existing output at `savePath` if the difference between the new output and the existing output is greater than `maxVariation`.<br><br>Accepted values: `true`, `false`, `byVariation` | `false`
+If `byVariation`, overwrites the existing output at `savePath` if the difference between the new output and the existing output is greater than `maxVariation`.<br/><br/>Accepted values: `true`, `false`, `byVariation` | `false`
 timeout | integer |  Optional. Max time in milliseconds the command is allowed to run. If the command runs longer than this, the step fails. | `60000`
 setVariables | array of objects |  Optional. Extract environment variables from the command's output. | `[]`
 setVariables.name | string |  Required. Name of the environment variable to set. | 

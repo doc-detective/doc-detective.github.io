@@ -5,19 +5,11 @@ nav_order: 1
 parent: Reference
 ---
 
-<details open markdown="block">
-<summary>
-Table of contents
-</summary>
-{: .text-delta }
-- TOC
-{:toc}
-</details>
 
 # httpRequest
-{: .no_toc}
 
-## Description
+
+
 
 Perform a generic HTTP request, for example to an API.
 
@@ -30,7 +22,7 @@ description | string |  Optional. Description of the step. |
 action | string |  Required. Aciton to perform. | 
 url | string |  Required. URL for the HTTP request. | 
 statusCodes | array of integers |  Optional. Accepted status codes. If the specified URL returns a code other than what is specified here, the action fails. | `[200]`
-method | string |  Optional. Method of the HTTP request<br><br>Accepted values: `get`, `put`, `post`, `patch`, `delete` | `get`
+method | string |  Optional. Method of the HTTP request<br/><br/>Accepted values: `get`, `put`, `post`, `patch`, `delete` | `get`
 timeout | integer |  Optional. Timeout for the HTTP request, in milliseconds. | `60000`
 requestHeaders | object |  Optional. Headers to include in the HTTP request, in key/value format. | `{}`
 responseHeaders | object |  Optional. Headers expected in the response, in key/value format. If one or more `responseHeaders` entries aren't present in the response, the step fails. | `{}`
@@ -43,7 +35,7 @@ savePath | string |  Optional. File path to save the command's output, relative 
 saveDirectory | string |  Optional. Directory to save the command's output. If the directory doesn't exist, creates the directory. If not specified, the directory is your media directory. | 
 maxVariation | integer |  Optional. Allowed variation in percentage of text different between the current output and previously saved output. If the difference between the current output and the previous output is greater than `maxVariation`, the step fails. If output doesn't exist at `savePath`, this value is ignored. | `0`
 overwrite | string |  Optional. If `true`, overwrites the existing output at `savePath` if it exists.
-If `byVariation`, overwrites the existing output at `savePath` if the difference between the new output and the existing output is greater than `maxVariation`.<br><br>Accepted values: `true`, `false`, `byVariation` | `false`
+If `byVariation`, overwrites the existing output at `savePath` if the difference between the new output and the existing output is greater than `maxVariation`.<br/><br/>Accepted values: `true`, `false`, `byVariation` | `false`
 envsFromResponseData | array of objects |  Optional. Environment variables to set based on response variables, as an object of the environment variable name and the jq filter applied to the response data to identify the variable's value. | `[]`
 envsFromResponseData.name | string |  Required. Name of the environment variable to set. | 
 envsFromResponseData.jqFilter | string |  Required. jq filter to apply to the response data. If the filter doesn't return a value, the environment variable isn't set. | 
