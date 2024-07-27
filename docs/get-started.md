@@ -48,7 +48,7 @@ By default, Doc Detective scans the current directory for valid tests, but you c
 npx doc-detective runTests --input doc-content-inline-tests.md
 ```
 
-To customize your test, file type, and directory options, create a `.doc-detective.json` [config](/reference/schemas/config.html) file. If a `.doc-detective.json` file exists in the directory when you run the comment, Doc Detective loads the config. Otherwise, you can specify a config path with the `--config` argument.
+To customize your test, file type, and directory options, create a `.doc-detective.json` [config](/docs/schemas/config.html) file. If a `.doc-detective.json` file exists in the directory when you run the comment, Doc Detective loads the config. Otherwise, you can specify a config path with the `--config` argument.
 
 ```bash
 npx doc-detective runTests --config .doc-detective.json
@@ -74,7 +74,7 @@ These tests run the same way as local tests, but Doc Detective fetches the test 
 
 ## Check your test coverage
 
-You can check the test coverage of your documentation source files with the `runCoverage` command, specifying the source file or directory of source files with the `--input` argument. Doc Detective identifies potential areas of test coverage with file-format-specific regex, and supports CommonMark syntax natively. If you want to test coverage of a file with different syntax, update your the `fileTypes` object of your [config](/reference/schemas/config.html) file accordingly.
+You can check the test coverage of your documentation source files with the `runCoverage` command, specifying the source file or directory of source files with the `--input` argument. Doc Detective identifies potential areas of test coverage with file-format-specific regex, and supports CommonMark syntax natively. If you want to test coverage of a file with different syntax, update your the `fileTypes` object of your [config](/docs/schemas/config.html) file accordingly.
 
 ```bash
 npx doc-detective runCoverage --config .doc-detective.json --input doc-content.md
@@ -84,21 +84,21 @@ npx doc-detective runCoverage --config .doc-detective.json --input doc-content.m
 
 For new users, here are some key concepts to understand:
 
-- [**Test specification**](/reference/schemas/specification.html): A group of tests to run in one or more contexts. Conceptually parallel to a document.
-- [**Test**](/reference/schemas/test.html): A sequence of steps to perform. Conceptually parallel to a procedure.
+- [**Test specification**](/docs/schemas/specification.html): A group of tests to run in one or more contexts. Conceptually parallel to a document.
+- [**Test**](/docs/schemas/test.html): A sequence of steps to perform. Conceptually parallel to a procedure.
 - **Step**: A portion of a test that includes a single action. Conceptually parallel to a step in a procedure.
 - **Action**: The task performed in a step. Doc Detective supports a variety of actions:
-  - [**goTo**](/reference/schemas/goTo.html): Navigate to a specified URL.
-  - [**find**](/reference/schemas/find.html): Locate and interact with an element on the page.
-  - [**typeKeys**](/reference/schemas/typeKeys.html): Type keys. To type special keys, begin and end the string with `$` and use the special key’s enum. For example, to type the Escape key, enter `$ESCAPE$`.
-  - [**wait**](/reference/schemas/wait.html): Pause before performing the next action.
-  - [**saveScreenshot**](/reference/schemas/saveScreenshot.html): Take a screenshot in PNG format.
-  - [**setVariables**](/reference/schemas/setVariables.html): Load environment variables from a `.env` file.
-  - [**startRecording**](/reference/schemas/startRecording.html) and [**stopRecording**](/reference/schemas/stopRecording.html): Capture a video of test execution.
-  - [**checkLink**](/reference/schemas/checkLink.html): Check if a URL returns an acceptable status code from a GET request.
-  - [**httpRequest**](/reference/schemas/httpRequest.html): Perform a generic HTTP request, for example to an API.
-  - [**runShell**](/reference/schemas/runShell.html): Perform a native shell command.
-- [**Context**](/reference/schemas/context.html): An application and platforms that support the tests.
+  - [**goTo**](/docs/schemas/goTo.html): Navigate to a specified URL.
+  - [**find**](/docs/schemas/find.html): Locate and interact with an element on the page.
+  - [**typeKeys**](/docs/schemas/typeKeys.html): Type keys. To type special keys, begin and end the string with `$` and use the special key’s enum. For example, to type the Escape key, enter `$ESCAPE$`.
+  - [**wait**](/docs/schemas/wait.html): Pause before performing the next action.
+  - [**saveScreenshot**](/docs/schemas/saveScreenshot.html): Take a screenshot in PNG format.
+  - [**setVariables**](/docs/schemas/setVariables.html): Load environment variables from a `.env` file.
+  - [**startRecording**](/docs/schemas/startRecording.html) and [**stopRecording**](/docs/schemas/stopRecording.html): Capture a video of test execution.
+  - [**checkLink**](/docs/schemas/checkLink.html): Check if a URL returns an acceptable status code from a GET request.
+  - [**httpRequest**](/docs/schemas/httpRequest.html): Perform a generic HTTP request, for example to an API.
+  - [**runShell**](/docs/schemas/runShell.html): Perform a native shell command.
+- [**Context**](/docs/schemas/context.html): An application and platforms that support the tests.
 
 ## Resources
 

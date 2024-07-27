@@ -66,23 +66,13 @@ async function main() {
       "nav_order: 1",
       "parent: Reference",
       "---",
-      "",
-      `<details open markdown="block">`,
-      "<summary>",
-      "Table of contents",
-      "</summary>",
-      "{: .text-delta }",
-      "- TOC",
-      "{:toc}",
-      "</details>",
+
     ];
     // Heading
     let heading = [
       "",
       `# ${schema.title}`,
-      "{: .no_toc}",
-      "",
-      "## Description",
+
       "",
       schema.description,
       "",
@@ -95,7 +85,7 @@ async function main() {
       .join("\n");
     // Identify output path
     const outputPath = path.resolve(
-      `${__dirname}/../reference/schemas/${schema.title}.md`
+      `${__dirname}/../docs/schemas/${schema.title}.md`
     );
     // Write file
     fs.writeFileSync(outputPath, output);
@@ -258,7 +248,7 @@ function getArraySubTypes(property, depth) {
     for (const index in itemsArray) {
       item = itemsArray[index];
       if (item.type === "object" && item.title) {
-        subTypes = `${subTypes}<br>${spaces}-&nbsp;${item.type}([${item.title}](/reference/schemas/${item.title}))`;
+        subTypes = `${subTypes}<br>${spaces}-&nbsp;${item.type}([${item.title}](/docs/schemas/${item.title}))`;
       } else {
         subTypes = `${subTypes}<br>${spaces}- ${item.type}s`;
       }
@@ -266,7 +256,7 @@ function getArraySubTypes(property, depth) {
   } else {
     item = itemsArray[0];
     if (item.type === "object" && item.title) {
-      subTypes = `${subTypes}${item.type}([${item.title}](/reference/schemas/${item.title}))`;
+      subTypes = `${subTypes}${item.type}([${item.title}](/docs/schemas/${item.title}))`;
     } else {
       subTypes = subTypes + item.type + "s";
     }
@@ -320,7 +310,7 @@ function getFormatDescription(name, property, depth) {
     description.push(`${"  ".repeat(depth)}"${name}": {`);
     depth = depth + 1;
     description.push(
-      `${"  ".repeat(depth)}object([${property.title}](/reference/schemas/${
+      `${"  ".repeat(depth)}object([${property.title}](/docs/schemas/${
         property.title
       }))`
     );

@@ -13,15 +13,15 @@ By default, Doc Detective runs tests in Chrome on Windows, macOS, and Linux. You
 
 Each context is name up of an `app` object and a `platforms` array. When Doc Detective runs tests, it checks the associated contexts to see if the app is available and if it's running on a specified platform. If the conditions are met, the test runs in that context. You can specify multiple contexts for a test, and Doc Detective will run the test in each context that is met.
 
-For comprehensive options, see the [context](/reference/schemas/context) reference.
+For comprehensive options, see the [context](/docs/schemas/context) reference.
 
 ## Specifying contexts
 
 You can specify contexts at three different levels, in order of precedence:
 
-- **Config**: You can specify contexts in the [`config`](/reference/schemas/config) object. These contexts apply to all tests in the suite.
-- **Spec**: You can specify contexts in a [`specification`](/reference/schemas/specification) object. These contexts override config-level contexts and apply to all tests in the spec.
-- **Test**: You can specify contexts in a [`test`](/reference/schemas/test) object. These contexts override config- and spec-level contexts and apply only to that test.
+- **Config**: You can specify contexts in the [`config`](/docs/schemas/config) object. These contexts apply to all tests in the suite.
+- **Spec**: You can specify contexts in a [`specification`](/docs/schemas/specification) object. These contexts override config-level contexts and apply to all tests in the spec.
+- **Test**: You can specify contexts in a [`test`](/docs/schemas/test) object. These contexts override config- and spec-level contexts and apply only to that test.
 
 When you specify contexts, you use a `contexts` array. For example, the following JSON specifies three contexts:
 
@@ -65,7 +65,7 @@ Doc Detective can perform tests on a variety of apps. The following apps are sup
 
 Chrome is available on Windows, macOS, and Linux. Doc Detective manages and runs a Chrome instance internally, so you don't need to install anything extra.
 
-Chrome is the only browser that supports recording test runs with the [`startRecording`](/reference/schemas/startRecording) action.
+Chrome is the only browser that supports recording test runs with the [`startRecording`](/docs/schemas/startRecording) action.
 
 Here's a basic Chrome context:
 

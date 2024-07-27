@@ -14,16 +14,16 @@ Tests tell Doc Detective what actions to perform, how, and where. Tests are made
 
   Each step has an action, which is a command that tells Doc Detective what to do. Actions can have additional properties that further define the action.
 
-  - [**checkLink**](/tests/actions/checkLink.html): Check if a URL returns an acceptable status code from a GET request.
-  - [**find**](/tests/actions/find.html): Check if an element exists with the specified selector.
-  - [**goTo**](/tests/actions/goTo.html): Navigate to a specified URL.
-  - [**httpRequest**](/tests/actions/httpRequest.html): Perform a generic HTTP request, for example to an API.
-  - [**runShell**](/tests/actions/runShell.html): Perform a native shell command.
-  - [**saveScreenshot**](/tests/actions/saveScreenshot.html): Take a screenshot in PNG format.
-  - [**setVariables**](/tests/actions/setVariables.html): Load environment variables from a `.env` file.
-  - [**startRecording**](/tests/actions/startRecording.html) and [**stopRecording**](/tests/actions/stopRecording.html): Capture a video of test execution.
-  - [**typeKeys**](/tests/actions/typeKeys.html): Type keys. To type special keys, begin and end the string with `$` and use the special key’s enum. For example, to type the Escape key, enter `$ESCAPE$`.
-  - [**wait**](/tests/actions/wait.html): Pause before performing the next action.
+  - [**checkLink**](/docs/tests/actions/checkLink.html): Check if a URL returns an acceptable status code from a GET request.
+  - [**find**](/docs/tests/actions/find.html): Check if an element exists with the specified selector.
+  - [**goTo**](/docs/tests/actions/goTo.html): Navigate to a specified URL.
+  - [**httpRequest**](/docs/tests/actions/httpRequest.html): Perform a generic HTTP request, for example to an API.
+  - [**runShell**](/docs/tests/actions/runShell.html): Perform a native shell command.
+  - [**saveScreenshot**](/docs/tests/actions/saveScreenshot.html): Take a screenshot in PNG format.
+  - [**setVariables**](/docs/tests/actions/setVariables.html): Load environment variables from a `.env` file.
+  - [**startRecording**](/docs/tests/actions/startRecording.html) and [**stopRecording**](/docs/tests/actions/stopRecording.html): Capture a video of test execution.
+  - [**typeKeys**](/docs/tests/actions/typeKeys.html): Type keys. To type special keys, begin and end the string with `$` and use the special key’s enum. For example, to type the Escape key, enter `$ESCAPE$`.
+  - [**wait**](/docs/tests/actions/wait.html): Pause before performing the next action.
 
 ## Define a test
 
@@ -58,7 +58,7 @@ Test specs in standalone JSON files use the following basic structure:
 }
 ```
 
-> For comprehensive options, see [`specification`](/reference/schemas/specification).
+> For comprehensive options, see [`specification`](/docs/schemas/specification).
 
 Here's an example test for performing a Google search and saving a screenshot of the results:
 
@@ -100,17 +100,17 @@ You can define tests directly in your documentation source files using inline JS
 
 Inline tests are also excellent for maintaining tests because they are easy to update and keep in sync with the content they test as the content changes.
 
-> Inline tests depend on your [config](/reference/schemas/config)'s `fileType` definitions. This page uses the default Markdown configuration, but you should update your config to match your documentation source files.
+> Inline tests depend on your [config](/docs/schemas/config)'s `fileType` definitions. This page uses the default Markdown configuration, but you should update your config to match your documentation source files.
 
 Inline tests use specially formatted comments with JSON objects to declare the tests and steps. Doc Detective reads the input file, line by line, and extracts the tests and steps from the comments. You can declare multiple tests and steps in a single file, using your config's test start, test end, step, and ignore patterns.
 
 > All test and step comments must be on a single line. Doc Detective doesn't support multi-line comments.
 
-When you declare a test, you can specify any of the test properties available in the standalone JSON format, though `steps` is normally omitted. See [`test`](/reference/schemas/test).
+When you declare a test, you can specify any of the test properties available in the standalone JSON format, though `steps` is normally omitted. See [`test`](/docs/schemas/test).
 
 If you declare a new test without closing the previous test, Doc Detective automatically closes the previous test before starting the new one.
 
-When you declare a step, you can specify any of the properties of the action you want to perform. See [Actions](/tests/actions).
+When you declare a step, you can specify any of the properties of the action you want to perform. See [Actions](/docs/tests/actions).
 
 If you declare a step without declaring a test, Doc Detective automatically creates a test to contain the step.
 
@@ -139,7 +139,7 @@ To search for American Shorthair kittens,
 
 ### Detected tests
 
-Doc Detective can automatically generate tests based on your documentation source files and your `fileTypes` configuration. Detected tests are useful for large, complex test suites that you want to keep in sync with your documentation. Test detection works by setting `runTests.detectSteps` to `true` and defining markup patterns and associated actions in the `fileTypes.markup` array in your [config](/reference/schemas/config), which Doc Detective uses to extract steps from your doc source files. You can define multiple test patterns in your config to extract different types of tests from your documentation.
+Doc Detective can automatically generate tests based on your documentation source files and your `fileTypes` configuration. Detected tests are useful for large, complex test suites that you want to keep in sync with your documentation. Test detection works by setting `runTests.detectSteps` to `true` and defining markup patterns and associated actions in the `fileTypes.markup` array in your [config](/docs/schemas/config), which Doc Detective uses to extract steps from your doc source files. You can define multiple test patterns in your config to extract different types of tests from your documentation.
 
 Detected tests are useful for keeping your tests in sync with your documentation. When you update your documentation, Doc Detective automatically updates the tests based on the new content. Detected tests are generated automatically. You can't edit detected tests directly, but you can update your config or documentation source files to change the tests.
 

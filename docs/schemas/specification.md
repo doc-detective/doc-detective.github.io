@@ -20,8 +20,8 @@ Field | Type | Description | Default
 id | string |  Optional. Unique identifier for the test specification. | 
 description | string |  Optional. Description of the test specification. | 
 file | string |  Optional. Path to the file that the specification is associated with. | 
-contexts | array of object([context](/reference/schemas/context)) |  Optional. Application/platform sets to run tests in. Overrides `contexts` defined at the config-level. | 
-tests | array of object([test](/reference/schemas/test)) |  Required. [Tests](/reference/schemas/test) to perform. | 
+contexts | array of object([context](/docs/schemas/context)) |  Optional. Application/platform sets to run tests in. Overrides `contexts` defined at the config-level. | 
+tests | array of object([test](/docs/schemas/test)) |  Required. [Tests](/docs/schemas/test) to perform. | 
 
 ## Examples
 
