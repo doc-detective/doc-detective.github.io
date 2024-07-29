@@ -10,7 +10,7 @@ Validate your content with Doc Detective:
 npx doc-detective
 ```
 
-See the [Get started](/get-started) guide for more. Come chat on [Discord](https://discord.gg/uAfSjVH7yr)!
+See the [Get started](/docs/get-started) guide for more. Come chat on [Discord](https://discord.gg/uAfSjVH7yr)!
 
 ## What is Doc Detective?
 
@@ -67,4 +67,4 @@ As an open-source and accessible project, Doc Detective is for anyone who is int
 
 ## Next steps
 
-Want to take Doc Detective for a spin? [Get started](/get-started).
+Want to take Doc Detective for a spin? [Get started](/docs/get-started).

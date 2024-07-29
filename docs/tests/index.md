@@ -8,22 +8,22 @@ sidebar_position: 4
 
 Tests tell Doc Detective what actions to perform, how, and where. Tests are made of three sets of components:
 
-- **Test specification**: The highest-level component, test specifications (or specs) are collection of tests that should run together. [Contexts](/config/contexts) defined in the spec are shared by all tests in the spec. Test specifications are equivalent to test suites in other testing frameworks.
+- **Test specification**: The highest-level component, test specifications (or specs) are collection of tests that should run together. [Contexts](/docs/config/contexts) defined in the spec are shared by all tests in the spec. Test specifications are equivalent to test suites in other testing frameworks.
 - **Test**: A test to run within a spec. Each test has a name, and a set of steps to perform. Tests are equivalent to test cases in other testing frameworks.
 - **Steps**: A step is a single action to perform within a test. Each individual step acts as an assertion that the step completes as expected. Steps are equivalent to assertions in other testing frameworks.
 
   Each step has an action, which is a command that tells Doc Detective what to do. Actions can have additional properties that further define the action.
 
-  - [**checkLink**](/docs/tests/actions/checkLink.html): Check if a URL returns an acceptable status code from a GET request.
-  - [**find**](/docs/tests/actions/find.html): Check if an element exists with the specified selector.
-  - [**goTo**](/docs/tests/actions/goTo.html): Navigate to a specified URL.
-  - [**httpRequest**](/docs/tests/actions/httpRequest.html): Perform a generic HTTP request, for example to an API.
-  - [**runShell**](/docs/tests/actions/runShell.html): Perform a native shell command.
-  - [**saveScreenshot**](/docs/tests/actions/saveScreenshot.html): Take a screenshot in PNG format.
-  - [**setVariables**](/docs/tests/actions/setVariables.html): Load environment variables from a `.env` file.
-  - [**startRecording**](/docs/tests/actions/startRecording.html) and [**stopRecording**](/docs/tests/actions/stopRecording.html): Capture a video of test execution.
-  - [**typeKeys**](/docs/tests/actions/typeKeys.html): Type keys. To type special keys, begin and end the string with `$` and use the special key’s enum. For example, to type the Escape key, enter `$ESCAPE$`.
-  - [**wait**](/docs/tests/actions/wait.html): Pause before performing the next action.
+  - [**checkLink**](/docs/tests/actions/checkLink): Check if a URL returns an acceptable status code from a GET request.
+  - [**find**](/docs/tests/actions/find): Check if an element exists with the specified selector.
+  - [**goTo**](/docs/tests/actions/goTo): Navigate to a specified URL.
+  - [**httpRequest**](/docs/tests/actions/httpRequest): Perform a generic HTTP request, for example to an API.
+  - [**runShell**](/docs/tests/actions/runShell): Perform a native shell command.
+  - [**saveScreenshot**](/docs/tests/actions/saveScreenshot): Take a screenshot in PNG format.
+  - [**setVariables**](/docs/tests/actions/setVariables): Load environment variables from a `.env` file.
+  - [**startRecording**](/docs/tests/actions/startRecording) and [**stopRecording**](/docs/tests/actions/stopRecording): Capture a video of test execution.
+  - [**typeKeys**](/docs/tests/actions/typeKeys): Type keys. To type special keys, begin and end the string with `$` and use the special key’s enum. For example, to type the Escape key, enter `$ESCAPE$`.
+  - [**wait**](/docs/tests/actions/wait): Pause before performing the next action.
 
 ## Define a test
 
