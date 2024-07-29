@@ -30,6 +30,7 @@ description | string |  Optional. Description of the step. |
 action | string |  Required. The action to perform. | 
 command | string |  Required. Command to perform in the machine's default shell. | 
 args | array of strings |  Optional. Arguments for the command. | `[]`
+workingDirectory | string |  Optional. Working directory for the command. | `.`
 exitCodes | array of integers |  Optional. Expected exit codes of the command. If the command's actual exit code isn't in this list, the step fails. | `[0]`
 output | string |  Optional. Content expected in the command's output. If the expected content can't be found in the command's output (either stdout or stderr), the step fails. Supports strings and regular expressions. To use a regular expression, the string must start and end with a forward slash, like in `/^hello-world.*/`. | 
 savePath | string |  Optional. File path to save the command's output, relative to `saveDirectory`. | 
@@ -112,6 +113,7 @@ setVariables.regex | string |  Required. Regex to extract the environment variab
 {
   "action": "runShell",
   "command": "docker run hello-world",
+  "workingDirectory": ".",
   "exitCodes": [
     0
   ],
