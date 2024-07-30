@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import ReactMarkdown from "react-markdown";
-import { CopyBlock, nord } from "react-code-blocks";
+import { a11yLight, CopyBlock } from "react-code-blocks";
 import { Switch, FormControlLabel } from "@mui/material";
+import CodeBlock from '@theme/CodeBlock';
 
 const JSONBlock = ({object, multiline}) => {
     // Prop definitions.
@@ -18,14 +19,11 @@ const JSONBlock = ({object, multiline}) => {
     return (
         <div className="json-preview">
             <ReactMarkdown>{`## JSON`}</ReactMarkdown>
-            <CopyBlock
+         
+            <CodeBlock
                 text={text}
                 language="json"
-                showLineNumbers={true}
-                theme={nord}
-                wrapLines={true}
-                codeBlock
-            />
+                showLineNumber>{text}</CodeBlock>
             <FormControlLabel
                 labelPlacement="start"
                 label="Multiline"
