@@ -15,7 +15,7 @@ You can also specify
 - an `origin` to navigate to a URL relative to a specific path.
 - `statusCodes` to set acceptable HTTP status codes.
 
-> For comprehensive options, see the [checkLink](/docs/schemas/checkLink) reference.
+> For comprehensive options, see the [checkLink](/docs/references/schemas/checkLink) reference.
 
 ## Examples
 

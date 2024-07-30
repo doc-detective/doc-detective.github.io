@@ -10,4 +10,4 @@ grand_parent: Tests
 
 The `find` action locations an element in the current interface and interacts with it, such as validating its text content, clicking it, or typing into it.
 
-> For comprehensive options, see the [`find`](/docs/schemas/find) reference.
+> For comprehensive options, see the [`find`](/docs/references/schemas/find) reference.

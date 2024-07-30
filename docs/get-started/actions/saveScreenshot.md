@@ -10,4 +10,4 @@ grand_parent: Tests
 
 The `saveScreenshot` action captures a PNG of the current viewport. If an image with the same name and dimensions exists, it can also perform pixel diffs and capture updated screenshots for debugging or media updating purposes.
 
-> For comprehensive options, see the [`saveScreenshot`](/docs/schemas/saveScreenshot) reference.
+> For comprehensive options, see the [`saveScreenshot`](/docs/references/schemas/saveScreenshot) reference.

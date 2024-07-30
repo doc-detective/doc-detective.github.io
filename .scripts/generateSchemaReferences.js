@@ -85,7 +85,7 @@ async function main() {
       .join("\n");
     // Identify output path
     const outputPath = path.resolve(
-      `${__dirname}/../docs/schemas/${schema.title}.md`
+      `${__dirname}/../docs/references/schemas/${schema.title}.md`
     );
     // Write file
     fs.writeFileSync(outputPath, output);
@@ -248,7 +248,7 @@ function getArraySubTypes(property, depth) {
     for (const index in itemsArray) {
       item = itemsArray[index];
       if (item.type === "object" && item.title) {
-        subTypes = `${subTypes}<br>${spaces}-&nbsp;${item.type}([${item.title}](/docs/schemas/${item.title}))`;
+        subTypes = `${subTypes}<br>${spaces}-&nbsp;${item.type}([${item.title}](/docs/references/schemas/${item.title}))`;
       } else {
         subTypes = `${subTypes}<br>${spaces}- ${item.type}s`;
       }
@@ -256,7 +256,7 @@ function getArraySubTypes(property, depth) {
   } else {
     item = itemsArray[0];
     if (item.type === "object" && item.title) {
-      subTypes = `${subTypes}${item.type}([${item.title}](/docs/schemas/${item.title}))`;
+      subTypes = `${subTypes}${item.type}([${item.title}](/docs/references/schemas/${item.title}))`;
     } else {
       subTypes = subTypes + item.type + "s";
     }
@@ -310,7 +310,7 @@ function getFormatDescription(name, property, depth) {
     description.push(`${"  ".repeat(depth)}"${name}": {`);
     depth = depth + 1;
     description.push(
-      `${"  ".repeat(depth)}object([${property.title}](/docs/schemas/${
+      `${"  ".repeat(depth)}object([${property.title}](/docs/references/schemas/${
         property.title
       }))`
     );

@@ -12,7 +12,7 @@ The `goTo` action navigates to a URL. This action is useful for starting a test 
 
 You can also specify an `origin` to navigate to a URL relative to a specific path.
 
-> For comprehensive options, see the [`goTo`](/docs/schemas/goTo) reference.
+> For comprehensive options, see the [`goTo`](/docs/references/schemas/goTo) reference.
 
 ## Examples
 

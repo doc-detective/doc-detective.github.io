@@ -10,4 +10,4 @@ grand_parent: Tests
 
 The `httpRequest` action makes arbitrary HTTP calls, allowing you to call and validate APIs and use web services.
 
-> For comprehensive options, see the [`httpRequest`](/docs/schemas/httpRequest) reference.
+> For comprehensive options, see the [`httpRequest`](/docs/references/schemas/httpRequest) reference.

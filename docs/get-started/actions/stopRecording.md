@@ -10,4 +10,4 @@ grand_parent: Tests
 
 The `stopRecording` action stops a recording started by a [`startRecording`](startRecording) action.
 
-> For comprehensive options, see the [`stopRecording`](/docs/schemas/stopRecording) reference.
+> For comprehensive options, see the [`stopRecording`](/docs/references/schemas/stopRecording) reference.

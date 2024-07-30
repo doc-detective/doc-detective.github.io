@@ -68,7 +68,13 @@ const config: Config = {
           type: "docSidebar",
           sidebarId: "docsSidebar",
           position: "left",
-          label: "Docs",
+          label: "Get started",
+        },
+        {
+          type: "docSidebar",
+          sidebarId: "referencesSidebar",
+          position: "left",
+          label: "References",
         },
         // {to: '/blog', label: 'Blog', position: 'left'},
         {
