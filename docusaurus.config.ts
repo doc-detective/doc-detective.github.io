@@ -130,6 +130,7 @@ const config: Config = {
       darkTheme: prismThemes.dracula,
     },
   } satisfies Preset.ThemeConfig,
+  plugins: [require.resolve('./src/plugins/webpack-browserify')],
 };
 
 export default config;
