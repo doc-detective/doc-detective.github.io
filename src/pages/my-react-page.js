@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from '@theme/Layout';
-import { components } from '../../doc-detective-common';
+import { components } from 'doc-detective-common';
 
 export default function MyReactPage() {
   return (
