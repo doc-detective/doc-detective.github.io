@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import ReactMarkdown from "react-markdown";
-import { a11yLight, CopyBlock } from "react-code-blocks";
 import { Switch, FormControlLabel } from "@mui/material";
 import CodeBlock from '@theme/CodeBlock';
 

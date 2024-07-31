@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./index.module.css";
 import SchemaForm from "../SchemaForms/SchemaForm";
 import { schemas } from "doc-detective-common";
 import JSONBlock from "../JSONBlock";

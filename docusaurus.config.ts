@@ -76,6 +76,7 @@ const config: Config = {
           position: "left",
           label: "References",
         },
+        { to: "/app", label: "Action Builder (beta)", position: "left" },
         // {to: '/blog', label: 'Blog', position: 'left'},
         {
           href: "https://github.com/doc-detective",
