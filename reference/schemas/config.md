@@ -38,7 +38,7 @@ runTests.setup | One of<br>-&nbsp;string<br>-&nbsp;array of strings |  Optional.
 runTests.cleanup | One of<br>-&nbsp;string<br>-&nbsp;array of strings |  Optional. Path(s) to test specifications to perform after those specified by `input`. Useful for cleaning up testing environments. | 
 runTests.recursive | boolean |  Optional. If `true` searches `input`, `setup`, and `cleanup` paths recursively for test specificaions and source files. | 
 runTests.detectSteps | boolean |  Optional. Whether or not to detect steps in input files based on markup regex. | `false`
-runTests.mediaDirectory | string |  Optional. Path of the directory in which to store output media files. | `.`
+runTests.mediaDirectory | string |  Optional. DEPRECATED. | `.`
 runTests.downloadDirectory | string |  Optional. Path of the directory in which to store downloaded files. | `.`
 runTests.contexts | array of object([context](/reference/schemas/context)) |  Optional. Application/platform sets to run tests in. If no contexts are specified but a context is required by one or more tests, Doc Detective attempts to identify a supported context in the current environment and run tests against it. See [context](/reference/schemas/context). | `[{"app":{"name":"firefox","options":{"width":1200,"height":800,"headless":true}},"platforms":["linux","mac","windows"]}]`
 runCoverage | object |  Optional. Options for performing test coverage analysis on documentation source files.  When performing coveration analysis, values set here override general configuration options. | 
@@ -99,7 +99,6 @@ logLevel | string |  Optional. Amount of detail to output when performing an ope
     "setup": "",
     "cleanup": "",
     "recursive": true,
-    "mediaDirectory": ".",
     "downloadDirectory": ".",
     "contexts": [
       {
@@ -131,7 +130,6 @@ logLevel | string |  Optional. Amount of detail to output when performing an ope
     "setup": "",
     "cleanup": "",
     "recursive": true,
-    "mediaDirectory": ".",
     "downloadDirectory": ".",
     "contexts": [
       {
@@ -317,7 +315,6 @@ logLevel | string |  Optional. Amount of detail to output when performing an ope
       "."
     ],
     "recursive": true,
-    "mediaDirectory": ".",
     "downloadDirectory": ".",
     "contexts": [
       {
