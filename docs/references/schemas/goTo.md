@@ -1,15 +1,5 @@
----
-title: goTo
-layout: default
-nav_order: 1
-parent: Reference
----
-
 
 # goTo
-
-
-
 
 Navigate to a specified URL.
 

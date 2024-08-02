@@ -10,8 +10,8 @@ type FeatureItem = {
 
 const FeatureList: FeatureItem[] = [
   {
-    title: 'Easy to Use',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    title: 'Keep procedures, screenshots, and videos current',
+    Svg: require('@site/static/img/ui.svg').default,
     description: (
       <>
         Docusaurus was designed from the ground up to be easily installed and
@@ -20,8 +20,8 @@ const FeatureList: FeatureItem[] = [
     ),
   },
   {
-    title: 'Focus on What Matters',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    title: 'Make sure your APIs return what you expect',
+    Svg: require('@site/static/img/api.svg').default,
     description: (
       <>
         Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
@@ -30,8 +30,8 @@ const FeatureList: FeatureItem[] = [
     ),
   },
   {
-    title: 'Powered by React',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    title: 'Catch surprises from before your users do',
+    Svg: require('@site/static/img/sdk.svg').default,
     description: (
       <>
         Extend or customize your website layout by reusing React. Docusaurus can

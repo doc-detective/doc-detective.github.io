@@ -59,15 +59,7 @@ async function main() {
       examples = examples.concat(snippet);
     }
     // Metadata
-    let metadata = [
-      "---",
-      `title: ${schema.title}`,
-      "layout: default",
-      "nav_order: 1",
-      "parent: Reference",
-      "---",
-
-    ];
+    let metadata = [];
     // Heading
     let heading = [
       "",
@@ -115,7 +107,7 @@ function parseField(schema, fieldName, fieldNameBase) {
   }
   // Get enums
   if (property.enum) {
-    let enums = `<br><br>Accepted values: \`${property.enum.join("`, `")}\``;
+    let enums = `<br/><br/>Accepted values: \`${property.enum.join("`, `")}\``;
     description = description + enums;
   }
   let defaultValue;
@@ -124,13 +116,13 @@ function parseField(schema, fieldName, fieldNameBase) {
     typeof property.default === "object" &&
     !Array.isArray(property.default)
   ) {
-    defaultValue = `\`${JSON.stringify(property.default)}\``;
+    defaultValue = `\`\`${JSON.stringify(property.default)}\`\``;
   } else if (
     // Array
     typeof property.default === "object" &&
     Array.isArray(property.default)
   ) {
-    defaultValue = `\`${JSON.stringify(property.default)}\``;
+    defaultValue = `\`\`${JSON.stringify(property.default)}\`\``;
   } else if (
     // UUID
     schema.dynamicDefaults &&
@@ -148,6 +140,7 @@ function parseField(schema, fieldName, fieldNameBase) {
     // Default
     defaultValue = `\`${property.default}\``;
   }
+  if (fieldName === "fileTypes") defaultValue = "[]"; //TODO: Remove the need for this override.
   details.push(
     `${name} | ${typeDetails.type} |  ${description} | ${defaultValue}`
   );
@@ -218,7 +211,7 @@ function getTypes(property) {
     if (types.length > 1) {
       type = "One of";
       for (const item of types) {
-        type = type + `<br>-&nbsp;${item.type}`;
+        type = type + `<br/>-&nbsp;${item.type}`;
         if (item.type === "array") {
           subTypes = getArraySubTypes(item, 1);
           type = type + subTypes;
@@ -248,9 +241,9 @@ function getArraySubTypes(property, depth) {
     for (const index in itemsArray) {
       item = itemsArray[index];
       if (item.type === "object" && item.title) {
-        subTypes = `${subTypes}<br>${spaces}-&nbsp;${item.type}([${item.title}](/docs/references/schemas/${item.title}))`;
+        subTypes = `${subTypes}<br/>${spaces}-&nbsp;${item.type}([${item.title}](/docs/references/schemas/${item.title}))`;
       } else {
-        subTypes = `${subTypes}<br>${spaces}- ${item.type}s`;
+        subTypes = `${subTypes}<br/>${spaces}- ${item.type}s`;
       }
     }
   } else {

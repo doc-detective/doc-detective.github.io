@@ -1,15 +1,5 @@
----
-title: checkLink
-layout: default
-nav_order: 1
-parent: Reference
----
-
 
 # checkLink
-
-
-
 
 Check if a URL returns an acceptable status code from a GET request.
 
@@ -22,7 +12,7 @@ description | string |  Optional. Description of the step. |
 action | string |  Required. Action to perform. | 
 url | string |  Required. URL to check. | 
 origin | string |  Optional. Protocol and domain to navigate to. Prepended to `url`. | 
-statusCodes | array of integers |  Optional. Accepted status codes. If the specified URL returns a code other than what is specified here, the action fails. | `[200,201,202]`
+statusCodes | array of integers |  Optional. Accepted status codes. If the specified URL returns a code other than what is specified here, the action fails. | ``[200,201,202]``
 
 ## Examples
 

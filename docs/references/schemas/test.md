@@ -1,15 +1,5 @@
----
-title: test
-layout: default
-nav_order: 1
-parent: Reference
----
-
 
 # test
-
-
-
 
 A Doc Detective test.
 

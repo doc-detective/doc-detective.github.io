@@ -1,15 +1,5 @@
----
-title: context
-layout: default
-nav_order: 1
-parent: Reference
----
-
 
 # context
-
-
-
 
 An application and supported platforms.
 
@@ -21,7 +11,7 @@ Field | Type | Description | Default
 :-- | :-- | :-- | :--
 app | object |  Required. The application to run. | 
 app.name | string |  Required. Name of the application.<br/><br/>Accepted values: `chrome`, `firefox`, `safari`, `edge` | 
-app.path | string |  Optional. Path to the application. If not specified, defaults to typical install paths per platform. If specified but the path is invalid, the context is skipped. | 
+app.path | string |  Optional. Absolute path or command for the application. If not specified, defaults to typical install paths per platform. If specified but the path is invalid, the context is skipped. | 
 app.options | object |  Optional. Options to pass to the app. Only works when `name` is `firefox` or `chrome`. | 
 app.options.width | integer |  Optional. Width of the window in pixels. | 
 app.options.height | integer |  Optional. Height of the window in pixels. | 
