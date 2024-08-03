@@ -47,3 +47,19 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Add deployment URL as comment on PR
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { context, github } = require('@actions/github');
+            const prNumber = context.payload.pull_request.number;
+            const deploymentUrl = '${{ steps.deployment.outputs.page_url }}';
+            const commentBody = `Preview URL: ${deploymentUrl}`;
+            github.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body: commentBody
+            });
