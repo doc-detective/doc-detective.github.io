@@ -140,7 +140,7 @@ function parseField(schema, fieldName, fieldNameBase) {
     // Default
     defaultValue = `\`${property.default}\``;
   }
-  if (fieldName === "fileTypes") defaultValue = "[]"; //TODO: Remove the need for this override.
+  if (fieldName === "fileTypes") defaultValue = "[]"; // TODO: Remove the need for this override.
   details.push(
     `${name} | ${typeDetails.type} |  ${description} | ${defaultValue}`
   );
