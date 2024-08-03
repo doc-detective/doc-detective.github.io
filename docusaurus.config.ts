@@ -80,7 +80,7 @@ const config: Config = {
         },
         { to: "/app", label: "Action Builder (beta)", position: "left" },
         // {to: '/blog', label: 'Blog', position: 'left'},
-        // { to: "/support", label: "Support ❤️", position: "right" },
+        { to: "/support", label: "Support ❤️", position: "right" },
         {
           href: "https://github.com/doc-detective",
           label: "GitHub",

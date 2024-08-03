@@ -47,7 +47,7 @@ const FeatureList: FeatureItem[] = [
   {
     title: "Swag Shop",
     link: "https://shop.doc-detective.com",
-    Svg: require("@site/static/img/undraw_docusaurus_react.svg").default,
+    Svg: require("@site/static/img/shirt.svg").default,
     description: (
       <>
         Want to show your support with some swag? Check out our swag shop and
