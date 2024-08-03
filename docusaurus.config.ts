@@ -4,7 +4,7 @@ import type * as Preset from "@docusaurus/preset-classic";
 
 const config: Config = {
   title: "Doc Detective",
-  tagline: "Keep your docs up to date with ease.",
+  tagline: "Keep your docs in sync with your product. Always.",
   favicon: "img/favicon.ico",
 
   // Set the production url of your site here

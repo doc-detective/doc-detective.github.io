@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# Intro
+# Doc Detective
 
 Validate your content with Doc Detective:
 
