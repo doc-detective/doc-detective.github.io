@@ -15,8 +15,10 @@ const config: Config = {
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: "Doc Detective", // Usually your GitHub org/user name.
+  organizationName: "doc-detective", // Usually your GitHub org/user name.
   projectName: "doc-detective.github.io", // Usually your repo name.
+  trailingSlash: false,
+  deploymentBranch: "gh-pages",
 
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",

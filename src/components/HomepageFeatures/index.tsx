@@ -20,7 +20,7 @@ const FeatureList: FeatureItem[] = [
     ),
   },
   {
-    title: "Make sure your APIs return what you expect",
+    title: "Make sure your requests return what you expect",
     Svg: require("@site/static/img/api.svg").default,
     description: (
       <>
@@ -30,7 +30,7 @@ const FeatureList: FeatureItem[] = [
     ),
   },
   {
-    title: "Catch surprises from before your users do",
+    title: "Catch surprises before your users do",
     Svg: require("@site/static/img/cli.svg").default,
     description: (
       <>

@@ -11,17 +11,17 @@ type FeatureItem = {
 };
 
 const FeatureList: FeatureItem[] = [
-  {
-    title: "Contribute Your Skills",
-    link: "/docs/contribute",
-    Svg: require("@site/static/img/opencollective.svg").default,
-    description: (
-      <>
-        Whether you know code, docs, UX, bug reports, or much anything else, we
-        welcome contributions from everyone.
-      </>
-    ),
-  },
+  // {
+  //   title: "Contribute Your Skills",
+  //   link: "/docs/contribute",
+  //   Svg: require("@site/static/img/opencollective.svg").default,
+  //   description: (
+  //     <>
+  //       Whether you know code, docs, UX, bug reports, or much anything else, we
+  //       welcome contributions from everyone.
+  //     </>
+  //   ),
+  // },
   {
     title: "Open Collective",
     link: "https://opencollective.com/doc-detective",
