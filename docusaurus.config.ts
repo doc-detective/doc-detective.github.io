@@ -81,6 +81,7 @@ const config: Config = {
         { to: "/app", label: "Action Builder (beta)", position: "left" },
         // {to: '/blog', label: 'Blog', position: 'left'},
         { to: "/support", label: "Support ❤️", position: "right" },
+        { type: "docSidebar", sidebarId: "contributeSidebar", position: "right", label: "Contribute" },
         {
           href: "https://github.com/doc-detective",
           label: "GitHub",
