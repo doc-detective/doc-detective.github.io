@@ -136,6 +136,10 @@ const config: Config = {
     },
   } satisfies Preset.ThemeConfig,
   plugins: [require.resolve('./src/plugins/webpack-browserify')],
+  markdown: {
+    mermaid: true,
+  },
+  themes: ['@docusaurus/theme-mermaid'],
 };
 
 export default config;
