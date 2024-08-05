@@ -1,6 +1,6 @@
 {
   "name": "doc-detective-docs",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
@@ -15,6 +15,7 @@
     "typecheck": "tsc",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
+    "test": "npm run build",
     "build-schemas": "node ./.scripts/buildSchemaReferences.js"
   },
   "dependencies": {
