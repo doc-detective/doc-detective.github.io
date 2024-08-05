@@ -8,7 +8,7 @@ Doc Detective welcomes contributions of all sorts. If you can't contribute code,
 
 ## Report issues
 
-If you find a bug, report it on the [Doc Detective issue tracker](https://github.com/doc-detective/doc-detective/issues). If you know which [repo](/docs/contribute/repos) the bug appears in, please open it in that project's specific tracker.
+If you find a bug, report it on the [Doc Detective issue tracker](https://github.com/doc-detective/doc-detective/issues). If you know which [repo](/docs/category/repos) the bug appears in, please open it in that project's specific tracker.
 
 Make sure to include as much information as possible, such as the version of Doc Detective you're using, the operating system you're on, and any error messages you see.
 
@@ -16,7 +16,7 @@ Make sure to include as much information as possible, such as the version of Doc
 
 > Before any code or doc contributions are accepted, you need to sign the [contributor license agreement](https://cla-assistant.io/doc-detective/doc-detective.github.io) (CLA). This agreement makes sure that your contributions are properly licensed and maintains the project's open-source status and ongoing health.
 
-1. Fork the [repo](/docs/contribute/repos) you want to contribute to.
+1. Fork the [repo](/docs/category/repos) you want to contribute to.
 2. Create a new branch.
 3. Make your changes.
 4. Submit a pull request to the project or `rc` (release candidate) branch.
