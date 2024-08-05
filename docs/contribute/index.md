@@ -8,7 +8,7 @@ Doc Detective welcomes contributions of all sorts. If you can't contribute code,
 
 ## Report issues
 
-If you find a bug, report it on the [Doc Detective issue tracker](https://github.com/doc-detective/doc-detective/issues). If you know which [repo](/docs/category/repos) the bug appears in, please open it in that project's specific tracker.
+If you find a bug, report it on the [Doc Detective issue tracker](https://github.com/doc-detective/doc-detective/issues). If you know which [repo](/docs/category/repos) the bug appears in, open it in that project's specific tracker.
 
 Make sure to include as much information as possible, such as the version of Doc Detective you're using, the operating system you're on, and any error messages you see.
 
