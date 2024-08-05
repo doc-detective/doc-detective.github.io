@@ -1,5 +1,4 @@
 import clsx from "clsx";
-import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
 import SupportOptions from "@site/src/components/SupportOptions";
@@ -13,11 +12,12 @@ function SupportHeader() {
     <header className={clsx("hero hero--primary", styles.heroBanner)}>
       <div className="container">
         <Heading as="h1" className="hero__title">
-          Support {siteConfig.title}
+          Support ❤️ {siteConfig.title}
         </Heading>
         <p className="hero__subtitle">
-          Whether you want to contribute skills, funds, or closet space, we have
-          options for how you can help Doc Detective get even better.
+          Whether you want to contribute skills, funds, or closet space,
+          <br />
+          we have options for how you can help make Doc Detective even better.
         </p>
       </div>
     </header>
@@ -28,8 +28,8 @@ export default function Support(): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
   return (
     <Layout
-      title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />"
+      title={`Support ❤️ ${siteConfig.title}`}
+      description="Support Doc Detective"
     >
       <SupportHeader />
       <main>

@@ -40,14 +40,14 @@ const config: Config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            "https://github.com/doc-detective/doc-detective.github.io/tree/main/",
+            "https://github.dev/doc-detective/doc-detective.github.io/blob/main/",
         },
         blog: {
           showReadingTime: true,
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            "https://github.com/doc-detective/doc-detective.github.io/tree/main/",
+            "https://github.dev/doc-detective/doc-detective.github.io/blob/main/",
         },
         theme: {
           customCss: "./src/css/custom.css",
@@ -81,6 +81,7 @@ const config: Config = {
         { to: "/app", label: "Action Builder (beta)", position: "left" },
         // {to: '/blog', label: 'Blog', position: 'left'},
         { to: "/support", label: "Support ❤️", position: "right" },
+        { type: "docSidebar", sidebarId: "contributeSidebar", position: "right", label: "Contribute" },
         {
           href: "https://github.com/doc-detective",
           label: "GitHub",
@@ -135,6 +136,10 @@ const config: Config = {
     },
   } satisfies Preset.ThemeConfig,
   plugins: [require.resolve('./src/plugins/webpack-browserify')],
+  markdown: {
+    mermaid: true,
+  },
+  themes: ['@docusaurus/theme-mermaid'],
 };
 
 export default config;
