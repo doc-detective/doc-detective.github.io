@@ -1,6 +1,6 @@
 # How to contribute
 
-Doc Detective welcomes contributions of all sorts. If you can't contribute code, you can still help by reporting issues, suggesting new features, improving the documentation, or [sponsoring](support) the project. Please follow the guidelines below.
+Doc Detective welcomes contributions of all sorts. If you can't contribute code, you can still help by reporting issues, suggesting new features, improving the documentation, or [sponsoring](/support) the project. Please follow the guidelines below.
 
 ## Project architecture
 
