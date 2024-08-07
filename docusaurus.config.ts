@@ -1,6 +1,7 @@
 import { themes as prismThemes } from "prism-react-renderer";
 import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
+require('dotenv').config()
 
 const config: Config = {
   title: "Doc Detective",
@@ -134,8 +135,40 @@ const config: Config = {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
     },
+    inkeepConfig: {
+      baseSettings: {
+        apiKey: process.env.INKEEP_API_KEY, // required
+        integrationId: process.env.INKEEP_INTEGRATION_ID, // required
+        organizationId: process.env.INKEEP_ORGANIZATION_ID, // required
+        primaryBrandColor: "#00c122", // required -- your brand color, the widget color scheme is derived from this
+        organizationDisplayName: "Doc Detective", // required -- your organization name
+        // ...optional settings
+        // theme: {
+        //   stylesheetUrls: ['/path/to/stylesheets'], // optional
+        //   syntaxHighlighter: {
+        //     lightTheme: lightCodeTheme, // optional -- pass in the Prism theme you're using
+        //     darkTheme: darkCodeTheme, // optional -- pass in the Prism theme you're using
+        //   },
+        // }
+      },
+      modalSettings: {
+        // optional settings
+      },
+      searchSettings: {
+        // optional settings
+      },
+      aiChatSettings: {
+        // optional settings
+        // botAvatarSrcUrl: "/img/logo.svg", // use your own bot avatar
+        quickQuestions: [
+          "How can I test my docs with Doc Detective?",
+          "What does a test look like?",
+          "What actions can Doc Detective perform?",
+        ],
+      },
+    },
   } satisfies Preset.ThemeConfig,
-  plugins: [require.resolve('./src/plugins/webpack-browserify')],
+  plugins: [require.resolve('./src/plugins/webpack-browserify'), "@inkeep/docusaurus/chatButton", "@inkeep/docusaurus/searchBar"],
   markdown: {
     mermaid: true,
   },
