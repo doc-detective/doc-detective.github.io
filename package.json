@@ -1,7 +1,6 @@
 {
   "name": "doc-detective-docs",
-  "version": "2.0.2",
-  "private": true,
+  "version": "2.0.3",
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
@@ -23,11 +22,13 @@
     "@docusaurus/preset-classic": "3.4.0",
     "@docusaurus/theme-mermaid": "^3.4.0",
     "@emotion/styled": "^11.13.0",
+    "@inkeep/docusaurus": "^2.0.2",
     "@mdx-js/react": "^3.0.1",
     "@mui/icons-material": "^5.16.6",
     "@mui/material": "^5.16.6",
     "clsx": "^2.1.1",
     "doc-detective-common": "^1.19.3",
+    "dotenv": "^16.4.5",
     "https-browserify": "^1.0.0",
     "os-browserify": "^0.3.0",
     "path-browserify": "^1.0.1",
