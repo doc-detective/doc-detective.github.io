@@ -23,7 +23,12 @@ jobs:
         run: npm ci
       - name: Test build website
         run: npm run build
-
+        env:
+          INKEEP_API_KEY: ${{ secrets.INKEEP_API_KEY }}
+          INKEEP_INTEGRATION_ID: ${{ secrets.INKEEP_INTEGRATION_ID }}
+          INKEEP_ORGANIZATION_ID: ${{ secrets.INKEEP_ORGANIZATION_ID }}
+          POSTHOG_API_KEY: ${{ secrets.POSTHOG_API_KEY }}
+          
   #     - name: Upload Build Artifact
   #       uses: actions/upload-pages-artifact@v3
   #       with:
