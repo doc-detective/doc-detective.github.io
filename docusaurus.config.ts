@@ -1,7 +1,7 @@
 import { themes as prismThemes } from "prism-react-renderer";
 import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
-require('dotenv').config()
+require("dotenv").config();
 
 const config: Config = {
   title: "Doc Detective",
@@ -82,7 +82,12 @@ const config: Config = {
         { to: "/app", label: "Action Builder (beta)", position: "left" },
         // {to: '/blog', label: 'Blog', position: 'left'},
         { to: "/support", label: "Support ❤️", position: "right" },
-        { type: "docSidebar", sidebarId: "contributeSidebar", position: "right", label: "Contribute" },
+        {
+          type: "docSidebar",
+          sidebarId: "contributeSidebar",
+          position: "right",
+          label: "Contribute",
+        },
         {
           href: "https://github.com/doc-detective",
           label: "GitHub",
@@ -143,13 +148,13 @@ const config: Config = {
         primaryBrandColor: "#00c122", // required -- your brand color, the widget color scheme is derived from this
         organizationDisplayName: "Doc Detective", // required -- your organization name
         // ...optional settings
-        // theme: {
-        //   stylesheetUrls: ['/path/to/stylesheets'], // optional
-        //   syntaxHighlighter: {
-        //     lightTheme: lightCodeTheme, // optional -- pass in the Prism theme you're using
-        //     darkTheme: darkCodeTheme, // optional -- pass in the Prism theme you're using
-        //   },
-        // }
+        theme: {
+          //   stylesheetUrls: ['/path/to/stylesheets'], // optional
+          syntaxHighlighter: {
+            lightTheme: prismThemes.github, // optional -- pass in the Prism theme you're using
+            darkTheme: prismThemes.dracula, // optional -- pass in the Prism theme you're using
+          },
+        },
       },
       modalSettings: {
         // optional settings
@@ -168,11 +173,23 @@ const config: Config = {
       },
     },
   } satisfies Preset.ThemeConfig,
-  plugins: [require.resolve('./src/plugins/webpack-browserify'), "@inkeep/docusaurus/chatButton", "@inkeep/docusaurus/searchBar"],
+  plugins: [
+    require.resolve("./src/plugins/webpack-browserify"),
+    "@inkeep/docusaurus/chatButton",
+    "@inkeep/docusaurus/searchBar",
+    [
+      "posthog-docusaurus",
+      {
+        apiKey: process.env.POSTHOG_API_KEY, // required
+        appUrl: "https://us.i.posthog.com", // optional, defaults to "https://us.i.posthog.com"
+        enableInDevelopment: false, // optional
+      },
+    ],
+  ],
   markdown: {
     mermaid: true,
   },
-  themes: ['@docusaurus/theme-mermaid'],
+  themes: ["@docusaurus/theme-mermaid"],
 };
 
 export default config;

@@ -1,6 +1,6 @@
 {
   "name": "doc-detective-docs",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
@@ -32,6 +32,7 @@
     "https-browserify": "^1.0.0",
     "os-browserify": "^0.3.0",
     "path-browserify": "^1.0.1",
+    "posthog-docusaurus": "^2.0.1",
     "prism-react-renderer": "^2.3.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
