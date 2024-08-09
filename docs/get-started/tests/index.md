@@ -4,7 +4,7 @@ sidebar_position: 4
 
 # Tests
 
-<!-- > Want a helping hand writing your test steps? Check out the [Action Builder prototype](/app). -->
+> Want help writing your test steps? Check out the [Action Builder prototype](/app).
 
 Tests tell Doc Detective what actions to perform, how, and where. Tests are made of three sets of components:
 
@@ -176,11 +176,11 @@ For example, markup for Markdown files might look like this:
         },
         {
           "name": "Click",
-          "regex": ["(?:[Cc]lick|[Pp]ress|[Cc]hoose|[Tt]ap)\\*\\*(.+?)\\*\\*"],
+          "regex": ["(?:[Cc]lick|[Pp]ress|[Cc]hoose|[Tt]ap)\\s+\\*\\*(.+?)\\*\\*"],
           "actions": [{
             "action": "find",
             "description": "Click $1",
-            "selector": "$1",
+            "selector": "aria/$1",
             "click": true
           }]
         },
@@ -385,7 +385,7 @@ This example runs all test specs in a file named `doc-content.md` in the `sample
 npx doc-detective runTests --input ./samples/doc-content.md
 ```
 
-### Run remotely-hosted tests
+### Remotely-hosted tests
 
 You can run tests hosted remotely by specifying the URL of the test file with the `--input` argument. For example, to run tests from a file hosted at `https://doc-detective.com/sample.spec.json`, run the following command:
 
