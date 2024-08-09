@@ -165,13 +165,13 @@ For example, markup for Markdown files might look like this:
         {
           "name": "Navigation link",
           "regex": [
-            "(?:[Cc]hose|[Oo]pen|[Cc]lick|[Nn]avigate to|[Gg]o to)(?<!!)\\[.+?\\]\\(.+?\\)"
+            "(?:[Cc]hose|[Oo]pen|[Cc]lick|[Nn]avigate to|[Gg]o to)(?<!!)\\s+\\[.+?\\]\\(.+?\\)"
           ],
           "actions": ["goTo"]
         },
         {
           "name": "Onscreen text",
-          "regex": ["\\*\\*.+?\\*\\*"],
+          "regex": ["\\*\\*(.+?)\\*\\*"],
           "actions": ["find"]
         },
         {
@@ -186,10 +186,11 @@ For example, markup for Markdown files might look like this:
         },
         {
           "name": "Image",
-          "regex": ["!\\[.+?\\]\\(.+?\\)"],
+          "regex": ["!\\[.+?\\]\\((.+?)\\)"],
           "actions": [
             {
               "action": "saveScreenshot",
+              "path": "$1",
               "directory": "samples",
               "maxVariation": 5,
               "overwrite": "byVariation"
