@@ -56,6 +56,7 @@ jobs:
         uses: actions/deploy-pages@v4
 
   sync_inkeep:
+    name: Sync Content with Inkeep
     runs-on: ubuntu-latest
     needs: deploy
     permissions:
@@ -64,9 +65,16 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
-      
+      uses: actions/checkout@v4
+    - name: Check for changes
+      uses: dorny/paths-filter@v2
+      id: changes
+      with:
+        filters: |
+          docs:
+            - 'docs/**'      
     - name: Sync Sources
+      if: steps.changes.outputs.docs == 'true'
       uses: inkeep/pr-commenter-action@v10
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
