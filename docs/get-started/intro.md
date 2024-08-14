@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Doc Detective
 
-Validate your content with Doc Detective:
+Validate your content with Doc Detective: 
 
 ```bash
 npx doc-detective
