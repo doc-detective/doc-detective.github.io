@@ -209,6 +209,7 @@ The `regex` property defines the regular expression patterns to match, and the `
 
 Markdown:
 
+<!-- test-start {"detectSteps":false} -->
 ```markdown
 To get started,
 
@@ -217,6 +218,7 @@ To get started,
 
 ![Search results](search-results.png)
 ```
+<!-- test-end -->
 
 Detected tests:
 
