@@ -15,7 +15,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test": "npm run build",
-    "build-schemas": "node ./.scripts/buildSchemaReferences.js"
+    "build-schemas": "node ./.scripts/buildSchemaReferences.js",
+    "doc-detective": "npx doc-detective@latest runTests"
   },
   "dependencies": {
     "@docusaurus/core": "3.5.2",
