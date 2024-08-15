@@ -22,3 +22,5 @@ yarn-error.log*
 *storybook.log
 
 .env
+
+testResults*
