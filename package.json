@@ -55,6 +55,7 @@
     "@storybook/react": "^8.2.9",
     "@storybook/react-webpack5": "^8.2.9",
     "@storybook/test": "^8.2.9",
+    "@vvago/vale": "^3.7.1",
     "storybook": "^8.2.9",
     "typescript": "~5.5.4"
   },
