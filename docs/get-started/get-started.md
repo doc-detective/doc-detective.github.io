@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Get started
 
-Downloading and running Doc Detective is simple, but let's walk through it and run tests on a few sample files.
+Downloading and running Doc Detective is straightforward. Follow these steps to run tests on a few sample files.
 
 1. Install prerequisites:
 
