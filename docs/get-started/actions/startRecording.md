@@ -6,7 +6,7 @@ parent: Actions
 grand_parent: Tests
 ---
 
-# find
+# startRecording
 
 The `startRecording` action records tests as they are run for debugging or multimedia purposes.
 

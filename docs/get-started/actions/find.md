@@ -8,6 +8,6 @@ grand_parent: Tests
 
 # find
 
-The `find` action locations an element in the current interface and interacts with it, such as validating its text content, clicking it, or typing into it.
+The `find` action locates an element in the current interface and interacts with it, such as validating its text content, clicking it, or typing into it.
 
 > For comprehensive options, see the [`find`](/docs/references/schemas/find) reference.

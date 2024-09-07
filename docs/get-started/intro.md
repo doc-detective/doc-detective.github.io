@@ -63,7 +63,7 @@ As an open-source and accessible project, Doc Detective is for anyone who is int
 
 - **Small teams:** There’s often limited personnel or budget dedicated to a project, and documentation takes a backseat as a result. With Doc Detective, you can spend less time reviewing published documentation and trust that it is still functional and accurate for the end user.
 - **Large teams:** The more people you have contributing to a project, the faster it can change shape. In cases where development is outpacing documentation, Doc Detective keeps a watchful eye on the changes made and note any inconsistencies.
-- **Anything in between:** You can be a team of one or of one thousand and still find a use for Doc Detective. When it comes time to address the documentation of your project, look to Doc Detective to ease the burden and help bring consistency and accuracyto the end user.
+- **Anything in between:** You can be a team of one or of one thousand and still find a use for Doc Detective. When it comes time to address the documentation of your project, look to Doc Detective to ease the burden and help bring consistency and accuracy to the end user.
 
 ## Next steps
 

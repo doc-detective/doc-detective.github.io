@@ -12,7 +12,7 @@ The `wait` action pauses before performing the next step. This action is useful 
 
 You can specify the `duration` to pause in milliseconds. The default `duration` is 5 seconds.
 
-For comprehensive options, see the [wait](/docs/references/schemas/wait) reference.
+> For comprehensive options, see the [`wait`](/docs/references/schemas/wait) reference.
 
 ## Examples
 

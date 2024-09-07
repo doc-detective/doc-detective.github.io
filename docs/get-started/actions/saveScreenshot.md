@@ -6,7 +6,7 @@ parent: Actions
 grand_parent: Tests
 ---
 
-# find
+# saveScreenshot
 
 The `saveScreenshot` action captures a PNG of the current viewport. If an image with the same name and dimensions exists, it can also perform pixel diffs and capture updated screenshots for debugging or media updating purposes.
 
