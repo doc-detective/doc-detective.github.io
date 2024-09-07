@@ -6,7 +6,7 @@ parent: Actions
 grand_parent: Tests
 ---
 
-# find
+# stopRecording
 
 The `stopRecording` action stops a recording started by a [`startRecording`](startRecording) action.
 

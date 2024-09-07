@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Get started
 
-Downloading and running Doc Detective is simple, but lets walk through it and run tests on a few sample files.
+Downloading and running Doc Detective is straightforward. Follow these steps to run tests on a few sample files.
 
 1. Install prerequisites:
 
@@ -62,7 +62,7 @@ You can override config options with command-line arguments. For example, to run
 npx doc-detective runTests --config .doc-detective.json --input tests.spec.json
 ```
 
-### Run remotely-hosted tests
+### Run remotely hosted tests
 
 You can run tests hosted remotely by specifying the URL of the test file with the `--input` argument. For example, to run tests from a file hosted at `https://doc-detective.com/sample.spec.json`, run the following command:
 

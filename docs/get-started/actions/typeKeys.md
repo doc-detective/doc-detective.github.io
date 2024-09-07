@@ -12,7 +12,7 @@ The `typeKeys` action registers key presses, including special keys such as Ente
 
 You can specify `keys` either as a string or as an array of strings. Each character in a string or array is separated is treated as a separate key press, but specifying an array allows you to include both regular and [special](#special-keys) keys.
 
-For comprehensive options, see the [typeKeys](/docs/references/schemas/typeKeys) reference.
+> For comprehensive options, see the [`typeKeys`](/docs/references/schemas/typeKeys) reference.
 
 ## Special keys
 

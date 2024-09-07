@@ -388,7 +388,7 @@ This example runs all test specs in a file named `doc-content.md` in the `sample
 npx doc-detective runTests --input ./samples/doc-content.md
 ```
 
-### Remotely-hosted tests
+### Remotely hosted tests
 
 You can run tests hosted remotely by specifying the URL of the test file with the `--input` argument. For example, to run tests from a file hosted at `https://doc-detective.com/sample.spec.json`, run the following command:
 
