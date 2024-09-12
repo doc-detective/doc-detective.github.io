@@ -135,17 +135,15 @@ To fix this issue, follow these steps:
 
 2. Modify your test configuration to include a `setVariables` action:
 
-   ```json title="bad-certificate.json"
+   ```json title="bad-certificate.json" {5-8}
    {
      "tests": [
        {
          "steps": [
-           <!-- highlight-start -->
            {
              "action": "setVariables",
              "path": "ignore-certificate-problems.env"
            },
-           <!-- highlight-end -->
            {
              "description": "Check self-signed.badssl.com",
              "action": "checkLink",
