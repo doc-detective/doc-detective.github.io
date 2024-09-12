@@ -19,7 +19,7 @@ You can also specify
 
 ## Examples
 
-Here are a few ways you might you the `checkLink` action:
+Here are a few ways you might use the `checkLink` action:
 
 ### Check if a link is valid
 
@@ -29,11 +29,11 @@ Here are a few ways you might you the `checkLink` action:
     {
       "steps": [
         {
-          "description": "Check if Google is up.",   
+          "description": "Check if Google is up.",
           "action": "checkLink",
           "url": "https://www.google.com"
         }
-      ],
+      ]
     }
   ]
 }
@@ -50,11 +50,7 @@ Here are a few ways you might you the `checkLink` action:
           "description": "Check if Google is up with extra status codes.",
           "action": "checkLink",
           "url": "https://www.google.com",
-          "statusCodes": [
-            200,
-            201,
-            202
-          ]
+          "statusCodes": [200, 201, 202]
         }
       ]
     }
@@ -78,5 +74,97 @@ Here are a few ways you might you the `checkLink` action:
       ]
     }
   ]
+}
+```
+
+## Troubleshooting
+
+- [`checkLink` fails due to unrecognized certificates](#checklink-fails-due-to-unrecognized-certificates)
+
+### `checkLink` fails due to unrecognized certificates
+
+If the `checkLink` action fails for a URL that is valid and loads without redirects, it may be due to an internal or custom certificate that is not recognized by the testing machine.
+
+#### Example
+
+Consider the following test configuration, which checks the validity of `https://self-signed.badssl.com/`—a website using a self-signed certificate:
+
+```json title="bad-certificate.json"
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Check site with a self-signed certificate",
+          "action": "checkLink",
+          "url": "https://self-signed.badssl.com/",
+          "statusCodes": [200, 201, 202, 301]
+        }
+      ]
+    }
+  ]
+}
+```
+
+To run the test, use the following command:
+
+```bash
+npx doc-detective runTests -i bad-certificate.json
+```
+
+This command executes the test, but it fails, returning the following response:
+
+```json
+{
+  "result": "FAIL",
+  "resultDescription": "Invalid or unresolvable URL: https://self-signed.badssl.com/"
+}
+```
+
+This occurs because the self-signed certificate isn't recognized by the testing machine. This behavior is expected in `axios`, but you can bypass it in Doc Detective by setting an environment variable.
+
+#### Solution
+
+To fix this issue, follow these steps:
+
+1. Create a `.env` file with the following content:
+
+   ```text title="ignore-certificate-problems.env"
+   NODE_TLS_REJECT_UNAUTHORIZED=0
+   ```
+
+2. Modify your test configuration to include a `setVariables` action:
+
+   ```json title="bad-certificate.json"
+   {
+     "tests": [
+       {
+         "steps": [
+           <!-- highlight-start -->
+           {
+             "action": "setVariables",
+             "path": "ignore-certificate-problems.env"
+           },
+           <!-- highlight-end -->
+           {
+             "description": "Check self-signed.badssl.com",
+             "action": "checkLink",
+             "url": "https://self-signed.badssl.com/",
+             "statusCodes": [200, 201, 202, 301]
+           }
+         ]
+       }
+     ]
+   }
+   ```
+
+#### Expected result
+
+After applying these changes, the test should pass:
+
+```json
+{
+  "result": "PASS",
+  "resultDescription": "Returned 200"
 }
 ```
