@@ -83,7 +83,7 @@ Here are a few ways you might use the `checkLink` action:
 
 ### `checkLink` fails due to unrecognized certificates
 
-If the `checkLink` action fails for a valid URL that loads without redirects, it may be due to an internal or custom certificate that the testing machine does not recognize.
+If the `checkLink` action fails for a valid URL that loads without redirects, it may be due to an internal or custom certificate that the testing machine doesn't recognize.
 
 #### Example
 
