@@ -32,7 +32,7 @@ To customize your test, file type, and directory options, create a `.doc-detecti
 npx doc-detective runTests --config .doc-detective.json
 ```
 
-**Note**: All paths are relative to the current working directory, regardless where the config file is located.
+**Note**: All paths are relative to the current working directory, regardless of the config file's location.
 
 You can override config options with command-line arguments. For example, to run tests in a file named `tests.spec.json`, even if that isn't included in your config, run the following command:
 
