@@ -73,6 +73,12 @@ To create your first test, follow these steps:
    }
    ```
 
+   This test uses the following actions:
+
+   - [`goTo`](/docs/get-started/actions/goTo.md): Navigates to the specified URL (`https://example.com`) to start the test flow.
+   - [`find`](/docs/get-started/actions/find.md): Locates elements on the page using CSS selectors (for example, HTML tags like `h1` or `a`) and validates their presence and text content.
+   - [`saveScreenshot`](/docs/get-started/actions/saveScreenshot.md): Captures a screenshot of the current page and saves it to the specified file path.
+
 4. Save the file.
 
 5. In your terminal, enter the following command to run the test:
