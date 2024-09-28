@@ -4,6 +4,7 @@ layout: default
 nav_order: 1
 parent: Actions
 grand_parent: Tests
+description: Type keys.
 ---
 
 # typeKeys
@@ -147,6 +148,7 @@ Here's a list of special keys you can use:
 ```
 
 ### Type with an increased delay for legibility in recordings
+
 ```json
 {
   "tests": [

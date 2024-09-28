@@ -1,20 +1,21 @@
 ---
-sidebar_position: 1
+title: Introduction
+sidebar_label: Introduction
 ---
 
 # Doc Detective
 
-Validate your content with Doc Detective: 
+Validate your content with Doc Detective:
 
 ```bash
 npx doc-detective
 ```
 
-See the [Get started](/docs/get-started) guide for more. Come chat on [Discord](https://discord.gg/uAfSjVH7yr)!
+See the [Installation](/docs/get-started/installation.md) guide to get started. Come chat on [Discord](https://discord.gg/uAfSjVH7yr)!
 
 ## What is Doc Detective?
 
-Doc Detective is doc content testing framework that makes it easy to keep your docs accurate and up-to-date. You write tests, and Doc Detective runs them directly against your product to make sure your docs match your user experience. Whether it’s a UI-based process or a series of API calls, Doc Detective can help you find doc bugs before your users do.
+Doc Detective is a doc content testing framework that makes it easy to keep your docs accurate and up-to-date. You write tests, and Doc Detective runs them directly against your product to make sure your docs match your user experience. Whether it’s a UI-based process or a series of API calls, Doc Detective can help you find doc bugs before your users do.
 
 Doc Detective ingests test specifications and text files, parses them for testable actions, then executes those actions in a browser. The results (PASS/FAIL and context) are output as a JSON object so that other pieces of infrastructure can parse and manipulate them as needed.
 
@@ -67,4 +68,4 @@ As an open-source and accessible project, Doc Detective is for anyone who is int
 
 ## Next steps
 
-Want to take Doc Detective for a spin? [Get started](/docs/get-started).
+Want to take Doc Detective for a spin? [Get started](/docs/get-started/installation.md).

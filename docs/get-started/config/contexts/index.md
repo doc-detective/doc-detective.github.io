@@ -3,6 +3,7 @@ title: Contexts
 layout: default
 nav_order: 1
 parent: Configuration
+description: A set of conditions that must be met for a test to run.
 ---
 
 # Contexts
@@ -74,7 +75,7 @@ Here's a basic Chrome context:
   "app": {
     "name": "chrome"
   },
-  "platforms": ["windows","mac","linux"]
+  "platforms": ["windows", "mac", "linux"]
 }
 ```
 
@@ -92,7 +93,7 @@ You can specify the browser dimensions and visibility (`headless`) during tests.
       "headless": false
     }
   },
-  "platforms": ["windows","mac","linux"]
+  "platforms": ["windows", "mac", "linux"]
 }
 ```
 
@@ -109,7 +110,7 @@ You can specify a Chrome installation on your system if you want to use a specif
       "driverPath": "/path/to/chromedriver"
     }
   },
-  "platforms": ["windows","mac","linux"]
+  "platforms": ["windows", "mac", "linux"]
 }
 ```
 
@@ -124,7 +125,7 @@ Here's a basic Firefox context:
   "app": {
     "name": "firefox"
   },
-  "platforms": ["windows","mac","linux"]
+  "platforms": ["windows", "mac", "linux"]
 }
 ```
 
@@ -142,7 +143,7 @@ You can specify the browser dimensions and visibility (`headless`) during tests.
       "headless": false
     }
   },
-  "platforms": ["windows","mac","linux"]
+  "platforms": ["windows", "mac", "linux"]
 }
 ```
 
@@ -158,7 +159,7 @@ You can specify a Firefox installation on your system if you want to use a speci
       "path": "/path/to/firefox"
     }
   },
-  "platforms": ["windows","mac","linux"]
+  "platforms": ["windows", "mac", "linux"]
 }
 ```
 
@@ -175,6 +176,7 @@ safaridriver --enable
 **Note:** SafariDriver is enabled by default in GitHub Actions.
 
 If Doc Detective isn't running tests in Safari, make sure
+
 - SafariDriver is enabled.
 - the **Enable automation** option is selected the Safari's **Develop** menu.
 
@@ -190,7 +192,7 @@ You can specify the browser dimensions during tests.
     "name": "safari",
     "options": {
       "width": 1024,
-      "height": 768,
+      "height": 768
     }
   },
   "platforms": ["mac"]
@@ -208,7 +210,7 @@ Here's a basic Edge context:
   "app": {
     "name": "edge"
   },
-  "platforms": ["windows","mac","linux"]
+  "platforms": ["windows", "mac", "linux"]
 }
 ```
 
@@ -226,7 +228,7 @@ You can specify the browser dimensions and visibility (`headless`) during tests.
       "headless": false
     }
   },
-  "platforms": ["windows","mac","linux"]
+  "platforms": ["windows", "mac", "linux"]
 }
 ```
 
@@ -264,7 +266,7 @@ Here are some examples of contexts:
     "app": {
       "name": "chrome"
     },
-    "platforms": ["windows","mac","linux"]
+    "platforms": ["windows", "mac", "linux"]
   }
   ```
 
@@ -275,7 +277,7 @@ Here are some examples of contexts:
     "app": {
       "name": "firefox"
     },
-    "platforms": ["windows","mac"]
+    "platforms": ["windows", "mac"]
   }
   ```
 
@@ -309,19 +311,19 @@ You can specify contexts in the `config` object. These contexts apply to all tes
 
   ```json
   {
-    "input":".",
+    "input": ".",
     "contexts": [
       {
         "app": {
           "name": "chrome"
         },
-        "platforms": ["windows","mac","linux"]
+        "platforms": ["windows", "mac", "linux"]
       },
       {
         "app": {
           "name": "firefox"
         },
-        "platforms": ["windows","mac","linux"]
+        "platforms": ["windows", "mac", "linux"]
       },
       {
         "app": {

@@ -7,6 +7,7 @@ const config: Config = {
   title: "Doc Detective",
   tagline: "Keep your docs in sync with your product. Always.",
   favicon: "img/favicon.ico",
+  staticDirectories: ["public", "static"],
 
   // Set the production url of your site here
   url: "https://doc-detective.com",
