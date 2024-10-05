@@ -3,7 +3,8 @@ title: checkLink
 layout: default
 nav_order: 1
 parent: Actions
-grand_parent: Tests
+grand_parent: Tests,
+description: Check if a URL returns an acceptable status code from a GET request.
 ---
 
 # checkLink

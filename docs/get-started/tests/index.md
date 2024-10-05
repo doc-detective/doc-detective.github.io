@@ -1,5 +1,6 @@
 ---
 sidebar_position: 4
+description: Tests tell Doc Detective what actions to perform, how, and where.
 ---
 
 # Tests
@@ -210,6 +211,7 @@ The `regex` property defines the regular expression patterns to match, and the `
 Markdown:
 
 <!-- test-start {"detectSteps":false} -->
+
 ```markdown
 To get started,
 
@@ -218,6 +220,7 @@ To get started,
 
 ![Search results](search-results.png)
 ```
+
 <!-- test-end -->
 
 Detected tests:

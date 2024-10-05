@@ -4,6 +4,7 @@ layout: default
 nav_order: 1
 parent: Actions
 grand_parent: Tests
+description: Capture a video of test execution.
 ---
 
 # startRecording
