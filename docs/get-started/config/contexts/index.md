@@ -12,7 +12,7 @@ Doc Detective uses contexts to determine which tests to run. A context is a set 
 
 By default, Doc Detective runs tests in Chrome on Windows, macOS, and Linux. You can specify custom contexts to run tests in other apps.
 
-Each context is name up of an `app` object and a `platforms` array. When Doc Detective runs tests, it checks the associated contexts to see if the app is available and if it's running on a specified platform. If the conditions are met, the test runs in that context. You can specify multiple contexts for a test, and Doc Detective will run the test in each context that is met.
+Each context is made up of an `app` object and a `platforms` array. When Doc Detective runs tests, it checks the associated contexts to see if the app is available and if it's running on a specified platform. If the conditions are met, the test runs in that context. You can specify multiple contexts for a test, and Doc Detective will run the test in each context that is met.
 
 For comprehensive options, see the [context](/docs/references/schemas/context) reference.
 
