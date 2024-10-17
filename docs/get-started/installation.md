@@ -16,6 +16,8 @@ Downloading and running Doc Detective is straightforward. Follow these steps to 
    npm i -g doc-detective
    ```
 
+   **Note:** If you're working in a local copy of the `doc-detective` repository, you need to run `npm i` to install local dependencies.
+
 3. Run a test:
 
    ```bash
