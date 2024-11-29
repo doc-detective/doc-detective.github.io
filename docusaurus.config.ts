@@ -178,6 +178,16 @@ const config: Config = {
     require.resolve("./src/plugins/webpack-browserify"),
     "@inkeep/docusaurus/chatButton",
     "@inkeep/docusaurus/searchBar",
+    async function tailwindPlugin(context, options) {
+      return {
+        name: 'docusaurus-tailwindcss',
+        configurePostCss(postcssOptions) {
+          postcssOptions.plugins.push(require('tailwindcss'));
+          postcssOptions.plugins.push(require('autoprefixer'));
+          return postcssOptions;
+        },
+      };
+    },
     // [
     //   "posthog-docusaurus",
     //   {
@@ -193,7 +203,7 @@ const config: Config = {
   themes: ["@docusaurus/theme-mermaid"],
   stylesheets: [
     {
-      href: "src/css/shadcn-variables.css",
+      href: "src/css/custom.css",
     },
   ],
 };

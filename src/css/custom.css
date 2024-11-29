@@ -1,8 +1,13 @@
-/**
- * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
- * work well for content-centric websites.
- */
+/* src/css/custom.css */
+
+/* Import Tailwind's base styles */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Ensure Tailwind styles are scoped */
+#tailwind-docusaurus {
+/* Your custom CSS here */
 
 /* You can override the default Infima variables here. */
 :root {
@@ -28,3 +33,11 @@
   --ifm-color-primary-lightest: #4fddbf;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
+}
+
+/* Optional: Add any custom styles or overrides */
+@layer components {
+  .my-custom-style {
+    @apply px-4 py-2 bg-blue-500 text-white rounded-md;
+  }
+}/**
