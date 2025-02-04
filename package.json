@@ -1,6 +1,6 @@
 {
   "name": "doc-detective-docs",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
@@ -28,7 +28,7 @@
     "@mui/icons-material": "^5.16.7",
     "@mui/material": "^5.16.7",
     "clsx": "^2.1.1",
-    "doc-detective-common": "^1.20.0",
+    "doc-detective-common": "^1.22.0",
     "dotenv": "^16.4.5",
     "https-browserify": "^1.0.0",
     "os-browserify": "^0.3.0",

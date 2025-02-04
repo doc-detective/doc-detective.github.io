@@ -18,6 +18,7 @@ async function main() {
     "goTo_v2",
     "httpRequest_v2",
     "runShell_v2",
+    "runCode_v2",
     "saveScreenshot_v2",
     "setVariables_v2",
     "startRecording_v2",

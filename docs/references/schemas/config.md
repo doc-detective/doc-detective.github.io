@@ -10,7 +10,7 @@ Field | Type | Description | Default
 defaultCommand | string |  Optional. Default command to run when no command is specified.<br/><br/>Accepted values: `runTests`, `runCoverage` | 
 input | One of<br/>-&nbsp;string<br/>-&nbsp;array of strings |  Optional. Path(s) to test specifications and documentation source files. May be paths to specific files or to directories to scan for files. | `.`
 output | string |  Optional. Path of the of the file or directory in which to store the output of Doc Detective commands. If a file path is specified, the output is written to that file. If a file of that name already exists, Doc Detective creates appends an integer to the result file name. If a directory path is specified, the output file name is dependent on the command being run. | `.`
-recursive | boolean |  Optional. If `true` searches `input`, `setup`, and `cleanup` paths recursively for test specifications and source files. | `true`
+recursive | boolean |  Optional. If `true` searches `input`, `setup`, and `cleanup` paths recursively for test specificaions and source files. | `true`
 relativePathBase | string |  Optional. Whether paths should be interpreted as relative to the current working directory (`cwd`) or to the file in which they're specified (`file`).<br/><br/>Accepted values: `cwd`, `file` | `cwd`
 envVariables | string |  Optional. Path to a `.env` file to load before performing a Doc Detective operation. | 
 runTests | object |  Optional. Options for running tests. When running tests, values set here override general configuration options. | 
@@ -18,20 +18,20 @@ runTests.input | One of<br/>-&nbsp;string<br/>-&nbsp;array of strings |  Optiona
 runTests.output | string |  Optional. Path of the of the file or directory in which to store the output of Doc Detective commands. If a file path is specified, the output is written to that file. If a file of that name already exists, Doc Detective creates appends an integer to the result file name. If a directory path is specified, the output file name is dependent on the command being run. | `.`
 runTests.setup | One of<br/>-&nbsp;string<br/>-&nbsp;array of strings |  Optional. Path(s) to test specifications to perform before those specified by `input`. Useful for setting up testing environments. | 
 runTests.cleanup | One of<br/>-&nbsp;string<br/>-&nbsp;array of strings |  Optional. Path(s) to test specifications to perform after those specified by `input`. Useful for cleaning up testing environments. | 
-runTests.recursive | boolean |  Optional. If `true` searches `input`, `setup`, and `cleanup` paths recursively for test specifications and source files. | 
+runTests.recursive | boolean |  Optional. If `true` searches `input`, `setup`, and `cleanup` paths recursively for test specificaions and source files. | 
 runTests.detectSteps | boolean |  Optional. Whether or not to detect steps in input files based on markup regex. | `false`
 runTests.mediaDirectory | string |  Optional. DEPRECATED. | `.`
 runTests.downloadDirectory | string |  Optional. Path of the directory in which to store downloaded files. | `.`
 runTests.contexts | array of object([context](/docs/references/schemas/context)) |  Optional. Application/platform sets to run tests in. If no contexts are specified but a context is required by one or more tests, Doc Detective attempts to identify a supported context in the current environment and run tests against it. | ``[{"app":{"name":"firefox","options":{"width":1200,"height":800,"headless":true}},"platforms":["linux","mac","windows"]}]``
-runCoverage | object |  Optional. Options for performing test coverage analysis on documentation source files. When performing coverage analysis, values set here override general configuration options. | 
+runCoverage | object |  Optional. Options for performing test coverage analysis on documentation source files.  When performing coveration analysis, values set here override general configuration options. | 
 runCoverage.input | One of<br/>-&nbsp;string<br/>-&nbsp;array of strings |  Optional. Path(s) to test specifications and documentation source files. May be paths to specific files or to directories to scan for files. | 
 runCoverage.output | string |  Optional. Path of the of the file or directory in which to store the output of Doc Detective commands. If a file path is specified, the output is written to that file. If a file of that name already exists, Doc Detective creates appends an integer to the result file name. If a directory path is specified, the output file name is dependent on the command being run. | `.`
-runCoverage.recursive | boolean |  Optional. If `true` searches `input`, `setup`, and `cleanup` paths recursively for test specifications and source files. | 
+runCoverage.recursive | boolean |  Optional. If `true` searches `input`, `setup`, and `cleanup` paths recursively for test specificaions and source files. | 
 runCoverage.markup | array of strings |  Optional. Markup types to include when performing this operation. If no markup types are specified, the operation includes all markup types as defined in `fileTypes`. | ``["onscreenText","emphasis","image","hyperlink","codeInline","codeBlock","interaction"]``
-suggestTests | object |  Optional. Options for suggesting tests based on documentation source files. When suggesting tests, values set here override general configuration options. | 
+suggestTests | object |  Optional. Options for suggesting tests based on documentation source files.  When suggesting tests, values set here override general condiguration options. | 
 suggestTests.input | One of<br/>-&nbsp;string<br/>-&nbsp;array of strings |  Optional. Path(s) to test specifications and documentation source files. May be paths to specific files or to directories to scan for files. | 
 suggestTests.output | string |  Optional. Path of the of the file or directory in which to store the output of Doc Detective commands. If a file path is specified, the output is written to that file. If a file of that name already exists, Doc Detective creates appends an integer to the result file name. If a directory path is specified, the output file name is dependent on the command being run. | `.`
-suggestTests.recursive | boolean |  Optional. If `true` searches `input`, `setup`, and `cleanup` paths recursively for test specifications and source files. | 
+suggestTests.recursive | boolean |  Optional. If `true` searches `input`, `setup`, and `cleanup` paths recursively for test specificaions and source files. | 
 suggestTests.markup | array of strings |  Optional. Markup types to include when performing this operation. If no markup types are specified, the operation includes all markup types as defined in `fileTypes`. | ``["onscreenText","emphasis","image","hyperlink","codeInline","codeBlock","interaction"]``
 fileTypes | array of objects |  Optional. Information on supported file types and how to parse the markup within them. | []
 fileTypes.name | string |  Optional. Name of the file type. | 
@@ -49,6 +49,7 @@ fileTypes.markup.actions | array of <br/>- strings<br/>- objects<br/>-&nbsp;obje
 fileTypes.markup.actions.name | string |  Required. Name of the action.<br/><br/>Accepted values: `checkLink`, `find`, `goTo`, `httpRequest`, `runShell`, `saveScreenshot`, `setVariables`, `startRecording`, `stopRecording`, `typeKeys`, `wait` | 
 fileTypes.markup.actions.params | object |  Optional. Parameters for the action. | 
 integrations | object |  Optional. Options for connecting to external services. | 
+integrations.openApi | array of undefineds |  Optional. undefined | 
 telemetry | object |  Optional. Options around sending telemetry for Doc Detective usage. | ``{"send":true}``
 telemetry.send | boolean |  Required. If `true`, sends Doc Detective telemetry. | `true`
 telemetry.userId | string |  Optional. Identifier for the organization, group, or individual running Doc Detective. | 
@@ -93,6 +94,21 @@ logLevel | string |  Optional. Amount of detail to output when performing an ope
           "mac",
           "windows"
         ]
+      }
+    ]
+  }
+}
+```
+
+```json
+{
+  "integrations": {
+    "openApi": [
+      {
+        "name": "Acme",
+        "descriptionPath": "https://www.acme.com/openapi.json",
+        "server": "https://api.acme.com",
+        "mockResponse": true
       }
     ]
   }

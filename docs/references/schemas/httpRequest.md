@@ -9,8 +9,9 @@ Field | Type | Description | Default
 :-- | :-- | :-- | :--
 id | string |  Optional. ID of the step. | Generated UUID
 description | string |  Optional. Description of the step. | 
-action | string |  Required. Action to perform. | 
-url | string |  Required. URL for the HTTP request. | 
+action | string |  Required. Aciton to perform. | 
+url | string |  Optional. URL for the HTTP request. | 
+openApi | undefined |  Optional. undefined | 
 statusCodes | array of integers |  Optional. Accepted status codes. If the specified URL returns a code other than what is specified here, the action fails. | ``[200]``
 method | string |  Optional. Method of the HTTP request<br/><br/>Accepted values: `get`, `put`, `post`, `patch`, `delete` | `get`
 timeout | integer |  Optional. Timeout for the HTTP request, in milliseconds. | `60000`
@@ -119,5 +120,69 @@ envsFromResponseData.jqFilter | string |  Required. jq filter to apply to the re
   "saveDirectory": "media",
   "maxVariation": 5,
   "overwrite": "byVariation"
+}
+```
+
+```json
+{
+  "action": "httpRequest",
+  "openApi": {
+    "name": "Reqres",
+    "operationId": "getUserById"
+  },
+  "requestParams": {
+    "id": 123
+  }
+}
+```
+
+```json
+{
+  "action": "httpRequest",
+  "openApi": {
+    "descriptionPath": "https://api.example.com/openapi.json",
+    "operationId": "getUserById"
+  },
+  "requestParams": {
+    "id": 123
+  }
+}
+```
+
+```json
+{
+  "action": "httpRequest",
+  "openApi": {
+    "descriptionPath": "https://api.example.com/openapi.json",
+    "operationId": "createUser",
+    "useExample": "both"
+  }
+}
+```
+
+```json
+{
+  "action": "httpRequest",
+  "openApi": {
+    "descriptionPath": "https://api.example.com/openapi.json",
+    "operationId": "updateUser",
+    "useExample": "request",
+    "exampleKey": "acme"
+  }
+}
+```
+
+```json
+{
+  "action": "httpRequest",
+  "openApi": {
+    "descriptionPath": "https://api.example.com/openapi.json",
+    "operationId": "updateUser",
+    "useExample": "request",
+    "exampleKey": "acme",
+    "requestHeaders": {
+      "Authorization": "Bearer $TOKEN"
+    }
+  }
 }
 ```
