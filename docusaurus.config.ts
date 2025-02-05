@@ -178,14 +178,16 @@ const config: Config = {
     require.resolve("./src/plugins/webpack-browserify"),
     "@inkeep/docusaurus/chatButton",
     "@inkeep/docusaurus/searchBar",
-    [
-      "posthog-docusaurus",
-      {
-        apiKey: process.env.POSTHOG_API_KEY, // required
-        appUrl: "https://us.i.posthog.com", // optional, defaults to "https://us.i.posthog.com"
-        enableInDevelopment: false, // optional
-      },
-    ],
+    ...(process.env.POSTHOG_API_KEY ? [
+      [
+        "posthog-docusaurus",
+        {
+          apiKey: process.env.POSTHOG_API_KEY,
+          appUrl: "https://us.i.posthog.com",
+          enableInDevelopment: false,
+        },
+      ],
+    ] : []),
   ],
   markdown: {
     mermaid: true,
