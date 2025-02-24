@@ -23,7 +23,7 @@ function App() {
 
   const removeEmptyValues = (obj) => {
     // console.log(`Removing empty values from ${JSON.stringify(obj)}`);
-    Object.keys(obj).forEach((key) => {
+    for (const key of Object.keys(obj)) {
       if (
         obj[key] &&
         !Array.isArray(obj) &&
@@ -38,7 +38,7 @@ function App() {
         (typeof obj[key] === "object" && Object.keys(obj[key]).length === 0)
       )
         delete obj[key];
-    });
+    };
     // console.log(`Removed empty values from ${JSON.stringify(obj)}`);
     return obj;
   };

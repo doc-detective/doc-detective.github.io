@@ -75,21 +75,21 @@ const SchemaField = ({
 
   // Get default value
   const defaultValue = propertyValue?.default !== undefined
-    ? propertyValue.default
-    : schema.dynamicDefaults?.[propertyKey] === "uuid"
-    ? uuidv4()
-    : type === "array"
-    ? []
-    : type === "object"
-    ? // Crawl object properties to get default values
-      // TODO: Add support for nested objects
-      Object.keys(propertyValue?.properties || {}).reduce((acc, key) => {
-        acc[key] = propertyValue.properties[key].default;
-        return acc;
-      }, {})
-    : type === "boolean"
-    ? false
-    : "";
+      ? propertyValue.default
+      : schema.dynamicDefaults?.[propertyKey] === "uuid"
+      ? uuidv4()
+      : type === "array"
+      ? []
+      : type === "object"
+      ? // Crawl object properties to get default values
+        // TODO: Add support for nested objects
+        Object.keys(propertyValue?.properties || {}).reduce((acc, key) => {
+          acc[key] = propertyValue.properties[key].default;
+          return acc;
+        }, {})
+      : type === "boolean"
+      ? false
+      : "";
 
   // Add validation rules
   let validationRules = {};
@@ -124,7 +124,7 @@ const SchemaField = ({
     const inputValue = value;
     let error = false;
     // You can add your validation logic here
-    Object.keys(validationRules).forEach((rule) => {
+    for (const rule of Object.keys(validationRules)) {
       if (error) return;
       if (rule === "minimum" && inputValue < validationRules[rule]) {
         error = true;
@@ -177,7 +177,7 @@ const SchemaField = ({
         setErrorState(false);
         setErrorMessage("");
       }
-    });
+    }
   };
 
   useEffect(() => {
@@ -284,9 +284,9 @@ const SchemaField = ({
       const combinedObject = { ...pairsObject, ...fieldValue };
       // Sort object keys based on schema
       const sortedObject = {};
-      Object.keys(propertyValue.properties).forEach((key) => {
+      for (const key of Object.keys(propertyValue.properties)) {
         if (combinedObject[key]) sortedObject[key] = combinedObject[key];
-      });
+      }
       passValueToParent(sortedObject);
     };
 
@@ -307,13 +307,13 @@ const SchemaField = ({
       const combinedObject = { ...pairsObject, ...fieldValue };
       // Sort object keys based on schema
       const sortedObject = {};
-      Object.keys(propertyValue.properties).forEach((key) => {
+      for (const key of Object.keys(propertyValue.properties)) {
         if (combinedObject[key]) sortedObject[key] = combinedObject[key];
-      });
+      }
       // Add missing keys
-      Object.keys(combinedObject).forEach((key) => {
+      for (const key of Object.keys(combinedObject)) {
         if (!sortedObject[key]) sortedObject[key] = combinedObject[key];
-      });
+      }
       passValueToParent(sortedObject);
     };
 
@@ -333,9 +333,9 @@ const SchemaField = ({
         const combinedObject = { ...pairsObject, ...newFieldValue };
         // Sort object keys based on schema
         const sortedObject = {};
-        Object.keys(propertyValue.properties).forEach((key) => {
+        for (const key of Object.keys(propertyValue.properties)) {
           if (combinedObject[key]) sortedObject[key] = combinedObject[key];
-        });
+        }
         passValueToParent(sortedObject);
         return newFieldValue;
       });
@@ -474,10 +474,12 @@ const SchemaField = ({
       const items = [];
       if (value.items && !value.items.anyOf && !value.items.oneOf)
         items.push(value.items);
-      if (value.items.anyOf)
-        value.items.anyOf.forEach((item) => items.push(item));
-      if (value.items.oneOf)
-        value.items.oneOf.forEach((item) => items.push(item));
+      if (value.items.anyOf) {
+        for (const item of value.items.anyOf) items.push(item);
+      }
+      if (value.items.oneOf) {
+        for (const item of value.items.oneOf) items.push(item);
+      }
       return items;
     };
     const items = getItems(propertyValue);
@@ -520,7 +522,7 @@ const SchemaField = ({
         } else if (typeof value === "number") {
           // Find schema with type number or integer
           const numberSchema = items.find((item) =>
-            item?.type === "number" || item?.type === "integer"
+             item?.type === "number" || item?.type === "integer"
           );
           if (numberSchema)
             return { _key: uuidv4(), value: value, schema: numberSchema };
