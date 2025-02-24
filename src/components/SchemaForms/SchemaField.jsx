@@ -157,7 +157,7 @@ const SchemaField = ({
         !new RegExp(validationRules[rule]).test(inputValue)
       ) {
         error = true;
-        setErrorMessage(`Must be a number.`);
+        setErrorMessage("Must be a number.");
       } else if (
         rule === "pattern" &&
         !new RegExp(validationRules[rule]).test(inputValue)
@@ -168,7 +168,7 @@ const SchemaField = ({
         );
       } else if (rule === "required" && !inputValue) {
         error = true;
-        setErrorMessage(`Must have a value.`);
+        setErrorMessage("Must have a value.");
       }
 
       if (error) {
