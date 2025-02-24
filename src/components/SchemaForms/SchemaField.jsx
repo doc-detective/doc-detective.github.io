@@ -23,13 +23,15 @@ import { v4 as uuidv4 } from "uuid";
 const getType = (value) => {
   if (value.type) {
     return value.type;
-  } else if (value.anyOf || value.oneOf) {
+  } 
+  if (value.anyOf || value.oneOf) {
     let xOfArray = value.anyOf || value.oneOf;
     let typeOptions = xOfArray.filter((item) => item.type);
     if (typeOptions.includes((item) => item.type === "string")) {
       // Find if any types are "string"
       return "string";
-    } else if (typeOptions.length > 0) {
+    }
+    if (typeOptions.length > 0) {
       // Set to first type
       return typeOptions[0].type;
     }
