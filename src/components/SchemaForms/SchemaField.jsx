@@ -15,7 +15,6 @@ import {
 	TextField,
 } from "@mui/material";
 import Ajv from "ajv";
-import * as React from "react";
 import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { v4 as uuidv4 } from "uuid";

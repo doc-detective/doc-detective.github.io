@@ -1,6 +1,6 @@
 import { FormControlLabel, Switch } from "@mui/material";
 import CodeBlock from "@theme/CodeBlock";
-import React, { useState } from "react";
+import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 
 const JSONBlock = ({ object, multiline }) => {
