@@ -50,7 +50,7 @@ const SchemaField = ({
   // passValueToParent: A function that passes the value of the field to the parent component.
 
   // If the field is marked as const, pass the value to the parent component and return null.
-  if (propertyValue && propertyValue.const) {
+  if (propertyValue?.const) {
     useEffect(() => {
       passValueToParent(propertyValue.const);
     }, []);
@@ -553,8 +553,7 @@ const SchemaField = ({
         {/* {label && <ReactMarkdown>{JSON.stringify(fieldValue)}</ReactMarkdown>} */}
         <ReactMarkdown>{helperText}</ReactMarkdown>
         <div class="arrayChildren">
-          {fieldValue &&
-            fieldValue.map((item, index) => (
+          {fieldValue?.map((item, index) => (
               <Paper
                 elevation={1}
                 variant="outlined"
@@ -626,8 +625,7 @@ const SchemaField = ({
                   open={open}
                   onClose={handleMenuClose}
                 >
-                  {items &&
-                    items.map((schema) => (
+                  {items?.map((schema) => (
                       <MenuItem
                         onClick={() => {
                           handleArrayAdd(schema);
