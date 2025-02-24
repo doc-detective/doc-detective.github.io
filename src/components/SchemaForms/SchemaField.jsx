@@ -1,35 +1,36 @@
-import Ajv from "ajv";
-import * as React from "react";
-import { useState, useEffect } from "react";
-import ReactMarkdown from "react-markdown";
+import ArrowDownward from "@mui/icons-material/ArrowDownward";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ArrowUpward from "@mui/icons-material/ArrowUpward";
+import DeleteIcon from "@mui/icons-material/Delete";
 import {
-  TextField,
+  Button,
   FormControl,
   FormControlLabel,
   FormHelperText,
-  Switch,
-  Button,
   IconButton,
-  Paper,
   Menu,
   MenuItem,
+  Paper,
+  Switch,
+  TextField,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import ArrowUpward from "@mui/icons-material/ArrowUpward";
-import ArrowDownward from "@mui/icons-material/ArrowDownward";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import Ajv from "ajv";
+import { useEffect, useState } from "react";
+import ReactMarkdown from "react-markdown";
 import { v4 as uuidv4 } from "uuid";
 
 const getType = (value) => {
   if (value.type) {
     return value.type;
-  } else if (value.anyOf || value.oneOf) {
+  }
+  if (value.anyOf || value.oneOf) {
     let xOfArray = value.anyOf || value.oneOf;
     let typeOptions = xOfArray.filter((item) => item.type);
     if (typeOptions.includes((item) => item.type === "string")) {
       // Find if any types are "string"
       return "string";
-    } else if (typeOptions.length > 0) {
+    }
+    if (typeOptions.length > 0) {
       // Set to first type
       return typeOptions[0].type;
     }
@@ -50,7 +51,7 @@ const SchemaField = ({
   // passValueToParent: A function that passes the value of the field to the parent component.
 
   // If the field is marked as const, pass the value to the parent component and return null.
-  if (propertyValue && propertyValue.const) {
+  if (propertyValue?.const) {
     useEffect(() => {
       passValueToParent(propertyValue.const);
     }, []);
@@ -74,22 +75,26 @@ const SchemaField = ({
   let type = propertyValue ? getType(propertyValue) : undefined;
 
   // Get default value
-  const defaultValue = propertyValue?.default !== undefined
-    ? propertyValue.default
-    : schema.dynamicDefaults?.[propertyKey] === "uuid"
-    ? uuidv4()
-    : type === "array"
-    ? []
-    : type === "object"
-    ? // Crawl object properties to get default values
-      // TODO: Add support for nested objects
-      Object.keys(propertyValue?.properties || {}).reduce((acc, key) => {
-        acc[key] = propertyValue.properties[key].default;
-        return acc;
-      }, {})
-    : type === "boolean"
-    ? false
-    : "";
+  const defaultValue =
+    propertyValue?.default !== undefined
+      ? propertyValue.default
+      : schema.dynamicDefaults?.[propertyKey] === "uuid"
+        ? uuidv4()
+        : type === "array"
+          ? []
+          : type === "object"
+            ? // Crawl object properties to get default values
+              // TODO: Add support for nested objects
+              Object.keys(propertyValue?.properties || {}).reduce(
+                (acc, key) => {
+                  acc[key] = propertyValue.properties[key].default;
+                  return acc;
+                },
+                {},
+              )
+            : type === "boolean"
+              ? false
+              : "";
 
   // Add validation rules
   let validationRules = {};
@@ -124,17 +129,17 @@ const SchemaField = ({
     const inputValue = value;
     let error = false;
     // You can add your validation logic here
-    Object.keys(validationRules).forEach((rule) => {
+    for (const rule of Object.keys(validationRules)) {
       if (error) return;
       if (rule === "minimum" && inputValue < validationRules[rule]) {
         error = true;
         setErrorMessage(
-          `Must be greater than or equal to ${validationRules[rule]}.`
+          `Must be greater than or equal to ${validationRules[rule]}.`,
         );
       } else if (rule === "maximum" && inputValue > validationRules[rule]) {
         error = true;
         setErrorMessage(
-          `Must be less than or equal to ${validationRules[rule]}.`
+          `Must be less than or equal to ${validationRules[rule]}.`,
         );
       } else if (
         rule === "minLength" &&
@@ -142,7 +147,7 @@ const SchemaField = ({
       ) {
         error = true;
         setErrorMessage(
-          `Must be at least ${validationRules[rule]} characters.`
+          `Must be at least ${validationRules[rule]} characters.`,
         );
       } else if (
         rule === "maxLength" &&
@@ -150,25 +155,25 @@ const SchemaField = ({
       ) {
         error = true;
         setErrorMessage(
-          `Must be less than or equal to ${validationRules[rule]} characters.`
+          `Must be less than or equal to ${validationRules[rule]} characters.`,
         );
       } else if (
         rule === "numeric" &&
         !new RegExp(validationRules[rule]).test(inputValue)
       ) {
         error = true;
-        setErrorMessage(`Must be a number.`);
+        setErrorMessage("Must be a number.");
       } else if (
         rule === "pattern" &&
         !new RegExp(validationRules[rule]).test(inputValue)
       ) {
         error = true;
         setErrorMessage(
-          `Must match the following pattern: ${validationRules[rule]}`
+          `Must match the following pattern: ${validationRules[rule]}`,
         );
       } else if (rule === "required" && !inputValue) {
         error = true;
-        setErrorMessage(`Must have a value.`);
+        setErrorMessage("Must have a value.");
       }
 
       if (error) {
@@ -177,7 +182,7 @@ const SchemaField = ({
         setErrorState(false);
         setErrorMessage("");
       }
-    });
+    }
   };
 
   useEffect(() => {
@@ -284,9 +289,9 @@ const SchemaField = ({
       const combinedObject = { ...pairsObject, ...fieldValue };
       // Sort object keys based on schema
       const sortedObject = {};
-      Object.keys(propertyValue.properties).forEach((key) => {
+      for (const key of Object.keys(propertyValue.properties)) {
         if (combinedObject[key]) sortedObject[key] = combinedObject[key];
-      });
+      }
       passValueToParent(sortedObject);
     };
 
@@ -307,13 +312,13 @@ const SchemaField = ({
       const combinedObject = { ...pairsObject, ...fieldValue };
       // Sort object keys based on schema
       const sortedObject = {};
-      Object.keys(propertyValue.properties).forEach((key) => {
+      for (const key of Object.keys(propertyValue.properties)) {
         if (combinedObject[key]) sortedObject[key] = combinedObject[key];
-      });
+      }
       // Add missing keys
-      Object.keys(combinedObject).forEach((key) => {
+      for (const key of Object.keys(combinedObject)) {
         if (!sortedObject[key]) sortedObject[key] = combinedObject[key];
-      });
+      }
       passValueToParent(sortedObject);
     };
 
@@ -333,9 +338,9 @@ const SchemaField = ({
         const combinedObject = { ...pairsObject, ...newFieldValue };
         // Sort object keys based on schema
         const sortedObject = {};
-        Object.keys(propertyValue.properties).forEach((key) => {
+        for (const key of Object.keys(propertyValue.properties)) {
           if (combinedObject[key]) sortedObject[key] = combinedObject[key];
-        });
+        }
         passValueToParent(sortedObject);
         return newFieldValue;
       });
@@ -474,10 +479,12 @@ const SchemaField = ({
       const items = [];
       if (value.items && !value.items.anyOf && !value.items.oneOf)
         items.push(value.items);
-      if (value.items.anyOf)
-        value.items.anyOf.forEach((item) => items.push(item));
-      if (value.items.oneOf)
-        value.items.oneOf.forEach((item) => items.push(item));
+      if (value.items.anyOf) {
+        for (const item of value.items.anyOf) items.push(item);
+      }
+      if (value.items.oneOf) {
+        for (const item of value.items.oneOf) items.push(item);
+      }
       return items;
     };
     const items = getItems(propertyValue);
@@ -519,8 +526,8 @@ const SchemaField = ({
             return { _key: uuidv4(), value: value, schema: objectSchema };
         } else if (typeof value === "number") {
           // Find schema with type number or integer
-          const numberSchema = items.find((item) =>
-            item?.type === "number" || item?.type === "integer"
+          const numberSchema = items.find(
+            (item) => item?.type === "number" || item?.type === "integer",
           );
           if (numberSchema)
             return { _key: uuidv4(), value: value, schema: numberSchema };
@@ -551,46 +558,45 @@ const SchemaField = ({
         {/* {label && <ReactMarkdown>{JSON.stringify(fieldValue)}</ReactMarkdown>} */}
         <ReactMarkdown>{helperText}</ReactMarkdown>
         <div class="arrayChildren">
-          {fieldValue &&
-            fieldValue.map((item, index) => (
-              <Paper
-                elevation={1}
-                variant="outlined"
-                key={item._key}
-                style={{ display: "flex" }}
+          {fieldValue?.map((item, index) => (
+            <Paper
+              elevation={1}
+              variant="outlined"
+              key={item._key}
+              style={{ display: "flex" }}
+            >
+              {/* {console.log(item)} */}
+              <SchemaField
+                {...{
+                  schema: propertyValue,
+                  propertyValue: {
+                    ...item.schema,
+                    default: item.value,
+                  },
+                  passValueToParent: (value) =>
+                    handleArrayChange(item._key, value),
+                }}
+              />
+              <IconButton
+                aria-label="up"
+                onClick={() => handleArrayMove(index, "up")}
               >
-                {/* {console.log(item)} */}
-                <SchemaField
-                  {...{
-                    schema: propertyValue,
-                    propertyValue: {
-                      ...item.schema,
-                      default: item.value,
-                    },
-                    passValueToParent: (value) =>
-                      handleArrayChange(item._key, value),
-                  }}
-                />
-                <IconButton
-                  aria-label="up"
-                  onClick={() => handleArrayMove(index, "up")}
-                >
-                  <ArrowUpward />
-                </IconButton>
-                <IconButton
-                  aria-label="down"
-                  onClick={() => handleArrayMove(index, "down")}
-                >
-                  <ArrowDownward />
-                </IconButton>
-                <IconButton
-                  aria-label="delete"
-                  onClick={() => handleArrayDelete(item._key)}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </Paper>
-            ))}
+                <ArrowUpward />
+              </IconButton>
+              <IconButton
+                aria-label="down"
+                onClick={() => handleArrayMove(index, "down")}
+              >
+                <ArrowDownward />
+              </IconButton>
+              <IconButton
+                aria-label="delete"
+                onClick={() => handleArrayDelete(item._key)}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Paper>
+          ))}
           <div class="arrayAdd">
             {items.length === 1 && (
               <Button
@@ -624,20 +630,19 @@ const SchemaField = ({
                   open={open}
                   onClose={handleMenuClose}
                 >
-                  {items &&
-                    items.map((schema) => (
-                      <MenuItem
-                        onClick={() => {
-                          handleArrayAdd(schema);
-                          handleMenuClose();
-                        }}
-                      >
-                        {schema.title ||
-                          label.replace(/s$/, "") ||
-                          schema.type ||
-                          "Item"}
-                      </MenuItem>
-                    ))}
+                  {items?.map((schema) => (
+                    <MenuItem
+                      onClick={() => {
+                        handleArrayAdd(schema);
+                        handleMenuClose();
+                      }}
+                    >
+                      {schema.title ||
+                        label.replace(/s$/, "") ||
+                        schema.type ||
+                        "Item"}
+                    </MenuItem>
+                  ))}
                 </Menu>
               </div>
             )}
