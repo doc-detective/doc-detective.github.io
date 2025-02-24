@@ -17,7 +17,7 @@ const JSONBlock = ({object, multiline}) => {
     // Return the component.
     return (
         <div className="json-preview">
-            <ReactMarkdown>{`## JSON`}</ReactMarkdown>
+            <ReactMarkdown>{"## JSON"}</ReactMarkdown>
          
             <CodeBlock
                 text={text}
