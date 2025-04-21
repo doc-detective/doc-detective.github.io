@@ -1,6 +1,6 @@
 {
   "name": "doc-detective-docs",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
@@ -28,21 +28,21 @@
     "@mui/icons-material": "^6.4.3",
     "@mui/material": "^6.4.3",
     "clsx": "^2.1.1",
-    "doc-detective-common": "^1.22.0",
+    "doc-detective-common": "^3.0.0",
     "dotenv": "^16.4.7",
     "https-browserify": "^1.0.0",
     "os-browserify": "^0.3.0",
     "path-browserify": "^1.0.1",
-    "posthog-docusaurus": "^2.0.2",
+    "posthog-docusaurus": "^2.0.4",
     "prism-react-renderer": "^2.4.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-markdown": "^9.0.3",
     "stream-http": "^3.2.0",
-    "yaml": "^2.7.0"
+    "yaml": "^2.7.1"
   },
   "devDependencies": {
-    "@chromatic-com/storybook": "^3.2.4",
+    "@chromatic-com/storybook": "^3.2.6",
     "@docusaurus/module-type-aliases": "3.7.0",
     "@docusaurus/tsconfig": "3.7.0",
     "@docusaurus/types": "3.7.0",

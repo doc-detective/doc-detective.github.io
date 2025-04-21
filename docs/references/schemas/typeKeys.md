@@ -1,30 +1,43 @@
 
 # typeKeys
 
-Type keys. To type special keys, begin and end the string with `$` and use the special key's enum. For example, to type the Escape key, enter `$ESCAPE$`.
+Type keys. To type special keys, begin and end the string with `$` and use the special key's keyword. For example, to type the Escape key, enter `$ESCAPE$`.
 
 ## Fields
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
-id | string |  Optional. ID of the step. | Generated UUID
-description | string |  Optional. Description of the step. | 
-action | string |  Required. The action to perform. | 
-keys | One of<br/>-&nbsp;string<br/>-&nbsp;array of strings |  Required. String of keys to enter. | 
-delay | number |  Optional. Delay in milliseconds between each key press. Only valid during a recording. | `100`
+keys | One of<br/>-&nbsp;string<br/>-&nbsp;array of string |  Optional. Sequence of keys to enter. | 
+inputDelay | number |  Optional. Delay in milliseconds between each key press during a recording | `100`
+selector | string |  Optional. Selector for the element to type into. If not specified, the typing occurs in the active element. | 
 
 ## Examples
 
 ```json
+"kittens"
+```
+
+```json
+[
+  "$ENTER$"
+]
+```
+
+```json
+[
+  "kittens",
+  "$ENTER$"
+]
+```
+
+```json
 {
-  "action": "typeKeys",
   "keys": "kittens"
 }
 ```
 
 ```json
 {
-  "action": "typeKeys",
   "keys": [
     "$ENTER$"
   ]
@@ -33,11 +46,10 @@ delay | number |  Optional. Delay in milliseconds between each key press. Only v
 
 ```json
 {
-  "action": "typeKeys",
   "keys": [
     "kittens",
     "$ENTER$"
   ],
-  "delay": 500
+  "inputDelay": 500
 }
 ```

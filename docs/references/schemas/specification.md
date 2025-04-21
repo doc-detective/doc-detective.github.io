@@ -7,11 +7,11 @@
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
-id | string |  Optional. Unique identifier for the test specification. | 
+specId | string |  Optional. Unique identifier for the test specification. | Generated UUID
 description | string |  Optional. Description of the test specification. | 
-file | string |  Optional. Path to the file that the specification is associated with. | 
-contexts | array of object([context](/docs/references/schemas/context)) |  Optional. Application/platform sets to run tests in. Overrides `contexts` defined at the config-level. | 
-openApi | array of undefineds |  Optional. undefined | 
+contentPath | string |  Optional. Path to the content that the specification is associated with. | 
+runOn | array of object([context](/docs/references/schemas/context)) |  Optional. Contexts to run the test in. Overrides contexts defined at the config and spec levels. | 
+openApi | array of unknown |  Optional. No description provided. | 
 tests | array of object([test](/docs/references/schemas/test)) |  Required. [Tests](test) to perform. | 
 
 ## Examples
@@ -22,8 +22,9 @@ tests | array of object([test](/docs/references/schemas/test)) |  Required. [Tes
     {
       "steps": [
         {
-          "action": "checkLink",
-          "url": "https://www.duckduckgo.com"
+          "checkLink": {
+            "url": "https://www.duckduckgo.com"
+          }
         }
       ]
     }
@@ -33,94 +34,110 @@ tests | array of object([test](/docs/references/schemas/test)) |  Required. [Tes
 
 ```json
 {
-  "id": "Do all the things! - Spec",
-  "contexts": [
+  "specId": "Do all the things! - Spec",
+  "runOn": [
     {
-      "app": {
-        "name": "chrome",
-        "path": "/usr/bin/firefox"
-      },
       "platforms": [
         "windows",
         "mac"
-      ]
+      ],
+      "browsers": {
+        "name": "firefox",
+        "window": {},
+        "viewport": {}
+      }
     }
   ],
   "tests": [
     {
-      "id": "Do all the things! - Test",
+      "testId": "Do all the things! - Test",
       "description": "This test includes nearly every property across all actions.",
-      "contexts": [
+      "runOn": [
         {
-          "app": {
-            "name": "firefox",
-            "path": "/usr/bin/firefox"
-          },
-          "platforms": [
-            "linux"
-          ]
+          "platforms": "linux",
+          "browsers": "firefox"
         }
       ],
       "steps": [
         {
-          "action": "setVariables",
-          "path": ".env"
+          "loadVariables": ".env"
         },
         {
-          "action": "runShell",
-          "command": "echo",
-          "args": [
-            "$USER"
-          ]
-        },
-        {
-          "action": "checkLink",
-          "url": "https://www.duckduckgo.com"
-        },
-        {
-          "action": "httpRequest",
-          "url": "https://reqres.in/api/users",
-          "method": "post",
-          "requestData": {
-            "name": "morpheus",
-            "job": "leader"
+          "runShell": {
+            "command": "echo",
+            "args": [
+              "$USER"
+            ],
+            "maxVariation": 0,
+            "overwrite": "aboveVariation"
           },
-          "responseData": {
-            "name": "morpheus",
-            "job": "leader"
+          "variables": {}
+        },
+        {
+          "checkLink": {
+            "url": "https://www.duckduckgo.com"
+          }
+        },
+        {
+          "httpRequest": {
+            "method": "post",
+            "url": "https://reqres.in/api/users",
+            "request": {
+              "body": {
+                "name": "morpheus",
+                "job": "leader"
+              }
+            },
+            "response": {
+              "body": {
+                "name": "morpheus",
+                "job": "leader"
+              }
+            },
+            "statusCodes": [
+              200,
+              201
+            ],
+            "maxVariation": 0,
+            "overwrite": "aboveVariation"
           },
-          "statusCodes": [
-            200,
-            201
-          ]
+          "variables": {}
         },
         {
-          "action": "goTo",
-          "url": "https://www.duckduckgo.com"
+          "goTo": {
+            "url": "https://www.duckduckgo.com"
+          }
         },
         {
-          "action": "find",
-          "selector": "[title=Search]",
-          "timeout": 10000,
-          "matchText": "Search",
-          "moveTo": true,
-          "click": true,
-          "typeKeys": {
+          "find": {
+            "selector": "[title=Search]",
+            "elementText": "Search",
+            "timeout": 10000,
+            "moveTo": true,
+            "click": true,
+            "type": {
+              "keys": [
+                "shorthair cat"
+              ]
+            }
+          },
+          "variables": {}
+        },
+        {
+          "type": {
             "keys": [
-              "shorthair cat"
+              "$ENTER$"
             ]
           }
         },
         {
-          "action": "typeKeys",
-          "keys": [
-            "$ENTER$"
-          ]
-        },
-        {
-          "action": "saveScreenshot"
+          "screenshot": {
+            "maxVariation": 0,
+            "overwrite": "aboveVariation"
+          }
         }
-      ]
+      ],
+      "detectSteps": true
     }
   ]
 }
@@ -128,25 +145,35 @@ tests | array of object([test](/docs/references/schemas/test)) |  Required. [Tes
 
 ```json
 {
-  "id": "Make a request from an OpenAPI definition",
+  "specId": "Make a request from an OpenAPI definition",
   "openApi": [
     {
-      "name": "Acme",
       "descriptionPath": "https://www.acme.com/openapi.json",
-      "server": "https://api.acme.com"
+      "server": "https://api.acme.com",
+      "name": "Acme"
     }
   ],
   "tests": [
     {
       "steps": [
         {
-          "action": "httpRequest",
-          "openApi": {
-            "operationId": "getUserById"
+          "httpRequest": {
+            "openApi": {
+              "operationId": "getUserById",
+              "validateAgainstSchema": "both",
+              "useExample": "none",
+              "exampleKey": ""
+            },
+            "request": {
+              "parameters": {
+                "id": 123
+              }
+            },
+            "response": {},
+            "maxVariation": 0,
+            "overwrite": "aboveVariation"
           },
-          "requestParams": {
-            "id": 123
-          }
+          "variables": {}
         }
       ]
     }

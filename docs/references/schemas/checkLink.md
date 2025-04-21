@@ -1,41 +1,35 @@
 
 # checkLink
 
-Check if a URL returns an acceptable status code from a GET request.
+
 
 ## Fields
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
-id | string |  Optional. ID of the step. | Generated UUID
-description | string |  Optional. Description of the step. | 
-action | string |  Required. Action to perform. | 
-url | string |  Required. URL to check. | 
+url | string |  Optional. URL to check. Can be a full URL or a path. If a path is provided, `origin` must be specified. | 
 origin | string |  Optional. Protocol and domain to navigate to. Prepended to `url`. | 
-statusCodes | array of integers |  Optional. Accepted status codes. If the specified URL returns a code other than what is specified here, the action fails. | ``[200,201,202]``
+statusCodes | One of<br/>-&nbsp;integer<br/>-&nbsp;array of integer |  Optional. Accepted status codes. If the specified URL returns a code other than what is specified here, the action fails. | ``[200,301,302,307,308]``
 
 ## Examples
 
 ```json
-{
-  "action": "checkLink",
-  "url": "https://www.google.com"
-}
+"https://www.google.com"
+```
+
+```json
+"/search"
 ```
 
 ```json
 {
-  "action": "checkLink",
   "url": "https://www.google.com",
-  "statusCodes": [
-    200
-  ]
+  "statusCodes": 200
 }
 ```
 
 ```json
 {
-  "action": "checkLink",
   "url": "/search",
   "origin": "www.google.com",
   "statusCodes": [

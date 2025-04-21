@@ -1,49 +1,44 @@
 
 # find
 
-Check if an element exists with the specified CSS selector.
+Find an element based on display text or a selector, then optionally interact with it.
 
 ## Fields
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
-id | string |  Optional. ID of the step. | Generated UUID
-description | string |  Optional. Description of the step. | 
-action | string |  Required. Action to perform. | 
-selector | string |  Required. Selector that uniquely identifies the element. | 
+elementText | string |  Optional. Display text of the element to find. If combined with `selector`, the element must match both the text and the selector. | 
+selector | string |  Optional. Selector of the element to find. If combined with `elementText`, the element must match both the text and the selector. | 
 timeout | integer |  Optional. Max duration in milliseconds to wait for the element to exist. | `5000`
-matchText | string |  Optional. Text that the element should contain. If the element doesn't contain the text, the step fails. Accepts both strings an regular expressions. To use a regular expression, the expression should start and end with a `/`. For example, `/search/`. | 
-moveTo | [object Object] |  Optional. Move to the element. If the element isn't visible, it's scrolled into view. Only runs the if the test is being recorded. | `false`
-click | One of<br/>-&nbsp;boolean<br/>-&nbsp;object |  Optional. Click the element. | 
-typeKeys | One of<br/>-&nbsp;string<br/>-&nbsp;object |  Optional. Type keys after finding the element. Either a string or an object with a `keys` field as defined in [`typeKeys`](typeKeys). To type in the element, make the element active with the `click` parameter. | 
-setVariables | array of objects |  Optional. Extract environment variables from the element's text. | ``[]``
-setVariables.name | string |  Required. Name of the environment variable to set. | 
-setVariables.regex | string |  Required. Regex to extract the environment variable from the element's text. | 
+moveTo | boolean |  Optional. Move to the element. If the element isn't visible, it's scrolled into view. | `true`
+click | One of<br/>-&nbsp;object([click](/docs/references/schemas/click))<br/>-&nbsp;object |  Optional. Click the element. | 
+type | undefined |  Optional. Type keys after finding the element. Either a string or an object with a `keys` field as defined in [`type`](type). To type in the element, make the element active with the `click` parameter. | 
 
 ## Examples
 
 ```json
+"Find me!"
+```
+
+```json
 {
-  "action": "find",
   "selector": "[title=Search]"
 }
 ```
 
 ```json
 {
-  "action": "find",
   "selector": "[title=Search]",
   "timeout": 10000,
-  "matchText": "Search",
+  "elementText": "Search",
   "moveTo": true,
   "click": true,
-  "typeKeys": "shorthair cat"
+  "type": "shorthair cat"
 }
 ```
 
 ```json
 {
-  "action": "find",
   "selector": "[title=Search]",
   "click": {
     "button": "right"
@@ -53,30 +48,16 @@ setVariables.regex | string |  Required. Regex to extract the environment variab
 
 ```json
 {
-  "action": "find",
   "selector": "[title=Search]",
   "timeout": 10000,
-  "matchText": "Search",
+  "elementText": "Search",
   "moveTo": true,
   "click": true,
-  "typeKeys": {
+  "type": {
     "keys": [
       "shorthair cat"
     ],
-    "delay": 100
+    "inputDelay": 100
   }
-}
-```
-
-```json
-{
-  "action": "find",
-  "selector": "[title=ResultsCount]",
-  "setVariables": [
-    {
-      "name": "resultsCount",
-      "regex": ".*"
-    }
-  ]
 }
 ```

@@ -1,92 +1,134 @@
 
 # context
 
-An application and supported platforms.
-
-If no contexts are specified but a context is required by one or more tests, Doc Detective attempts to identify a supported context in the current environment and run tests against it. For browsers, context priority is Firefox > Chrome > Chromium.
+A context in which to perform tests. If no contexts are specified but a context is required by one or more tests, Doc Detective attempts to identify a supported context in the current environment and run tests against it. For example, if a browser isn't specified but is required by steps in the test, Doc Detective will search for and use a supported browser available in the current environment.
 
 ## Fields
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
-app | object |  Required. The application to run. | 
-app.name | string |  Required. Name of the application.<br/><br/>Accepted values: `chrome`, `firefox`, `safari`, `edge` | 
-app.path | string |  Optional. Absolute path or command for the application. If not specified, defaults to typical install paths per platform. If specified but the path is invalid, the context is skipped. | 
-app.options | object |  Optional. Options to pass to the app. Only works when `name` is `firefox` or `chrome`. | 
-app.options.width | integer |  Optional. Width of the window in pixels. | 
-app.options.height | integer |  Optional. Height of the window in pixels. | 
-app.options.viewport_height | integer |  Optional. Height of the viewport in pixels. Overrides `height`. | 
-app.options.viewport_width | integer |  Optional. Width of the viewport in pixels. Overrides `width`. | 
-app.options.headless | boolean |  Optional. If `true`, runs the browser in headless mode. Not supported by Safari. | 
-app.options.driverPath | string |  Optional. Path to the browser driver. If not specified, defaults to internally managed dependencies. | 
-platforms | array of strings |  Required. Supported platforms for the application. | 
+contextId | string |  Optional. Unique identifier for the context. | Generated UUID
+platforms | One of<br/>-&nbsp;string<br/>-&nbsp;array of string |  Optional. Platforms to run tests on. | 
+browsers | One of<br/>-&nbsp;string<br/>-&nbsp;object<br/>-&nbsp;array of <br/>&nbsp;&nbsp;one of:<br/>&nbsp;&nbsp;- string<br/>&nbsp;&nbsp;- object |  Optional. Browsers to run tests on. | 
+browsers.name | string |  Required. Name of the browser.<br/><br/>Accepted values: `chrome`, `firefox`, `safari`, `webkit` | 
+browsers.headless | boolean |  Optional. If `true`, runs the browser in headless mode. | `true`
+browsers.window | object |  Optional. Browser dimensions. | 
+browsers.window.width | integer |  Optional. Width of the browser window in pixels. | 
+browsers.window.height | integer |  Optional. Height of the browser window in pixels. | 
+browsers.viewport | object |  Optional. Viewport dimensions. | 
+browsers.viewport.width | integer |  Optional. Width of the viewport in pixels. | 
+browsers.viewport.height | integer |  Optional. Height of the viewport in pixels. | 
 
 ## Examples
 
 ```json
 {
-  "app": {
-    "name": "chrome"
-  },
-  "platforms": [
-    "linux"
-  ]
+  "platforms": "linux",
+  "browsers": "chrome"
 }
 ```
 
 ```json
 {
-  "app": {
-    "name": "chrome",
-    "options": {
-      "viewport_width": 800,
-      "viewport_height": 600
-    }
-  },
   "platforms": [
-    "linux"
-  ]
-}
-```
-
-```json
-{
-  "app": {
-    "name": "firefox",
-    "options": {
-      "width": 800,
-      "height": 600,
-      "headless": false,
-      "driverPath": "/usr/bin/geckodriver"
-    }
-  },
-  "platforms": [
-    "linux",
     "windows",
-    "mac"
-  ]
-}
-```
-
-```json
-{
-  "app": {
-    "name": "safari"
-  },
-  "platforms": [
-    "mac"
-  ]
-}
-```
-
-```json
-{
-  "app": {
-    "name": "firefox",
-    "path": "/usr/bin/firefox"
-  },
-  "platforms": [
+    "mac",
     "linux"
+  ],
+  "browsers": [
+    "chrome",
+    "firefox",
+    "webkit"
+  ]
+}
+```
+
+```json
+{
+  "browsers": {
+    "name": "chrome",
+    "headless": true
+  }
+}
+```
+
+```json
+{
+  "browsers": [
+    {
+      "name": "chrome",
+      "headless": true
+    },
+    {
+      "name": "firefox"
+    }
+  ]
+}
+```
+
+```json
+{
+  "platforms": [
+    "mac",
+    "linux"
+  ],
+  "browsers": {
+    "name": "chrome",
+    "headless": true
+  }
+}
+```
+
+```json
+{
+  "platforms": [
+    "windows",
+    "mac",
+    "linux"
+  ],
+  "browsers": [
+    {
+      "name": "chrome",
+      "headless": true,
+      "window": {
+        "width": 1920,
+        "height": 1080
+      },
+      "viewport": {
+        "width": 1600,
+        "height": 900
+      }
+    },
+    {
+      "name": "firefox",
+      "window": {
+        "width": 1366,
+        "height": 768
+      }
+    },
+    {
+      "name": "webkit",
+      "headless": false,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    }
+  ]
+}
+```
+
+```json
+{
+  "platforms": "mac",
+  "browsers": [
+    {
+      "name": "safari",
+      "window": {
+        "width": 1280,
+        "height": 800
+      }
+    }
   ]
 }
 ```
