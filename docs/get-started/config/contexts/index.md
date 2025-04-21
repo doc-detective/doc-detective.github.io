@@ -3,16 +3,18 @@ title: Contexts
 layout: default
 nav_order: 1
 parent: Configuration
-description: A set of conditions that must be met for a test to run.
+description: Define the contexts (platform and browser combinations) where tests should run.
 ---
 
 # Contexts
 
-Doc Detective uses contexts to determine which tests to run. A context is a set of conditions that must be met in order for a test to run. For example, a context might specify that a test should only run in Safari on macOS.
+Doc Detective uses contexts to determine *where* tests should run. A context defines a combination of a target platform (operating system) and, optionally, a target browser with specific configurations.
 
-By default, Doc Detective runs tests in Chrome on Windows, macOS, and Linux. You can specify custom contexts to run tests in other apps.
+By default, if contexts are needed but not specified, Doc Detective attempts to find a supported browser (like Chrome or Firefox) on the current platform (Windows, macOS, or Linux) and run tests there.
 
-Each context is made up of an `app` object and a `platforms` array. When Doc Detective runs tests, it checks the associated contexts to see if the app is available and if it's running on a specified platform. If the conditions are met, the test runs in that context. You can specify multiple contexts for a test, and Doc Detective will run the test in each context that is met.
+You define contexts using an array of context objects. Each context object specifies the target `platforms` (as a string or array) and the target `browsers` (as a string, array, or object).
+
+When Doc Detective runs tests, it evaluates the defined contexts against the current environment. If the current platform matches one specified in a context, and if a browser is specified and available, the test runs in that specific browser on that platform. You can specify multiple contexts, and Doc Detective will attempt to run the relevant tests in each matching context.
 
 For comprehensive options, see the [context](/docs/references/schemas/context) reference.
 
@@ -20,253 +22,199 @@ For comprehensive options, see the [context](/docs/references/schemas/context) r
 
 You can specify contexts at three different levels, in order of precedence:
 
-- **Config**: You can specify contexts in the [`config`](/docs/references/schemas/config) object. These contexts apply to all tests in the suite.
-- **Spec**: You can specify contexts in a [`specification`](/docs/references/schemas/specification) object. These contexts override config-level contexts and apply to all tests in the spec.
-- **Test**: You can specify contexts in a [`test`](/docs/references/schemas/test) object. These contexts override config- and spec-level contexts and apply only to that test.
+- **Config**: Contexts defined in the main [`config`](/docs/references/schemas/config) apply to all tests unless overridden.
+- **Spec**: Contexts defined in a [`specification`](/docs/references/schemas/specification) override config-level contexts and apply to all tests within that spec unless overridden.
+- **Test**: Contexts defined within a specific [`test`](/docs/references/schemas/test) override config- and spec-level contexts and apply only to that test.
 
-When you specify contexts, you use a `contexts` array. For example, the following JSON specifies three contexts:
+Contexts are defined using a `runOn` array containing context objects. For example:
 
 ```json
 {
   ...
-  "contexts": [
+  "runOn": [
     {
-      "app": {
-        "name": "chrome"
-      },
-      "platforms": ["windows","mac","linux"]
+      "platforms": ["windows", "mac", "linux"],
+      "browsers": "chrome"
     },
     {
-      "app": {
-        "firefox"
-      },
-      "platforms": ["windows","mac","linux"]
+      "platforms": ["windows", "mac", "linux"],
+      "browsers": "firefox"
     },
     {
-      "app": {
-        "name": "safari"
-      },
-      "platforms": ["mac"]
+      "platforms": "mac",
+      "browsers": "webkit" // or "safari"
     }
   ],
   ...
 }
 ```
 
-## Apps
+## Browsers
 
-Doc Detective can perform tests on a variety of apps. The following apps are supported:
+Doc Detective can perform browser-based tests on several browser engines. The following browser names are supported in the `browsers` property:
 
-- [Chrome](#chrome) (`chrome`)
-- [Firefox](#firefox) (`firefox`)
-- [Safari](#safari) (`safari`)
-- [Edge](#edge) (`edge`)
+- **Chrome** (`chrome`): Uses Chromium.
+- **Firefox** (`firefox`): Uses Firefox.
+- **WebKit** (`webkit`): Uses WebKit. The name `safari` can be used as an alias for `webkit`.
 
-### Chrome
 
-Chrome is available on Windows, macOS, and Linux. Doc Detective manages and runs a Chrome instance internally, so you don't need to install anything extra.
+### Chrome (`chrome`)
 
-Chrome is the only browser that supports recording test runs with the [`startRecording`](/docs/references/schemas/startRecording) action.
+Available on Windows, macOS, and Linux.
 
-Here's a basic Chrome context:
+Chrome is the only browser that currently supports video recording via the [`record`](/docs/get-started/actions/record) action.
+
+Here's a basic Chrome context for all platforms:
 
 ```json
 {
-  "app": {
+  "platforms": ["windows", "mac", "linux"],
+  "browsers": "chrome"
+}
+```
+
+Or using the object format:
+
+```json
+{
+  "platforms": ["windows", "mac", "linux"],
+  "browsers": {
     "name": "chrome"
-  },
-  "platforms": ["windows", "mac", "linux"]
+  }
 }
 ```
 
-#### Dimensions and visibility
+#### Chrome Dimensions and Visibility
 
-You can specify the browser dimensions and visibility (`headless`) during tests. `headless` must be `false` to record test runs.
+You can specify browser window dimensions, viewport dimensions, and visibility (`headless`). `headless` must be `false` (i.e., run in headed mode) to use the `record` action.
 
 ```json
 {
-  "app": {
+  "platforms": ["windows", "mac", "linux"],
+  "browsers": {
     "name": "chrome",
-    "options": {
-      "width": 1024,
-      "height": 768,
-      "headless": false
+    "headless": false, // Required for recording
+    "window": {
+      "width": 1280,
+      "height": 800
+    },
+    "viewport": {
+      "width": 1200,
+      "height": 720
     }
-  },
-  "platforms": ["windows", "mac", "linux"]
+  }
 }
 ```
 
-#### Custom path
+### Firefox (`firefox`)
 
-You can specify a Chrome installation on your system if you want to use a specific version of Chrome or a Chromium derivative. If you specify a custom path, you must also specify a path to a matching ChromeDriver executable. For example:
-
-```json
-{
-  "app": {
-    "name": "chrome",
-    "options": {
-      "path": "/path/to/chrome",
-      "driverPath": "/path/to/chromedriver"
-    }
-  },
-  "platforms": ["windows", "mac", "linux"]
-}
-```
-
-### Firefox
-
-Firefox is available on Windows, macOS, and Linux. Doc Detective manages and runs a Firefox instance internally, so you don't need to install anything extra.
+Available on Windows, macOS, and Linux.
 
 Here's a basic Firefox context:
 
 ```json
 {
-  "app": {
-    "name": "firefox"
-  },
-  "platforms": ["windows", "mac", "linux"]
+  "platforms": ["windows", "mac", "linux"],
+  "browsers": "firefox"
 }
 ```
 
-#### Dimensions and visibility
+#### Firefox Dimensions and Visibility
 
-You can specify the browser dimensions and visibility (`headless`) during tests.
-
-```json
-{
-  "app": {
-    "name": "chrome",
-    "options": {
-      "width": 1024,
-      "height": 768,
-      "headless": false
-    }
-  },
-  "platforms": ["windows", "mac", "linux"]
-}
-```
-
-#### Custom path
-
-You can specify a Firefox installation on your system if you want to use a specific version of Firefox or a Firefox derivative. For example:
+You can specify dimensions and visibility (`headless`).
 
 ```json
 {
-  "app": {
+  "platforms": ["windows", "mac", "linux"],
+  "browsers": {
     "name": "firefox",
-    "options": {
-      "path": "/path/to/firefox"
-    }
-  },
-  "platforms": ["windows", "mac", "linux"]
-}
-```
-
-### Safari
-
-Safari is only available on macOS. Doc Detective runs tests in a sandboxed instance of your local Safari browser.
-
-Before you run tests on Safari, you need to enable SafariDriver with the following command in a terminal:
-
-```bash
-safaridriver --enable
-```
-
-**Note:** SafariDriver is enabled by default in GitHub Actions.
-
-If Doc Detective isn't running tests in Safari, make sure
-
-- SafariDriver is enabled.
-- the **Enable automation** option is selected the Safari's **Develop** menu.
-
-#### Dimensions
-
-You can specify the browser dimensions during tests.
-
-**Note:** Safari doesn't support headless mode.
-
-```json
-{
-  "app": {
-    "name": "safari",
-    "options": {
+    "headless": true,
+    "window": {
       "width": 1024,
       "height": 768
     }
-  },
-  "platforms": ["mac"]
+  }
 }
 ```
 
-### Edge
+### WebKit (`webkit` or `safari`)
 
-Edge is available on Windows, macOS, and Linux. edge is installed by default on Windows, but you must manually install it on macOS and Linux. If Edge is installed, Doc Detective can automatically detect and run tests in your local installation.
+WebKit testing is primarily associated with Safari on macOS. Doc Detective runs tests using the WebKit driver.
 
-Here's a basic Edge context:
+You can use either `webkit` or `safari` as the browser name.
+
+Before running tests with WebKit/Safari on macOS, you might need to enable the driver:
+
+1. Run `safaridriver --enable` in your terminal.
+2. Ensure **Develop > Allow Remote Automation** is checked in Safari's menu bar (you might need to enable the Develop menu first in Safari's Advanced preferences).
+
+*Note: This setup is often handled automatically in CI environments like GitHub Actions.*
+
+Here's a basic WebKit/Safari context for macOS:
 
 ```json
 {
-  "app": {
-    "name": "edge"
-  },
-  "platforms": ["windows", "mac", "linux"]
+  "platforms": "mac",
+  "browsers": "webkit" // or "safari"
 }
 ```
 
-#### Dimensions and visibility
+#### WebKit/Safari Dimensions
 
-You can specify the browser dimensions and visibility (`headless`) during tests.
+You can specify window or viewport dimensions. WebKit/Safari does **not** support headless mode.
 
 ```json
 {
-  "app": {
-    "name": "edge",
-    "options": {
-      "width": 1024,
-      "height": 768,
-      "headless": false
+  "platforms": "mac",
+  "browsers": {
+    "name": "webkit", // or "safari"
+    "headless": false, // Headless is not supported
+    "viewport": {
+      "width": 1440,
+      "height": 900
     }
-  },
-  "platforms": ["windows", "mac", "linux"]
+  }
 }
 ```
 
 ## Platforms
 
-Doc Detective can perform tests on a variety of platforms. The following platforms are supported:
+Doc Detective can run tests targeting the following platforms:
 
 - Windows (`windows`)
 - macOS (`mac`)
-- Linux (tested on Ubuntu) (`linux`)
+- Linux (`linux`) (Tested primarily on Ubuntu)
 
-When you specify a platform for a context, Doc Detective attempts to run associated tests when the context is executed on that platform. If a platform isn't specified, Doc Detective attempts to run the tests on all platforms.
+When you specify a platform (or multiple platforms) in a context, Doc Detective attempts to run the associated tests only when executed on a matching operating system. If `platforms` is omitted, it defaults to the current platform.
 
-For example, the following context specifies that tests should only run on macOS:
+For example, this context targets only macOS:
 
 ```json
 {
-  "app": {
-    "name": "chrome"
-  },
-  "platforms": ["mac"]
+  "platforms": "mac",
+  "browsers": "chrome"
+}
+```
+
+This context targets Windows or Linux:
+
+```json
+{
+  "platforms": ["windows", "linux"],
+  "browsers": "firefox"
 }
 ```
 
 ## Examples
 
-### Contexts
+### Simple Contexts
 
-Here are some examples of contexts:
-
-- Run tests in Chrome on Windows, macOS, and Linux:
+- Run tests in Chrome on all supported platforms:
 
   ```json
   {
-    "app": {
-      "name": "chrome"
-    },
-    "platforms": ["windows", "mac", "linux"]
+    "platforms": ["windows", "mac", "linux"],
+    "browsers": "chrome"
   }
   ```
 
@@ -274,121 +222,93 @@ Here are some examples of contexts:
 
   ```json
   {
-    "app": {
-      "name": "firefox"
-    },
-    "platforms": ["windows", "mac"]
+    "platforms": ["windows", "mac"],
+    "browsers": "firefox"
   }
   ```
 
-- Run tests in Safari on macOS:
+- Run tests in WebKit/Safari on macOS:
 
   ```json
   {
-    "app": {
-      "name": "safari"
-    },
-    "platforms": ["mac"]
+    "platforms": "mac",
+    "browsers": "webkit" // or "safari"
   }
   ```
 
-- Run tests in Edge on Windows:
+### Contexts in a Config (`config.json`)
 
-  ```json
-  {
-    "app": {
-      "name": "edge"
-    },
-    "platforms": ["windows"]
-  }
-  ```
-
-### In a config
-
-You can specify contexts in the `config` object. These contexts apply to all tests in the suite.
-
-- Run all tests in each of the apps that are available by default on each platform:
-
-  ```json
-  {
-    "input": ".",
-    "contexts": [
-      {
-        "app": {
-          "name": "chrome"
-        },
-        "platforms": ["windows", "mac", "linux"]
-      },
-      {
-        "app": {
-          "name": "firefox"
-        },
-        "platforms": ["windows", "mac", "linux"]
-      },
-      {
-        "app": {
-          "name": "safari"
-        },
-        "platforms": ["mac"]
-      },
-      {
-        "app": {
-          "name": "edge"
-        },
-        "platforms": ["windows"]
-      }
-    ]
-  }
-  ```
-
-### In a specification
-
-You can specify contexts in the `specification` object. These contexts override config-level contexts and apply to all tests in the spec.
-
-This example runs all tests in the spec with Chrome on Windows and macOS:
+Specify contexts in the top-level `runOn` array. These apply to all tests unless overridden.
 
 ```json
 {
-  "contexts": [
+  "input": ".",
+  "output": "output",
+  "runOn": [
     {
-      "app": {
-        "name": "chrome"
-      },
-      "platforms": ["windows","mac"]
+      "platforms": ["windows", "mac", "linux"],
+      "browsers": "chrome"
+    },
+    {
+      "platforms": ["windows", "mac", "linux"],
+      "browsers": "firefox"
+    },
+    {
+      "platforms": "mac",
+      "browsers": {
+        "name": "webkit",
+        "window": { "width": 1280, "height": 800 }
+      }
     }
-  ],
-  "tests": [
-    ...
   ]
 }
 ```
 
-### In a test
+### Contexts in a Specification (`*.spec.json`)
 
-You can specify contexts in the `test` object. These contexts override config- and spec-level contexts and apply only to that test.
-
-This example runs a single test in Chrome on Windows:
+Specify contexts in the spec's `runOn` array. These override config-level contexts for tests within this spec.
 
 ```json
 {
-  "name": "Spec name",
+  "description": "Specification for login tests",
+  "runOn": [
+    {
+      "platforms": ["windows", "mac"],
+      "browsers": "chrome"
+    }
+  ],
+  "tests": [
+    // ... tests in this spec will run on Chrome on Windows & Mac
+  ]
+}
+```
+
+### Contexts in a Test
+
+Specify contexts in the test's `runOn` array. These override config- and spec-level contexts for this specific test.
+
+```json
+{
+  "description": "Main application specification",
   "tests": [
     {
-      "name": "Test name",
-      "contexts": [
+      "description": "Test login form on Windows/Chrome only",
+      "runOn": [
         {
-          "app": {
-            "name": "chrome"
-          },
-          "platforms": ["windows"]
+          "platforms": "windows",
+          "browsers": "chrome"
         }
       ],
       "steps": [
-        ...
+        // ... steps for this test
       ]
     },
     {
-      ...
+      "description": "Test dashboard on all default contexts",
+      // No runOn here, inherits from spec or config
+      "steps": [
+        // ... steps for this test
+      ]
     }
   ]
 }
