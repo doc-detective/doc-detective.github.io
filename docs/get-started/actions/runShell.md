@@ -11,22 +11,29 @@ description: Perform a native shell command.
 
 The `runShell` action runs a shell command or script on the local machine and evaluates the results, extending Doc Detective's testing capabilities to anything you can script.
 
+`runShell` uses your device's native shell (`cmd` on Windows, `bash` or other default shell on macOS/Linux) to execute the command in the context of the current user.
+
+You can specify the command directly as a string or use an object for more options:
+
+- **String Shorthand:** Provide the command string directly as the value for the `runShell` key.
+- **Object Format:** Use an object with the following properties:
+  - `command`: (Required) The command or script to execute.
+  - `args`: (Optional) An array of arguments to pass to the command.
+  - `workingDirectory`: (Optional) The directory in which to run the command.
+  - `timeout`: (Optional) Maximum duration in milliseconds to wait for the command to complete.
+  - `exitCodes`: (Optional) An array of acceptable exit codes. If the command's exit code is not in this list, the step fails (default: `[0]`).
+  - `stdio`: (Optional) A string or regular expression to validate against the command's combined stdout and stderr. If the output doesn't match, the step fails. Regex must start and end with `/` (e.g., `/^hello world.*/`).
+  - *Output Saving:* You can also save the command's output using `path`, `directory`, `maxVariation`, and `overwrite` properties. See the [`runShell`](/docs/references/schemas/runShell) reference for details.
+
+**Setting Variables:** To capture output into variables for later steps, use the step-level `variables` object. You can assign values based on the command's output using expressions like `runShell.stdout`, `runShell.stderr`, or `runShell.output` (combined stdio).
+
 > For comprehensive options, see the [`runShell`](/docs/references/schemas/runShell) reference.
-
-`runShell` uses your device's native shell (`cmd` on Windows, `bash` on macOS and Linux) to execute the command. The command is executed in the context of the current user.
-
-`runShell` can evaluate commands in two ways:
-
-- **Exit code**: The command's exit code is checked against a list of expected exit codes set in the `exitCodes` parameter. If the command's exit code exists in the list of expected codes, the step passes. `exitCodes` defaults to `[0]`. You can specify non-zero exit codes to test for failure conditions.
-- **Output**: If the expected output (as set in the `output` parameter) exists in the command's actual output (both stdout and stderr), the step passes. You can specify expected output as a string or a regular expression. To use a regular expression, the string must start and end with a forward slash, like in `/^hello world.*/`.
-
-You can also set variables based on the command's output with the `setVariables` parameter. This is useful for capturing the output of a command and using it in subsequent steps. Each variable is set based on a regular expression match of the command's output.
 
 ## Examples
 
 Here are a few ways you might use the `runShell` action:
 
-### Run a simple command
+### Run a simple command (string shorthand)
 
 This example prints "hello world" to the output.
 
@@ -36,9 +43,8 @@ This example prints "hello world" to the output.
     {
       "steps": [
         {
-          "action": "runShell",
           "description": "Run a simple command.",
-          "command": "echo 'hello world'"
+          "runShell": "echo 'hello world'"
         }
       ]
     }
@@ -46,7 +52,27 @@ This example prints "hello world" to the output.
 }
 ```
 
-### Run a command with expected output
+### Run a command with arguments (object format)
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Run echo with arguments.",
+          "runShell": {
+            "command": "echo",
+            "args": ["hello", "world"]
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Run a command with expected output validation
 
 This example runs a Docker container and checks the output for a specific string.
 
@@ -56,10 +82,11 @@ This example runs a Docker container and checks the output for a specific string
     {
       "steps": [
         {
-          "action": "runShell",
           "description": "Run a Docker container and check the output.",
-          "command": "docker run hello-world",
-          "output": "Hello from Docker!"
+          "runShell": {
+            "command": "docker run hello-world",
+            "stdio": "Hello from Docker!"
+          }
         }
       ]
     }
@@ -67,9 +94,9 @@ This example runs a Docker container and checks the output for a specific string
 }
 ```
 
-### Test a failure condition
+### Test a failure condition using exit codes
 
-This example runs a failing command and checks the exit code. Because the command is expected to fail with an exit code `1`, the step passes.
+This example runs a failing command (`false`) and checks that the exit code is `1`. Because the command is expected to fail with exit code 1, the step passes.
 
 ```json
 {
@@ -77,10 +104,11 @@ This example runs a failing command and checks the exit code. Because the comman
     {
       "steps": [
         {
-          "action": "runShell",
-          "description": "Run a failing command.",
-          "command": "false",
-          "exitCodes": [1]
+          "description": "Run a failing command and expect exit code 1.",
+          "runShell": {
+            "command": "false",
+            "exitCodes": [1]
+          }
         }
       ]
     }
@@ -90,7 +118,7 @@ This example runs a failing command and checks the exit code. Because the comman
 
 ### Set a variable based on command output
 
-The first step echoes "setup", validates that it outputs a string or one or more characters, and sets a variable based on the output. The next step echoes the variable, then validates that the command output "setup".
+The first step echoes "setup", validates the output using a regex, and captures the full stdout into a variable named `TEST`. The second step echoes the content of the `TEST` variable and validates that the output is indeed "setup".
 
 ```json
 {
@@ -98,22 +126,21 @@ The first step echoes "setup", validates that it outputs a string or one or more
     {
       "steps": [
         {
-          "action": "runShell",
           "description": "Set a variable based on command output.",
-          "command": "echo setup",
-          "output": "/.+/",
-          "setVariables": [
-            {
-              "name": "TEST",
-              "regex": ".*"
-            }
-          ]
+          "runShell": {
+            "command": "echo setup",
+            "stdio": "/.+/"
+          },
+          "variables": {
+            "TEST": "$$stdio.stdout" 
+          }
         },
         {
-          "action": "runShell",
           "description": "Echo and validate the variable.",
-          "command": "echo $TEST",
-          "output": "setup"
+          "runShell": {
+            "command": "echo $TEST",
+            "stdio": "setup"
+          }
         }
       ]
     }
