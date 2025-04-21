@@ -25,6 +25,8 @@ You can specify the target element directly using a string (for simple text or s
   - `click`: (Optional) Click the element after finding it. Can be `true` (for a default left click), `"left"`, `"right"`, `"middle"`, or an object like `{ "button": "right" }`.
   - `type`: (Optional) Type keys after finding the element. Requires the element to be made active first (e.g., by using `click: true`). Accepts a string or an object like `{ "keys": "my text", "inputDelay": 100 }`. See [`typeKeys`](/docs/references/schemas/typeKeys) for details.
 
+**Setting Variables:** To capture a found element's attributes into variables for later steps, use the step-level `variables` object. You can assign values based on the element using expressions like `$$element.text`.
+
 > For comprehensive options, see the [`find`](/docs/references/schemas/find) reference.
 
 ## Examples
