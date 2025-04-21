@@ -9,14 +9,17 @@ description: Locate and interact with an element on the page.
 
 # find
 
-The `find` action locates an element in the current interface based on its display text, a CSS selector, or an XPath selector. After finding the element, you can optionally interact with it, such as clicking it or typing into it.
+The `find` action locates an element in the current interface based on its display text or a CSS/XPath selector. After finding the element, you can optionally interact with it, such as clicking it or typing into it.
+
+If multiple elements match the specified criteria (`elementText` and/or `selector`), the step operates on the first matched element. Ensure your criteria uniquely identify the target element.
 
 You can specify the target element directly using a string (for simple text or selector lookup) or use an object for more detailed options and interactions:
 
-- **String Shorthand:** Provide the display text or CSS selector directly as the value for the `find` key.
+- **String Shorthand:** Provide the display text or CSS/XPath selector directly as the value for the `find` key. If elements are found by both text and selector, the element found by matching text is used.
+  - Example: `"find": "Login"` or `"find": "#username"`.
 - **Object Format:** Use an object with the following properties:
-  - `elementText`: (Optional) The display text of the element to find. Must be combined with `selector` if both are used.
-  - `selector`: (Optional) The CSS selector of the element to find. Must be combined with `elementText` if both are used. *At least one of `elementText` or `selector` is required.*
+  - `elementText`: (Optional) The display text of the element to find. If combined with `selector`, the element must match both.
+  - `selector`: (Optional) The CSS or XPath selector of the element to find. If combined with `elementText`, the element must match both. *At least one of `elementText` or `selector` is required.*
   - `timeout`: (Optional) Maximum duration in milliseconds to wait for the element to exist (default: 5000).
   - `moveTo`: (Optional) Move the cursor to the element. If the element isn't visible, it's scrolled into view (default: `true`).
   - `click`: (Optional) Click the element after finding it. Can be `true` (for a default left click), `"left"`, `"right"`, `"middle"`, or an object like `{ "button": "right" }`.
@@ -53,7 +56,7 @@ Here are a few ways you might use the `find` action:
     {
       "steps": [
         {
-          "description": "Find the username field by its ID.",
+          "description": "Find the username field by its ID (CSS selector).",
           "find": "#username"
         }
       ]
@@ -136,6 +139,26 @@ Here are a few ways you might use the `find` action:
           "find": {
             "selector": "img.product-image",
             "click": "right"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Find an element and middle-click it
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Find a button by text and middle-click it.",
+          "find": {
+            "elementText": "Open New Tab",
+            "click": "middle"
           }
         }
       ]
