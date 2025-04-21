@@ -7,6 +7,8 @@ grand_parent: Tests
 description: Stop capturing a video of test execution.
 ---
 
+# stopRecord
+
 The `stopRecord` action stops a video recording previously started by a [`record`](record) action and saves the video file.
 
 This action takes a simple boolean value:

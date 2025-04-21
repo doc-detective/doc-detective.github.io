@@ -7,6 +7,8 @@ grand_parent: Tests
 description: Type keys, including special keys like Enter.
 ---
 
+# type
+
 The `type` action simulates key presses, including special keys such as Enter. This action is useful for simulating user input, such as filling out a form, navigating a website, or using keyboard shortcuts. It typically requires a preceding `find` or `click` action to focus an input element.
 
 You can specify the keys to type in several ways:
