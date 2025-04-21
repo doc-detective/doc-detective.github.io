@@ -27,7 +27,7 @@ You must specify the `runCode` action using an object format with the following 
   - `stdio`: (Optional) A string or regular expression to validate against the code's combined stdout and stderr. If the output doesn't match, the step fails. Regex must start and end with `/` (e.g., `/^hello world.*/`).
   - *Output Saving:* You can also save the code's output using `path`, `directory`, `maxVariation`, and `overwrite` properties. See the [`runCode`](/docs/references/schemas/runCode) reference for details.
 
-**Setting Variables:** To capture output into variables for later steps, use the step-level `variables` object. You can assign values based on the code's output using expressions like `runCode.stdout`, `runCode.stderr`, or `runCode.output` (combined stdio).
+**Setting Variables:** To capture output into variables for later steps, use the step-level `variables` object. You can assign values based on the code's output using expressions like `$$stdio.stdout`, `$$stdio.stderr`, or `$$exitCode`.
 
 > For comprehensive options, see the [`runCode`](/docs/references/schemas/runCode) reference.
 
