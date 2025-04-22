@@ -149,11 +149,10 @@ For example, markup for Markdown files might look like this:
 ```json
 {
   ...
-  "runTests": {
-    "detectSteps": true
-  },
   "fileTypes": [
     {
+      "name": "Markdown",
+      "extensions": ["md", "markdown", "mdx"],
       ...
       "markup": [
         {
@@ -177,10 +176,10 @@ For example, markup for Markdown files might look like this:
           "name": "Click",
           "regex": ["(?:[Cc]lick|[Pp]ress|[Cc]hoose|[Tt]ap)\\s+\\*\\*(.+?)\\*\\*"],
           "actions": [{
-            "action": "find",
-            "description": "Click $1",
-            "selector": "aria/$1",
-            "click": true
+            "find": {
+              "selector": "aria/$1",
+              "click": true
+            }
           }]
         },
         {
@@ -188,11 +187,12 @@ For example, markup for Markdown files might look like this:
           "regex": ["!\\[.+?\\]\\((.+?)\\)"],
           "actions": [
             {
-              "action": "saveScreenshot",
-              "path": "$1",
-              "directory": "samples",
-              "maxVariation": 5,
-              "overwrite": "byVariation"
+              "screenshot": {
+                "path": "$1",
+                "directory": "samples",
+                "maxVariation": 5,
+                "overwrite": "byVariation"
+              }
             }
           ]
         }
