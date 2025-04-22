@@ -11,19 +11,21 @@ Tests tell Doc Detective what actions to perform, how, and where. Tests are made
 
 - **Test specification**: The highest-level component, test specifications (or specs) are collection of tests that should run together. [Contexts](/docs/get-started/config/contexts) defined in the spec are shared by all tests in the spec. Test specifications are equivalent to test suites in other testing frameworks.
 - **Test**: A test to run within a spec. Each test has a name, and a set of steps to perform. Tests are equivalent to test cases in other testing frameworks.
-- **Steps**: A step is a single action to perform within a test. Each individual step acts as an assertion that the step completes as expected. Steps are equivalent to assertions in other testing frameworks.
+- **Steps**: A step is a single action to perform within a test. Each individual step acts as an assertion that the step completes as expected. Steps are roughly equivalent to assertions in other testing frameworks.
 
-  Each step has an action, which is a command that tells Doc Detective what to do. Actions can have additional properties that further define the action.
+  Each step can perform an action, which is a command that tells Doc Detective what to do. Actions can have additional properties that further define the action.
 
   - [**checkLink**](/docs/get-started/actions/checkLink): Check if a URL returns an acceptable status code from a GET request.
+  - [**click**](/docs/get-started/actions/click): Click or tap an element.
   - [**find**](/docs/get-started/actions/find): Check if an element exists with the specified selector.
   - [**goTo**](/docs/get-started/actions/goTo): Navigate to a specified URL.
   - [**httpRequest**](/docs/get-started/actions/httpRequest): Perform a generic HTTP request, for example to an API.
+  - [**loadVariables**](/docs/get-started/actions/loadVariables): Load environment variables from a `.env` file.
+  - [**record**](/docs/get-started/actions/record) and [**stopRecord**](/docs/get-started/actions/stopRecord): Capture a video of test execution.
+  - [**runCode**](/docs/get-started/actions/runCode): Assemble and run code.
   - [**runShell**](/docs/get-started/actions/runShell): Perform a native shell command.
-  - [**saveScreenshot**](/docs/get-started/actions/saveScreenshot): Take a screenshot in PNG format.
-  - [**setVariables**](/docs/get-started/actions/setVariables): Load environment variables from a `.env` file.
-  - [**startRecording**](/docs/get-started/actions/startRecording) and [**stopRecording**](/docs/get-started/actions/stopRecording): Capture a video of test execution.
-  - [**typeKeys**](/docs/get-started/actions/typeKeys): Type keys. To type special keys, begin and end the string with `$` and use the special key’s enum. For example, to type the Escape key, enter `$ESCAPE$`.
+  - [**screenshot**](/docs/get-started/actions/screenshot): Take a screenshot in PNG format.
+  - [**type**](/docs/get-started/actions/type): Type keys. To type special keys, begin and end the string with `$` and use the special key’s enum. For example, to type the Escape key, enter `$ESCAPE$`.
   - [**wait**](/docs/get-started/actions/wait): Pause before performing the next action.
 
 ## Define a test
@@ -40,18 +42,17 @@ Test specs in standalone JSON files use the following basic structure:
 
 ```json
 {
-  "id": "spec-id",
+  "specId": "spec-id",
   "description": "Spec Description",
   "tests": [
     {
-      "id": "test-id",
+      "testId": "test-id",
       "description": "Test Description",
       "steps": [
         {
-          "id": "step-id",
+          "stepId": "step-id",
           "description": "Step Description",
-          "action": "action-name"
-          // Additional step properties
+          // Additional step properties, such as find, goTo, httpRequest, etc.
         }
       ]
     }
@@ -69,25 +70,22 @@ Here's an example test for performing a Google search and saving a screenshot of
     {
       "steps": [
         {
-          "action": "goTo",
-          "url": "https://www.google.com"
+          "goTo": "https://www.google.com"
         },
         {
-          "action": "find",
-          "selector": "[title=Search]",
-          "click": true
+          "find": {
+            "selector": "[title=Search]",
+            "click": true
+          }
         },
         {
-          "action": "typeKeys",
-          "keys": ["American Shorthair kittens", "$ENTER$"]
+          "type": ["American Shorthair kittens", "$ENTER$"]
         },
         {
-          "action": "wait",
-          "duration": 5000
+          "wait": 5000
         },
         {
-          "action": "saveScreenshot",
-          "path": "search-results.png"
+          "screenshot": "search-results.png"
         }
       ]
     }
@@ -118,23 +116,23 @@ If you declare a step without declaring a test, Doc Detective automatically crea
 Here's an example of an inline test for performing a Google search and saving a screenshot of the results:
 
 ```markdown
-[comment]: # 'test {"id": "kitten-search"}'
+[comment]: # 'test {"testId": "kitten-search"}'
 
 To search for American Shorthair kittens,
 
 1. Go to [Google](https://www.google.com).
 
-   [comment]: # 'step {"action":"goTo", "url":"https://www.google.com"}'
+   [comment]: # 'step {"goTo": "https://www.google.com"}'
 
 2. In the search bar, enter "American Shorthair kittens", then press Enter.
 
-   [comment]: # 'step { "action": "find", "selector": "[title=Search]", "click": true }'
-   [comment]: # 'step { "action": "typeKeys", "keys": ["American Shorthair kittens", "$ENTER$"] }'
-   [comment]: # 'step { "action": "wait", "duration": 5000 }'
+   [comment]: # 'step { "find": { "selector": "[title=Search]", "click": true } }'
+   [comment]: # 'step { "type": ["American Shorthair kittens", "$ENTER$"] }'
+   [comment]: # 'step { "wait": 5000 }'
 
 ![Search results](search-results.png)
 
-[comment]: # 'step { "action": "saveScreenshot", "path": "search-results.png" }'
+[comment]: # 'step { "screenshot": "search-results.png" }'
 [comment]: # "test end"
 ```
 
@@ -231,17 +229,16 @@ Detected tests:
     {
       "steps": [
         {
-          "action": "goTo",
-          "url": "https://console.acme.com"
+          "goTo": "https://console.acme.com"
         },
         {
-          "action": "find",
-          "selector": "aria/Search",
-          "click": true
+          "find": {
+            "selector": "aria/Search",
+            "click": true
+          }
         },
         {
-          "action": "saveScreenshot",
-          "path": "search-results.png"
+          "screenshot": "search-results.png"
         }
       ]
     }
@@ -261,8 +258,7 @@ Check that the match returns a valid status code.
 
 ```json
 {
-  "action": "checkLink",
-  "url": "$1"
+  "checkLink": "$1"
 }
 ```
 
@@ -272,8 +268,7 @@ Open the match as a URL in a browser.
 
 ```json
 {
-  "action": "goTo",
-  "url": "$1"
+  "goTo": "$1"
 }
 ```
 
@@ -283,30 +278,29 @@ Find an element on the current page that has an ARIA label that equals the match
 
 ```json
 {
-  "action": "find",
-  "selector": "aria/$1"
+  "find": {
+    "selector": "aria/$1"
+  }
 }
 ```
 
-#### `saveScreenshot`
+#### `screenshot`
 
 Save a screenshot to a path equalling the match.
 
 ```json
 {
-  "action": "saveScreenshot",
-  "path": "$1"
+  "screenshot": "$1"
 }
 ```
 
-#### `typeKeys`
+#### `type`
 
 Type the match into the current page.
 
 ```json
 {
-  "action": "typeKeys",
-  "keys": "$1"
+  "type": "$1"
 }
 ```
 
@@ -316,8 +310,7 @@ Make an GET request to the match.
 
 ```json
 {
-  "action": "httpRequest",
-  "url": "$1"
+  "httpRequest": "$1"
 }
 ```
 
@@ -327,29 +320,27 @@ Run the match as a shell command.
 
 ```json
 {
-  "action": "runShell",
-  "command": "$1"
+  "runShell": "$1"
 }
 ```
 
-#### `startRecording`
+#### `record`
 
 Start recording a video to a path equalling the match.
 
 ```json
 {
-  "action": "startRecording",
-  "path": "$1"
+  "record": "$1"
 }
 ```
 
-#### `stopRecording`
+#### `stopRecord`
 
 Stop recording a video.
 
 ```json
 {
-  "action": "stopRecording"
+  "stopRecord": true
 }
 ```
 
@@ -359,36 +350,36 @@ Wait for the specified duration.
 
 ```json
 {
-  "action": "wait",
-  "duration": "$1"
+  "wait": {
+    "duration": "$1"
+  }
 }
 ```
 
-#### `setVariables`
+#### `loadVariables`
 
 Load environment variables from an `.env` file, where the path is the match.
 
 ```json
 {
-  "action": "setVariables",
-  "path": "$1"
+  "loadVariables": "$1"
 }
 ```
 
 ## Run tests
 
-Doc Detective's `runTest` command runs your tests. Input files are read from your config's `input` and `runTests.input` properties, but you can also specify input files directly in the command with the `--input` flag.
+Doc Detective's `doc-detective` command runs your tests. Input files are read from your config's `input` property, but you can also specify input files directly in the command with the `--input` flag.
 
 This example runs all test specs in your config's `input` and `runTest.input` parameters:
 
 ```bash
-npx doc-detective runTests
+npx doc-detective
 ```
 
 This example runs all test specs in a file named `doc-content.md` in the `samples` directory:
 
 ```bash
-npx doc-detective runTests --input ./samples/doc-content.md
+npx doc-detective --input ./samples/doc-content.md
 ```
 
 ### Remotely hosted tests
@@ -396,15 +387,15 @@ npx doc-detective runTests --input ./samples/doc-content.md
 You can run tests hosted remotely by specifying the URL of the test file with the `--input` argument. For example, to run tests from a file hosted at `https://doc-detective.com/sample.spec.json`, run the following command:
 
 ```bash
-npx doc-detective runTests --input https://doc-detective.com/sample.spec.json
+npx doc-detective --input https://doc-detective.com/sample.spec.json
 ```
 
 These tests run the same way as local tests, but Doc Detective fetches the test file from the specified URL and stores it in a temporary directory. The URL must be accessible to the machine running the tests.
 
 ## Read the results
 
-Doc Detective outputs test results to a `testResults-<timestamp>.json` file in your `output` or `runTests.output` directory. You can also specify your output directory with the `--output` flag:
+Doc Detective outputs test results to a `testResults-<timestamp>.json` file in your `output` directory. You can also specify your output directory with the `--output` flag:
 
 ```bash
-npx doc-detective runTests --input ./samples/doc-content.md --output ./samples/
+npx doc-detective --input ./samples/doc-content.md --output ./samples/
 ```
