@@ -51,7 +51,7 @@ Test specs in standalone JSON files use the following basic structure:
       "steps": [
         {
           "stepId": "step-id",
-          "description": "Step Description",
+          "description": "Step Description"
           // Additional step properties, such as find, goTo, httpRequest, etc.
         }
       ]
@@ -214,9 +214,9 @@ Markdown:
 To get started,
 
 1. Go to [Acme Console](https://console.acme.com).
-2. Press **Search**.
+2. Click **Search**.
 
-![Search results](search-results.png)
+![Search results](search-results.png){ .screenshot }
 ```
 
 <!-- test-end -->
@@ -232,10 +232,7 @@ Detected tests:
           "goTo": "https://console.acme.com"
         },
         {
-          "find": {
-            "selector": "aria/Search",
-            "click": true
-          }
+          "click": "Search"
         },
         {
           "screenshot": "search-results.png"
@@ -257,9 +254,15 @@ The default actions are as follows:
 Check that the match returns a valid status code.
 
 ```json
-{
-  "checkLink": "$1"
-}
+{ "checkLink": "$1" }
+```
+
+### `click`
+
+Click or tap the match.
+
+```json
+{ "click": "$1" }
 ```
 
 #### `goTo`
@@ -267,9 +270,7 @@ Check that the match returns a valid status code.
 Open the match as a URL in a browser.
 
 ```json
-{
-  "goTo": "$1"
-}
+{ "goTo": "$1" }
 ```
 
 #### `find`
@@ -277,11 +278,7 @@ Open the match as a URL in a browser.
 Find an element on the current page that has an ARIA label that equals the match.
 
 ```json
-{
-  "find": {
-    "selector": "aria/$1"
-  }
-}
+{ "find": "$1" }
 ```
 
 #### `screenshot`
@@ -289,9 +286,7 @@ Find an element on the current page that has an ARIA label that equals the match
 Save a screenshot to a path equalling the match.
 
 ```json
-{
-  "screenshot": "$1"
-}
+{ "screenshot": "$1" }
 ```
 
 #### `type`
@@ -299,9 +294,7 @@ Save a screenshot to a path equalling the match.
 Type the match into the current page.
 
 ```json
-{
-  "type": "$1"
-}
+{ "type": "$1" }
 ```
 
 #### `httpRequest`
@@ -309,9 +302,7 @@ Type the match into the current page.
 Make an GET request to the match.
 
 ```json
-{
-  "httpRequest": "$1"
-}
+{ "httpRequest": "$1" }
 ```
 
 #### `runShell`
@@ -319,9 +310,7 @@ Make an GET request to the match.
 Run the match as a shell command.
 
 ```json
-{
-  "runShell": "$1"
-}
+{ "runShell": "$1" }
 ```
 
 #### `record`
@@ -329,9 +318,7 @@ Run the match as a shell command.
 Start recording a video to a path equalling the match.
 
 ```json
-{
-  "record": "$1"
-}
+{ "record": "$1" }
 ```
 
 #### `stopRecord`
@@ -339,9 +326,7 @@ Start recording a video to a path equalling the match.
 Stop recording a video.
 
 ```json
-{
-  "stopRecord": true
-}
+{ "stopRecord": true }
 ```
 
 #### `wait`
@@ -349,11 +334,7 @@ Stop recording a video.
 Wait for the specified duration.
 
 ```json
-{
-  "wait": {
-    "duration": "$1"
-  }
-}
+{ "wait": "$1" }
 ```
 
 #### `loadVariables`
@@ -361,9 +342,7 @@ Wait for the specified duration.
 Load environment variables from an `.env` file, where the path is the match.
 
 ```json
-{
-  "loadVariables": "$1"
-}
+{ "loadVariables": "$1" }
 ```
 
 ## Run tests
