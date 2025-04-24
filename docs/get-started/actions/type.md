@@ -19,7 +19,7 @@ You can specify the keys to type in several ways:
   - `keys`: (Required) A string or an array of strings representing the keys to type.
   - `inputDelay`: (Optional) Delay in milliseconds between each key press. Useful for making recordings more legible.
 
-> For comprehensive options, see the [`type`](/docs/references/schemas/typeKeys) reference.
+> For comprehensive options, see the [`type`](/docs/references/schemas/type) reference.
 
 ## Special keys
 

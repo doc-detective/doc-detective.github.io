@@ -1,5 +1,5 @@
 
-# typeKeys
+# type
 
 Type keys. To type special keys, begin and end the string with `$` and use the special key's keyword. For example, to type the Escape key, enter `$ESCAPE$`.
 
