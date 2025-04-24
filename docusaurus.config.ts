@@ -74,13 +74,13 @@ const config: Config = {
           position: "left",
           label: "Get started",
         },
-        {
-          type: "docSidebar",
-          sidebarId: "referencesSidebar",
-          position: "left",
-          label: "References",
-        },
-        { to: "/app", label: "Action Builder (beta)", position: "left" },
+        // {
+        //   type: "docSidebar",
+        //   sidebarId: "referencesSidebar",
+        //   position: "left",
+        //   label: "References",
+        // },
+        // { to: "/app", label: "Action Builder (beta)", position: "left" },
         // {to: '/blog', label: 'Blog', position: 'left'},
         { to: "/support", label: "Support ❤️", position: "right" },
         {
