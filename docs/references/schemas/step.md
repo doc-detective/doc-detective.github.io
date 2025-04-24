@@ -12,7 +12,7 @@ description | string |  Optional. Description of the step. |
 outputs | object |  Optional. Outputs from step processes and user-defined expressions. Use the `outputs` object to reference outputs in subsequent steps. If a user-defined output matches the key for a step-defined output, the user-defined output takes precedence. | ``{}``
 variables | object |  Optional. Environment variables to set from user-defined expressions. | ``{}``
 checkLink | One of<br/>-&nbsp;string<br/>-&nbsp;object |  Optional. No description provided. | 
-click | One of<br/>-&nbsp;string<br/>-&nbsp;object<br/>-&nbsp;boolean |  Optional. Click or tap an element. | 
+click | One of<br/>-&nbsp;string([Find element (simple)](/docs/references/schemas/Find element (simple)))<br/>-&nbsp;object([Click element (detailed)](/docs/references/schemas/Click element (detailed)))<br/>-&nbsp;boolean |  Optional. Click or tap an element. | 
 find | One of<br/>-&nbsp;string([Find element (simple)](/docs/references/schemas/Find element (simple)))<br/>-&nbsp;object([Find element (detailed)](/docs/references/schemas/Find element (detailed))) |  Optional. Find an element based on display text or a selector, then optionally interact with it. | 
 goTo | One of<br/>-&nbsp;string<br/>-&nbsp;object |  Optional. No description provided. | 
 httpRequest | One of<br/>-&nbsp;string([URL](/docs/references/schemas/URL))<br/>-&nbsp;object |  Optional. Perform a generic HTTP request, for example to an API. | 
