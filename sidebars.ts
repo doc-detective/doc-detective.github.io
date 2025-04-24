@@ -36,15 +36,16 @@ const sidebars: SidebarsConfig = {
           link: {type: 'generated-index', description: 'Actions are the commands performed in each step of a test. Each action has a specific purpose, such as checking a link, finding an element, or navigating to a URL.'},
           items: [
             'get-started/actions/checkLink',
+            'get-started/actions/click',
             'get-started/actions/find',
             'get-started/actions/goTo',
             'get-started/actions/httpRequest',
             'get-started/actions/runShell',
-            'get-started/actions/saveScreenshot',
-            'get-started/actions/setVariables',
-            'get-started/actions/startRecording',
-            'get-started/actions/stopRecording',
-            'get-started/actions/typeKeys',
+            'get-started/actions/screenshot',
+            'get-started/actions/loadVariables',
+            'get-started/actions/record',
+            'get-started/actions/stopRecord',
+            'get-started/actions/type',
             'get-started/actions/wait'
           ]
         }
