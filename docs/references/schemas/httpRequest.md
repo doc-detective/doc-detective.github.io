@@ -7,63 +7,65 @@ Perform a generic HTTP request, for example to an API.
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
-id | string |  Optional. ID of the step. | Generated UUID
-description | string |  Optional. Description of the step. | 
-action | string |  Required. Aciton to perform. | 
 url | string |  Optional. URL for the HTTP request. | 
-openApi | undefined |  Optional. undefined | 
-statusCodes | array of integers |  Optional. Accepted status codes. If the specified URL returns a code other than what is specified here, the action fails. | ``[200]``
+openApi | unknown |  Optional. No description provided. | 
+statusCodes | array of integer |  Optional. Accepted status codes. If the specified URL returns a code other than what is specified here, the action fails. | ``[200,201]``
 method | string |  Optional. Method of the HTTP request<br/><br/>Accepted values: `get`, `put`, `post`, `patch`, `delete` | `get`
 timeout | integer |  Optional. Timeout for the HTTP request, in milliseconds. | `60000`
-requestHeaders | object |  Optional. Headers to include in the HTTP request, in key/value format. | ``{}``
-responseHeaders | object |  Optional. Headers expected in the response, in key/value format. If one or more `responseHeaders` entries aren't present in the response, the step fails. | ``{}``
-requestParams | object |  Optional. URL parameters to include in the HTTP request, in key/value format. | ``{}``
-responseParams | object |  Optional. DEPRECATED. | ``{}``
-requestData | object |  Optional. JSON object to include as the body of the HTTP request. | ``{}``
-responseData | object |  Optional. JSON object expected in the response. If one or more key/value pairs aren't present in the response, the step fails. | ``{}``
-allowAdditionalFields | boolean |  Optional. If `false`, the step fails when the response data contains fields not specified in `responseData`. | `true`
-savePath | string |  Optional. File path to save the command's output, relative to `saveDirectory`. Specify a file extension that matches the expected response type, such as `.json` for JSON content or `.txt` for strings. | 
-saveDirectory | string |  Optional. Directory to save the command's output. If the directory doesn't exist, creates the directory. If not specified, the directory is your media directory. | 
-maxVariation | integer |  Optional. Allowed variation in percentage of text different between the current output and previously saved output. If the difference between the current output and the previous output is greater than `maxVariation`, the step fails. If output doesn't exist at `savePath`, this value is ignored. | `0`
-overwrite | string |  Optional. If `true`, overwrites the existing output at `savePath` if it exists.
-If `byVariation`, overwrites the existing output at `savePath` if the difference between the new output and the existing output is greater than `maxVariation`.<br/><br/>Accepted values: `true`, `false`, `byVariation` | `false`
-envsFromResponseData | array of objects |  Optional. Environment variables to set based on response variables, as an object of the environment variable name and the jq filter applied to the response data to identify the variable's value. | ``[]``
-envsFromResponseData.name | string |  Required. Name of the environment variable to set. | 
-envsFromResponseData.jqFilter | string |  Required. jq filter to apply to the response data. If the filter doesn't return a value, the environment variable isn't set. | 
+request | object |  Optional. No description provided. | 
+request.headers | object |  Optional. Headers to include in the HTTP request, in key/value format. | ``{}``
+request.parameters | object |  Optional. URL parameters to include in the HTTP request, in key/value format. | ``{}``
+request.body | One of<br/>-&nbsp;object<br/>-&nbsp;array of unknown<br/>-&nbsp;string |  Optional. JSON object to include as the body of the HTTP request. | ``{}``
+response | object |  Optional. No description provided. | 
+response.headers | object |  Optional. Headers expected in the response, in key/value format. If one or more `responseHeaders` entries aren't present in the response, the step fails. | ``{}``
+response.body | One of<br/>-&nbsp;object<br/>-&nbsp;array of unknown<br/>-&nbsp;string |  Optional. JSON object expected in the response. If one or more key/value pairs aren't present in the response, the step fails. | ``{}``
+allowAdditionalFields | boolean |  Optional. If `false`, the step fails when the response data contains fields not specified in the response body. | `true`
+path | string |  Optional. File path to save the command's output, relative to `directory`. Specify a file extension that matches the expected response type, such as `.json` for JSON content or `.txt` for strings. | 
+directory | string |  Optional. Directory to save the command's output. If the directory doesn't exist, creates the directory. If not specified, the directory is your media directory. | 
+maxVariation | number |  Optional. Allowed variation in percentage of text different between the current output and previously saved output. If the difference between the current output and the previous output is greater than `maxVariation`, the step fails. If output doesn't exist at `path`, this value is ignored. | `0`
+overwrite | string |  Optional. If `true`, overwrites the existing output at `path` if it exists.
+If `aboveVariation`, overwrites the existing output at `path` if the difference between the new output and the existing output is greater than `maxVariation`.<br/><br/>Accepted values: `true`, `false`, `aboveVariation` | `aboveVariation`
 
 ## Examples
 
 ```json
+"https://reqres.in/api/users"
+```
+
+```json
 {
-  "action": "httpRequest",
   "url": "https://reqres.in/api/users"
 }
 ```
 
 ```json
 {
-  "action": "httpRequest",
   "url": "https://reqres.in/api/users/2",
   "method": "put",
-  "requestData": {
-    "name": "morpheus",
-    "job": "zion resident"
+  "request": {
+    "body": {
+      "name": "morpheus",
+      "job": "zion resident"
+    }
   }
 }
 ```
 
 ```json
 {
-  "action": "httpRequest",
   "url": "https://reqres.in/api/users",
   "method": "post",
-  "requestData": {
-    "name": "morpheus",
-    "job": "leader"
+  "request": {
+    "body": {
+      "name": "morpheus",
+      "job": "leader"
+    }
   },
-  "responseData": {
-    "name": "morpheus",
-    "job": "leader"
+  "response": {
+    "body": {
+      "name": "morpheus",
+      "job": "leader"
+    }
   },
   "statusCodes": [
     200,
@@ -74,24 +76,27 @@ envsFromResponseData.jqFilter | string |  Required. jq filter to apply to the re
 
 ```json
 {
-  "action": "httpRequest",
   "url": "https://www.api-server.com",
   "method": "post",
   "timeout": 30000,
-  "requestHeaders": {
-    "header": "value"
+  "request": {
+    "body": {
+      "field": "value"
+    },
+    "headers": {
+      "header": "value"
+    },
+    "parameters": {
+      "param": "value"
+    }
   },
-  "requestParams": {
-    "param": "value"
-  },
-  "requestData": {
-    "field": "value"
-  },
-  "responseHeaders": {
-    "header": "value"
-  },
-  "responseData": {
-    "field": "value"
+  "response": {
+    "body": {
+      "field": "value"
+    },
+    "headers": {
+      "header": "value"
+    }
   },
   "statusCodes": [
     200
@@ -101,57 +106,67 @@ envsFromResponseData.jqFilter | string |  Required. jq filter to apply to the re
 
 ```json
 {
-  "action": "httpRequest",
   "url": "https://reqres.in/api/users",
   "method": "post",
-  "requestData": {
-    "name": "morpheus",
-    "job": "leader"
+  "request": {
+    "body": {
+      "name": "morpheus",
+      "job": "leader"
+    }
   },
-  "responseData": {
-    "name": "morpheus",
-    "job": "leader"
+  "response": {
+    "body": {
+      "name": "morpheus",
+      "job": "leader"
+    }
   },
   "statusCodes": [
     200,
     201
   ],
-  "savePath": "response.json",
-  "saveDirectory": "media",
-  "maxVariation": 5,
-  "overwrite": "byVariation"
+  "path": "response.json",
+  "directory": "media",
+  "maxVariation": 0.05,
+  "overwrite": "aboveVariation"
 }
 ```
 
 ```json
 {
-  "action": "httpRequest",
+  "openApi": "getUserById"
+}
+```
+
+```json
+{
   "openApi": {
     "name": "Reqres",
     "operationId": "getUserById"
   },
-  "requestParams": {
-    "id": 123
+  "request": {
+    "parameters": {
+      "id": 123
+    }
   }
 }
 ```
 
 ```json
 {
-  "action": "httpRequest",
   "openApi": {
     "descriptionPath": "https://api.example.com/openapi.json",
     "operationId": "getUserById"
   },
-  "requestParams": {
-    "id": 123
+  "request": {
+    "parameters": {
+      "id": 123
+    }
   }
 }
 ```
 
 ```json
 {
-  "action": "httpRequest",
   "openApi": {
     "descriptionPath": "https://api.example.com/openapi.json",
     "operationId": "createUser",
@@ -162,7 +177,6 @@ envsFromResponseData.jqFilter | string |  Required. jq filter to apply to the re
 
 ```json
 {
-  "action": "httpRequest",
   "openApi": {
     "descriptionPath": "https://api.example.com/openapi.json",
     "operationId": "updateUser",
@@ -174,13 +188,12 @@ envsFromResponseData.jqFilter | string |  Required. jq filter to apply to the re
 
 ```json
 {
-  "action": "httpRequest",
   "openApi": {
     "descriptionPath": "https://api.example.com/openapi.json",
     "operationId": "updateUser",
     "useExample": "request",
     "exampleKey": "acme",
-    "requestHeaders": {
+    "headers": {
       "Authorization": "Bearer $TOKEN"
     }
   }

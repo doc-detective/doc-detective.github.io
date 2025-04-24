@@ -9,25 +9,63 @@ description: Pause before performing the next action.
 
 # wait
 
-The `wait` action pauses before performing the next step. This action is useful for waiting a set duration before continuing a test, such as creating a pause before ending a recording.
+The `wait` action pauses test execution for a specified duration before proceeding to the next step. This is useful for adding delays, for example, to allow time for animations to complete or to make recordings easier to follow.
 
-You can specify the `duration` to pause in milliseconds. The default `duration` is 5 seconds.
+The value assigned to the `wait` key is the duration to pause in milliseconds. You can provide a number directly.
 
 > For comprehensive options, see the [`wait`](/docs/references/schemas/wait) reference.
 
 ## Examples
 
-```json
-{
-  "description": "Wait for 5 seconds.",
-  "action": "wait"
-}
-```
+### Wait for 3 seconds
 
 ```json
 {
-  "description": "Wait for 500 milliseconds.",
-  "action": "wait",
-  "duration": 500
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Perform an action.",
+          "goTo": "https://example.com"
+        },
+        {
+          "description": "Wait for 3000 milliseconds (3 seconds).",
+          "wait": 3000
+        },
+        {
+          "description": "Perform the next action.",
+          "screenshot": "after_wait.png"
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Wait for 500 milliseconds
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Click something.",
+          "find": {
+            "selector": "#myButton",
+            "click": true
+          }
+        },
+        {
+          "description": "Wait for half a second.",
+          "wait": 500
+        },
+        {
+          "description": "Check the result.",
+          "find": "Action complete!"
+        }
+      ]
+    }
+  ]
 }
 ```
