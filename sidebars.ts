@@ -40,6 +40,7 @@ const sidebars: SidebarsConfig = {
             'get-started/actions/find',
             'get-started/actions/goTo',
             'get-started/actions/httpRequest',
+            'get-started/actions/runCode',
             'get-started/actions/runShell',
             'get-started/actions/screenshot',
             'get-started/actions/loadVariables',
