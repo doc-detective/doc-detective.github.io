@@ -173,7 +173,7 @@ Consider the following test configuration, which checks the validity of `https:/
 To run the test, use the following command:
 
 ```bash
-npx doc-detective runTests -i bad-certificate.json
+npx doc-detective -i bad-certificate.json
 ```
 
 This command executes the test, but it fails, returning the following response:

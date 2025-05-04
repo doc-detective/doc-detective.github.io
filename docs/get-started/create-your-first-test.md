@@ -78,7 +78,7 @@ To create your first test, follow these steps:
 5. In your terminal, enter the following command to run the test:
 
    ```bash
-   npx doc-detective runTests --input homepage-check.spec.json
+   npx doc-detective --input homepage-check.spec.json
    ```
 
    By default, Doc Detective scans the current directory for valid tests, but you can specify your test file using the `--input` argument. For more information, see [Run tests](/docs/get-started/sample-tests.md#run-tests).
