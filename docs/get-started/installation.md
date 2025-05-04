@@ -44,7 +44,8 @@ Downloading and running Doc Detective is straightforward. Follow these steps to 
          ]
        }
      ]
-   }   ```
+   }
+   ```
 
 4. Run a test, pointing to the file you just created:
 
