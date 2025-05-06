@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import SchemaField from "./SchemaField";
 
@@ -12,14 +12,14 @@ const SchemaForm = ({ schema, passValueToParent }) => {
   const handleFormUpdate = (key, value) => {
     // console.log(`Updating form value for ${key} to ${value}`)
     // Update the form value.
-    setFormValue(oldFormValue => {
+    setFormValue((oldFormValue) => {
       const newValue = { ...oldFormValue, [key]: value };
       // Pass the value to the parent component.
       // Sort newValue based on schema order.
       const sortedObject = {};
-      Object.keys(schema.properties).forEach((key) => {
+      for (const key of Object.keys(schema.properties)) {
         if (newValue[key]) sortedObject[key] = newValue[key];
-      });
+      }
       passValueToParent(sortedObject);
       return sortedObject;
     });
@@ -32,7 +32,9 @@ const SchemaForm = ({ schema, passValueToParent }) => {
     <div className="schema-form">
       {schema.title && <ReactMarkdown>{`## ${schema.title}`}</ReactMarkdown>}
       {/* <ReactMarkdown>{JSON.stringify(formValue)}</ReactMarkdown> */}
-      {schema.description && <ReactMarkdown>{schema.description}</ReactMarkdown>}
+      {schema.description && (
+        <ReactMarkdown>{schema.description}</ReactMarkdown>
+      )}
 
       {Object.entries(schema.properties).map(([key, value]) => {
         return (

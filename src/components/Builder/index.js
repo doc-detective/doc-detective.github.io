@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import "./index.module.css";
-import SchemaForm from "../SchemaForms/SchemaForm";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { schemas } from "doc-detective-common";
 import JSONBlock from "../JSONBlock";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import SchemaForm from "../SchemaForms/SchemaForm";
 
 function App() {
   const [selectedSchema, setSelectedSchema] = useState("");
@@ -23,7 +23,7 @@ function App() {
 
   const removeEmptyValues = (obj) => {
     // console.log(`Removing empty values from ${JSON.stringify(obj)}`);
-    Object.keys(obj).forEach((key) => {
+    for (const key of Object.keys(obj)) {
       if (
         obj[key] &&
         !Array.isArray(obj) &&
@@ -38,7 +38,7 @@ function App() {
         (typeof obj[key] === "object" && Object.keys(obj[key]).length === 0)
       )
         delete obj[key];
-    });
+    }
     // console.log(`Removed empty values from ${JSON.stringify(obj)}`);
     return obj;
   };
