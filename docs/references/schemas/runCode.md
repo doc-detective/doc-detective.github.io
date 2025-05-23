@@ -5,6 +5,10 @@ Assemble and run code.
 
 ## Fields
 
+> **Note:** The following action properties are mutually exclusive. You can only use one of these in a single step:
+> 
+> `code`, `language`
+
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
 language | string | Required. Language of the code to run.<br/><br/>Accepted values: `python`, `bash`, `javascript` | 

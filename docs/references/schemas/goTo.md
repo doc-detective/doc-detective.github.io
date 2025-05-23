@@ -5,6 +5,10 @@
 
 ## Fields
 
+> **Note:** The following action properties are mutually exclusive. You can only use one of these in a single step:
+> 
+> `url`
+
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
 goTo | string | Navigate to an HTTP or HTTPS URL. Can be a full URL or a path. If a path is provided, navigates relative to the current URL, if any. | 

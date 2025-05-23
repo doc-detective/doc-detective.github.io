@@ -5,6 +5,10 @@
 
 ## Fields
 
+> **Note:** The following action properties are mutually exclusive. You can only use one of these in a single step:
+> 
+> `url`
+
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
 checkLink | string | Check if an HTTP or HTTPS URL returns an acceptable status code from a GET request. | 

@@ -5,6 +5,10 @@ A step in a test.
 
 ## Fields
 
+> **Note:** The following action properties are mutually exclusive. You can only use one of these in a single step:
+> 
+> `checkLink`, `click`, `find`, `goTo`, `httpRequest`, `runShell`, `runCode`, `type`, `screenshot`, `record`, `stopRecord`, `loadVariables`, `wait`
+
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
 stepId | string | Optional. ID of the step. | 

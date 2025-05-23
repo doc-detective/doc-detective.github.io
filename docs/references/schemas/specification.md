@@ -9,6 +9,7 @@ Field | Type | Description | Default
 :-- | :-- | :-- | :--
 specId | string | Optional. Unique identifier for the test specification. | 
 description | string | Optional. Description of the test specification. | 
+specPath | string | Optional. Path to the test specification. | 
 contentPath | string | Optional. Path to the content that the specification is associated with. | 
 runOn | array of object | Optional. Contexts to run the test in. Overrides contexts defined at the config and spec levels. | 
 openApi | array of unknown | Optional. No description provided. | 

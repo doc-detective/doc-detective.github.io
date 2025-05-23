@@ -36,9 +36,23 @@ async function main() {
     let fields = [
       "## Fields",
       "",
+    ];
+    
+    // Add warning about mutually exclusive properties if the schema has top-level anyOf/oneOf
+    if (schema.anyOf || schema.oneOf) {
+      const mutuallyExclusiveProps = extractMutuallyExclusiveActionProperties(schema);
+      if (mutuallyExclusiveProps.length > 0) {
+        fields.push("> **Note:** The following action properties are mutually exclusive. You can only use one of these in a single step:");
+        fields.push("> ");
+        fields.push("> `" + mutuallyExclusiveProps.join("`, `") + "`");
+        fields.push("");
+      }
+    }
+    
+    fields = fields.concat([
       "Field | Type | Description | Default",
       ":-- | :-- | :-- | :--",
-    ];
+    ]);
     
     // Handle top-level anyOf/oneOf schemas (like screenshot which can be string, object, or boolean)
     if (schema.anyOf || schema.oneOf) {
@@ -756,4 +770,70 @@ function getArraySubTypes(property, depth) {
   }
 
   return subTypes;
+}
+
+/**
+ * Extract action property names from the schema that are mutually exclusive
+ * (typically at the top level of an anyOf)
+ */
+function extractMutuallyExclusiveActionProperties(schema) {
+  const actionProps = [];
+  
+  // Check if the schema has a top-level anyOf or oneOf
+  if (!schema.anyOf && !schema.oneOf) {
+    return actionProps;
+  }
+  
+  const variants = schema.anyOf || schema.oneOf;
+  
+  // For each variant, find the action property (usually in required array)
+  for (const variant of variants) {
+    // Handle typical allOf structure in step schema 
+    // where common properties are in one block and action-specific in another
+    if (variant.allOf) {
+      for (const allOfItem of variant.allOf) {
+        if (allOfItem.required && allOfItem.required.length > 0) {
+          // Find the action property that's required
+          for (const requiredProp of allOfItem.required) {
+            // Skip common properties that can be used with any action
+            if (['stepId', 'description', 'outputs', 'variables'].includes(requiredProp)) {
+              continue;
+            }
+            if (!actionProps.includes(requiredProp)) {
+              actionProps.push(requiredProp);
+            }
+          }
+        }
+        
+        // Also check the properties directly if they're specific action types
+        if (allOfItem.properties) {
+          for (const propName of Object.keys(allOfItem.properties)) {
+            // Skip common properties that can be used with any action
+            if (['stepId', 'description', 'outputs', 'variables'].includes(propName)) {
+              continue;
+            }
+            // Add property if it seems to be an action (has $schema or title)
+            const prop = allOfItem.properties[propName];
+            if ((prop.$schema || prop.title) && !actionProps.includes(propName)) {
+              actionProps.push(propName);
+            }
+          }
+        }
+      }
+    }
+    // Handle direct required properties in the variant
+    else if (variant.required) {
+      for (const requiredProp of variant.required) {
+        // Skip common properties
+        if (['stepId', 'description', 'outputs', 'variables'].includes(requiredProp)) {
+          continue;
+        }
+        if (!actionProps.includes(requiredProp)) {
+          actionProps.push(requiredProp);
+        }
+      }
+    }
+  }
+  
+  return actionProps;
 }

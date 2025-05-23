@@ -5,6 +5,10 @@ Type keys. To type special keys, begin and end the string with `$` and use the s
 
 ## Fields
 
+> **Note:** The following action properties are mutually exclusive. You can only use one of these in a single step:
+> 
+> `keys`
+
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
 typeKeys | string | No description provided. | 

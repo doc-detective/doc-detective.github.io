@@ -5,6 +5,10 @@ Perform a native shell command.
 
 ## Fields
 
+> **Note:** The following action properties are mutually exclusive. You can only use one of these in a single step:
+> 
+> `command`
+
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
 runShell | string | No description provided. | 

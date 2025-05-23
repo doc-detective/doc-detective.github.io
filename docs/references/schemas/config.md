@@ -8,6 +8,7 @@ Configuration options for Doc Detective operations.
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
 configId | string | Optional. Identifier for the configuration. | 
+configPath | string | ReadOnly. Path to the configuration file. | 
 input | string | Optional. Path(s) to test specifications and documentation source files. May be paths to specific files or to directories to scan for files. | 
 input | array of string | Optional. Path(s) to test specifications and documentation source files. May be paths to specific files or to directories to scan for files. | 
 output | string | Optional. Path of the directory in which to store the output of Doc Detective commands. If a file path is specified, Doc Detective attempts to honor the file name specified, but file path behavior is controlled by the configured reporters. | `.`
@@ -28,6 +29,10 @@ integrations.openApi | array of unknown | Optional. No description provided. |
 telemetry | object | Optional. Options around sending telemetry for Doc Detective usage. | ``{"send":true}``
 telemetry.send | boolean | Required. If `true`, sends Doc Detective telemetry. | `true`
 telemetry.userId | string | Optional. Identifier for the organization, group, or individual running Doc Detective. | 
+environment | object | ReadOnly. Environment information for the system running Doc Detective. | 
+environment.workingDirectory | string | Optional. The current working directory of the process running Doc Detective. | 
+environment.platform | string | Required. The operating system type running Doc Detective.<br/><br/>Accepted values: `linux`, `mac`, `windows` | 
+environment.arch | string | Optional. The processor architecture of the system running Doc Detective.<br/><br/>Accepted values: `arm32`, `arm64`, `x32`, `x64` | 
 
 ## Examples
 
@@ -109,5 +114,14 @@ telemetry.userId | string | Optional. Identifier for the organization, group, or
       }
     }
   ]
+}
+```
+
+```json
+{
+  "environment": {
+    "platform": "windows",
+    "arch": "x64"
+  }
 }
 ```
