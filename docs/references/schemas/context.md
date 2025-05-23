@@ -7,17 +7,24 @@ A context in which to perform tests. If no contexts are specified but a context 
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
-contextId | string |  Optional. Unique identifier for the context. | Generated UUID
-platforms | One of<br/>-&nbsp;string<br/>-&nbsp;array of string |  Optional. Platforms to run tests on. | 
-browsers | One of<br/>-&nbsp;string<br/>-&nbsp;object<br/>-&nbsp;array of <br/>&nbsp;&nbsp;one of:<br/>&nbsp;&nbsp;- string<br/>&nbsp;&nbsp;- object |  Optional. Browsers to run tests on. | 
-browsers.name | string |  Required. Name of the browser.<br/><br/>Accepted values: `chrome`, `firefox`, `safari`, `webkit` | 
-browsers.headless | boolean |  Optional. If `true`, runs the browser in headless mode. | `true`
-browsers.window | object |  Optional. Browser dimensions. | 
-browsers.window.width | integer |  Optional. Width of the browser window in pixels. | 
-browsers.window.height | integer |  Optional. Height of the browser window in pixels. | 
-browsers.viewport | object |  Optional. Viewport dimensions. | 
-browsers.viewport.width | integer |  Optional. Width of the viewport in pixels. | 
-browsers.viewport.height | integer |  Optional. Height of the viewport in pixels. | 
+contextId | string | Optional. Unique identifier for the context. | 
+platforms | string | Optional. No description provided.<br/><br/>Accepted values: `linux`, `mac`, `windows` | 
+platforms | array of string | Optional. No description provided. | 
+browsers | string | Optional. Name of the browser.<br/><br/>Accepted values: `chrome`, `firefox`, `safari`, `webkit` | 
+browsers | object | Optional. Browser configuration. | 
+browsers.name | string | Required. Name of the browser.<br/><br/>Accepted values: `chrome`, `firefox`, `safari`, `webkit` | 
+browsers.headless | boolean | Optional. If `true`, runs the browser in headless mode. | `true`
+browsers.window | object | Optional. Browser dimensions. | 
+browsers.window.width | integer | Optional. Width of the browser window in pixels. | 
+browsers.window.height | integer | Optional. Height of the browser window in pixels. | 
+browsers.viewport | object | Optional. Viewport dimensions. | 
+browsers.viewport.width | integer | Optional. Width of the viewport in pixels. | 
+browsers.viewport.height | integer | Optional. Height of the viewport in pixels. | 
+browsers | array of <br/>one of:<br/>- string<br/>- object | Optional. No description provided. | 
+browsers[].name | string | Required. Name of the browser.<br/><br/>Accepted values: `chrome`, `firefox`, `safari`, `webkit` | 
+browsers[].headless | boolean | Optional. If `true`, runs the browser in headless mode. | `true`
+browsers[].window | object | Optional. Browser dimensions. | 
+browsers[].viewport | object | Optional. Viewport dimensions. | 
 
 ## Examples
 
