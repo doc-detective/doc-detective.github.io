@@ -4,6 +4,15 @@ const parser = require("@apidevtools/json-schema-ref-parser");
 const { schemas } = require("doc-detective-common");
 const { exit } = require("process");
 
+// Create a set of schema titles that will be generated as pages
+// This will be used to check if we should create links to schemas
+const schemasTitlesSet = new Set();
+
+// Helper function to check if a schema exists for a given title
+function doesSchemaExist(title) {
+  return schemasTitlesSet.has(title);
+}
+
 main();
 
 async function main() {
@@ -27,6 +36,16 @@ async function main() {
     "type_v3",
     "wait_v3",
   ];
+  
+  // Get titles for all schemas being generated
+  for await (const key of schemasToGenerate) {
+    let schema = schemas[key];
+    // Dereference schema to get the title
+    schema = await parser.dereference(schema);
+    if (schema.title) {
+      schemasTitlesSet.add(schema.title);
+    }
+  }
   for await (const key of schemasToGenerate) {
     let schema = schemas[key];
     // Dereference schema
@@ -471,7 +490,11 @@ function generatePropertyRow(name, property, options = {}) {
   let typeDetails;
   if (explicitType) {
     typeDetails = { 
-      type: title ? `${explicitType}([${title}](/docs/references/schemas/${title}))` : explicitType,
+      type: title ? 
+        (doesSchemaExist(title) ? 
+          `${explicitType}([${title}](/docs/references/schemas/${title}))` : 
+          `${explicitType}(${title})`) : 
+        explicitType,
       types: [explicitType] 
     };
     
@@ -483,7 +506,9 @@ function generatePropertyRow(name, property, options = {}) {
       }
       // Check if items have a title (schema reference)
       else if (property.items && property.items.title) {
-        typeDetails.type = `${typeDetails.type} of object([${property.items.title}](/docs/references/schemas/${property.items.title}))`;
+        typeDetails.type = `${typeDetails.type} of object${doesSchemaExist(property.items.title) ? 
+          `([${property.items.title}](/docs/references/schemas/${property.items.title}))` : 
+          `(${property.items.title})`}`;
       }
       // Check if items have multiple possible types
       else if (property.items && (property.items.anyOf || property.items.oneOf)) {
@@ -491,7 +516,9 @@ function generatePropertyRow(name, property, options = {}) {
         // Handle single variant with title or type
         if (itemVariants.length === 1) {
           if (itemVariants[0].title) {
-            typeDetails.type = `${typeDetails.type} of object([${itemVariants[0].title}](/docs/references/schemas/${itemVariants[0].title}))`;
+            typeDetails.type = `${typeDetails.type} of object${doesSchemaExist(itemVariants[0].title) ? 
+              `([${itemVariants[0].title}](/docs/references/schemas/${itemVariants[0].title}))` : 
+              `(${itemVariants[0].title})`}`;
           } else if (itemVariants[0].type) {
             typeDetails.type = `${typeDetails.type} of ${itemVariants[0].type}`;
           }
@@ -500,7 +527,9 @@ function generatePropertyRow(name, property, options = {}) {
         else {
           const typesList = itemVariants.map(v => {
             if (v.title) {
-              return `object([${v.title}](/docs/references/schemas/${v.title}))`;
+              return `object${doesSchemaExist(v.title) ? 
+                `([${v.title}](/docs/references/schemas/${v.title}))` : 
+                `(${v.title})`}`;
             } else if (v.type) {
               return v.type;
             } else {
@@ -668,7 +697,9 @@ function getTypes(property) {
         
         // Add title for referenced objects
         if (item.title) {
-          type = type + `([${item.title}](/docs/references/schemas/${item.title}))`;
+          type = type + `${doesSchemaExist(item.title) ? 
+            `([${item.title}](/docs/references/schemas/${item.title}))` : 
+            `(${item.title})`}`;
         }
         
         // Handle array subtypes
@@ -708,7 +739,9 @@ function getTypes(property) {
     
     // Add title for referenced objects
     if (property.title && type === "object") {
-      type = type + `([${property.title}](/docs/references/schemas/${property.title}))`;
+      type = type + `${doesSchemaExist(property.title) ? 
+        `([${property.title}](/docs/references/schemas/${property.title}))` : 
+        `(${property.title})`}`;
     }
   }
 
@@ -735,17 +768,23 @@ function getArraySubTypes(property, depth) {
       const item = itemsArray[index];
       // Handle referenced schema objects
       if (item.type === "object" && item.title) {
-        subTypes = `${subTypes}<br/>${spaces}-&nbsp;${item.type}([${item.title}](/docs/references/schemas/${item.title}))`;
+        subTypes = `${subTypes}<br/>${spaces}-&nbsp;${item.type}${doesSchemaExist(item.title) ? 
+          `([${item.title}](/docs/references/schemas/${item.title}))` : 
+          `(${item.title})`}`;
       } 
       // Handle nested oneOf/anyOf in array items
       else if (!item.type && (item.oneOf || item.anyOf)) {
         const nestedTypes = (item.oneOf || item.anyOf)
           .map(variant => {
             if (variant.type === "object" && variant.title) {
-              return `${variant.type}([${variant.title}](/docs/references/schemas/${variant.title}))`;
+              return `${variant.type}${doesSchemaExist(variant.title) ? 
+                `([${variant.title}](/docs/references/schemas/${variant.title}))` : 
+                `(${variant.title})`}`;
             } else if (variant.title) {
               // Handle case where title exists but type might be undefined
-              return `object([${variant.title}](/docs/references/schemas/${variant.title}))`;
+              return `object${doesSchemaExist(variant.title) ? 
+                `([${variant.title}](/docs/references/schemas/${variant.title}))` : 
+                `(${variant.title})`}`;
             } else if (variant.type) {
               return variant.type;
             } else {
@@ -774,7 +813,9 @@ function getArraySubTypes(property, depth) {
     const item = itemsArray[0];
     // Handle referenced schema objects
     if (item.type === "object" && item.title) {
-      subTypes = `${subTypes}${item.type}([${item.title}](/docs/references/schemas/${item.title}))`;
+      subTypes = `${subTypes}${item.type}${doesSchemaExist(item.title) ? 
+        `([${item.title}](/docs/references/schemas/${item.title}))` : 
+        `(${item.title})`}`;
     } 
     // Handle nested oneOf/anyOf in array items
     else if (!item.type && (item.oneOf || item.anyOf)) {
@@ -782,10 +823,14 @@ function getArraySubTypes(property, depth) {
       const variants = item.oneOf || item.anyOf;
       const variantTypes = variants.map(variant => {
         if (variant.type === "object" && variant.title) {
-          return `${variant.type}([${variant.title}](/docs/references/schemas/${variant.title}))`;
+          return `${variant.type}${doesSchemaExist(variant.title) ? 
+            `([${variant.title}](/docs/references/schemas/${variant.title}))` : 
+            `(${variant.title})`}`;
         } else if (variant.title) {
           // Handle case where title exists but type might be undefined
-          return `object([${variant.title}](/docs/references/schemas/${variant.title}))`;
+          return `object${doesSchemaExist(variant.title) ? 
+            `([${variant.title}](/docs/references/schemas/${variant.title}))` : 
+            `(${variant.title})`}`;
         } else if (variant.type) {
           return variant.type;
         } else {
@@ -796,7 +841,9 @@ function getArraySubTypes(property, depth) {
     }
     // Check for title on the item directly (handles schema references in array items)
     else if (item.title) {
-      subTypes = `${subTypes}object([${item.title}](/docs/references/schemas/${item.title}))`;
+      subTypes = `${subTypes}object${doesSchemaExist(item.title) ? 
+        `([${item.title}](/docs/references/schemas/${item.title}))` : 
+        `(${item.title})`}`;
     }
     // Handle regular types
     else if (item.type) {
