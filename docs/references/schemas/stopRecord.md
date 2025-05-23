@@ -7,6 +7,7 @@ Stop the current recording.
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
+stopRecord | boolean | No description provided. | 
 
 ## Examples
 

@@ -7,6 +7,9 @@ Pause (in milliseconds) before performing the next action.
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
+wait | number | No description provided. | 
+wait | string | No description provided. | 
+wait | boolean | No description provided. | 
 
 ## Examples
 

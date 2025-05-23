@@ -40,14 +40,38 @@ async function main() {
       ":-- | :-- | :-- | :--",
     ];
     
+    // Handle top-level anyOf/oneOf schemas (like screenshot which can be string, object, or boolean)
+    if (schema.anyOf || schema.oneOf) {
+      const topLevelRows = processTopLevelVariations(schema);
+      if (topLevelRows.length > 0) {
+        fields = fields.concat(topLevelRows);
+      }
+    }
+    
     // Extract all unique top-level property keys, handling direct properties, anyOf/oneOf, and allOf structures
     const propertyKeys = extractAllPropertyKeys(schema);
     
     // Process each top-level property
+    const generatedRows = [];
     for (const field of propertyKeys) {
       let fieldDetails = parseField(schema, field); // Pass only the top-level field name
-      fields = fields.concat(fieldDetails);
+      generatedRows.push(...fieldDetails);
     }
+    
+    // Deduplicate rows by creating a map of property name+type to row
+    const uniqueRows = {};
+    for (const row of generatedRows) {
+      const [name, type, description, defaultValue] = row.split(' | ');
+      const key = `${name}|${type}`;
+      
+      // Only add if this property+type combination doesn't exist already
+      if (!uniqueRows[key]) {
+        uniqueRows[key] = row;
+      }
+    }
+    
+    // Add the unique rows to fields
+    fields = fields.concat(Object.values(uniqueRows));
     fields.push("");
     
     // Examples
@@ -93,6 +117,69 @@ async function main() {
 }
 
 /**
+ * Process top-level variations for schemas that can be multiple types
+ * (e.g., screenshot can be a string, object, or boolean)
+ */
+function processTopLevelVariations(schema) {
+  const rows = [];
+  
+  // Get all variants
+  const variants = schema.anyOf || schema.oneOf;
+  
+  for (const variant of variants) {
+    // Handle direct types
+    if (variant.type) {
+      processVariantWithType(schema.title, variant, rows);
+    }
+    // Handle nested anyOf/oneOf
+    else if (variant.anyOf || variant.oneOf) {
+      const nestedVariants = variant.anyOf || variant.oneOf;
+      for (const nestedVariant of nestedVariants) {
+        processVariantWithType(schema.title, nestedVariant, rows);
+      }
+    }
+  }
+  
+  return rows;
+}
+
+/**
+ * Process a schema variant that has a type 
+ */
+function processVariantWithType(schemaTitle, variant, rows) {
+  if (variant.type === 'string') {
+    rows.push(`${schemaTitle} | string | ${variant.description || 'No description provided.'} | `);
+  } 
+  else if (variant.type === 'boolean') {
+    rows.push(`${schemaTitle} | boolean | ${variant.description || 'No description provided.'} | `);
+  }
+  else if (variant.type === 'number' || variant.type === 'integer') {
+    const defaultValue = variant.default !== undefined ? `\`${variant.default}\`` : '';
+    rows.push(`${schemaTitle} | ${variant.type} | ${variant.description || 'No description provided.'} | ${defaultValue}`);
+  }
+  else if (variant.type === 'array') {
+    let arrayType = 'array';
+    if (variant.items) {
+      if (variant.items.oneOf || variant.items.anyOf) {
+        const itemVariants = variant.items.oneOf || variant.items.anyOf;
+        if (itemVariants.length === 1 && itemVariants[0].type) {
+          arrayType += ` of ${itemVariants[0].type}`;
+        } else {
+          const types = itemVariants.filter(v => v.type).map(v => v.type).join(', ');
+          if (types) {
+            arrayType += ` of ${types}`;
+          }
+        }
+      } else if (variant.items.type) {
+        arrayType += ` of ${variant.items.type}`;
+      }
+    }
+    const defaultValue = variant.default ? `\`\`${JSON.stringify(variant.default)}\`\`` : '';
+    rows.push(`${schemaTitle} | ${arrayType} | ${variant.description || 'No description provided.'} | ${defaultValue}`);
+  }
+}
+
+/**
  * Extract all unique property keys from a schema, including properties in anyOf/oneOf/allOf structures
  */
 function extractAllPropertyKeys(schema) {
@@ -108,6 +195,11 @@ function extractAllPropertyKeys(schema) {
     const variants = schema.anyOf || schema.oneOf;
     
     for (const variant of variants) {
+      // Skip non-object variants at the top level
+      if (variant.type && variant.type !== 'object') {
+        continue;
+      }
+      
       // Check for properties directly within the variant
       if (variant.properties) {
         Object.keys(variant.properties).forEach(key => propertyKeys.add(key));
@@ -225,15 +317,44 @@ function extractTypeVariations(property) {
       if (variant.type) {
         variations.push({
           type: variant.type,
-          property: variant
+          property: {
+            ...variant,
+            description: variant.description || property.description
+          }
         });
       } else if (variant.title) {
         // Reference to another schema
         variations.push({
           type: 'object',
-          property: variant,
+          property: {
+            ...variant,
+            description: variant.description || property.description
+          },
           title: variant.title
         });
+      } else if (variant.anyOf || variant.oneOf) {
+        // Handle nested anyOf/oneOf
+        const nestedVariants = variant.anyOf || variant.oneOf;
+        for (const nestedVariant of nestedVariants) {
+          if (nestedVariant.type) {
+            variations.push({
+              type: nestedVariant.type,
+              property: {
+                ...nestedVariant,
+                description: nestedVariant.description || variant.description || property.description
+              }
+            });
+          } else if (nestedVariant.title) {
+            variations.push({
+              type: 'object',
+              property: {
+                ...nestedVariant,
+                description: nestedVariant.description || variant.description || property.description
+              },
+              title: nestedVariant.title
+            });
+          }
+        }
       }
     }
   }
@@ -342,8 +463,30 @@ function generatePropertyRow(name, property, options = {}) {
     
     // Handle array subtypes if this is an array
     if (explicitType === 'array') {
-      const subTypes = getArraySubTypes(property, 0);
-      typeDetails.type = typeDetails.type + subTypes;
+      // Check if items have a specific type
+      if (property.items && property.items.type) {
+        typeDetails.type = `${typeDetails.type} of ${property.items.type}`;
+      }
+      // Check if items have multiple possible types
+      else if (property.items && (property.items.anyOf || property.items.oneOf)) {
+        const itemVariants = property.items.anyOf || property.items.oneOf;
+        if (itemVariants.length === 1 && itemVariants[0].type) {
+          typeDetails.type = `${typeDetails.type} of ${itemVariants[0].type}`;
+        } else {
+          const types = itemVariants
+            .filter(v => v.type)
+            .map(v => v.type)
+            .join(', ');
+          if (types) {
+            typeDetails.type = `${typeDetails.type} of ${types}`;
+          }
+        }
+      }
+      // If no specific item type information, use getArraySubTypes
+      else {
+        const subTypes = getArraySubTypes(property, 0);
+        typeDetails.type = typeDetails.type + subTypes;
+      }
     }
   } else {
     typeDetails = getTypes(property);
@@ -365,6 +508,29 @@ function generatePropertyRow(name, property, options = {}) {
   if (property.enum) {
     let enums = `<br/><br/>Accepted values: \`${property.enum.join("`, `")}\``;
     description = description + enums;
+  }
+  
+  // Add constraint information
+  const constraints = [];
+  
+  if (property.minimum !== undefined) {
+    constraints.push(`Minimum: ${property.minimum}`);
+  }
+  if (property.maximum !== undefined) {
+    constraints.push(`Maximum: ${property.maximum}`);
+  }
+  if (property.minLength !== undefined) {
+    constraints.push(`Minimum length: ${property.minLength}`);
+  }
+  if (property.maxLength !== undefined) {
+    constraints.push(`Maximum length: ${property.maxLength}`);
+  }
+  if (property.pattern) {
+    constraints.push(`Pattern: \`${property.pattern}\``);
+  }
+  
+  if (constraints.length > 0) {
+    description += `<br/><br/>${constraints.join('. ')}`;
   }
   
   // Format default value

@@ -7,8 +7,10 @@ Type keys. To type special keys, begin and end the string with `$` and use the s
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
-keys | string | Required. No description provided. | 
-keys | array of string | Required. No description provided. | 
+typeKeys | string | No description provided. | 
+typeKeys | array of string | No description provided. | 
+keys | string | Required. Sequence of keys to enter. | 
+keys | array of string | Required. Sequence of keys to enter. | 
 inputDelay | number | Optional. Delay in milliseconds between each key press during a recording | `100`
 selector | string | Optional. Selector for the element to type into. If not specified, the typing occurs in the active element. | 
 

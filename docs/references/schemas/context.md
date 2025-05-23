@@ -8,8 +8,8 @@ A context in which to perform tests. If no contexts are specified but a context 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
 contextId | string | Optional. Unique identifier for the context. | 
-platforms | string | Optional. No description provided.<br/><br/>Accepted values: `linux`, `mac`, `windows` | 
-platforms | array of string | Optional. No description provided. | 
+platforms | string | Optional. Platforms to run tests on.<br/><br/>Accepted values: `linux`, `mac`, `windows` | 
+platforms | array of string | Optional. Platforms to run tests on. | 
 browsers | string | Optional. Name of the browser.<br/><br/>Accepted values: `chrome`, `firefox`, `safari`, `webkit` | 
 browsers | object | Optional. Browser configuration. | 
 browsers.name | string | Required. Name of the browser.<br/><br/>Accepted values: `chrome`, `firefox`, `safari`, `webkit` | 
@@ -20,7 +20,7 @@ browsers.window.height | integer | Optional. Height of the browser window in pix
 browsers.viewport | object | Optional. Viewport dimensions. | 
 browsers.viewport.width | integer | Optional. Width of the viewport in pixels. | 
 browsers.viewport.height | integer | Optional. Height of the viewport in pixels. | 
-browsers | array of <br/>one of:<br/>- string<br/>- object | Optional. No description provided. | 
+browsers | array of string, object | Optional. Browsers to run tests on. | 
 browsers[].name | string | Required. Name of the browser.<br/><br/>Accepted values: `chrome`, `firefox`, `safari`, `webkit` | 
 browsers[].headless | boolean | Optional. If `true`, runs the browser in headless mode. | `true`
 browsers[].window | object | Optional. Browser dimensions. | 

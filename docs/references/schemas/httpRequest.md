@@ -7,7 +7,8 @@ Perform a generic HTTP request, for example to an API.
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
-url | string | Optional. URL for the HTTP request. | 
+httpRequest | string | URL for the HTTP request. | 
+url | string | Optional. URL for the HTTP request.<br/><br/>Pattern: `(^(http://|https://).*|\$[A-Za-z0-9_]+)` | 
 openApi | unknown | Optional. No description provided. | 
 statusCodes | array of integer | Optional. Accepted status codes. If the specified URL returns a code other than what is specified here, the action fails. | ``[200,201]``
 method | string | Optional. Method of the HTTP request<br/><br/>Accepted values: `get`, `put`, `post`, `patch`, `delete` | `get`
@@ -15,18 +16,18 @@ timeout | integer | Optional. Timeout for the HTTP request, in milliseconds. | `
 request | object | Optional. No description provided. | 
 request.headers | object | Optional. Headers to include in the HTTP request, in key/value format. | ``{}``
 request.parameters | object | Optional. URL parameters to include in the HTTP request, in key/value format. | ``{}``
-request.body | object | Optional. No description provided. | 
-request.body | array of unknown | Optional. No description provided. | 
-request.body | string | Optional. No description provided. | 
+request.body | object | Optional. JSON object to include as the body of the HTTP request. | 
+request.body | array of unknown | Optional. JSON object to include as the body of the HTTP request. | 
+request.body | string | Optional. JSON object to include as the body of the HTTP request. | 
 response | object | Optional. No description provided. | 
 response.headers | object | Optional. Headers expected in the response, in key/value format. If one or more `responseHeaders` entries aren't present in the response, the step fails. | ``{}``
-response.body | object | Optional. No description provided. | 
-response.body | array of unknown | Optional. No description provided. | 
-response.body | string | Optional. No description provided. | 
+response.body | object | Optional. JSON object expected in the response. If one or more key/value pairs aren't present in the response, the step fails. | 
+response.body | array of unknown | Optional. JSON object expected in the response. If one or more key/value pairs aren't present in the response, the step fails. | 
+response.body | string | Optional. JSON object expected in the response. If one or more key/value pairs aren't present in the response, the step fails. | 
 allowAdditionalFields | boolean | Optional. If `false`, the step fails when the response data contains fields not specified in the response body. | `true`
 path | string | Optional. File path to save the command's output, relative to `directory`. Specify a file extension that matches the expected response type, such as `.json` for JSON content or `.txt` for strings. | 
 directory | string | Optional. Directory to save the command's output. If the directory doesn't exist, creates the directory. If not specified, the directory is your media directory. | 
-maxVariation | number | Optional. Allowed variation in percentage of text different between the current output and previously saved output. If the difference between the current output and the previous output is greater than `maxVariation`, the step fails. If output doesn't exist at `path`, this value is ignored. | `0`
+maxVariation | number | Optional. Allowed variation in percentage of text different between the current output and previously saved output. If the difference between the current output and the previous output is greater than `maxVariation`, the step fails. If output doesn't exist at `path`, this value is ignored.<br/><br/>Minimum: 0. Maximum: 1 | `0`
 overwrite | string | Optional. If `true`, overwrites the existing output at `path` if it exists.
 If `aboveVariation`, overwrites the existing output at `path` if the difference between the new output and the existing output is greater than `maxVariation`.<br/><br/>Accepted values: `true`, `false`, `aboveVariation` | `aboveVariation`
 
