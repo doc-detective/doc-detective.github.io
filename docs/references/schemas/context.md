@@ -20,7 +20,7 @@ browsers.window.height | integer | Optional. Height of the browser window in pix
 browsers.viewport | object | Optional. Viewport dimensions. | 
 browsers.viewport.width | integer | Optional. Width of the viewport in pixels. | 
 browsers.viewport.height | integer | Optional. Height of the viewport in pixels. | 
-browsers | array of string, object | Optional. Browsers to run tests on. | 
+browsers | array of one of: string, object | Optional. Browsers to run tests on. | 
 browsers[].name | string | Required. Name of the browser.<br/><br/>Accepted values: `chrome`, `firefox`, `safari`, `webkit` | 
 browsers[].headless | boolean | Optional. If `true`, runs the browser in headless mode. | `true`
 browsers[].window | object | Optional. Browser dimensions. | 

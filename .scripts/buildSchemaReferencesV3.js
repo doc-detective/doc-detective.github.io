@@ -481,18 +481,35 @@ function generatePropertyRow(name, property, options = {}) {
       if (property.items && property.items.type) {
         typeDetails.type = `${typeDetails.type} of ${property.items.type}`;
       }
+      // Check if items have a title (schema reference)
+      else if (property.items && property.items.title) {
+        typeDetails.type = `${typeDetails.type} of object([${property.items.title}](/docs/references/schemas/${property.items.title}))`;
+      }
       // Check if items have multiple possible types
       else if (property.items && (property.items.anyOf || property.items.oneOf)) {
         const itemVariants = property.items.anyOf || property.items.oneOf;
-        if (itemVariants.length === 1 && itemVariants[0].type) {
-          typeDetails.type = `${typeDetails.type} of ${itemVariants[0].type}`;
-        } else {
-          const types = itemVariants
-            .filter(v => v.type)
-            .map(v => v.type)
-            .join(', ');
-          if (types) {
-            typeDetails.type = `${typeDetails.type} of ${types}`;
+        // Handle single variant with title or type
+        if (itemVariants.length === 1) {
+          if (itemVariants[0].title) {
+            typeDetails.type = `${typeDetails.type} of object([${itemVariants[0].title}](/docs/references/schemas/${itemVariants[0].title}))`;
+          } else if (itemVariants[0].type) {
+            typeDetails.type = `${typeDetails.type} of ${itemVariants[0].type}`;
+          }
+        } 
+        // Handle multiple variants
+        else {
+          const typesList = itemVariants.map(v => {
+            if (v.title) {
+              return `object([${v.title}](/docs/references/schemas/${v.title}))`;
+            } else if (v.type) {
+              return v.type;
+            } else {
+              return "unknown";
+            }
+          });
+          
+          if (typesList.length > 0) {
+            typeDetails.type = `${typeDetails.type} of one of: ${typesList.join(', ')}`;
           }
         }
       }
@@ -608,7 +625,15 @@ function getItems(property, typeFilter) {
   
   // Apply type filter if specified
   if (typeFilter && items.length > 0) {
-    items = items.filter((item) => item.type === typeFilter);
+    items = items.filter((item) => {
+      // If item has explicit type that matches
+      if (item.type === typeFilter) return true;
+      
+      // For object filter, also include items with title (schema references)
+      if (typeFilter === 'object' && item.title) return true;
+      
+      return false;
+    });
   }
   
   return items;
@@ -718,6 +743,9 @@ function getArraySubTypes(property, depth) {
           .map(variant => {
             if (variant.type === "object" && variant.title) {
               return `${variant.type}([${variant.title}](/docs/references/schemas/${variant.title}))`;
+            } else if (variant.title) {
+              // Handle case where title exists but type might be undefined
+              return `object([${variant.title}](/docs/references/schemas/${variant.title}))`;
             } else if (variant.type) {
               return variant.type;
             } else {
@@ -730,6 +758,10 @@ function getArraySubTypes(property, depth) {
       // Handle regular types
       else if (item.type) {
         subTypes = `${subTypes}<br/>${spaces}- ${item.type}`;
+      }
+      // Check for title on the item directly (handles schema references in array items)
+      else if (item.title) {
+        subTypes = `${subTypes}<br/>${spaces}-&nbsp;object([${item.title}](/docs/references/schemas/${item.title}))`;
       }
       // Handle unknown types
       else {
@@ -751,6 +783,9 @@ function getArraySubTypes(property, depth) {
       const variantTypes = variants.map(variant => {
         if (variant.type === "object" && variant.title) {
           return `${variant.type}([${variant.title}](/docs/references/schemas/${variant.title}))`;
+        } else if (variant.title) {
+          // Handle case where title exists but type might be undefined
+          return `object([${variant.title}](/docs/references/schemas/${variant.title}))`;
         } else if (variant.type) {
           return variant.type;
         } else {
@@ -758,6 +793,10 @@ function getArraySubTypes(property, depth) {
         }
       }).join(", ");
       subTypes += variantTypes;
+    }
+    // Check for title on the item directly (handles schema references in array items)
+    else if (item.title) {
+      subTypes = `${subTypes}object([${item.title}](/docs/references/schemas/${item.title}))`;
     }
     // Handle regular types
     else if (item.type) {
