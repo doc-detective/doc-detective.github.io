@@ -6,7 +6,7 @@
 ## Referenced In
 
 - [runShell](/docs/references/schemas/runShell)
-- [File type (executable)](/docs/references/schemas/File type (executable))
+- [File type (executable)](/docs/references/schemas/File%20type%20(executable))
 
 ## Fields
 

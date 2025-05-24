@@ -5,7 +5,7 @@
 
 ## Referenced In
 
-- [Find element (detailed)](/docs/references/schemas/Find element (detailed))
+- [Find element (detailed)](/docs/references/schemas/Find%20element%20(detailed))
 
 ## Fields
 

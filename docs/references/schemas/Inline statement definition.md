@@ -5,7 +5,7 @@ Statements to include tests and steps inside the content of the file, such as wi
 
 ## Referenced In
 
-- [File type (custom)](/docs/references/schemas/File type (custom))
+- [File type (custom)](/docs/references/schemas/File%20type%20(custom))
 
 ## Fields
 

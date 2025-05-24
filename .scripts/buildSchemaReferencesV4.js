@@ -417,7 +417,9 @@ async function main() {
         // For top-level schemas or schemas with titles
         fileName = `${schemaId}.md`;
       }
-      schemaPaths.set(schemaId, `/docs/references/schemas/${fileName.replace('.md', '')}`);
+      const pathWithoutExt = fileName.replace('.md', '');
+      const encodedPath = encodeURIComponent(pathWithoutExt);
+      schemaPaths.set(schemaId, `/docs/references/schemas/${encodedPath}`);
     }
   }
   
