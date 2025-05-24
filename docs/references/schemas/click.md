@@ -1,39 +1,24 @@
 
 # click
 
-Click or tap an element.
+
+
+## Referenced In
+
+- [Markup definition](/docs/references/schemas/Markup definition)
+- [test](/docs/references/schemas/test)
+- [Resolved context](/docs/references/schemas/Resolved context)
 
 ## Fields
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
-click | string | Display text or selector of the element to find. | 
-click | boolean | No description provided. | 
-button | string | Optional. Kind of click to perform.<br/><br/>Accepted values: `left`, `right`, `middle` | 
-elementText | string | Optional. Display text of the element to click. If combined with `selector`, the element must match both the text and the selector. | 
-selector | string | Optional. Selector of the element to click. If combined with `elementText`, the element must match both the text and the selector. | 
+click | one of:<br/>- string<br/>- object([Click element (detailed)](/docs/references/schemas/Click element (detailed)))<br/>- boolean | Required. Click or tap an element. | 
 
 ## Examples
 
 ```json
-true
-```
-
-```json
-"right"
-```
-
-```json
 {
-  "button": "left",
-  "elementText": "Element text"
-}
-```
-
-```json
-{
-  "selector": "#elementToScreenshot",
-  "elementText": "Element text",
-  "button": "middle"
+  "click": "example"
 }
 ```

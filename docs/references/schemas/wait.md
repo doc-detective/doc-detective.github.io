@@ -1,26 +1,24 @@
 
 # wait
 
-Pause (in milliseconds) before performing the next action.
+
+
+## Referenced In
+
+- [Markup definition](/docs/references/schemas/Markup definition)
+- [test](/docs/references/schemas/test)
+- [Resolved context](/docs/references/schemas/Resolved context)
 
 ## Fields
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
-wait | number | No description provided. | 
-wait | string | No description provided. | 
-wait | boolean | No description provided. | 
+wait | one of:<br/>- number<br/>- string<br/>- boolean | Required. Pause (in milliseconds) before performing the next action. | `5000`
 
 ## Examples
 
 ```json
-5000
-```
-
-```json
-"$WAIT_DURATION"
-```
-
-```json
-true
+{
+  "wait": 5000
+}
 ```

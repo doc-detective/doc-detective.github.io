@@ -1,15 +1,24 @@
 
 # loadVariables
 
-Load environment variables from the specified `.env` file.
+
+
+## Referenced In
+
+- [Markup definition](/docs/references/schemas/Markup definition)
+- [test](/docs/references/schemas/test)
+- [Resolved context](/docs/references/schemas/Resolved context)
 
 ## Fields
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
+loadVariables | string | Required. Load environment variables from the specified `.env` file. | 
 
 ## Examples
 
 ```json
-".env"
+{
+  "loadVariables": "example"
+}
 ```

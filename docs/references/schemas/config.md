@@ -20,10 +20,10 @@ afterAll | one of:<br/>- string<br/>- array of string | Optional. Path(s) to tes
 detectSteps | boolean | Optional. Whether or not to detect steps in input files based on defined markup. | `true`
 logLevel | string | Optional. Amount of detail to output when performing an operation.<br/><br/>Accepted values: `silent`, `error`, `warning`, `info`, `debug` | `info`
 runOn | array of object([context](/docs/references/schemas/context)) | Optional. Contexts to run the test in. Overrides contexts defined at the config and spec levels. | 
-fileTypes | array of one of: string, object([Custom](/docs/references/schemas/Custom)), object([Executable](/docs/references/schemas/Executable)) | Optional. Configuration for file types and their markup detection. | ``["markdown","asciidoc","html"]``
-integrations | object | Optional. Options for connecting to external services. | 
-telemetry | object | Optional. Options around sending telemetry for Doc Detective usage. | ``{"send":true}``
-environment | object | ReadOnly. Environment information for the system running Doc Detective. | 
+fileTypes | array of one of: string, object([File type (custom)](/docs/references/schemas/File type (custom))), object([File type (executable)](/docs/references/schemas/File type (executable))) | Optional. Configuration for file types and their markup detection. | ``["markdown","asciidoc","html"]``
+integrations | object([Integrations options](/docs/references/schemas/Integrations options)) | Optional. Options for connecting to external services. | 
+telemetry | object([Telemetry options](/docs/references/schemas/Telemetry options)) | Optional. Options around sending telemetry for Doc Detective usage. | ``{"send":true}``
+environment | object([Environment details](/docs/references/schemas/Environment details)) | ReadOnly. Environment information for the system running Doc Detective. | 
 
 ## Examples
 

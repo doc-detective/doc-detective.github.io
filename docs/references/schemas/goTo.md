@@ -3,37 +3,22 @@
 
 
 
-## Fields
+## Referenced In
 
-> **Note:** The following action properties are mutually exclusive. You can only use one of these in a single step:
-> 
-> `url`
+- [Markup definition](/docs/references/schemas/Markup definition)
+- [test](/docs/references/schemas/test)
+- [Resolved context](/docs/references/schemas/Resolved context)
+
+## Fields
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
-goTo | string | Navigate to an HTTP or HTTPS URL. Can be a full URL or a path. If a path is provided, navigates relative to the current URL, if any. | 
-url | string | Required. URL to navigate to. Can be a full URL or a path. If a path is provided and `origin` is specified, prepends `origin` to `url`. If a path is provided but `origin` isn't specified, attempts to navigate relative to the current URL, if any.<br/><br/>Pattern: `(^(http://|https://|/).*|\$[A-Za-z0-9_]+)` | 
-origin | string | Optional. Protocol and domain to navigate to. Prepended to `url`. | 
+goTo | one of:<br/>- string<br/>- object([Go to URL (detailed)](/docs/references/schemas/Go to URL (detailed))) | Required. No description provided. | 
 
 ## Examples
 
 ```json
-"https://www.google.com"
-```
-
-```json
-"/search"
-```
-
-```json
 {
-  "url": "https://www.google.com"
-}
-```
-
-```json
-{
-  "url": "/search",
-  "origin": "www.google.com"
+  "goTo": "example"
 }
 ```

@@ -15,7 +15,7 @@ Field | Type | Description | Default
 :-- | :-- | :-- | :--
 contextId | string | Optional. Unique identifier for the context. | 
 platforms | one of:<br/>- string<br/>- array of string | Optional. Platforms to run tests on. | 
-browsers | one of:<br/>- string<br/>- object<br/>- array of one of: string, object | Optional. Browsers to run tests on. | 
+browsers | one of:<br/>- string<br/>- object([Browser](/docs/references/schemas/Browser))<br/>- array of one of: string, object([Browser](/docs/references/schemas/Browser)) | Optional. Browsers to run tests on. | 
 
 ## Examples
 
