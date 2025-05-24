@@ -1,3 +1,12 @@
+/*
+This is version 3 of the schema reference builder.
+Please use the buildSchemaReferencesV4.js script instead, which generates individual files 
+for each object schema, including nested objects.
+*/
+
+// Forward to V4 implementation
+require('./buildSchemaReferencesV4.js');
+
 const fs = require("fs");
 const path = require("path");
 const parser = require("@apidevtools/json-schema-ref-parser");

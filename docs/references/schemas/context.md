@@ -3,28 +3,19 @@
 
 A context in which to perform tests. If no contexts are specified but a context is required by one or more tests, Doc Detective attempts to identify a supported context in the current environment and run tests against it. For example, if a browser isn't specified but is required by steps in the test, Doc Detective will search for and use a supported browser available in the current environment.
 
+## Referenced In
+
+- [config](/docs/references/schemas/config)
+- [specification](/docs/references/schemas/specification)
+- [test](/docs/references/schemas/test)
+
 ## Fields
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
 contextId | string | Optional. Unique identifier for the context. | 
-platforms | string | Optional. Platforms to run tests on.<br/><br/>Accepted values: `linux`, `mac`, `windows` | 
-platforms | array of string | Optional. Platforms to run tests on. | 
-browsers | string | Optional. Name of the browser.<br/><br/>Accepted values: `chrome`, `firefox`, `safari`, `webkit` | 
-browsers | object | Optional. Browser configuration. | 
-browsers.name | string | Required. Name of the browser.<br/><br/>Accepted values: `chrome`, `firefox`, `safari`, `webkit` | 
-browsers.headless | boolean | Optional. If `true`, runs the browser in headless mode. | `true`
-browsers.window | object | Optional. Browser dimensions. | 
-browsers.window.width | integer | Optional. Width of the browser window in pixels. | 
-browsers.window.height | integer | Optional. Height of the browser window in pixels. | 
-browsers.viewport | object | Optional. Viewport dimensions. | 
-browsers.viewport.width | integer | Optional. Width of the viewport in pixels. | 
-browsers.viewport.height | integer | Optional. Height of the viewport in pixels. | 
-browsers | array of one of: string, object | Optional. Browsers to run tests on. | 
-browsers[].name | string | Required. Name of the browser.<br/><br/>Accepted values: `chrome`, `firefox`, `safari`, `webkit` | 
-browsers[].headless | boolean | Optional. If `true`, runs the browser in headless mode. | `true`
-browsers[].window | object | Optional. Browser dimensions. | 
-browsers[].viewport | object | Optional. Viewport dimensions. | 
+platforms | one of:<br/>- string<br/>- array of string | Optional. Platforms to run tests on. | 
+browsers | one of:<br/>- string<br/>- object<br/>- array of one of: string, object | Optional. Browsers to run tests on. | 
 
 ## Examples
 

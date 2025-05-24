@@ -19,6 +19,7 @@
     "doc-detective": "npx doc-detective@latest runTests"
   },
   "dependencies": {
+    "@apidevtools/json-schema-ref-parser": "^12.0.2",
     "@docusaurus/core": "3.7.0",
     "@docusaurus/preset-classic": "3.7.0",
     "@docusaurus/theme-mermaid": "^3.7.0",

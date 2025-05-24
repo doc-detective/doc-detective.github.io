@@ -1,10 +1,11 @@
 /*
 This is a legacy version of the schema reference builder.
-Please use the buildSchemaReferencesV3.js script instead, which has better support for v3 schemas.
+Please use the buildSchemaReferencesV4.js script instead, which has better support for v3 schemas
+and generates individual files for each object schema.
 */
 
-// Forward to V3 implementation
-require('./buildSchemaReferencesV3.js');
+// Forward to V4 implementation
+require('./buildSchemaReferencesV4.js');
 
 async function main() {
   const schemasToGenerate = [
