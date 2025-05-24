@@ -1,13 +1,11 @@
-const fs = require("fs");
-const path = require("path");
-const parser = require("@apidevtools/json-schema-ref-parser");
-const { schemas } = require("doc-detective-common");
-const { exit } = require("process");
+/*
+This is a legacy version of the schema reference builder.
+Please use the buildSchemaReferencesV4.js script instead, which has better support for v3 schemas
+and generates individual files for each object schema.
+*/
 
-main();
-
-// TODO: Add `minimum` values
-// TODO: Add `maximum` values
+// Forward to V4 implementation
+require('./buildSchemaReferencesV4.js');
 
 async function main() {
   const schemasToGenerate = [

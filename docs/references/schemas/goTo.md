@@ -3,32 +3,22 @@
 
 
 
+## Referenced In
+
+- [Markup definition](/docs/references/schemas/Markup%20definition)
+- [test](/docs/references/schemas/test)
+- [Resolved context](/docs/references/schemas/Resolved%20context)
+
 ## Fields
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
-url | string |  Optional. URL to navigate to. Can be a full URL or a path. If a path is provided and `origin` is specified, prepends `origin` to `url`. If a path is provided but `origin` isn't specified, attempts to navigate relative to the current URL, if any. | 
-origin | string |  Optional. Protocol and domain to navigate to. Prepended to `url`. | 
+goTo | one of:<br/>- string<br/>- object([Go to URL (detailed)](/docs/references/schemas/Go%20to%20URL%20(detailed))) | Required. No description provided. | 
 
 ## Examples
 
 ```json
-"https://www.google.com"
-```
-
-```json
-"/search"
-```
-
-```json
 {
-  "url": "https://www.google.com"
-}
-```
-
-```json
-{
-  "url": "/search",
-  "origin": "www.google.com"
+  "goTo": "example"
 }
 ```
