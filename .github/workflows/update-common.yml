@@ -9,6 +9,7 @@ on:
       version:
         description: 'The doc-detective-common version.'
         required: false
+        default: 'latest'
 
 jobs:
   update:
@@ -17,13 +18,62 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.DD_DEP_UPDATE_TOKEN }}
+
+    - name: Set version variable
+      id: version
+      run: |
+        VERSION="${{ github.event.client_payload.version || github.event.inputs.version || 'latest' }}"
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "Using version: $VERSION"
+
+    - name: Configure Git
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
 
     - name: Install specific version of doc-detective-common
       run: |
-        npm install doc-detective-common@${{ github.event.client_payload.version || github.event.inputs.version }}
+        npm install doc-detective-common@${{ steps.version.outputs.version }} || {
+          echo "Failed to install doc-detective-common@${{ steps.version.outputs.version }}"
+          exit 1
+        }
+    
+    - name: Test the installation
+      run: |
+        npm test
+    
+    - name: Commit changes
+      id: commit
+      run: |
+        git add package.json package-lock.json
+        if git diff --staged --quiet; then
+          echo "No changes to commit"
+          echo "has_changes=false" >> $GITHUB_OUTPUT
+        else
+          git commit -m "chore: bump doc-detective-common version to ${{ steps.version.outputs.version }}"
+          git push
+          echo "has_changes=true" >> $GITHUB_OUTPUT
+        fi
 
-    - name: Regenerate references
-      run: npm i
+    - name: Bump patch version
+      id: patch
+      if: steps.commit.outputs.has_changes == 'true'
+      run: |
+        npm version patch
+        git push
+        git push --tags
+        echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
 
-    - uses: stefanzweifel/git-auto-commit-action@v4
+    - name: Create release
+      if: steps.commit.outputs.has_changes == 'true'
+      uses: softprops/action-gh-release@v2
+      with:
+        body: "Updated doc-detective-common to v${{ steps.patch.outputs.version }}."
+        tag_name: "v${{ steps.patch.outputs.version }}"
+        name: "v${{ steps.patch.outputs.version }}"
+        generate_release_notes: true
+        token: ${{ secrets.DD_DEP_UPDATE_TOKEN }}
+
