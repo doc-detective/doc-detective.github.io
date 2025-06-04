@@ -1,6 +1,6 @@
 {
   "name": "doc-detective-docs",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
