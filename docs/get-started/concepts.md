@@ -1,7 +1,6 @@
 ---
 sidebar_label: Concepts
 ---
-
 # Concepts
 
 Learn the key concepts that form the foundation of Doc Detective.
@@ -34,7 +33,7 @@ An action is the task performed in a step. Doc Detective supports a variety of a
 | [loadVariables](/docs/get-started/actions/loadVariables.md) | Load environment variables from a `.env` file.                                                                                                            |
 | [record](/docs/get-started/actions/record.md)               | Capture a video of test run.                                                                                                                              |
 | [stopRecord](/docs/get-started/actions/stopRecord.md)       | Stop capturing a video of test run.                                                                                                                       |
-| [type](/docs/get-started/actions/type.md)                   | Type keys. To type special keys, begin and end the string with `$` and use the special key’s enum. For example, to type the Escape key, enter `$ESCAPE$`. |
+| [type](/docs/get-started/actions/type.md)                   | Type keys. To type special keys, begin and end the string with `$` and use the special key's enum. For example, to type the Escape key, enter `$ESCAPE$`. |
 | [wait](/docs/get-started/actions/wait.md)                   | Pause before performing the next action.                                                                                                                  |
 
 ## Context

@@ -1,7 +1,6 @@
 ---
 sidebar_label: Installation
 ---
-
 # Installation
 
 Downloading and running Doc Detective is straightforward. Follow these steps to install Doc Detective and run your first test:
@@ -58,3 +57,5 @@ Congratulations! You've run your first test with Doc Detective.
 ## Next steps
 
 - [Concepts](/docs/get-started/concepts)
+
+**Note:** Doc Detective has increased the default timeout durations for connection retries and wait-for commands during driver initialization. This change reduces the likelihood of timeout errors in long-running or slow test environments.
