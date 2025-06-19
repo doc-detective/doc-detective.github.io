@@ -40,15 +40,7 @@ Doc Detective’s core strength is the ability to systematically check each and 
 
 When Doc Detective runs tests, it can take screenshots and make recordings. You can include this media in the documentation to complement written processes, aiding the readers who prefer visual media while making sure your videos and images are up-to-date.
 
-### Generate tests when updating documentation
-
-After you write new documentation, Doc Detective can scan it and generate the necessary tests to verify its accuracy.
-
-### Analyze the test coverage of your documentation and suggest solutions
-
-Doc Detective ties specific tests to each line of your documentation. As a result, it can identify portions that are underserved and provide recommendations on next steps.
-
-## What can’t Doc Detective do?
+## What can't Doc Detective do?
 
 It’s important to know your limits, and Doc Detective’s too.
 
