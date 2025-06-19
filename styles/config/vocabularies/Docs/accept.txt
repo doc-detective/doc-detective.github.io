@@ -48,7 +48,6 @@ RESPONSE
 responseData
 responseHeaders
 responseParams
-runCoverage
 runShell
 runTests
 sandboxed
@@ -63,7 +62,6 @@ statusCodes
 stderr
 stdout
 stopRecording
-suggestTests
 TAB
 typeKeys
 underserved
