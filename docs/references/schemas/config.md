@@ -23,6 +23,7 @@ runOn | array of object([context](/docs/references/schemas/context)) | Optional.
 fileTypes | array of one of: string, object([File type (custom)](/docs/references/schemas/File%20type%20(custom))), object([File type (executable)](/docs/references/schemas/File%20type%20(executable))) | Optional. Configuration for file types and their markup detection. | ``["markdown","asciidoc","html"]``
 integrations | object([Integrations options](/docs/references/schemas/Integrations%20options)) | Optional. Options for connecting to external services. | 
 telemetry | object([Telemetry options](/docs/references/schemas/Telemetry%20options)) | Optional. Options around sending telemetry for Doc Detective usage. | ``{"send":true}``
+concurrentRunners | one of:<br/>- integer<br/>- boolean | Optional. Number of concurrent test runners for parallel execution. Set to an integer ≥ 1 to specify exact number of runners, or `true` to use CPU core count (capped at 4). | `1`
 environment | object([Environment details](/docs/references/schemas/Environment%20details)) | ReadOnly. Environment information for the system running Doc Detective. | 
 
 ## Examples
@@ -114,5 +115,23 @@ environment | object([Environment details](/docs/references/schemas/Environment%
     "platform": "windows",
     "arch": "x64"
   }
+}
+```
+
+```json
+{
+  "concurrentRunners": 1
+}
+```
+
+```json
+{
+  "concurrentRunners": true
+}
+```
+
+```json
+{
+  "concurrentRunners": 4
 }
 ```
