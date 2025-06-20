@@ -44,6 +44,7 @@ REQUEST
 requestData
 requestHeaders
 requestParams
+resolver
 RESPONSE
 responseData
 responseHeaders
@@ -70,3 +71,4 @@ UUID
 viewport
 VSCode
 workingDirectory
+workspaces
