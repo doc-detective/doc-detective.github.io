@@ -38,6 +38,16 @@ You can override config options with command-line arguments. For example, to run
 npx doc-detective --config .doc-detective.json --input tests.spec.json
 ```
 
+## Performance optimization
+
+For test suites with multiple contexts, you can improve performance using parallel execution:
+
+```bash
+npx doc-detective --concurrentRunners 4
+```
+
+This runs up to 4 test contexts simultaneously instead of sequentially. See the [parallel execution guide](/docs/get-started/config/parallel-execution) for detailed configuration options and best practices.
+
 <!-- ### Run remotely hosted tests
 
 You can run tests hosted remotely by specifying the URL of the test file with the `--input` argument. For example, to run tests from a file hosted at `https://doc-detective.com/sample.spec.json`, run the following command:
