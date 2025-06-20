@@ -21,6 +21,8 @@ Doc Detective is a doc content testing framework that simplifies the process of 
 
 Doc Detective ingests test specifications and text files, parses them for testable actions, then executes those actions in a browser. The results (PASS/FAIL and context) are output as a JSON object so that other pieces of infrastructure can parse and manipulate them as needed.
 
+For improved performance, Doc Detective supports parallel execution of test contexts, allowing multiple tests to run simultaneously with configurable worker pools.
+
 ## What can Doc Detective do?
 
 Doc Detective can do a lot, especially with a bit of creativity.
