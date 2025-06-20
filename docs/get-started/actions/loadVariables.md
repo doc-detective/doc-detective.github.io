@@ -13,7 +13,7 @@ The `loadVariables` action loads environment variables from a specified `.env` f
 
 > You can also load globally applicable variables using the `loadVariables` property in the configuration file. This makes them available across all tests.
 >
-> For comprehensive options, see the [`loadVariables`](/docs/references/schemas/loadVariables) reference.
+> For comprehensive options, see the [`loadVariables`](/docs/references/schemas/loadvariables) reference.
 
 ## Example
 

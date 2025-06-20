@@ -1,5 +1,5 @@
 
-# screenshot
+# stopRecord
 
 
 
@@ -13,12 +13,12 @@
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
-screenshot | one of:<br/>- string<br/>- object([Capture screenshot (detailed)](/docs/references/schemas/capture-screenshot-detailed))<br/>- boolean | Required. Takes a screenshot in PNG format. | 
+stopRecord | boolean | Required. Stop the current recording. | 
 
 ## Examples
 
 ```json
 {
-  "screenshot": "example"
+  "stopRecord": true
 }
 ```

@@ -1,5 +1,5 @@
 
-# screenshot
+# httpRequest
 
 
 
@@ -13,12 +13,12 @@
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
-screenshot | one of:<br/>- string<br/>- object([Capture screenshot (detailed)](/docs/references/schemas/capture-screenshot-detailed))<br/>- boolean | Required. Takes a screenshot in PNG format. | 
+httpRequest | one of:<br/>- string<br/>- object([HTTP request (detailed)](/docs/references/schemas/http-request-detailed)) | Required. Perform a generic HTTP request, for example to an API. | 
 
 ## Examples
 
 ```json
 {
-  "screenshot": "example"
+  "httpRequest": "example"
 }
 ```

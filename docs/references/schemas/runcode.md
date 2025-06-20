@@ -1,5 +1,5 @@
 
-# screenshot
+# runCode
 
 
 
@@ -13,12 +13,6 @@
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
-screenshot | one of:<br/>- string<br/>- object([Capture screenshot (detailed)](/docs/references/schemas/capture-screenshot-detailed))<br/>- boolean | Required. Takes a screenshot in PNG format. | 
+runCode | object([Run code (detailed)](/docs/references/schemas/run-code-detailed)) | Required. Assemble and run code. | 
 
 ## Examples
-
-```json
-{
-  "screenshot": "example"
-}
-```

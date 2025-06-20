@@ -1,5 +1,5 @@
 
-# screenshot
+# checkLink
 
 
 
@@ -13,12 +13,12 @@
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
-screenshot | one of:<br/>- string<br/>- object([Capture screenshot (detailed)](/docs/references/schemas/capture-screenshot-detailed))<br/>- boolean | Required. Takes a screenshot in PNG format. | 
+checkLink | one of:<br/>- string<br/>- object([Check link (detailed)](/docs/references/schemas/check-link-detailed)) | Required. No description provided. | 
 
 ## Examples
 
 ```json
 {
-  "screenshot": "example"
+  "checkLink": "example"
 }
 ```

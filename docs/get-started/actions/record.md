@@ -24,7 +24,7 @@ You can specify the recording action in several ways:
 
 **Stopping the Recording:** You *must* include a `stopRecord` step later in your test to finalize and save the video file.
 
-> For comprehensive options, see the [`record`](/docs/references/schemas/record) and [`stopRecord`](/docs/references/schemas/stopRecord) references.
+> For comprehensive options, see the [`record`](/docs/references/schemas/record) and [`stopRecord`](/docs/references/schemas/stoprecord) references.
 
 ## Examples
 

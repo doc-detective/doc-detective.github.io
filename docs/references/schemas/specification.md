@@ -7,6 +7,7 @@
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
+$schema | string | Optional. JSON Schema for this object.<br/><br/>Accepted values: `https://raw.githubusercontent.com/doc-detective/common/refs/heads/main/dist/schemas/spec_v3.schema.json` | 
 specId | string | Optional. Unique identifier for the test specification. | 
 description | string | Optional. Description of the test specification. | 
 specPath | string | Optional. Path to the test specification. | 

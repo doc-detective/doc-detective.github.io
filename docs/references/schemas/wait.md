@@ -5,9 +5,9 @@
 
 ## Referenced In
 
-- [Markup definition](/docs/references/schemas/Markup%20definition)
+- [Markup definition](/docs/references/schemas/markup-definition)
 - [test](/docs/references/schemas/test)
-- [Resolved context](/docs/references/schemas/Resolved%20context)
+- [Resolved context](/docs/references/schemas/resolved-context)
 
 ## Fields
 

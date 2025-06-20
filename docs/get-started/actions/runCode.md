@@ -25,11 +25,11 @@ You must specify the `runCode` action using an object format with the following 
   - `timeout`: (Optional) Maximum duration in milliseconds to wait for the code execution to complete.
   - `exitCodes`: (Optional) An array of acceptable exit codes. If the code execution's exit code is not in this list, the step fails (default: `[0]`).
   - `stdio`: (Optional) A string or regular expression to validate against the code's combined stdout and stderr. If the output doesn't match, the step fails. Regex must start and end with `/` (e.g., `/^hello world.*/`).
-  - *Output Saving:* You can also save the code's output using `path`, `directory`, `maxVariation`, and `overwrite` properties. See the [`runCode`](/docs/references/schemas/runCode) reference for details.
+  - *Output Saving:* You can also save the code's output using `path`, `directory`, `maxVariation`, and `overwrite` properties. See the [`runCode`](/docs/references/schemas/runcode) reference for details.
 
 **Setting Variables:** To capture output into variables for later steps, use the step-level `variables` object. You can assign values based on the code's output using expressions like `$$stdio.stdout`, `$$stdio.stderr`, or `$$exitCode`.
 
-> For comprehensive options, see the [`runCode`](/docs/references/schemas/runCode) reference.
+> For comprehensive options, see the [`runCode`](/docs/references/schemas/runcode) reference.
 
 ## Examples
 

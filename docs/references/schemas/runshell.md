@@ -1,5 +1,5 @@
 
-# screenshot
+# runShell
 
 
 
@@ -13,12 +13,12 @@
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
-screenshot | one of:<br/>- string<br/>- object([Capture screenshot (detailed)](/docs/references/schemas/capture-screenshot-detailed))<br/>- boolean | Required. Takes a screenshot in PNG format. | 
+runShell | one of:<br/>- string<br/>- object([Run shell command (detailed)](/docs/references/schemas/run-shell-command-detailed)) | Required. Perform a native shell command. | 
 
 ## Examples
 
 ```json
 {
-  "screenshot": "example"
+  "runShell": "example"
 }
 ```

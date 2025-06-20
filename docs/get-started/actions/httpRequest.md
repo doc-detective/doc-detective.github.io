@@ -33,11 +33,11 @@ You can specify a simple GET request using a string shorthand or use an object f
     - `useExample`: (Optional) Use example data from the OpenAPI spec (`request`, `response`, or `both`).
     - `exampleKey`: (Optional) Key of the specific example to use if multiple exist.
     *Note: Properties like `request.headers`, `request.parameters`, `request.body` can override values from the OpenAPI definition or example.*
-  - *Output Saving:* You can also save the response body using `path`, `directory`, `maxVariation`, and `overwrite` properties. See the [`httpRequest`](/docs/references/schemas/httpRequest) reference for details.
+  - *Output Saving:* You can also save the response body using `path`, `directory`, `maxVariation`, and `overwrite` properties. See the [`httpRequest`](/docs/references/schemas/httprequest) reference for details.
 
 **Setting Variables:** To capture parts of the response for later steps, use the step-level `variables` object. You can assign values based on the response using expressions like `$$response.body`, `$$response.headers`, `$$response.status`, etc. You can use dot notation for nested JSON fields (e.g., `$$response.body.user.id`).
 
-> For comprehensive options, see the [`httpRequest`](/docs/references/schemas/httpRequest) reference.
+> For comprehensive options, see the [`httpRequest`](/docs/references/schemas/httprequest) reference.
 
 ## Examples
 

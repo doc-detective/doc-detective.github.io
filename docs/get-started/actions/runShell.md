@@ -23,11 +23,11 @@ You can specify the command directly as a string or use an object for more optio
   - `timeout`: (Optional) Maximum duration in milliseconds to wait for the command to complete.
   - `exitCodes`: (Optional) An array of acceptable exit codes. If the command's exit code is not in this list, the step fails (default: `[0]`).
   - `stdio`: (Optional) A string or regular expression to validate against the command's combined stdout and stderr. If the output doesn't match, the step fails. Regex must start and end with `/` (e.g., `/^hello world.*/`).
-  - *Output Saving:* You can also save the command's output using `path`, `directory`, `maxVariation`, and `overwrite` properties. See the [`runShell`](/docs/references/schemas/runShell) reference for details.
+  - *Output Saving:* You can also save the command's output using `path`, `directory`, `maxVariation`, and `overwrite` properties. See the [`runShell`](/docs/references/schemas/runshell) reference for details.
   
 **Setting Variables:** To capture output into variables for later steps, use the step-level `variables` object. You can assign values based on the code's output using expressions like `$$stdio.stdout`, `$$stdio.stderr`, or `$$exitCode`.
 
-> For comprehensive options, see the [`runShell`](/docs/references/schemas/runShell) reference.
+> For comprehensive options, see the [`runShell`](/docs/references/schemas/runshell) reference.
 
 ## Examples
 

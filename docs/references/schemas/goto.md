@@ -1,5 +1,5 @@
 
-# screenshot
+# goTo
 
 
 
@@ -13,12 +13,12 @@
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
-screenshot | one of:<br/>- string<br/>- object([Capture screenshot (detailed)](/docs/references/schemas/capture-screenshot-detailed))<br/>- boolean | Required. Takes a screenshot in PNG format. | 
+goTo | one of:<br/>- string<br/>- object([Go to URL (detailed)](/docs/references/schemas/go-to-url-detailed)) | Required. No description provided. | 
 
 ## Examples
 
 ```json
 {
-  "screenshot": "example"
+  "goTo": "example"
 }
 ```

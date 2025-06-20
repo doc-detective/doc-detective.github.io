@@ -18,7 +18,7 @@ You can specify the target URL directly as a string, or use an object for more o
   - `url`: (Required) The URL to navigate to. Can be a full URL, a path, or a variable reference.
   - `origin`: (Optional) Protocol and domain prepended to `url` when `url` is a path. Overrides the global `origin` if set.
 
-> For comprehensive options, see the [`goTo`](/docs/references/schemas/goTo) reference.
+> For comprehensive options, see the [`goTo`](/docs/references/schemas/goto) reference.
 
 ## Examples
 

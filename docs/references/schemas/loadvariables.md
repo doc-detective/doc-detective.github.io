@@ -1,5 +1,5 @@
 
-# screenshot
+# loadVariables
 
 
 
@@ -13,12 +13,12 @@
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
-screenshot | one of:<br/>- string<br/>- object([Capture screenshot (detailed)](/docs/references/schemas/capture-screenshot-detailed))<br/>- boolean | Required. Takes a screenshot in PNG format. | 
+loadVariables | string | Required. Load environment variables from the specified `.env` file. | 
 
 ## Examples
 
 ```json
 {
-  "screenshot": "example"
+  "loadVariables": "example"
 }
 ```
