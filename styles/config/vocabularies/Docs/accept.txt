@@ -5,6 +5,8 @@ ARIA
 args
 boolean
 BOOL
+breakpoint
+breakpoints
 checkLink
 CLA
 CLEAR
@@ -61,6 +63,7 @@ startRecording
 statusCodes
 stderr
 stdout
+stepThrough
 stopRecording
 TAB
 typeKeys
