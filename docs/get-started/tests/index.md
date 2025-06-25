@@ -371,6 +371,65 @@ npx doc-detective --input https://doc-detective.com/sample.spec.json
 
 These tests run the same way as local tests, but Doc Detective fetches the test file from the specified URL and stores it in a temporary directory. The URL must be accessible to the machine running the tests.
 
+## Debug mode
+
+Doc Detective supports a debug mode that allows you to step through tests interactively and set breakpoints. This is particularly useful for debugging failing tests, understanding test execution flow, and developing new tests.
+
+### Configuration
+
+Configure debug mode using the `debug` property in your configuration:
+
+```json
+{
+  "input": "tests/",
+  "debug": false
+}
+```
+
+```json
+{
+  "input": "tests/",
+  "debug": true
+}
+```
+
+```json
+{
+  "input": "tests/",
+  "debug": "stepThrough"
+}
+```
+
+### Debug options
+
+- `false` (default): Disables all debugging
+- `true`: Allows pausing on breakpoints, waiting for user input before continuing
+- `"stepThrough"`: Pauses at every step, waiting for user input before continuing
+
+### Step-level breakpoints
+
+You can set breakpoints directly on individual steps using the `breakpoint` property:
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Normal step",
+          "wait": 1000
+        },
+        {
+          "description": "Debug this step",
+          "breakpoint": true,
+          "click": "#submit"
+        }
+      ]
+    }
+  ]
+}
+```
+
 ## Read the results
 
 Doc Detective outputs test results to a `testResults-<timestamp>.json` file in your `output` directory. You can also specify your output directory with the `--output` flag:
