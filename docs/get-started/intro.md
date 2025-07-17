@@ -40,6 +40,10 @@ Doc Detective’s core strength is the ability to systematically check each and 
 
 When Doc Detective runs tests, it can take screenshots and make recordings. You can include this media in the documentation to complement written processes, aiding the readers who prefer visual media while making sure your videos and images are up-to-date.
 
+### Programmatic access via REST API
+
+The Doc Detective API provides RESTful endpoints for managing accounts, API keys, and test runs programmatically. This enables integration with CI/CD pipelines, custom dashboards, and automated workflows. See the [API Guide](/docs/get-started/api-guide) for detailed endpoint documentation and usage examples.
+
 ## What can't Doc Detective do?
 
 It’s important to know your limits, and Doc Detective’s too.

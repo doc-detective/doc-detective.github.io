@@ -41,6 +41,11 @@ An action is the task performed in a step. Doc Detective supports a variety of a
 
 A [context](/docs/references/schemas/context.md) consists of an application and platforms that support the tests.
 
+## API
+
+The Doc Detective API provides RESTful endpoints for programmatic access to Doc Detective functionality, including account management, API key management, and test execution. The API enables integration with CI/CD pipelines, custom dashboards, and automated workflows. See the [API Guide](/docs/get-started/api-guide) for comprehensive documentation.
+
 ## Next steps
 
 - [Create your first test](/docs/get-started/create-your-first-test.md)
+- [Explore the API](/docs/get-started/api-guide)
