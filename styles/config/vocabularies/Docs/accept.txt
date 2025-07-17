@@ -1,5 +1,8 @@
+accountId
 ADD
 ALT
+apiKey
+apiKeys
 APIs
 ARIA
 args
@@ -24,10 +27,12 @@ fileTypes
 goTo
 hardcoding
 HELP
+HMAC
 HOME
 httpRequest
 HTTP
 jq
+keyId
 keypresses
 logLevel
 matchText
@@ -44,6 +49,7 @@ REQUEST
 requestData
 requestHeaders
 requestParams
+RESTful
 RESPONSE
 responseData
 responseHeaders
@@ -55,6 +61,7 @@ saveDirectory
 savePath
 saveScreenshot
 setVariables
+SHA256
 SHIFT
 SPACE
 startRecording
@@ -69,4 +76,4 @@ url
 UUID
 viewport
 VSCode
-workingDirectory
+workingDirectoryZod
