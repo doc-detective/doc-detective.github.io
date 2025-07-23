@@ -1,7 +1,7 @@
-import clsx from "clsx";
-import Heading from "@theme/Heading";
-import styles from "./styles.module.css";
 import Link from "@docusaurus/Link";
+import Heading from "@theme/Heading";
+import clsx from "clsx";
+import styles from "./styles.module.css";
 
 type FeatureItem = {
   title: string;
