@@ -1,0 +1,17 @@
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Install prerequisites",
+          "runShell": {
+	    "command": "node",
+	    "args": ["--version"],
+	    "stdio": "/^v(1[89]|[2-9][0-9])\\.[0-9]+\\.[0-9]+$/"
+	  }
+	}
+      ]
+    }
+  ]
+}
+
