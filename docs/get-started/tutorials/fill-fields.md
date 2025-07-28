@@ -24,7 +24,7 @@ To run the test:
 
 ![First and Last Names fields completed.](./img/form-filled-1-first-and-last-name.png)
 
-## Code Walkthrough
+## Code walkthrough
 
 ```json
 {
