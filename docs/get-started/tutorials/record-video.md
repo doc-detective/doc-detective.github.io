@@ -3,7 +3,7 @@ sidebar_label: Record Video
 description: Run a test that fills all fields in a form, capturing a video of the changes.
 ---
 
-# Record Video
+# Record video
 
 This example fills in all of the fields on the Watson and Holmes Intake Form, while capturing a video record.
 
