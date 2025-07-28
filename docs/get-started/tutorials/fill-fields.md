@@ -16,7 +16,11 @@ To run the test:
     ```
     live-server
     ```
-4. Enter the command `npx doc-detective@dev -i form-filler1.json -l
+4. Run the _form-filler1.json_ test spec with Doc Detective:
+
+    ```
+    npx doc-detective@dev -i form-filler1.json
+    ```
 
 ![First and Last Names fields completed.](./img/form-filled-1-first-and-last-name.png)
 
