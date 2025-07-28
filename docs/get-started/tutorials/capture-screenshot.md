@@ -230,3 +230,5 @@ Use the screenshot action with an output path to capture the state of the form o
     ]
 }
 ```
+
+Next step: [Record video](record-video)
