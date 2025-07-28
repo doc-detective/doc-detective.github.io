@@ -44,7 +44,7 @@ The first part of the test specification describes the execution environment (wh
                     ],
 ```
 
-The Chrome browser is the only browser that currently supports the record feature, which we'll use in later examples.
+The Chrome browser is the only browser that currently supports the record feature, which will be used in later examples.
 
 ```json
                     "browsers": {
