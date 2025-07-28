@@ -14,7 +14,7 @@ To run the test:
 3. Start your local server, if it isn't currently running. For example, enter the command `live-server`.
 4. Enter the command `npx doc-detective@dev -i form-filler3.json`.
 
-In order to record, the test must be run with _headless_ mode disabled. The display window of the browser constrains the view area of the screenshot and video functions.
+To record, you must run the test with _headless_ mode turned off. The display window of the browser constrains the view area of the screenshot and video functions.
 
 ## Code Walkthrough
 
