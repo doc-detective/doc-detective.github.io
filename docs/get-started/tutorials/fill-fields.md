@@ -179,4 +179,4 @@ Pause 10 seconds, allowing you to see the results, then end the test. In real te
     ]
 }
 ```
-Next Step: [Capturing a Screenshot](./capture-screenshot).
+Next Step: [Capturing a Screenshot](capture-screenshot).
