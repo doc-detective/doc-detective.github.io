@@ -16,7 +16,7 @@ To run the test:
 
 To record, you must run the test with _headless_ mode turned off. The display window of the browser constrains the view area of the screenshot and video functions.
 
-## Code Walkthrough
+## Code walkthrough
 
 These are the notable additions to the script.
 
@@ -56,7 +56,7 @@ After the actions are complete, stop the recording.
 ```
 
 
-## Complete Code Sample
+## Complete code sample
 
 ```json
 {
