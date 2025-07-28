@@ -105,7 +105,7 @@ Locate an element with the label "Last Name:" and type in the value _Betaux_.
                 },
 ```
 
-Pause 10 seconds, allowing you to see the results, then end the test.
+Pause 10 seconds, allowing you to see the results, then end the test. In real tests, you want to avoid long pauses to let tests run as quickly as possible, but pauses are invaluable when you're learning or debugging.
 
 ```json
                 {
