@@ -15,5 +15,5 @@ You can use Doc Detective directly against your production site. For testing, it
 
 4. Open a browser window to  `http://localhost:8080`.
 
-Running your files against a local server allows you to make edits and see them in real time. You will need to be able to serve up the files in a browser window in order to experiment with video recording and other features.
+Running your files against a local server allows you to make edits and see them in real time. You need to be able to serve up the files in a browser window to experiment with video recording and other features.
 
