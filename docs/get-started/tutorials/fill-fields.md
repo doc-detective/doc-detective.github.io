@@ -9,8 +9,8 @@ A basic test is to fill in the fields of a form. This short script opens a sampl
 
 To run the test:
 
-1. Download the TestExamples Zip file and expand doc-detective-tutorials on your local drive.
-2. In a terminal window, navigate to the doc-detective-tutorials directory.
+1. Download the TestExamples Zip file and expand it to your local drive.
+2. In a terminal window, navigate to the TestExamples directory.
 3. Start your local server, if it isn't currently running. For example, enter the command `live-server`.
 4. Enter the command `npx doc-detective@dev -i form-filler1.json -l
 
