@@ -60,10 +60,6 @@ When you run the test in the _headless_ state, the test runs without displaying 
 The form in this example is too large to fit on the screen. The window and viewport can be set to the full size, even if it isn't displayed at this time. This is important for taking screenshots, which this tutorial covers.
 
 ```json
-                        "window": {
-                            "width": 1200,
-                            "height": 1500
-                        },
                         "viewport": {
                             "width": 1180,
                             "height": 1480
