@@ -175,3 +175,4 @@ Pause 10 seconds, allowing you to see the results, then end the test.
     ]
 }
 ```
+Next Step: [Capturing a Screenshot](./capture-screenshot).
