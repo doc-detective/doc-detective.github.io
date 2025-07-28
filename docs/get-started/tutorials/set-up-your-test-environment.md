@@ -9,7 +9,7 @@ You can use Doc Detective directly against your production site. For testing, it
 
 1. Download [TestExamples.zip](./TestExamples.zip) and expand the file to your local disk.
 
-2. Install Live Server. You can find the Live Server installer [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer).
+2. Install Live Server. You can find the Live Server installer at the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer).
 
 3. Navigate to the TestExamples folder and enter the command: `live-server`. 
 
