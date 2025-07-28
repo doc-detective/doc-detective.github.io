@@ -3,7 +3,7 @@ sidebar_label: Set up your test environment
 description: Set up an environment for Doc Detective tests.
 ---
 
-# Set Up Your Test Environment
+# Set up your test environment
 
 You can use Doc Detective directly against your production site. For testing, it's often useful to set up a local HTML server to run your tests. There are many server options. Live Server is a free utility that creates a local server that monitors your files for changes and updates the browser window automatically.
 
