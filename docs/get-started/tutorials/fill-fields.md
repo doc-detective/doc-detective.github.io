@@ -118,7 +118,7 @@ Pause 10 seconds, allowing you to see the results, then end the test. In real te
 }
 ```
 
-## Complete Code Sample
+## Complete code sample
 
 ```json
 {
