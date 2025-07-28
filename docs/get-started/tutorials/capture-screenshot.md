@@ -3,7 +3,7 @@ sidebar_label: Capture Screenshot
 description: Run a test that fills all fields in a form, then captures a screeenshot of the result.
 ---
 
-# Capture Screenshot
+# Capture screenshot
 
 This example fills in all of the fields on the Watson and Holmes Intake Form, then captures a screenshot of the result for posterity.
 
@@ -18,7 +18,7 @@ While the form is too large to fit on the computer screen, increasing the window
 
 ![All fields completed.](./img/form-filled-2-complete.png)
 
-## Code Walkthrough
+## Code walkthrough
 
 These are the notable additions to the script.
 
@@ -85,7 +85,7 @@ Use the screenshot action with an output path to capture the state of the form o
 ```
 
 
-## Complete Code Sample
+## Complete code sample
 
 ```json
 {
