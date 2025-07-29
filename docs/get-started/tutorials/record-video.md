@@ -18,7 +18,7 @@ To record, you must run the test with _headless_ mode turned off. The display wi
 
 ## Code walkthrough
 
-These are the notable additions to the script.
+These are the notable additions to the script used in the [Capture screenshot](capture-screenshot) tutorial.
 
 For this example, the _headless_ setting must be false, so that the test actions are visible in the browser.
 

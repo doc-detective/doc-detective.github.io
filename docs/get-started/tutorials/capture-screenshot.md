@@ -20,7 +20,7 @@ While the form is too large to fit on the computer screen, increasing the window
 
 ## Code walkthrough
 
-These are the notable additions to the script.
+These are the notable additions to the script used in the [Fill in fields](fill-fields) tutorial.
 
 To capture the full form, this example runs in _headless_ mode. The screenshot can then capture the entire virtual viewport.
 

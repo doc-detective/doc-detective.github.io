@@ -16,7 +16,7 @@ const sidebars: SidebarsConfig = {
     {
       type: 'category',
       label: 'Get started',
-      items: ['get-started/intro', 'get-started/installation', 'get-started/concepts', 'get-started/create-your-first-test', 'get-started/sample-tests', 'get-started/resources' ]
+      items: ['get-started/intro', 'get-started/installation', 'get-started/concepts', 'get-started/create-your-first-test', 'get-started/sample-tests', 'get-started/resources', 'get-started/tutorials'],
     },
     {
       type: 'category',
