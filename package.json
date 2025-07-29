@@ -19,28 +19,28 @@
     "doc-detective": "npx doc-detective@latest runTests"
   },
   "dependencies": {
-    "@apidevtools/json-schema-ref-parser": "^12.0.2",
+    "@apidevtools/json-schema-ref-parser": "^14.1.1",
     "@docusaurus/core": "^3.8.1",
     "@docusaurus/preset-classic": "^3.8.1",
     "@docusaurus/theme-mermaid": "^3.8.1",
-    "@emotion/styled": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
     "@inkeep/docusaurus": "^2.0.16",
     "@mdx-js/react": "^3.1.0",
-    "@mui/icons-material": "^6.4.3",
-    "@mui/material": "^6.4.3",
+    "@mui/icons-material": "^7.2.0",
+    "@mui/material": "^7.2.0",
     "clsx": "^2.1.1",
     "doc-detective-common": "^3.1.1",
-    "dotenv": "^16.5.0",
+    "dotenv": "^17.2.1",
     "https-browserify": "^1.0.0",
     "os-browserify": "^0.3.0",
     "path-browserify": "^1.0.1",
     "posthog-docusaurus": "^2.0.4",
     "prism-react-renderer": "^2.4.1",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "react-markdown": "^9.0.3",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-markdown": "^10.1.0",
     "stream-http": "^3.2.0",
-    "yaml": "^2.7.1"
+    "yaml": "^2.8.0"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^3.2.6",
@@ -56,9 +56,9 @@
     "@storybook/react": "^8.5.3",
     "@storybook/react-webpack5": "^8.5.3",
     "@storybook/test": "^8.5.3",
-    "@vvago/vale": "^3.9.4",
+    "@vvago/vale": "^3.12.0",
     "storybook": "^8.5.3",
-    "typescript": "~5.7.3"
+    "typescript": "~5.8.3"
   },
   "browserslist": {
     "production": [
