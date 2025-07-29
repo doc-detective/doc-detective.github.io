@@ -1,5 +1,4 @@
 ---
-sidebar_label: Record Video
 description: Run a test that fills all fields in a form, capturing a video of the changes.
 ---
 

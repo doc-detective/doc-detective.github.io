@@ -1,5 +1,4 @@
 ---
-sidebar_label: Capture Screenshot
 description: Run a test that fills all fields in a form, then captures a screenshot of the result.
 ---
 
