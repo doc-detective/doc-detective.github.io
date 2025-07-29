@@ -9,10 +9,19 @@ This example fills in all of the fields on the Watson and Holmes Intake Form, th
 
 To run the test:
 
-1. Download the TestExamples Zip file and expand doc-detective-tutorials on your local drive.
-2. In a terminal window, navigate to the doc-detective-tutorials directory.
-3. Start your local server, if it isn't currently running. For example, enter the command `live-server`.
-4. Enter the command `npx doc-detective@dev -i form-filler2.json
+1. Download the `TestExamples.zip` file and expand it on your local drive.
+2. In a terminal window, navigate to the `TestExamples` directory.
+3. Start your local server.
+
+    ```shell
+    live-server
+    ```
+
+4. Enter the command 
+
+   ```shell
+   npx doc-detective@dev -i form-filler2.json
+   ```
 
 While the form is too large to fit on the computer screen, increasing the window and viewport settings allows you to capture the entire form in a single image.
 
@@ -222,7 +231,7 @@ Use the screenshot action with an output path to capture the state of the form o
                     "screenshot": "./output/form-filled-2-complete.png"
                 },
                 {
-                    "description:": "Pause long enough to see the changes.",
+                    "description": "Pause long enough to see the changes.",
                     "wait": 10000
                 }
             ]

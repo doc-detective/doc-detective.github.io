@@ -9,13 +9,19 @@ A basic test is to fill in the fields of a form. This short script opens a sampl
 
 To run the test:
 
-1. Download the TestExamples Zip file and expand it to your local drive.
-2. In a terminal window, navigate to the TestExamples directory.
+1. Download the `TestExamples.zip` file and expand it to your local drive.
+2. In a terminal window, navigate to the `TestExamples` directory.
+   
+   ```shell
+   cd TestExamples
+   ```
+
 3. Start your local server:
 
-    ```
+    ```shell
     live-server
     ```
+
 4. Run the _form-filler1.json_ test spec with Doc Detective:
 
     ```
@@ -109,7 +115,7 @@ Pause 10 seconds, allowing you to see the results, then end the test. In real te
 
 ```json
                 {
-                    "description:": "Pause long enough to show the changes.",
+                    "description": "Pause long enough to show the changes.",
                     "wait": 10000
                 }
             ]

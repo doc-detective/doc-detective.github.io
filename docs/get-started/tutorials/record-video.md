@@ -10,9 +10,17 @@ This example fills in all of the fields on the Watson and Holmes Intake Form, wh
 To run the test:
 
 1. Download the TestExamples Zip file and expand doc-detective-tutorials on your local drive.
-2. In a terminal window, navigate to the doc-detective-tutorials directory.
-3. Start your local server, if it isn't currently running. For example, enter the command `live-server`.
-4. Enter the command `npx doc-detective@dev -i form-filler3.json`.
+2. In a terminal window, navigate to the `TestExamples` directory.
+3. Start your local server.
+
+    ```shell
+    live-server
+    ```
+
+4. Enter the command 
+   ```shell
+   npx doc-detective@dev -i form-filler3.json
+   ```
 
 To record, you must run the test with _headless_ mode turned off. The display window of the browser constrains the view area of the screenshot and video functions.
 
