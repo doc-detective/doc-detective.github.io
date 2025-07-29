@@ -1,6 +1,6 @@
 ---
 sidebar_label: Capture Screenshot
-description: Run a test that fills all fields in a form, then captures a screeenshot of the result.
+description: Run a test that fills all fields in a form, then captures a screenshot of the result.
 ---
 
 # Capture screenshot
@@ -9,7 +9,7 @@ This example fills in all of the fields on the Watson and Holmes Intake Form, th
 
 To run the test:
 
-1. Download the `TestExamples.zip` file and expand it on your local drive.
+1. Download the [TestExamples.zip](./TestExamples.zip) file and expand it on your local drive.
 2. In a terminal window, navigate to the `TestExamples` directory.
 3. Start your local server.
 
@@ -240,4 +240,4 @@ Use the screenshot action with an output path to capture the state of the form o
 }
 ```
 
-Next step: [Record video](record-video)
+Next step: [Record video](./record-video)

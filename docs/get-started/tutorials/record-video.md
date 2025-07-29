@@ -5,11 +5,11 @@ description: Run a test that fills all fields in a form, capturing a video of th
 
 # Record video
 
-This example fills in all of the fields on the Watson and Holmes Intake Form, while capturing a video record.
+This example fills in all the fields on the Watson and Holmes Intake Form, while capturing a video record.
 
 To run the test:
 
-1. Download the TestExamples Zip file and expand doc-detective-tutorials on your local drive.
+1. Download the [TestExamples.zip](./TestExamples.zip) file and expand it on your local drive.
 2. In a terminal window, navigate to the `TestExamples` directory.
 3. Start your local server.
 
@@ -18,6 +18,7 @@ To run the test:
     ```
 
 4. Enter the command 
+
    ```shell
    npx doc-detective@dev -i form-filler3.json
    ```
