@@ -33,6 +33,7 @@ const sidebars: SidebarsConfig = {
           },
           items: [
             "get-started/tutorials/set-up-your-test-environment",
+            "get-started/tutorials/fill-fields",
             "get-started/tutorials/capture-screenshot",
             "get-started/tutorials/record-video",
           ],
