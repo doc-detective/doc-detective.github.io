@@ -49,7 +49,7 @@ Start the recording with the _record_ command and an optional output path.
                 },
 ```
 
-After the actions are complete, stop the recording.
+After the actions are complete, stop the recording with the [`stopRecord`](/docs/get-started/actions/stopRecord) action.
 
 ```json
                 {
