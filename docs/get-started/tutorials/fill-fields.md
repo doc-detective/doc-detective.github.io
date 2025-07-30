@@ -22,7 +22,7 @@ To run the test:
     live-server
     ```
 
-4. Run the _form-filler1.json_ test spec with Doc Detective:
+3. Run the _form-filler1.json_ test spec with Doc Detective:
 
     ```shell
     npx doc-detective@dev -i form-filler1.json
