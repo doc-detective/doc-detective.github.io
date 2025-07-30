@@ -5,7 +5,7 @@ description: Run a short test that fills in the first and last name fields in a 
 
 # Fill in fields
 
-A basic test is to fill in the fields of a form. This short script opens a sample input form for the Watson and Holmes Forensic Consulting agency and fills in just the first and last name.
+A common task in procedures involves filling in the fields of a form. This short test opens a sample input form for the Watson and Holmes Forensic Consulting agency and fills in just the first and last name.
 
 To run the test:
 
