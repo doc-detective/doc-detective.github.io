@@ -40,7 +40,7 @@ For this example, the _headless_ setting must be false, so that the test actions
                     }
 ```
 
-Start the recording with the _record_ command and an optional output path.
+Start the recording with the [`record`](/docs/get-started/actions/record) action and an optional output path.
 
 ```json
                 {
