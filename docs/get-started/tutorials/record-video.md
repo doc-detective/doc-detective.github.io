@@ -75,10 +75,6 @@ After the actions are complete, stop the recording.
                     "browsers": {
                         "name": "chrome",
                         "headless": false,
-                        "window": {
-                            "width": 1200,
-                            "height": 1500
-                        },
                         "viewport": {
                             "width": 1180,
                             "height": 1480
