@@ -33,10 +33,6 @@ For this example, the _headless_ setting must be false, so that the test actions
                     "browsers": {
                         "name": "chrome",
                         "headless": false,
-                        "window": {
-                            "width": 1200,
-                            "height": 1500
-                        },
                         "viewport": {
                             "width": 1180,
                             "height": 1480
