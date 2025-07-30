@@ -12,7 +12,7 @@ To run the test:
 2. In a terminal window, navigate to the `TestExamples` directory:
 
     ```shell
-    live-server
+    cd TestExamples
     ```
 
 4. Enter the command 
