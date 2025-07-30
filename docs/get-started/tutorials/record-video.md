@@ -15,7 +15,7 @@ To run the test:
     cd TestExamples
     ```
 
-4. Enter the command 
+3. Run the _form-filler3.json_ test spec with Doc Detective:
 
    ```shell
    npx doc-detective@dev -i form-filler3.json
