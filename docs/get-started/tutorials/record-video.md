@@ -9,8 +9,7 @@ This example fills in all the fields on the Watson and Holmes Intake Form, while
 To run the test:
 
 1. Download the [TestExamples.zip](./TestExamples.zip) file and expand it on your local drive.
-2. In a terminal window, navigate to the `TestExamples` directory.
-3. Start your local server.
+2. In a terminal window, navigate to the `TestExamples` directory:
 
     ```shell
     live-server
