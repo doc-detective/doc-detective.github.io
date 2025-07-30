@@ -140,10 +140,6 @@ Pause 10 seconds, allowing you to see the results, then end the test. In real te
                     "browsers": {
                         "name": "chrome",
                         "headless": false,
-                        "window": {
-                            "width": 1200,
-                            "height": 1500
-                        },
                         "viewport": {
                             "width": 1180,
                             "height": 1480
