@@ -9,7 +9,7 @@ A common task in procedures involves filling in the fields of a form. This short
 
 To run the test:
 
-1. Download the [`TestExamples.zip`](./TestExamples.zip) file and expand it to your local drive.
+1. [Set up your test environment](./set-up-your-test-environment).
 2. In a terminal window, navigate to the `TestExamples` directory.
    
    ```shell
