@@ -144,67 +144,127 @@ Detected tests are useful for keeping your tests in sync with your documentation
 
 > You can mix detected tests with [inline tests](#inline-json) to declare steps that might not be covered in your content, such starting or stopping a recording.
 
-For example, markup for Markdown files might look like this:
+Doc Detective includes several default markup patterns for Markdown files. Here are all the built-in patterns:
 
 ```json
 {
-  ...
   "fileTypes": [
     {
-      "name": "Markdown",
+      "name": "markdown",
       "extensions": ["md", "markdown", "mdx"],
-      ...
       "markup": [
         {
-          "name": "Hyperlink",
-          "regex": ["(?<!!)\\[.+?\\]\\(.+?\\)"],
+          "name": "checkHyperlink",
+          "regex": [
+            "(?<!\\!)\\[[^\\]]+\\]\\(\\s*(https?:\\/\\/[^\\s)]+)(?:\\s+\"[^\"]*\")?\\s*\\)"
+          ],
           "actions": ["checkLink"]
         },
         {
-          "name": "Navigation link",
+          "name": "clickOnscreenText",
           "regex": [
-            "(?:[Cc]hose|[Oo]pen|[Cc]lick|[Nn]avigate to|[Gg]o to)(?<!!)\\s+\\[.+?\\]\\(.+?\\)"
+            "\\b(?:[Cc]lick|[Tt]ap|[Ll]eft-click|[Cc]hoose|[Ss]elect|[Cc]heck)\\b\\s+\\*\\*((?:(?!\\*\\*).)+)\\*\\*"
+          ],
+          "actions": ["click"]
+        },
+        {
+          "name": "findOnscreenText",
+          "regex": ["\\*\\*((?:(?!\\*\\*).)+)\\*\\*"],
+          "actions": ["find"]
+        },
+        {
+          "name": "goToUrl",
+          "regex": [
+            "\\b(?:[Gg]o\\s+to|[Oo]pen|[Nn]avigate\\s+to|[Vv]isit|[Aa]ccess|[Pp]roceed\\s+to|[Ll]aunch)\\b\\s+\\[[^\\]]+\\]\\(\\s*(https?:\\/\\/[^\\s)]+)(?:\\s+\"[^\"]*\")?\\s*\\)"
           ],
           "actions": ["goTo"]
         },
         {
-          "name": "Onscreen text",
-          "regex": ["\\*\\*(.+?)\\*\\*"],
-          "actions": ["find"]
+          "name": "screenshotImage",
+          "regex": [
+            "!\\[[^\\]]*\\]\\(\\s*([^\\s)]+)(?:\\s+\"[^\"]*\")?\\s*\\)\\s*\\{(?=[^}]*\\.screenshot)[^}]*\\}"
+          ],
+          "actions": ["screenshot"]
         },
         {
-          "name": "Click",
-          "regex": ["(?:[Cc]lick|[Pp]ress|[Cc]hoose|[Tt]ap)\\s+\\*\\*(.+?)\\*\\*"],
-          "actions": [{
-            "find": {
-              "selector": "aria/$1",
-              "click": true
-            }
-          }]
+          "name": "typeText",
+          "regex": ["\\b(?:press|enter|type)\\b\\s+\"([^\"]+)\""],
+          "actions": ["type"]
         },
         {
-          "name": "Image",
-          "regex": ["!\\[.+?\\]\\((.+?)\\)"],
+          "name": "httpRequestFormat",
+          "regex": [
+            "```(?:http)?\\r?\\n([A-Z]+)\\s+([^\\s]+)(?:\\s+HTTP\\/[\\d.]+)?\\r?\\n((?:[^\\s]+:\\s+[^\\s]+\\r?\\n)*)?(?:\\s+([\\s\\S]*?)\\r?\\n+)?```"
+          ],
           "actions": [
             {
-              "screenshot": {
-                "path": "$1",
-                "directory": "samples",
-                "maxVariation": 5,
-                "overwrite": "byVariation"
+              "httpRequest": {
+                "method": "$1",
+                "url": "$2",
+                "request": {
+                  "headers": "$3",
+                  "body": "$4"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "runCode",
+          "regex": [
+            "```(bash|python|py|javascript|js)(?![^\\r\\n]*testIgnore)[^\\r\\n]*\\r?\\n([\\s\\S]*?)\\r?\\n```"
+          ],
+          "actions": [
+            {
+              "unsafe": true,
+              "runCode": {
+                "language": "$1",
+                "code": "$2"
               }
             }
           ]
         }
       ]
-      ...
     }
-  ],
-  ...
+  ]
 }
 ```
 
-The `regex` property defines the regular expression patterns to match, and the `actions` property defines the actions to perform when the pattern is detected. With the above config, Doc Detective would take the following Markdown and generate tests for every hyperlink, navigation link, onscreen text, and image.
+#### Default markup pattern descriptions
+
+**checkHyperlink**: Detects standard Markdown links (excluding images) and checks that they return a valid HTTP status code.
+- Pattern: `[link text](https://example.com)`
+- Action: Performs a GET request to verify the link is accessible
+
+**clickOnscreenText**: Detects action verbs followed by bold text and clicks on that element.
+- Pattern: `Click **Button Name**`, `Tap **Menu Item**`, `Select **Option**`
+- Action: Clicks on the specified element using its text content
+
+**findOnscreenText**: Detects any bold text and verifies it exists on the page.
+- Pattern: `**Any Bold Text**`
+- Action: Searches for the text on the current page
+
+**goToUrl**: Detects navigation instructions with links and opens the URL.
+- Pattern: `Go to [Page Name](https://example.com)`, `Navigate to [Site](https://example.com)`
+- Action: Opens the specified URL in the browser
+
+**screenshotImage**: Detects images with a `.screenshot` class or attribute and takes a screenshot.
+- Pattern: `![Alt text](image.png){.screenshot}`
+- Action: Saves a screenshot to the specified path
+
+**typeText**: Detects typing instructions with quoted text and types the content.
+- Pattern: `Type "Hello World"`, `Enter "username"`
+- Action: Types the specified text into the active element
+
+**httpRequestFormat**: Detects HTTP request code blocks and executes the request.
+- Pattern: HTTP request in code blocks with method, URL, headers, and body
+- Action: Executes the HTTP request with the specified parameters
+
+**runCode**: Detects code blocks in supported languages and executes the code.
+- Pattern: Code blocks with `bash`, `python`, `py`, `javascript`, or `js` language tags (excluding those marked with `testIgnore`)
+- Action: Executes the code in the specified language (marked as unsafe)
+
+The `regex` property defines the regular expression patterns to match, and the `actions` property defines the actions to perform when the pattern is detected. With the default configuration, Doc Detective would take the following Markdown and generate tests automatically:
 
 Markdown:
 
@@ -215,6 +275,9 @@ To get started,
 
 1. Go to [Acme Console](https://console.acme.com).
 2. Click **Search**.
+3. Type "American Shorthair kittens".
+
+Check out our [documentation](https://docs.example.com) for more information.
 
 ![Search results](search-results.png){ .screenshot }
 ```
@@ -235,6 +298,12 @@ Detected tests:
           "click": "Search"
         },
         {
+          "type": "American Shorthair kittens"
+        },
+        {
+          "checkLink": "https://docs.example.com"
+        },
+        {
           "screenshot": "search-results.png"
         }
       ]
@@ -242,6 +311,49 @@ Detected tests:
   ]
 }
 ```
+
+### Custom markup patterns
+
+You can extend or override the default patterns by defining custom markup patterns in your configuration:
+
+```json
+{
+  "fileTypes": [
+    {
+      "name": "markdown",
+      "extensions": ["md", "markdown", "mdx"],
+      "markup": [
+        {
+          "name": "customAction",
+          "regex": ["\\b(?:custom)\\b\\s+\\*\\*(.+?)\\*\\*"],
+          "actions": [
+            {
+              "find": {
+                "selector": "aria/$1",
+                "timeout": 10000
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+#### Other file types
+
+Doc Detective also includes default configurations for HTML and AsciiDoc files, though these only include inline statement patterns for test definitions and don't include markup patterns for detected tests:
+
+**HTML files** (`.html`, `.htm`):
+- Uses HTML comment syntax for inline test statements
+- Example: `<!-- test { "testId": "my-test" } -->`
+
+**AsciiDoc files** (`.adoc`, `.asciidoc`, `.asc`):
+- Uses AsciiDoc comment syntax for inline test statements  
+- Example: `// (test { "testId": "my-test" })`
+
+To add detected test functionality to HTML or AsciiDoc files, you would need to define custom markup patterns in your configuration similar to the Markdown examples above.
 
 ### Default actions
 
