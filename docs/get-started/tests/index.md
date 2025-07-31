@@ -93,15 +93,15 @@ Here's an example test for performing a Google search and saving a screenshot of
 }
 ```
 
-### Inline JSON
+### Inline JSON or YAML
 
-You can define tests directly in your documentation source files using inline JSON. Inline JSON is useful for small, simple tests that you want to keep close to the content they test.
+You can define tests directly in your documentation source files using inline JSON or YAML. Inline tests are useful for small, simple tests that you want to keep close to the content they test.
 
 Inline tests are also excellent for maintaining tests because they are easy to update and keep in sync with the content they test as the content changes.
 
 > Inline tests depend on your [config](/docs/references/schemas/config)'s `fileType` definitions. This page uses the default Markdown configuration, but you should update your config to match your documentation source files.
 
-Inline tests use specially formatted comments with JSON objects to declare the tests and steps. Doc Detective reads the input file, line by line, and extracts the tests and steps from the comments. You can declare multiple tests and steps in a single file, using your config's test start, test end, step, and ignore patterns.
+Inline tests use specially formatted comments with JSON or YAML objects to declare the tests and steps. Doc Detective reads the input file, line by line, and extracts the tests and steps from the comments. You can declare multiple tests and steps in a single file, using your config's test start, test end, step, and ignore patterns.
 
 > All test and step comments must be on a single line. Doc Detective doesn't support multi-line comments.
 
@@ -113,7 +113,33 @@ When you declare a step, you can specify any of the properties of the action you
 
 If you declare a step without declaring a test, Doc Detective automatically creates a test to contain the step.
 
-Here's an example of an inline test for performing a Google search and saving a screenshot of the results:
+#### Comment patterns by file type
+
+Doc Detective supports different comment patterns depending on your file type:
+
+**Markdown files** (`.md`, `.markdown`, `.mdx`):
+- JSX-style comments: `{/* test { "testId": "my-test" } */}`
+- HTML comments: `<!-- test { "testId": "my-test" } -->`
+- Markdown link comments: `[comment]: # (test { "testId": "my-test" })`
+- Step comments: `{/* step { "goTo": "https://example.com" } */}`
+- Test end: `{/* test end */}` or `<!-- test end -->` or `[comment]: # (test end)`
+- Ignore blocks: `{/* test ignore start */}` and `{/* test ignore end */}`
+
+**HTML files** (`.html`, `.htm`):
+- Test comments: `<!-- test { "testId": "my-test" } -->`
+- Step comments: `<!-- step { "goTo": "https://example.com" } -->`
+- Test end: `<!-- test end -->`
+- Ignore blocks: `<!-- test ignore start -->` and `<!-- test ignore end -->`
+
+**AsciiDoc files** (`.adoc`, `.asciidoc`, `.asc`):
+- Line comments: `// (test { "testId": "my-test" })`
+- Step comments: `// (step { "goTo": "https://example.com" })`
+- Test end: `// (test end)`
+- Ignore blocks: `// (test ignore start)` and `// (test ignore end)`
+
+#### Examples
+
+Here's an example using **JSON syntax** in Markdown:
 
 ```markdown
 [comment]: # 'test {"testId": "kitten-search"}'
@@ -134,6 +160,63 @@ To search for American Shorthair kittens,
 
 [comment]: # 'step { "screenshot": "search-results.png" }'
 [comment]: # "test end"
+```
+
+Here's the same example using **YAML syntax** in Markdown:
+
+```markdown
+{/* test testId: kitten-search */}
+
+To search for American Shorthair kittens,
+
+1. Go to [Google](https://www.google.com).
+
+   {/* step goTo: https://www.google.com */}
+
+2. In the search bar, enter "American Shorthair kittens", then press Enter.
+
+   {/* step find:
+              selector: "[title=Search]"
+              click: true 
+   */}
+   {/* step type:
+              - "American Shorthair kittens"
+              - "$ENTER$"
+   */}
+   {/* step wait: 5000 */}
+
+![Search results](search-results.png)
+
+{/* step screenshot: search-results.png */}
+{/* test end */}
+```
+
+**HTML example**:
+
+```html
+<!-- test { "testId": "navigation-test" } -->
+<p>Navigate to our homepage:</p>
+<!-- step { "goTo": "https://example.com" } -->
+
+<p>Click the menu button:</p>
+<!-- step { "click": "Menu" } -->
+
+<!-- test end -->
+```
+
+**AsciiDoc example**:
+
+```asciidoc
+// (test { "testId": "doc-test" })
+== Getting Started
+
+Navigate to the application:
+// (step { "goTo": "https://app.example.com" })
+
+Click the *Start* button:
+// (step { "click": "Start" })
+
+// (test end)
 ```
 
 ### Detected tests
