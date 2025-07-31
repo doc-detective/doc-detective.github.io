@@ -12,7 +12,7 @@ A [test specification](/docs/references/schemas/specification) is a group of tes
 
 ## Test
 
-A [test](/docs/get-started/tests/index) is a sequence of steps to perform. Conceptually parallel to a procedure.
+A [test](/docs/get-started/tests) is a sequence of steps to perform. Conceptually parallel to a procedure.
 
 ## Step
 

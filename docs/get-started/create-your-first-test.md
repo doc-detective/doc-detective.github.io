@@ -8,7 +8,7 @@ In this tutorial, you will create a basic test that navigates to a webpage, vali
 
 ## What is a test?
 
-A [test](/docs/get-started/tests/index) in Doc Detective is a series of steps, where each step performs a single [action](/docs/category/actions). An action can be navigating to a URL, finding an element, or taking a screenshot, for example.
+A [test](/docs/get-started/tests) in Doc Detective is a series of steps, where each step performs a single [action](/docs/category/actions). An action can be navigating to a URL, finding an element, or taking a screenshot, for example.
 
 ## What does this test do?
 
