@@ -8,7 +8,7 @@ In this tutorial, you will create a basic test that navigates to a webpage, vali
 
 ## What is a test?
 
-A [test](/docs/get-started/tests/index.md) in Doc Detective is a series of steps, where each step performs a single [action](/docs/category/actions). An action can be navigating to a URL, finding an element, or taking a screenshot, for example.
+A [test](/docs/get-started/tests/index) in Doc Detective is a series of steps, where each step performs a single [action](/docs/category/actions). An action can be navigating to a URL, finding an element, or taking a screenshot, for example.
 
 ## What does this test do?
 
@@ -18,7 +18,7 @@ This test navigates to `https://example.com`, checks for the presence of the `<h
 
 Before you begin, ensure you have the following:
 
-- [Doc Detective installed](/docs/get-started/installation.md).
+- [Doc Detective installed](/docs/get-started/installation).
 - A text editor.
 
 ## Steps
@@ -68,10 +68,10 @@ To create your first test, follow these steps:
 
    This test uses the following actions:
 
-   - [`goTo`](/docs/get-started/actions/goTo.md): Navigates to the specified URL, https://example.com, to start the test flow.
-   - [`find`](/docs/get-started/actions/find.md): Locates elements on the page using CSS selectors such as HTML tags like `h1` or `a`, and validates their presence and text content.
-   - [`click`](/docs/get-started/actions/click.md): Clicks on the specified element, in this case, the `More information...` link.
-   - [`screenshot`](/docs/get-started/actions/screenshot.md): Captures a screenshot of the current page and saves it to the specified path.
+   - [`goTo`](/docs/get-started/actions/goTo): Navigates to the specified URL, https://example.com, to start the test flow.
+   - [`find`](/docs/get-started/actions/find): Locates elements on the page using CSS selectors such as HTML tags like `h1` or `a`, and validates their presence and text content.
+   - [`click`](/docs/get-started/actions/click): Clicks on the specified element, in this case, the `More information...` link.
+   - [`screenshot`](/docs/get-started/actions/screenshot): Captures a screenshot of the current page and saves it to the specified path.
 
 4. Save the file.
 

@@ -1,28 +1,27 @@
-import React, { useState } from 'react';
-import { Tabs, Tab } from 'react-bootstrap';
-import yaml from 'yaml';
+import React, { useState } from "react";
+import yaml from "yaml";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import CodeBlock from "@theme/CodeBlock";
 
-const JsonYamlTabs = ({ jsonInput }) => {
-    const [yamlOutput, setYamlOutput] = useState('');
-
-    const handleTabSelect = (key) => {
-        if (key === 'yaml') {
-            const parsedJson = JSON.parse(jsonInput);
-            const yamlString = yaml.stringify(parsedJson);
-            setYamlOutput(yamlString);
-        }
-    };
-// Change to use Docusaurus code block
-    return (
-        <Tabs defaultActiveKey="json" onSelect={handleTabSelect}>
-            <Tab eventKey="json" title="JSON">
-                <pre>{jsonInput}</pre>
-            </Tab>
-            <Tab eventKey="yaml" title="YAML">
-                <pre>{yamlOutput}</pre>
-            </Tab>
-        </Tabs>
-    );
+const JsonYamlTabs = ({ object }) => {
+  const jsonInput = JSON.stringify(object, null, 2);
+  const yamlOutput = yaml.stringify(object, { lineWidth: -1 });
+  // Change to use Docusaurus code block
+  return (
+    <Tabs defaultValue="json">
+      <TabItem value="json" label="JSON">
+        <CodeBlock language="json" showLineNumbers>
+          {jsonInput}
+        </CodeBlock>
+      </TabItem>
+      <TabItem value="yaml" label="YAML">
+        <CodeBlock language="yaml" showLineNumbers>
+          {yamlOutput}
+        </CodeBlock>
+      </TabItem>
+    </Tabs>
+  );
 };
 
 export default JsonYamlTabs;
