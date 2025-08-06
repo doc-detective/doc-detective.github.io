@@ -1,0 +1,8 @@
+{
+  "label": "API",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "description": "The Doc Detective API provides programmatic access to test execution, account management, and file handling capabilities. Use the API to integrate Doc Detective testing into your applications and workflows."
+  }
+}

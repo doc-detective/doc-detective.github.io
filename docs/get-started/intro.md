@@ -11,7 +11,7 @@ Validate your content with Doc Detective:
 npx doc-detective
 ```
 
-Want to use the Docker image? [Check it out](https://github.com/doc-detective/docker-image).
+Want to use the Docker image? [Check it out](https://github.com/doc-detective/docker-image). Need programmatic access? Try the [Doc Detective API](/api).
 
 See the [Installation](/docs/get-started/installation.md) guide to get started. Come chat on [Discord](https://discord.gg/uAfSjVH7yr)!
 
@@ -20,6 +20,20 @@ See the [Installation](/docs/get-started/installation.md) guide to get started. 
 Doc Detective is a doc content testing framework that simplifies the process of keeping your docs accurate and up-to-date. You write tests, and Doc Detective runs them directly against your product to ensure your docs match your user experience. Whether it’s a UI-based process or a series of API calls, Doc Detective can help you find doc bugs before your users do.
 
 Doc Detective ingests test specifications and text files, parses them for testable actions, then executes those actions in a browser. The results (PASS/FAIL and context) are output as a JSON object so that other pieces of infrastructure can parse and manipulate them as needed.
+
+## CLI Tool vs API Service
+
+Doc Detective offers two ways to validate your documentation:
+
+### CLI Tool
+The command-line interface is perfect for local development and CI/CD integration. Install it globally with npm and run tests directly from your terminal or build scripts.
+
+### API Service
+The [Doc Detective API](/api) provides programmatic access to test execution with additional features like account management, file storage, and billing integration. It's ideal for:
+- Web applications that need to run tests on-demand
+- Teams requiring centralized test management
+- Organizations needing usage tracking and billing
+- Integration with existing platforms and workflows
 
 ## What can Doc Detective do?
 
