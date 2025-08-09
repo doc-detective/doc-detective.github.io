@@ -180,4 +180,5 @@ Additionally, you should see a new image file named `example.png` saved in your 
 
 - [Explore sample tests](/docs/get-started/sample-tests) to see more examples.
 - [Learn more about available actions](/docs/category/actions) to expand your test capabilities.
+- [Learn about debugging tests](/docs/get-started/debugging) to troubleshoot issues and step through test execution.
 - Try modifying this test to check for different elements or add more steps.

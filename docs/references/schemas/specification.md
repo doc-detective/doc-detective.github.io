@@ -13,6 +13,7 @@ description | string | Optional. Description of the test specification. |
 specPath | string | Optional. Path to the test specification. | 
 contentPath | string | Optional. Path to the content that the specification is associated with. | 
 runOn | array of object([context](/docs/references/schemas/context)) | Optional. Contexts to run the test in. Overrides contexts defined at the config and spec levels. | 
+debug | one of:<br/>- boolean<br/>- string | Optional. Enable debugging mode for this specification. Overrides the debug setting from config level. `true` allows pausing on breakpoints, waiting for user input before continuing. `stepThrough` pauses at every step, waiting for user input before continuing. `false` disables all debugging for this specification.<br/><br/>Accepted values: `false`, `true`, `stepThrough` | 
 openApi | array of unknown | Optional. No description provided. | 
 tests | array of object([test](/docs/references/schemas/test)) | Required. [Tests](test) to perform. | 
 
@@ -176,6 +177,45 @@ tests | array of object([test](/docs/references/schemas/test)) | Required. [Test
             "overwrite": "aboveVariation"
           },
           "variables": {}
+        }
+      ]
+    }
+  ]
+}
+```
+
+```json
+{
+  "specId": "debug-spec-basic",
+  "description": "Specification with debug mode enabled",
+  "debug": true,
+  "tests": [
+    {
+      "steps": [
+        {
+          "checkLink": "https://www.google.com"
+        }
+      ]
+    }
+  ]
+}
+```
+
+```json
+{
+  "specId": "debug-spec-step-through",
+  "description": "Specification with step-through debug mode",
+  "debug": "stepThrough",
+  "tests": [
+    {
+      "steps": [
+        {
+          "goTo": "https://www.google.com"
+        },
+        {
+          "find": {
+            "selector": "[name='q']"
+          }
         }
       ]
     }

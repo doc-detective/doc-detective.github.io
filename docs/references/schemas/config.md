@@ -20,6 +20,7 @@ beforeAny | one of:<br/>- string<br/>- array of string | Optional. Path(s) to te
 afterAll | one of:<br/>- string<br/>- array of string | Optional. Path(s) to test specifications to perform after those specified by `input`. Useful for cleaning up testing environments. | 
 detectSteps | boolean | Optional. Whether or not to detect steps in input files based on defined markup. | `true`
 allowUnsafeSteps | boolean | Optional. Whether or not to run potentially unsafe steps, such as those that might modify files or system state. | 
+debug | one of:<br/>- boolean<br/>- string | Optional. Enable debugging mode globally. `true` allows pausing on breakpoints, waiting for user input before continuing. `stepThrough` pauses at every step, waiting for user input before continuing. `false` disables all debugging.<br/><br/>Accepted values: `false`, `true`, `stepThrough` | `false`
 logLevel | string | Optional. Amount of detail to output when performing an operation.<br/><br/>Accepted values: `silent`, `error`, `warning`, `info`, `debug` | `info`
 runOn | array of object([context](/docs/references/schemas/context)) | Optional. Contexts to run the test in. Overrides contexts defined at the config and spec levels. | 
 fileTypes | array of one of: string, object([File type (custom)](/docs/references/schemas/file-type-custom)), object([File type (executable)](/docs/references/schemas/file-type-executable)) | Optional. Configuration for file types and their markup detection. | ``["markdown","asciidoc","html"]``
@@ -116,5 +117,22 @@ environment | object([Environment details](/docs/references/schemas/environment-
     "platform": "windows",
     "arch": "x64"
   }
+}
+```
+
+```json
+{
+  "debug": true,
+  "input": "tests/",
+  "output": "results/",
+  "logLevel": "debug"
+}
+```
+
+```json
+{
+  "debug": "stepThrough",
+  "input": "tests/critical/",
+  "allowUnsafeSteps": true
 }
 ```
