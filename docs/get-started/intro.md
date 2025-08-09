@@ -40,6 +40,10 @@ Doc Detective’s core strength is the ability to systematically check each and 
 
 When Doc Detective runs tests, it can take screenshots and make recordings. You can include this media in the documentation to complement written processes, aiding the readers who prefer visual media while making sure your videos and images are up-to-date.
 
+### Debug and troubleshoot tests
+
+Doc Detective provides comprehensive debugging capabilities with breakpoint support and step-through debugging. You can control debugging behavior at multiple levels (config, specification, test, and step) to help troubleshoot failing tests and understand test execution flow.
+
 ## What can't Doc Detective do?
 
 It’s important to know your limits, and Doc Detective’s too.

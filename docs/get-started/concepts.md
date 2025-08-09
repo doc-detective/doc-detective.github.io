@@ -41,6 +41,17 @@ An action is the task performed in a step. Doc Detective supports a variety of a
 
 A [context](/docs/references/schemas/context) consists of an application and platforms that support the tests.
 
+## Debug Mode
+
+Doc Detective provides comprehensive debugging capabilities through a hierarchical debug mode system. You can control debugging behavior at the config, specification, test, and step levels. Debug modes include:
+
+- `false` - Disable debugging (default)
+- `true` - Enable debugging with breakpoint support
+- `"stepThrough"` - Pause at every step waiting for user input
+
+Learn more about [debugging tests](/docs/get-started/debugging).
+
 ## Next steps
 
 - [Create your first test](/docs/get-started/create-your-first-test)
+- [Debug your tests](/docs/get-started/debugging)
