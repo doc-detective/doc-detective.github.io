@@ -1,0 +1,6 @@
+{
+  "logLevel": "debug",
+  "telemetry": {
+    "send": false
+  }
+}
