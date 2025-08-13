@@ -1,0 +1,46 @@
+{
+  "name": "doc-detective-resolver",
+  "version": "3.1.2-dev.3",
+  "description": "Detect and resolve docs into Doc Detective tests.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "mocha src/*.test.js",
+    "dev": "node dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/doc-detective/doc-detective-core.git"
+  },
+  "keywords": [
+    "documentation",
+    "test",
+    "doc",
+    "docs"
+  ],
+  "author": "Manny Silva",
+  "license": "AGPL-3.0-only",
+  "bugs": {
+    "url": "https://github.com/doc-detective/doc-detective-core/issues"
+  },
+  "homepage": "https://github.com/doc-detective/doc-detective-core#readme",
+  "dependencies": {
+    "@apidevtools/json-schema-ref-parser": "^14.0.3",
+    "ajv": "^8.17.1",
+    "axios": "^1.10.0",
+    "doc-detective-common": "^3.1.2-dev.2",
+    "dotenv": "^17.0.1",
+    "json-schema-faker": "^0.5.9",
+    "posthog-node": "^5.1.1",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "body-parser": "^2.2.0",
+    "chai": "^5.2.0",
+    "express": "^5.1.0",
+    "mocha": "^11.7.1",
+    "proxyquire": "^2.1.3",
+    "semver": "^7.7.2",
+    "sinon": "^21.0.0",
+    "yaml": "^2.8.0"
+  }
+}

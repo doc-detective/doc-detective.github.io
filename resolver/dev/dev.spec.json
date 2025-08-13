@@ -1,0 +1,15 @@
+{
+  "tests": [
+    {
+      "after": "cleanup.spec.json",
+      "steps": [
+        {
+          "goTo": "https://duckduckgo.com"
+        },
+        {
+          "find": "/Set As.+/"
+        }
+      ]
+    }
+  ]
+}
