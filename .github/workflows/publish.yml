@@ -1,0 +1,101 @@
+name: Publish GitHub Action
+
+on:
+  release:
+    types: [created]
+  workflow_dispatch:
+
+jobs:
+  manage-releases:
+    # Read the semver version from the release tag, get the major version, delete the releases matching major version and the latest tag,create a tag and release for the major version and the latest tag
+    runs-on: ubuntu-latest
+    if: github.event.release.prerelease == false
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Get the version
+        id: version
+        run: |
+          MAJOR_VERSION=$(echo "${GITHUB_REF#refs/*/}" | cut -d'.' -f1)
+          echo "MAJOR_VERSION=$MAJOR_VERSION" >> $GITHUB_OUTPUT
+      - name: Delete release
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const majorVersion = "${{ steps.version.outputs.MAJOR_VERSION }}";
+            const releases = await github.rest.repos.listReleases({
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            });
+            const releaseToDelete = releases.data.find(release => release.tag_name.startsWith(`v${majorVersion}.`));
+            if (releaseToDelete) {
+              await github.rest.repos.deleteRelease({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                release_id: releaseToDelete.id
+              });
+            }
+      - name: Create major tag
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const tag = 'refs/tags/${{ steps.version.outputs.MAJOR_VERSION }}';
+            try {
+              await github.rest.git.deleteRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: tag.replace('refs/', '')
+              });
+            } catch (error) {}
+            await github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: tag,
+              sha: context.sha
+            });
+      - name: Create major release
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const majorVersion = "${{ steps.version.outputs.MAJOR_VERSION }}";
+            const release = await github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: `${majorVersion}`,
+              name: `${majorVersion}`,
+              body: `Latest ${majorVersion} release. See specific version release notes for details.`,
+              draft: false,
+              prerelease: false
+            });
+      - name: Create latest tag
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const tag = 'refs/tags/latest';
+            try {
+              await github.rest.git.deleteRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: tag.replace('refs/', '')
+              });
+            } catch (error) {}
+            await github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: tag,
+              sha: context.sha
+            });
+      - name: Create latest release
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const release = await github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: 'latest',
+              name: 'latest',
+              body: 'Latest release. See specific version release notes for details.',
+              draft: false,
+              prerelease: false
+            });

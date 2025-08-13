@@ -1,0 +1,46 @@
+on: 
+  # push:   # TODO: Uncomment this line to enable push events
+  #   branches:
+  #     - main
+  pull_request:
+    types: [opened, reopened, synchronize]
+  workflow_dispatch:
+
+jobs:
+  
+  pass-tests:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    name: Pass tests
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Doc Detective
+        uses: ./ # Uses an action in the root directory
+        id: dd
+        with:
+          config: ./artifacts/.doc-detective.json
+          input: ./artifacts/doc-content-inline-tests.md
+
+  fail-tests:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    name: Fail tests
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Doc Detective
+        uses: ./ # Uses an action in the root directory
+        id: dd
+        continue-on-error: true
+        with:
+          config: ./artifacts/.doc-detective.json
+          input: ./artifacts/doc-content-inline-tests-fail.md
+          exit_on_fail: true

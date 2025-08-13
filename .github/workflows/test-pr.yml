@@ -1,0 +1,66 @@
+name: Test PR functionality
+
+on:
+  workflow_dispatch:
+    inputs:
+      input:
+        description: input
+        required: false
+        default: ./artifacts/change.spec.json
+      create_pr_on_change:
+        description: create_pr_on_change
+        required: false
+        default: 'true'
+      pr_title:
+        description: pr_title
+        required: false
+        default: ''
+      pr_body:
+        description: pr_body
+        required: false
+        default: '' 
+      pr_branch:
+        description: pr_branch
+        required: false
+        default: ''
+      pr_labels:
+        description: pr_labels
+        required: false
+        default: ''
+      pr_assignees:
+        description: pr_assignees
+        required: false
+        default: ''
+      pr_reviewers:
+        description: pr_reviewers
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+    
+jobs:
+  
+  run:
+    runs-on: ubuntu-latest
+    name: Run the action
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          cache: 'npm'
+          node-version: 20
+      - name: Run Doc Detective
+        uses: ./ # Uses an action in the root directory
+        id: dd
+        with:
+          input: ${{ github.event.inputs.input }}
+          create_pr_on_change: ${{ github.event.inputs.create_pr_on_change }}
+          pr_title: ${{ github.event.inputs.pr_title }}
+          pr_body: ${{ github.event.inputs.pr_body }}
+          pr_branch: ${{ github.event.inputs.pr_branch }}
+          pr_labels: ${{ github.event.inputs.pr_labels }}
+          pr_assignees: ${{ github.event.inputs.pr_assignees }}
+          pr_reviewers: ${{ github.event.inputs.pr_reviewers }}

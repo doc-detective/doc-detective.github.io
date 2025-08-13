@@ -1,0 +1,61 @@
+name: Run local action
+
+on:
+  workflow_dispatch:
+    inputs:
+      runner:
+        description: runner
+        required: true
+        default: ubuntu-latest
+      working_directory:
+        description: working_directory
+        required: false
+      config:
+        description: config
+        required: false
+        default: ./artifacts/.doc-detective.json
+      input:
+        description: input
+        required: false
+        default: ./artifacts/change.spec.json
+      create_pr_on_change:
+        description: create_pr_on_change
+        required: false
+        default: 'false'
+      pr_body:
+        description: pr_body
+        required: false
+        default: 'A Doc Detective run ($RUN_URL) updated the following files: $CHANGED_FILES'
+      exit_on_fail:
+        description: exit_on_fail
+        required: false
+        default: 'false'
+      create_issue_on_fail:
+        description: create_issue_on_fail
+        required: false
+        default: 'false'
+      issue_body:
+        description: issue_body
+        required: false
+        default: 'A Doc Detective run ($RUN_URL) failed with the following results:$RESULTS'
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+    
+jobs:
+  run-local:
+    runs-on: ubuntu-latest
+    name: Run the action
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          cache: 'npm'
+          node-version: 20
+      - name: Run Doc Detective
+        uses: ./ # Uses an action in the root directory
+        id: dd
+        with:
+          config: ./artifacts/.doc-detective.json

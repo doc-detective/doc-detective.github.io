@@ -1,0 +1,61 @@
+name: Run @latest
+
+on:
+  workflow_dispatch:
+    inputs:
+      runner:
+        description: runner
+        required: true
+        default: ubuntu-latest
+      version:
+        description: version
+        required: false
+        default: latest
+      config:
+        description: config
+        required: false
+        default: ./artifacts/.doc-detective.json
+      input:
+        description: input
+        required: false
+        default: ./artifacts/doc-content-inline-tests.md
+      exit_on_fail:
+        description: exit_on_fail
+        required: false
+        default: 'false'
+      create_issue_on_fail:
+        description: create_issue_on_fail
+        required: false
+        default: 'false'
+      issue_title:
+        description: issue_title
+        required: false
+        default: 'Doc Detective Failure'
+      issue_body:
+        description: issue_body
+        required: false
+        default: 'Doc Detective run failed with the following results:\n$RESULTS'
+
+
+jobs:
+  
+  run:
+    runs-on: ${{ github.event.inputs.runner }}
+    permissions:
+      contents: read
+      issues: write
+    name: Run the action
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Doc Detective
+        uses: doc-detective/github-action@latest
+        id: dd
+        with:
+          version: ${{ github.event.inputs.version }}
+          command: ${{ github.event.inputs.command }}
+          config: ${{ github.event.inputs.config }}
+          input: ${{ github.event.inputs.input }}
+          exit_on_fail: ${{ github.event.inputs.exit_on_fail }}
+          create_issue_on_fail: ${{ github.event.inputs.create_issue_on_fail }}
+          issue_title: ${{ github.event.inputs.issue_title }}
+          issue_body: ${{ github.event.inputs.issue_body }}

@@ -1,0 +1,3 @@
+tests:
+  - steps:
+      - runShell: "echo 'Hello World!'"
