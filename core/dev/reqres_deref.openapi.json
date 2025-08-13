@@ -1,0 +1,220 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Reqres API",
+    "description": "Sample API for testing and prototyping",
+    "version": "0.0.1"
+  },
+  "servers": [
+    {
+      "url": "https://reqres.in/api"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Test"
+    }
+  ],
+  "security": [{}],
+  "paths": {
+    "/users": {
+      "post": {
+        "tags": ["Test"],
+        "summary": "Add a new user",
+        "description": "Add a new user",
+        "operationId": "addUser",
+        "requestBody": {
+          "description": "Create a new pet in the store",
+          "content": {
+            "application/json": {
+              "schema": {
+                "example": {
+                  "name": "morpheus",
+                  "job": "leader"
+                },
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "morpheus"
+                  },
+                  "job": {
+                    "type": "string",
+                    "example": "leader"
+                  },
+                  "nicknames": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "example": "neo"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "response payload"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Test"],
+        "summary": "Return a list of users",
+        "description": "Return a list of users",
+        "operationId": "getUsers",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Select the portition of record you want back",
+            "required": false,
+            "example": 2,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "example": "morpheus"
+                    },
+                    "job": {
+                      "type": "string",
+                      "example": "leader"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "put": {
+        "tags": ["Test"],
+        "summary": "Update an existing user",
+        "description": "Update an existing user by Id",
+        "operationId": "updateUser",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id of user to delete",
+            "required": true,
+            "example": 1,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Update an existent pet in the store",
+          "content": {
+            "application/json": {
+              "schema": {
+                "example": {
+                  "name": "morpheus",
+                  "job": "leader"
+                },
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "morpheus"
+                  },
+                  "job": {
+                    "type": "string",
+                    "example": "leader"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "response payload"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Test"],
+        "summary": "Deletes a user",
+        "description": "delete a user",
+        "operationId": "deleteUser",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id of user to delete",
+            "required": true,
+            "example": 1,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No content"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "userResponse": {
+        "description": "response payload"
+      },
+      "userRequest": {
+        "example": {
+          "name": "morpheus",
+          "job": "leader"
+        },
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "morpheus"
+          },
+          "job": {
+            "type": "string",
+            "example": "leader"
+          }
+        }
+      }
+    }
+  }
+}

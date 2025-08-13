@@ -1,0 +1,5 @@
+tests:
+- steps:
+  - unsafe: true
+    runShell: exit 0
+  - runShell: exit 0

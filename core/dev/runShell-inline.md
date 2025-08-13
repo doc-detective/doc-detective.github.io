@@ -1,0 +1,1 @@
+[comment]: # (step {"action":"runShell", "command": "sh ../../setup-tests/tools/produce.sh", "args": ["{\"message\": \"success\", \"timestamp\": 1707743943, \"iss_position\": {\"latitude\": \"-28.5723\", \"longitude\": \"-149.4612\"}}"]})
