@@ -1,0 +1,116 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "click",
+  "description": "Click or tap an element.",
+  "anyOf": [
+    {
+      "title": "Click element (simple)",
+      "type": "string",
+      "description": "Display text or selector of the element to find."
+    },
+    {
+      "title": "Click element (detailed)",
+      "type": "object",
+      "anyOf": [
+        {
+          "required": [
+            "selector"
+          ]
+        },
+        {
+          "required": [
+            "elementText"
+          ]
+        }
+      ],
+      "properties": {
+        "button": {
+          "description": "Kind of click to perform.",
+          "type": "string",
+          "enum": [
+            "left",
+            "right",
+            "middle"
+          ]
+        },
+        "elementText": {
+          "type": "string",
+          "description": "Display text of the element to click. If combined with `selector`, the element must match both the text and the selector."
+        },
+        "selector": {
+          "type": "string",
+          "description": "Selector of the element to click. If combined with `elementText`, the element must match both the text and the selector."
+        }
+      }
+    },
+    {
+      "type": "boolean"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "string": {
+        "title": "Click element (simple)",
+        "type": "string",
+        "description": "Display text or selector of the element to find."
+      },
+      "button": {
+        "description": "Kind of click to perform.",
+        "type": "string",
+        "enum": [
+          "left",
+          "right",
+          "middle"
+        ]
+      },
+      "object": {
+        "title": "Click element (detailed)",
+        "type": "object",
+        "anyOf": [
+          {
+            "required": [
+              "selector"
+            ]
+          },
+          {
+            "required": [
+              "elementText"
+            ]
+          }
+        ],
+        "properties": {
+          "button": {
+            "description": "Kind of click to perform.",
+            "type": "string",
+            "enum": [
+              "left",
+              "right",
+              "middle"
+            ]
+          },
+          "elementText": {
+            "type": "string",
+            "description": "Display text of the element to click. If combined with `selector`, the element must match both the text and the selector."
+          },
+          "selector": {
+            "type": "string",
+            "description": "Selector of the element to click. If combined with `elementText`, the element must match both the text and the selector."
+          }
+        }
+      }
+    }
+  },
+  "examples": [
+    true,
+    "right",
+    {
+      "button": "left",
+      "elementText": "Element text"
+    },
+    {
+      "selector": "#elementToScreenshot",
+      "elementText": "Element text",
+      "button": "middle"
+    }
+  ]
+}

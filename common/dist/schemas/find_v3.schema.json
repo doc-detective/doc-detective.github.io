@@ -1,0 +1,730 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "find",
+  "description": "Find an element based on display text or a selector, then optionally interact with it.",
+  "anyOf": [
+    {
+      "title": "Find element (simple)",
+      "type": "string",
+      "description": "Display text or selector of the element to find."
+    },
+    {
+      "title": "Find element (detailed)",
+      "type": "object",
+      "anyOf": [
+        {
+          "required": [
+            "selector"
+          ]
+        },
+        {
+          "required": [
+            "elementText"
+          ]
+        }
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "elementText": {
+          "type": "string",
+          "description": "Display text of the element to find. If combined with `selector`, the element must match both the text and the selector."
+        },
+        "selector": {
+          "type": "string",
+          "description": "Selector of the element to find. If combined with `elementText`, the element must match both the text and the selector."
+        },
+        "timeout": {
+          "type": "integer",
+          "description": "Max duration in milliseconds to wait for the element to exist.",
+          "default": 5000
+        },
+        "moveTo": {
+          "description": "Move to the element. If the element isn't visible, it's scrolled into view.",
+          "type": "boolean",
+          "default": true
+        },
+        "click": {
+          "description": "Click the element.",
+          "anyOf": [
+            {
+              "$schema": "http://json-schema.org/draft-07/schema#",
+              "title": "click",
+              "description": "Click or tap an element.",
+              "anyOf": [
+                {
+                  "title": "Click element (simple)",
+                  "type": "string",
+                  "description": "Display text or selector of the element to find."
+                },
+                {
+                  "title": "Click element (detailed)",
+                  "type": "object",
+                  "anyOf": [
+                    {
+                      "required": [
+                        "selector"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "elementText"
+                      ]
+                    }
+                  ],
+                  "properties": {
+                    "button": {
+                      "description": "Kind of click to perform.",
+                      "type": "string",
+                      "enum": [
+                        "left",
+                        "right",
+                        "middle"
+                      ]
+                    },
+                    "elementText": {
+                      "type": "string",
+                      "description": "Display text of the element to click. If combined with `selector`, the element must match both the text and the selector."
+                    },
+                    "selector": {
+                      "type": "string",
+                      "description": "Selector of the element to click. If combined with `elementText`, the element must match both the text and the selector."
+                    }
+                  }
+                },
+                {
+                  "type": "boolean"
+                }
+              ],
+              "components": {
+                "schemas": {
+                  "string": {
+                    "title": "Click element (simple)",
+                    "type": "string",
+                    "description": "Display text or selector of the element to find."
+                  },
+                  "button": {
+                    "description": "Kind of click to perform.",
+                    "type": "string",
+                    "enum": [
+                      "left",
+                      "right",
+                      "middle"
+                    ]
+                  },
+                  "object": {
+                    "title": "Click element (detailed)",
+                    "type": "object",
+                    "anyOf": [
+                      {
+                        "required": [
+                          "selector"
+                        ]
+                      },
+                      {
+                        "required": [
+                          "elementText"
+                        ]
+                      }
+                    ],
+                    "properties": {
+                      "button": {
+                        "description": "Kind of click to perform.",
+                        "type": "string",
+                        "enum": [
+                          "left",
+                          "right",
+                          "middle"
+                        ]
+                      },
+                      "elementText": {
+                        "type": "string",
+                        "description": "Display text of the element to click. If combined with `selector`, the element must match both the text and the selector."
+                      },
+                      "selector": {
+                        "type": "string",
+                        "description": "Selector of the element to click. If combined with `elementText`, the element must match both the text and the selector."
+                      }
+                    }
+                  }
+                }
+              },
+              "examples": [
+                true,
+                "right",
+                {
+                  "button": "left",
+                  "elementText": "Element text"
+                },
+                {
+                  "selector": "#elementToScreenshot",
+                  "elementText": "Element text",
+                  "button": "middle"
+                }
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "button": {
+                  "description": "Kind of click to perform.",
+                  "type": "string",
+                  "enum": [
+                    "left",
+                    "right",
+                    "middle"
+                  ]
+                }
+              },
+              "title": "Find element and click"
+            }
+          ]
+        },
+        "type": {
+          "description": "Type keys after finding the element. Either a string or an object with a `keys` field as defined in [`type`](type). To type in the element, make the element active with the `click` parameter.",
+          "allOf": [
+            {
+              "$schema": "http://json-schema.org/draft-07/schema#",
+              "title": "typeKeys",
+              "description": "Type keys. To type special keys, begin and end the string with `$` and use the special key's keyword. For example, to type the Escape key, enter `$ESCAPE$`.",
+              "anyOf": [
+                {
+                  "title": "Type keys (simple)",
+                  "description": "Sequence of keys to enter.",
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "oneOf": [
+                          {
+                            "type": "string"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "title": "Type keys (detailed)",
+                  "type": "object",
+                  "properties": {
+                    "keys": {
+                      "title": "Type keys (simple)",
+                      "description": "Sequence of keys to enter.",
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {
+                                "type": "string"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "inputDelay": {
+                      "type": "number",
+                      "description": "Delay in milliseconds between each key press during a recording",
+                      "default": 100
+                    },
+                    "selector": {
+                      "type": "string",
+                      "description": "Selector for the element to type into. If not specified, the typing occurs in the active element."
+                    }
+                  },
+                  "required": [
+                    "keys"
+                  ],
+                  "additionalProperties": false
+                }
+              ],
+              "components": {
+                "schemas": {
+                  "keys": {
+                    "title": "Type keys (simple)",
+                    "description": "Sequence of keys to enter.",
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "object": {
+                    "title": "Type keys (detailed)",
+                    "type": "object",
+                    "properties": {
+                      "keys": {
+                        "title": "Type keys (simple)",
+                        "description": "Sequence of keys to enter.",
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "array",
+                            "items": {
+                              "oneOf": [
+                                {
+                                  "type": "string"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "inputDelay": {
+                        "type": "number",
+                        "description": "Delay in milliseconds between each key press during a recording",
+                        "default": 100
+                      },
+                      "selector": {
+                        "type": "string",
+                        "description": "Selector for the element to type into. If not specified, the typing occurs in the active element."
+                      }
+                    },
+                    "required": [
+                      "keys"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "examples": [
+                "kittens",
+                [
+                  "$ENTER$"
+                ],
+                [
+                  "kittens",
+                  "$ENTER$"
+                ],
+                {
+                  "keys": "kittens"
+                },
+                {
+                  "keys": [
+                    "$ENTER$"
+                  ]
+                },
+                {
+                  "keys": [
+                    "kittens",
+                    "$ENTER$"
+                  ],
+                  "inputDelay": 500
+                }
+              ]
+            },
+            {
+              "not": {
+                "type": "object",
+                "required": [
+                  "selector",
+                  "elementText"
+                ],
+                "title": "Find element and type"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "components": {
+    "schemas": {
+      "string": {
+        "title": "Find element (simple)",
+        "type": "string",
+        "description": "Display text or selector of the element to find."
+      },
+      "object": {
+        "title": "Find element (detailed)",
+        "type": "object",
+        "anyOf": [
+          {
+            "required": [
+              "selector"
+            ]
+          },
+          {
+            "required": [
+              "elementText"
+            ]
+          }
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "elementText": {
+            "type": "string",
+            "description": "Display text of the element to find. If combined with `selector`, the element must match both the text and the selector."
+          },
+          "selector": {
+            "type": "string",
+            "description": "Selector of the element to find. If combined with `elementText`, the element must match both the text and the selector."
+          },
+          "timeout": {
+            "type": "integer",
+            "description": "Max duration in milliseconds to wait for the element to exist.",
+            "default": 5000
+          },
+          "moveTo": {
+            "description": "Move to the element. If the element isn't visible, it's scrolled into view.",
+            "type": "boolean",
+            "default": true
+          },
+          "click": {
+            "description": "Click the element.",
+            "anyOf": [
+              {
+                "$schema": "http://json-schema.org/draft-07/schema#",
+                "title": "click",
+                "description": "Click or tap an element.",
+                "anyOf": [
+                  {
+                    "title": "Click element (simple)",
+                    "type": "string",
+                    "description": "Display text or selector of the element to find."
+                  },
+                  {
+                    "title": "Click element (detailed)",
+                    "type": "object",
+                    "anyOf": [
+                      {
+                        "required": [
+                          "selector"
+                        ]
+                      },
+                      {
+                        "required": [
+                          "elementText"
+                        ]
+                      }
+                    ],
+                    "properties": {
+                      "button": {
+                        "description": "Kind of click to perform.",
+                        "type": "string",
+                        "enum": [
+                          "left",
+                          "right",
+                          "middle"
+                        ]
+                      },
+                      "elementText": {
+                        "type": "string",
+                        "description": "Display text of the element to click. If combined with `selector`, the element must match both the text and the selector."
+                      },
+                      "selector": {
+                        "type": "string",
+                        "description": "Selector of the element to click. If combined with `elementText`, the element must match both the text and the selector."
+                      }
+                    }
+                  },
+                  {
+                    "type": "boolean"
+                  }
+                ],
+                "components": {
+                  "schemas": {
+                    "string": {
+                      "title": "Click element (simple)",
+                      "type": "string",
+                      "description": "Display text or selector of the element to find."
+                    },
+                    "button": {
+                      "description": "Kind of click to perform.",
+                      "type": "string",
+                      "enum": [
+                        "left",
+                        "right",
+                        "middle"
+                      ]
+                    },
+                    "object": {
+                      "title": "Click element (detailed)",
+                      "type": "object",
+                      "anyOf": [
+                        {
+                          "required": [
+                            "selector"
+                          ]
+                        },
+                        {
+                          "required": [
+                            "elementText"
+                          ]
+                        }
+                      ],
+                      "properties": {
+                        "button": {
+                          "description": "Kind of click to perform.",
+                          "type": "string",
+                          "enum": [
+                            "left",
+                            "right",
+                            "middle"
+                          ]
+                        },
+                        "elementText": {
+                          "type": "string",
+                          "description": "Display text of the element to click. If combined with `selector`, the element must match both the text and the selector."
+                        },
+                        "selector": {
+                          "type": "string",
+                          "description": "Selector of the element to click. If combined with `elementText`, the element must match both the text and the selector."
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": [
+                  true,
+                  "right",
+                  {
+                    "button": "left",
+                    "elementText": "Element text"
+                  },
+                  {
+                    "selector": "#elementToScreenshot",
+                    "elementText": "Element text",
+                    "button": "middle"
+                  }
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "button": {
+                    "description": "Kind of click to perform.",
+                    "type": "string",
+                    "enum": [
+                      "left",
+                      "right",
+                      "middle"
+                    ]
+                  }
+                },
+                "title": "Find element and click"
+              }
+            ]
+          },
+          "type": {
+            "description": "Type keys after finding the element. Either a string or an object with a `keys` field as defined in [`type`](type). To type in the element, make the element active with the `click` parameter.",
+            "allOf": [
+              {
+                "$schema": "http://json-schema.org/draft-07/schema#",
+                "title": "typeKeys",
+                "description": "Type keys. To type special keys, begin and end the string with `$` and use the special key's keyword. For example, to type the Escape key, enter `$ESCAPE$`.",
+                "anyOf": [
+                  {
+                    "title": "Type keys (simple)",
+                    "description": "Sequence of keys to enter.",
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "array",
+                        "items": {
+                          "oneOf": [
+                            {
+                              "type": "string"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "title": "Type keys (detailed)",
+                    "type": "object",
+                    "properties": {
+                      "keys": {
+                        "title": "Type keys (simple)",
+                        "description": "Sequence of keys to enter.",
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "array",
+                            "items": {
+                              "oneOf": [
+                                {
+                                  "type": "string"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "inputDelay": {
+                        "type": "number",
+                        "description": "Delay in milliseconds between each key press during a recording",
+                        "default": 100
+                      },
+                      "selector": {
+                        "type": "string",
+                        "description": "Selector for the element to type into. If not specified, the typing occurs in the active element."
+                      }
+                    },
+                    "required": [
+                      "keys"
+                    ],
+                    "additionalProperties": false
+                  }
+                ],
+                "components": {
+                  "schemas": {
+                    "keys": {
+                      "title": "Type keys (simple)",
+                      "description": "Sequence of keys to enter.",
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "array",
+                          "items": {
+                            "oneOf": [
+                              {
+                                "type": "string"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "object": {
+                      "title": "Type keys (detailed)",
+                      "type": "object",
+                      "properties": {
+                        "keys": {
+                          "title": "Type keys (simple)",
+                          "description": "Sequence of keys to enter.",
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "inputDelay": {
+                          "type": "number",
+                          "description": "Delay in milliseconds between each key press during a recording",
+                          "default": 100
+                        },
+                        "selector": {
+                          "type": "string",
+                          "description": "Selector for the element to type into. If not specified, the typing occurs in the active element."
+                        }
+                      },
+                      "required": [
+                        "keys"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "examples": [
+                  "kittens",
+                  [
+                    "$ENTER$"
+                  ],
+                  [
+                    "kittens",
+                    "$ENTER$"
+                  ],
+                  {
+                    "keys": "kittens"
+                  },
+                  {
+                    "keys": [
+                      "$ENTER$"
+                    ]
+                  },
+                  {
+                    "keys": [
+                      "kittens",
+                      "$ENTER$"
+                    ],
+                    "inputDelay": 500
+                  }
+                ]
+              },
+              {
+                "not": {
+                  "type": "object",
+                  "required": [
+                    "selector",
+                    "elementText"
+                  ],
+                  "title": "Find element and type"
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "examples": [
+    "Find me!",
+    {
+      "selector": "[title=Search]"
+    },
+    {
+      "selector": "[title=Search]",
+      "timeout": 10000,
+      "elementText": "Search",
+      "moveTo": true,
+      "click": true,
+      "type": "shorthair cat"
+    },
+    {
+      "selector": "[title=Search]",
+      "click": {
+        "button": "right"
+      }
+    },
+    {
+      "selector": "[title=Search]",
+      "timeout": 10000,
+      "elementText": "Search",
+      "moveTo": true,
+      "click": true,
+      "type": {
+        "keys": [
+          "shorthair cat"
+        ],
+        "inputDelay": 100
+      }
+    }
+  ]
+}
