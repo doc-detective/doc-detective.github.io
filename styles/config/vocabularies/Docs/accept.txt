@@ -29,6 +29,7 @@ httpRequest
 HTTP
 jq
 keypresses
+loadCookie
 logLevel
 matchText
 moveTo
@@ -51,6 +52,7 @@ responseParams
 runShell
 runTests
 sandboxed
+saveCookie
 saveDirectory
 savePath
 saveScreenshot
