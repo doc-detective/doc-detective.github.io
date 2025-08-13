@@ -1,0 +1,96 @@
+# This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
+# For more information see: https://docs.github.com/en/actions/publishing-packages/publishing-nodejs-packages
+
+name: Test (& Publish)
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: 
+      - opened
+      - reopened
+      - synchronize
+  release:
+    types:
+      - published
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+        node: 
+          - 18
+          - 20
+          - 22
+          - 24
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+      
+      - run: npm ci      
+      - run: npm test
+
+  publish-npm:
+    if: github.event_name == 'release' && github.event.action == 'published'
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+          registry-url: https://registry.npmjs.org/
+
+      - run: npm ci
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+
+  test-github-action:
+    name: Test GitHub Action
+    needs: publish-npm
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: doc-detective/github-action@latest
+        id: dd
+        with:
+          config: ./test/artifacts/config.json
+          input: ./test/artifacts/doc-content.md
+          exit_on_fail: "true"
+
+  build-docker-image:
+    name: Build Docker Image
+    needs: publish-npm
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get package version
+        id: get_version
+        run: |
+          echo "VERSION=$(jq -r '.version' package.json)" >> $GITHUB_OUTPUT
+
+      - name: Trigger GitHub Action in docker-image repo
+        run: |
+          curl -X POST -H "Authorization: token ${{ secrets.DD_DEP_UPDATE_TOKEN }}" \
+               -H "Accept: application/vnd.github.everest-preview+json" \
+               "https://api.github.com/repos/doc-detective/docker-image/dispatches" \
+               -d '{ "event_type": "build-push", "client_payload": { "version": "${{ steps.get_version.outputs.version }}", "additional_info": "triggered from npm-publish workflow" } }'

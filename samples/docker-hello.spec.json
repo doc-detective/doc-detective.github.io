@@ -1,0 +1,15 @@
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Run a Docker container and check the output.",
+          "runShell": {
+            "command": "docker run hello-world",
+            "stdio": "Hello from Docker!"
+          }
+        }
+      ]
+    }
+  ]
+}
