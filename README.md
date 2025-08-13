@@ -1,29 +1,23 @@
-# .github Repository
+# Doc Detective documentation
 
-This repository serves as a monorepo for all Doc Detective projects, managed using git subtrees.
+## Get started
 
-## Projects
+0.  Install the dependencies:
 
-- **common** - Common utilities and shared code
-- **core** - Core Doc Detective functionality  
-- **resolver** - Resolution and validation logic
-- **vscode** - VS Code extension
+    -   VSCode Dev Container:
+    
+        1.  Install [Docker](https://docs.docker.com/get-docker/).
+        1.  In VSCode, open the Command Palette and run "Dev Containers: Rebuild and Reopen in Container".
 
-## Git Subtree Management
+    -   Manual install:
 
-This repository uses git subtrees to manage multiple projects. See [SUBTREE_MANAGEMENT.md](./SUBTREE_MANAGEMENT.md) for detailed instructions on working with subtrees.
+        -   [Node.js](https://nodejs.org/en/download)
 
-### Quick Start
+1.  Start the local server:
 
-```bash
-# Pull all latest changes
-npm run subtree:pull:all
+    ```bash
+    npm run start
+    ```
 
-# Push all changes
-npm run subtree:push:all
-
-# Show help
-npm run subtree help
-```
-
-For more detailed subtree management, see the [subtree management guide](./SUBTREE_MANAGEMENT.md).
+2.  Make your changes.
+3.  Commit your changes. When your changes merge into the `main` branch, GitHub Pages automatically republishes the documentation.

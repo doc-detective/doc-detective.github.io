@@ -1,8 +1,0 @@
-{
-  "input": "./tests.spec.yaml",
-  "logLevel": "debug",
-  "telemetry": {
-    "send": true,
-    "userId": "Doc Detective GitHub Action development"
-  }
-}

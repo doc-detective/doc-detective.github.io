@@ -1,0 +1,12 @@
+github:
+  label: Github
+  permalink: /github
+  description: Github tag description
+hello:
+  label: Hello
+  permalink: /hello
+  description: Hello tag description
+hola:
+  label: Hola
+  permalink: /hola
+  description: Hola tag description

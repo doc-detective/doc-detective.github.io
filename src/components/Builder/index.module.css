@@ -1,0 +1,34 @@
+.body {
+  padding: 16px 16px;
+}
+
+h1,
+h2 {
+  padding-top: 8px;
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 24px;
+}
+
+h2 {
+  font-size: 18px;
+  margin-top: 16px;
+}
+
+a h2 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h3 {
+  font-size: 16px;
+  margin-top: 16px;
+}
+
+p {
+  font-size: 16px;
+  margin-top: 8px;
+  margin-bottom: 4px;
+ }

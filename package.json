@@ -1,37 +1,78 @@
 {
-  "name": "doc-detective-global-repo",
-  "version": "1.0.0",
-  "description": "All the Doc Detective repos in one place.",
-  "homepage": "https://github.com/doc-detective/.github#readme",
-  "bugs": {
-    "url": "https://github.com/doc-detective/.github/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/doc-detective/.github.git"
-  },
-  "license": "SEE LICENSE IN LICENSE.md",
-  "author": "Manny Silva <hawkeyexl@gmail.com>",
-  "type": "module",
-  "main": "index.js",
+  "name": "doc-detective-docs",
+  "version": "3.0.4",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "subtree:add:common": "git subtree add --prefix=common https://github.com/doc-detective/common main --squash",
-    "subtree:add:core": "git subtree add --prefix=core https://github.com/doc-detective/core main --squash",
-    "subtree:add:resolver": "git subtree add --prefix=resolver https://github.com/doc-detective/resolver main --squash",
-    "subtree:add:vscode": "git subtree add --prefix=vscode https://github.com/doc-detective/vscode main --squash",
-    "subtree:pull:common": "git subtree pull --prefix=common https://github.com/doc-detective/common main --squash",
-    "subtree:pull:core": "git subtree pull --prefix=core https://github.com/doc-detective/core main --squash",
-    "subtree:pull:resolver": "git subtree pull --prefix=resolver https://github.com/doc-detective/resolver main --squash",
-    "subtree:pull:vscode": "git subtree pull --prefix=vscode https://github.com/doc-detective/vscode main --squash",
-    "subtree:push:common": "git subtree push --prefix=common https://github.com/doc-detective/common main",
-    "subtree:push:core": "git subtree push --prefix=core https://github.com/doc-detective/core main",
-    "subtree:push:resolver": "git subtree push --prefix=resolver https://github.com/doc-detective/resolver main",
-    "subtree:push:vscode": "git subtree push --prefix=vscode https://github.com/doc-detective/vscode main",
-    "subtree:pull:all": "npm run subtree:pull:common && npm run subtree:pull:core && npm run subtree:pull:resolver && npm run subtree:pull:vscode",
-    "subtree:push:all": "npm run subtree:push:common && npm run subtree:push:core && npm run subtree:push:resolver && npm run subtree:push:vscode",
-    "subtree": "node scripts/subtree-manager.js",
-    "subtree:list": "node scripts/subtree-manager.js list",
-    "subtree:status": "node scripts/subtree-manager.js status"
+    "docusaurus": "docusaurus",
+    "start": "docusaurus start",
+    "build": "docusaurus build",
+    "swizzle": "docusaurus swizzle",
+    "deploy": "docusaurus deploy",
+    "clear": "docusaurus clear",
+    "serve": "docusaurus serve",
+    "write-translations": "docusaurus write-translations",
+    "write-heading-ids": "docusaurus write-heading-ids",
+    "typecheck": "tsc",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "test": "npm run build",
+    "build-schemas": "node ./.scripts/buildSchemaReferencesV4.js",
+    "doc-detective": "npx doc-detective@latest runTests"
+  },
+  "dependencies": {
+    "@apidevtools/json-schema-ref-parser": "^14.1.1",
+    "@docusaurus/core": "^3.8.1",
+    "@docusaurus/preset-classic": "^3.8.1",
+    "@docusaurus/theme-mermaid": "^3.8.1",
+    "@emotion/styled": "^11.14.1",
+    "@inkeep/docusaurus": "^2.0.16",
+    "@mdx-js/react": "^3.1.0",
+    "@mui/icons-material": "^7.2.0",
+    "@mui/material": "^7.2.0",
+    "clsx": "^2.1.1",
+    "doc-detective-common": "^3.1.1",
+    "dotenv": "^17.2.1",
+    "https-browserify": "^1.0.0",
+    "os-browserify": "^0.3.0",
+    "path-browserify": "^1.0.1",
+    "posthog-docusaurus": "^2.0.4",
+    "prism-react-renderer": "^2.4.1",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-markdown": "^10.1.0",
+    "stream-http": "^3.2.0",
+    "yaml": "^2.8.0"
+  },
+  "devDependencies": {
+    "@chromatic-com/storybook": "^3.2.6",
+    "@docusaurus/module-type-aliases": "^3.8.1",
+    "@docusaurus/tsconfig": "^3.8.1",
+    "@docusaurus/types": "^3.8.1",
+    "@storybook/addon-essentials": "^8.5.3",
+    "@storybook/addon-interactions": "^8.5.3",
+    "@storybook/addon-links": "^8.5.3",
+    "@storybook/addon-onboarding": "^8.5.3",
+    "@storybook/addon-webpack5-compiler-swc": "^2.0.0",
+    "@storybook/blocks": "^8.5.3",
+    "@storybook/react": "^8.5.3",
+    "@storybook/react-webpack5": "^8.5.3",
+    "@storybook/test": "^8.5.3",
+    "@vvago/vale": "^3.12.0",
+    "storybook": "^8.5.3",
+    "typescript": "~5.8.3"
+  },
+  "browserslist": {
+    "production": [
+      ">0.5%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 3 chrome version",
+      "last 3 firefox version",
+      "last 5 safari version"
+    ]
+  },
+  "engines": {
+    "node": ">=18.0"
   }
 }
