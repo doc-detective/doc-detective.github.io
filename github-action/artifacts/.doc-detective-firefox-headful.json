@@ -1,0 +1,82 @@
+{
+  "envVariables": "./variables.env",
+  "defaultCommand": "runTests",
+  "input": ".",
+  "output": ".",
+  "recursive": true,
+  "logLevel": "info",
+  "runTests": {
+    "detectSteps": true,
+    "input": "./doc-content-inline-tests.md",
+    "output": ".",
+    "setup": "",
+    "cleanup": "",
+    "recursive": true,
+    "mediaDirectory": ".",
+    "downloadDirectory": ".",
+    "contexts": [
+      {
+        "app": {
+          "name": "firefox",
+          "options": {
+            "headless": false
+          }
+        },
+        "platforms": ["windows", "mac", "linux"]
+      }
+    ]
+  },
+  "runCoverage": {
+    "recursive": true,
+    "input": ".",
+    "output": ".",
+    "markup": []
+  },
+  "fileTypes": [
+    {
+      "name": "Markdown",
+      "extensions": [".md"],
+      "testStartStatementOpen": "[comment]: # (test start",
+      "testStartStatementClose": ")",
+      "testIgnoreStatement": "[comment]: # (test ignore)",
+      "testEndStatement": "[comment]: # (test end)",
+      "stepStatementOpen": "[comment]: # (step",
+      "stepStatementClose": ")",
+      "markup": [
+        {
+          "name": "Hyperlink",
+          "regex": ["(?<!!)\\[.+?\\]\\((.+?)\\)"],
+          "actions": ["checkLink"]
+        },
+        {
+          "name": "Navigation link",
+          "regex": [
+            "(?:[Cc]hose|[Oo]pen|[Cc]lick|[Nn]avigate to|[Gg]o to)\\s+(?<!!)\\[.+?\\]\\((.+?)\\)"
+          ],
+          "actions": ["goTo"]
+        },
+        {
+          "name": "Onscreen text",
+          "regex": ["\\*\\*(.+?)\\*\\*"],
+          "actions": ["find"]
+        },
+        {
+          "name": "Image",
+          "regex": ["!\\[.+?\\]\\((.+?)\\)"],
+          "actions": [
+            {
+              "action": "saveScreenshot",
+              "maxVariation": 5,
+              "overwrite": "byVariation"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "integrations": {},
+  "telemetry": {
+    "send": true,
+    "userId": "Doc Detective GitHub Action development"
+  }
+}
