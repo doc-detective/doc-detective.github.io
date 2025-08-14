@@ -563,6 +563,14 @@ npx doc-detective --input https://doc-detective.com/sample.spec.json
 
 These tests run the same way as local tests, but Doc Detective fetches the test file from the specified URL and stores it in a temporary directory. The URL must be accessible to the machine running the tests.
 
+### Run tests with multiple files
+
+You can run tests using multiple files in multiple directories. Add as many comma-separated input values as necessary.
+
+```bash
+npx doc-detective --input inline-tests.md, https://doc-detective.com/sample.spec.json, ./samples/doc-content.md
+```
+
 ## Read the results
 
 Doc Detective outputs test results to a `testResults-<timestamp>.json` file in your `output` directory. You can also specify your output directory with the `--output` flag:
