@@ -1,5 +1,5 @@
 ---
-sidebar_label: Fill in Fields
+sidebar_label: Fill in fields
 description: Run a short test that fills in the first and last name fields in a form.
 ---
 
