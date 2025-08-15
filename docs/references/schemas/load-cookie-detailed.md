@@ -1,6 +1,7 @@
+
 # Load cookie (detailed)
 
-Load a specific cookie from a file or environment variable into the browser.
+
 
 ## Referenced In
 
@@ -10,33 +11,22 @@ Load a specific cookie from a file or environment variable into the browser.
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
-name | string | **Required.** Name of the specific cookie to load. | 
-variable | string | Environment variable name containing the cookie as JSON string. Cannot be used with `path`. | 
-path | string | File path to cookie file, relative to directory. Supports Netscape cookie format. Cannot be used with `variable`. | 
-directory | string | Directory containing the cookie file. | 
-domain | string | Specific domain to filter the cookie by when loading from multi-cookie file (optional). | 
+$schema | string | Optional. Optional self-describing schema URI for linters | 
+name | string | Required. Name of the specific cookie to load.<br/><br/>Pattern: `^[A-Za-z0-9_.-]+$` | 
+variable | string | Optional. Environment variable name containing the cookie as JSON string.<br/><br/>Pattern: `^[A-Za-z_][A-Za-z0-9_]*$` | 
+path | string | Optional. File path to cookie file, relative to directory. Supports Netscape cookie format. | 
+directory | string | Optional. Directory containing the cookie file. | 
+domain | string | Optional. Specific domain to filter the cookie by when loading from multi-cookie file (optional). | 
 
 ## Examples
 
 ```json
 {
-  "name": "auth_cookie",
-  "variable": "AUTH_COOKIE"
-}
-```
-
-```json
-{
-  "name": "session_token",
-  "path": "session-token.txt",
-  "directory": "./test-data"
-}
-```
-
-```json
-{
-  "name": "user_session",
-  "path": "saved-cookies.txt",
-  "domain": "app.example.com"
+  "$schema": "example",
+  "name": "example",
+  "variable": "example",
+  "path": "example",
+  "directory": "example",
+  "domain": "example"
 }
 ```

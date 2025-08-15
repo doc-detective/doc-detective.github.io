@@ -4,14 +4,23 @@ layout: default
 nav_order: 1
 parent: Actions
 grand_parent: Tests
-description: Load a specific cookie from a file or environment variable into the browser.
+description: Load a cookie from a file or environment variable into the browser.
 ---
 
 # loadCookie
 
-The `loadCookie` action loads a specific cookie from a file or environment variable into the browser. This action is useful for restoring authentication sessions, user preferences, or other stateful information that was previously saved using the `saveCookie` action.
+The `loadCookie` action loads a cookie from a file or environment variable into the browser. This action is useful for restoring authentication sessions, user preferences, or other stateful information that was previously saved using the [`saveCookie`](/docs/get-started/actions/saveCookie) action.
 
 > For comprehensive options, see the [`loadCookie`](/docs/references/schemas/loadCookie) reference.
+
+## Use cases
+
+- **Session restoration**: Load previously saved authentication cookies to skip login steps
+- **Test setup optimization**: Reduce test execution time by reusing authentication state
+- **Cross-test data sharing**: Share cookies between different test specifications
+- **CI/CD integration**: Load authentication state from environment variables in automated pipelines
+- **Test isolation**: Ensure consistent starting state by loading known cookie values
+- **Multi-user testing**: Load different user sessions for testing various user roles
 
 ## Formats
 
@@ -21,15 +30,15 @@ The `loadCookie` action supports multiple formats:
 
 Load a cookie by name from default location or by file path:
 
-```json
+```json title="Load from environment variable"
 {
   "loadCookie": "session_token"
 }
 ```
 
-```json
+```json title="Load from file"
 {
-  "loadCookie": "./test-data/auth-session.txt"
+  "loadCookie": "session_token.txt"
 }
 ```
 
@@ -52,8 +61,8 @@ Load a cookie with detailed configuration:
 | Field | Type | Description | Default |
 |-------|------|-------------|---------|
 | `name` | string | **Required.** Name of the specific cookie to load. | |
-| `variable` | string | Environment variable name containing the cookie as JSON string. Cannot be used with `path`. | |
-| `path` | string | File path to cookie file, relative to directory. Supports Netscape cookie format. Cannot be used with `variable`. | |
+| `variable` | string | Environment variable name containing the cookie as JSON string. Can't be used with `path`. | |
+| `path` | string | File path to cookie file, relative to directory. Supports Netscape cookie format. Can't be used with `variable`. | |
 | `directory` | string | Directory containing the cookie file. | |
 | `domain` | string | Specific domain to filter the cookie by when loading from multi-cookie file (optional). | |
 
@@ -179,15 +188,6 @@ Load a cookie with detailed configuration:
   ]
 }
 ```
-
-## Use cases
-
-- **Session restoration**: Load previously saved authentication cookies to skip login steps
-- **Test setup optimization**: Reduce test execution time by reusing authentication state
-- **Cross-test data sharing**: Share cookies between different test specifications
-- **CI/CD integration**: Load authentication state from environment variables in automated pipelines
-- **Test isolation**: Ensure consistent starting state by loading known cookie values
-- **Multi-user testing**: Load different user sessions for testing various user roles
 
 ## Related actions
 

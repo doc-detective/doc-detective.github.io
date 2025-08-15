@@ -4,14 +4,24 @@ layout: default
 nav_order: 1
 parent: Actions
 grand_parent: Tests
-description: Save a specific browser cookie to a file or environment variable for later reuse.
+description: Save a browser cookie to a file or environment variable for later reuse.
 ---
 
 # saveCookie
 
-The `saveCookie` action saves a specific browser cookie to a file or environment variable for later reuse. This action is useful for preserving authentication sessions, user preferences, or other stateful information between test runs or across different tests.
+The `saveCookie` action saves a browser cookie to a file or environment variable for later reuse. This action is useful for preserving authentication sessions, user preferences, or other stateful information between test runs or across different tests.
+
+Reload saved cookies with the [`loadCookie`](/docs/get-started/actions/loadCookie) action.
 
 > For comprehensive options, see the [`saveCookie`](/docs/references/schemas/saveCookie) reference.
+
+## Use cases
+
+- **Session persistence**: Save authentication cookies to maintain login state across test runs
+- **Multi-step workflows**: Preserve cookies between different test specifications
+- **Cross-browser testing**: Transfer cookies between different browser contexts
+- **CI/CD integration**: Store authentication state as environment variables for automated testing
+- **Test data management**: Save cookies to files for debugging and test data inspection
 
 ## Formats
 
@@ -21,9 +31,15 @@ The `saveCookie` action supports multiple formats:
 
 Save a cookie by name to a default location:
 
-```json
+```json title="Save to environment variable"
 {
   "saveCookie": "session_token"
+}
+```
+
+```json title="Save to file"
+{
+  "saveCookie": "session_token.txt"
 }
 ```
 
@@ -47,8 +63,8 @@ Save a cookie with detailed configuration:
 | Field | Type | Description | Default |
 |-------|------|-------------|---------|
 | `name` | string | **Required.** Name of the specific cookie to save. | |
-| `variable` | string | Environment variable name to store the cookie as JSON string. Cannot be used with `path`. | |
-| `path` | string | File path to save the cookie, relative to directory. Uses Netscape cookie format. Cannot be used with `variable`. | |
+| `variable` | string | Environment variable name to store the cookie as JSON string. Can't be used with `path`. | |
+| `path` | string | File path to save the cookie, relative to directory. Uses Netscape cookie format. Can't be used with `variable`. | |
 | `directory` | string | Directory to save the cookie file. If not specified, uses output directory. | |
 | `overwrite` | string | Whether to overwrite existing cookie file. Options: `"true"`, `"false"`. | `"false"` |
 | `domain` | string | Specific domain to filter the cookie by (optional). | |
@@ -124,18 +140,11 @@ Save a cookie with detailed configuration:
         "name": "login_token",
         "path": "login-token.txt",
         "domain": "app.example.com"
+      }
     }
   ]
 }
 ```
-
-## Use cases
-
-- **Session persistence**: Save authentication cookies to maintain login state across test runs
-- **Multi-step workflows**: Preserve cookies between different test specifications
-- **Cross-browser testing**: Transfer cookies between different browser contexts
-- **CI/CD integration**: Store authentication state as environment variables for automated testing
-- **Test data management**: Save cookies to files for debugging and test data inspection
 
 ## Related actions
 
