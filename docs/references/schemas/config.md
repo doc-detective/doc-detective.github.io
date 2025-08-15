@@ -25,7 +25,9 @@ runOn | array of object([context](/docs/references/schemas/context)) | Optional.
 fileTypes | array of one of: string, object([File type (custom)](/docs/references/schemas/file-type-custom)), object([File type (executable)](/docs/references/schemas/file-type-executable)) | Optional. Configuration for file types and their markup detection. | ``["markdown","asciidoc","html"]``
 integrations | object([Integrations options](/docs/references/schemas/integrations-options)) | Optional. Options for connecting to external services. | 
 telemetry | object([Telemetry options](/docs/references/schemas/telemetry-options)) | Optional. Options around sending telemetry for Doc Detective usage. | ``{"send":true}``
+concurrentRunners | integer,boolean | Optional. Number of concurrent test runners. Set to true to use CPU core count (capped at 4).<br/><br/>Minimum: 1 | `1`
 environment | object([Environment details](/docs/references/schemas/environment-details)) | ReadOnly. Environment information for the system running Doc Detective. | 
+debug | one of:<br/>- boolean<br/>- string | Optional. Enable debugging mode. `true` allows pausing on breakpoints, waiting for user input before continuing. `stepThrough` pauses at every step, waiting for user input before continuing. `false` disables all debugging. | `false`
 
 ## Examples
 
@@ -116,5 +118,41 @@ environment | object([Environment details](/docs/references/schemas/environment-
     "platform": "windows",
     "arch": "x64"
   }
+}
+```
+
+```json
+{
+  "concurrentRunners": 1
+}
+```
+
+```json
+{
+  "concurrentRunners": true
+}
+```
+
+```json
+{
+  "concurrentRunners": 4
+}
+```
+
+```json
+{
+  "debug": false
+}
+```
+
+```json
+{
+  "debug": true
+}
+```
+
+```json
+{
+  "debug": "stepThrough"
 }
 ```
