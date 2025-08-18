@@ -27,7 +27,7 @@ npx doc-detective --input doc-content-inline-tests.md
 If you have test files in multiple directories or want to specify multiple files, then enter them separated with commas:
 
 ```bash
-npx doc-detective --input doc-content-inline-tests.md, /apis/api-tests.md
+npx doc-detective --input doc-content-inline-tests.md,/apis/api-tests.md
 ```
 
 To customize your test, file type, and directory options, create a `.doc-detective.json` [config](/docs/references/schemas/config) file. If a `.doc-detective.json` file exists in the directory when you run the comment, Doc Detective loads the config. Otherwise, you can specify a config path with the `--config` argument.
