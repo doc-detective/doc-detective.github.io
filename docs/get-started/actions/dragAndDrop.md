@@ -1,0 +1,166 @@
+---
+title: dragAndDrop
+layout: default
+nav_order: 3
+parent: Actions
+grand_parent: Tests
+description: Drag an element from a source location to a target location.
+---
+
+# dragAndDrop
+
+The `dragAndDrop` action allows you to drag an element from a source location and drop it at a target location. This is useful for testing drag-and-drop interfaces, reordering lists, moving items between containers, and other interactive UI elements.
+
+The `dragAndDrop` action requires both a source and target element, which can be specified using element text, CSS/XPath selectors, or detailed objects with additional configuration options.
+
+## Properties
+
+The `dragAndDrop` action requires an object with the following properties:
+
+- `source`: (Required) The element to drag from. Can be a string (element text or selector) or a detailed object.
+- `target`: (Required) The element to drop onto. Can be a string (element text or selector) or a detailed object.
+- `timeout`: (Optional) Maximum duration in milliseconds to wait for the drag-and-drop operation to complete.
+
+### Source and Target Element Properties
+
+When using detailed objects for `source` or `target`, you can specify:
+
+- `elementText`: (Optional) Display text of the element. If combined with `selector`, the element must match both the text and the selector.
+- `selector`: (Optional) CSS or XPath selector of the element. If combined with `elementText`, the element must match both the text and the selector.
+- `timeout`: (Optional) Maximum duration in milliseconds to wait for this specific element to exist.
+
+> For comprehensive options, see the full [`dragAndDrop`](/docs/references/schemas/dragAndDrop) reference.
+
+## Examples
+
+Here are several ways you might use the `dragAndDrop` action:
+
+### Drag and drop using element text
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Drag 'Item 1' and drop it onto 'Drop Zone'",
+          "dragAndDrop": {
+            "source": "Item 1",
+            "target": "Drop Zone"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Drag and drop using CSS selectors
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Drag an item from the source list to the target list",
+          "dragAndDrop": {
+            "source": "#source-list .draggable-item:first-child",
+            "target": "#target-list"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Drag and drop with detailed element objects
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Drag a specific task to a different column",
+          "dragAndDrop": {
+            "source": {
+              "selector": ".task-card",
+              "elementText": "Complete documentation"
+            },
+            "target": {
+              "selector": ".column",
+              "elementText": "In Progress"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Drag and drop with timeout configuration
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Drag and drop with extended timeout for slow animations",
+          "dragAndDrop": {
+            "source": "#draggable-element",
+            "target": "#drop-target",
+            "timeout": 10000
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Drag and drop with per-element timeouts
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Drag and drop with different timeouts for source and target",
+          "dragAndDrop": {
+            "source": {
+              "selector": ".dynamic-item",
+              "timeout": 5000
+            },
+            "target": {
+              "selector": ".drop-zone",
+              "timeout": 3000
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+## Use Cases
+
+The `dragAndDrop` action is particularly useful for testing:
+
+- **Kanban boards**: Moving tasks between different status columns
+- **File uploads**: Dragging files from desktop to upload areas
+- **List reordering**: Changing the order of items in sortable lists
+- **Dashboard widgets**: Rearranging components on customizable dashboards
+- **Form builders**: Moving form elements between different sections
+- **Shopping carts**: Adding items by dragging them to the cart area
+
+## Related Actions
+
+- [`click`](/docs/get-started/actions/click): Click elements to interact with them
+- [`find`](/docs/get-started/actions/find): Locate elements before performing other actions
+- [`wait`](/docs/get-started/actions/wait): Add delays for animations to complete
