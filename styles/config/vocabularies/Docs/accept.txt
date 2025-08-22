@@ -15,6 +15,8 @@ detectSteps
 Dev
 Doc Detective
 Docusaurus
+dragAndDrop
+draggable
 END
 ENTER
 enum
@@ -29,7 +31,6 @@ httpRequest
 HTTP
 jq
 keypresses
-loadCookie
 logLevel
 matchText
 moveTo
@@ -52,7 +53,6 @@ responseParams
 runShell
 runTests
 sandboxed
-saveCookie
 saveDirectory
 savePath
 saveScreenshot

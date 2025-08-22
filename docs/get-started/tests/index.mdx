@@ -19,12 +19,11 @@ Tests tell Doc Detective what actions to perform, how, and where. Tests are made
 
   - [**checkLink**](/docs/get-started/actions/checkLink): Check if a URL returns an acceptable status code from a GET request.
   - [**click**](/docs/get-started/actions/click): Click or tap an element.
+  - [**dragAndDrop**](/docs/get-started/actions/dragAndDrop): Drag and drop an element from source to target.
   - [**find**](/docs/get-started/actions/find): Check if an element exists with the specified selector.
   - [**goTo**](/docs/get-started/actions/goTo): Navigate to a specified URL.
   - [**httpRequest**](/docs/get-started/actions/httpRequest): Perform a generic HTTP request, for example to an API.
   - [**loadVariables**](/docs/get-started/actions/loadVariables): Load environment variables from a `.env` file.
-  - [**saveCookie**](/docs/get-started/actions/saveCookie): Save a specific browser cookie to a file or environment variable for later reuse.
-  - [**loadCookie**](/docs/get-started/actions/loadCookie): Load a specific cookie from a file or environment variable into the browser.
   - [**record**](/docs/get-started/actions/record) and [**stopRecord**](/docs/get-started/actions/stopRecord): Capture a video of test execution.
   - [**runCode**](/docs/get-started/actions/runCode): Assemble and run code.
   - [**runShell**](/docs/get-started/actions/runShell): Perform a native shell command.
@@ -244,6 +243,20 @@ Doc Detective includes several default markup patterns for Markdown files. Here 
           "actions": ["click"]
         },
         {
+          "name": "dragAndDropElements",
+          "regex": [
+            "\\b(?:[Dd]rag|[Mm]ove)\\b\\s+\\*\\*((?:(?!\\*\\*).)+)\\*\\*\\s+(?:to|onto|into)\\s+\\*\\*((?:(?!\\*\\*).)+)\\*\\*"
+          ],
+          "actions": [
+            {
+              "dragAndDrop": {
+                "source": "$1",
+                "target": "$2"
+              }
+            }
+          ]
+        },
+        {
           "name": "findOnscreenText",
           "regex": ["\\*\\*((?:(?!\\*\\*).)+)\\*\\*"],
           "actions": ["find"]
@@ -317,6 +330,11 @@ Doc Detective includes several default markup patterns for Markdown files. Here 
 
 - Pattern: `Click **Button Name**`, `Tap **Menu Item**`, `Select **Option**`
 - Action: Clicks on the specified element using its text content
+
+**dragAndDropElements**: Detects drag and drop instructions with source and target elements.
+
+- Pattern: `Drag **Source Element** to **Target Element**`, `Move **Item** onto **Drop Zone**`
+- Action: Drags the source element to the target element
 
 **findOnscreenText**: Detects any bold text and verifies it exists on the page.
 
@@ -537,22 +555,6 @@ Load environment variables from an `.env` file, where the path is the match.
 
 ```json
 { "loadVariables": "$1" }
-```
-
-#### `saveCookie`
-
-Save a browser cookie by name to a default location.
-
-```json
-{ "saveCookie": "$1" }
-```
-
-#### `loadCookie`
-
-Load a browser cookie by name from a default location.
-
-```json
-{ "loadCookie": "$1" }
 ```
 
 ## Run tests
