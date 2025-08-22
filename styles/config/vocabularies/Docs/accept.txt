@@ -15,6 +15,7 @@ detectSteps
 Dev
 Doc Detective
 Docusaurus
+dragAndDrop
 END
 ENTER
 enum
