@@ -52,6 +52,7 @@ const sidebars: SidebarsConfig = {
           items: [
             "get-started/actions/checkLink",
             "get-started/actions/click",
+            "get-started/actions/dragAndDrop",
             "get-started/actions/find",
             "get-started/actions/goTo",
             "get-started/actions/httpRequest",
