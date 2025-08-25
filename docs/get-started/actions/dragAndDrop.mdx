@@ -9,7 +9,7 @@ description: Drag an element from a source location to a target location.
 
 # dragAndDrop
 
-The `dragAndDrop` action allows you to drag an element from a source location and drop it at a target location. This is useful for testing drag-and-drop interfaces, reordering lists, moving items between containers, and other interactive UI elements.
+The `dragAndDrop` action allows you to drag an element and drop it at a target location. This is useful for testing drag-and-drop interfaces, reordering lists, moving items between containers, and other interactive UI elements.
 
 The `dragAndDrop` action requires both a source and target element, which can be specified using element text, CSS/XPath selectors, or detailed objects with additional configuration options.
 
@@ -44,7 +44,7 @@ When using detailed objects for `source` or `target`, you can specify:
 
 Here are several ways you might use the `dragAndDrop` action:
 
-### Drag and drop using element text or an auto-detected selector
+### Drag and drop using selectors or element text
 
 ```json
 {
@@ -54,28 +54,8 @@ Here are several ways you might use the `dragAndDrop` action:
         {
           "description": "Drag 'Item 1' and drop it onto 'Drop Zone'",
           "dragAndDrop": {
-            "source": "Item 1",
-            "target": "Drop Zone"
-          }
-        }
-      ]
-    }
-  ]
-}
-```
-
-### Drag and drop using selectors
-
-```json
-{
-  "tests": [
-    {
-      "steps": [
-        {
-          "description": "Drag an item from the source list to the target list",
-          "dragAndDrop": {
             "source": "#source-list .draggable-item:first-child",
-            "target": "#target-list"
+            "target": "Drop Zone"
           }
         }
       ]
@@ -101,53 +81,6 @@ Here are several ways you might use the `dragAndDrop` action:
             "target": {
               "selector": ".column",
               "elementText": "In Progress"
-            }
-          }
-        }
-      ]
-    }
-  ]
-}
-```
-
-### Drag and drop with timeout configuration
-
-```json
-{
-  "tests": [
-    {
-      "steps": [
-        {
-          "description": "Drag and drop with extended timeout for slow animations",
-          "dragAndDrop": {
-            "source": "#draggable-element",
-            "target": "#drop-target",
-            "timeout": 10000
-          }
-        }
-      ]
-    }
-  ]
-}
-```
-
-### Drag and drop with per-element timeouts
-
-```json
-{
-  "tests": [
-    {
-      "steps": [
-        {
-          "description": "Drag and drop with different timeouts for source and target",
-          "dragAndDrop": {
-            "source": {
-              "selector": ".dynamic-item",
-              "timeout": 5000
-            },
-            "target": {
-              "selector": ".drop-zone",
-              "timeout": 3000
             }
           }
         }
