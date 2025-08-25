@@ -1,6 +1,6 @@
 {
   "name": "doc-detective-docs",
-  "version": "3.0.5",
+  "version": "3.0.6",
   "scripts": {
     "docusaurus": "docusaurus",
     "prestart": "npm run build-schemas",
@@ -21,7 +21,7 @@
     "doc-detective": "npx doc-detective@latest runTests"
   },
   "dependencies": {
-    "@apidevtools/json-schema-ref-parser": "^14.1.1",
+    "@apidevtools/json-schema-ref-parser": "^14.2.0",
     "@docusaurus/core": "^3.8.1",
     "@docusaurus/preset-classic": "^3.8.1",
     "@docusaurus/theme-mermaid": "^3.8.1",
@@ -31,7 +31,7 @@
     "@mui/icons-material": "^7.3.1",
     "@mui/material": "^7.3.1",
     "clsx": "^2.1.1",
-    "doc-detective-common": "^3.2.0",
+    "doc-detective-common": "^3.3.0",
     "docusaurus-json-schema-plugin": "^1.15.0",
     "dotenv": "^17.2.1",
     "https-browserify": "^1.0.0",

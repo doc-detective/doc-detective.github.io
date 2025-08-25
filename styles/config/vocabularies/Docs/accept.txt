@@ -10,6 +10,8 @@ CLA
 CLEAR
 config
 CTRL
+dragAndDrop
+draggable
 defaultCommand
 detectSteps
 Dev
