@@ -7,6 +7,9 @@ grand_parent: Tests
 description: Save a browser cookie to a file or environment variable for later reuse.
 ---
 
+import { schemas } from "doc-detective-common";
+import JSONSchemaViewer from "@theme/JSONSchemaViewer";
+
 # saveCookie
 
 The `saveCookie` action saves a browser cookie to a file or environment variable for later reuse. This action is useful for preserving authentication sessions, user preferences, or other stateful information between test runs or across different tests.
@@ -150,3 +153,8 @@ Save a cookie with detailed configuration:
 
 - [`loadCookie`](/docs/get-started/actions/loadCookie): Load a saved cookie back into the browser
 - [`loadVariables`](/docs/get-started/actions/loadVariables): Load environment variables from .env files
+
+
+## Schema reference
+
+<JSONSchemaViewer schema={ schemas.saveCookie_v3 } />
