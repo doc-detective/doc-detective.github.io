@@ -16,7 +16,9 @@ Use XPath selectors in Doc Detective actions like [`find`](/docs/get-started/act
 - CSS selectors aren't powerful enough for your use case
 - You need to select elements by their position relative to other elements
 
-**Note:** For most use cases, [CSS selectors](/docs/get-started/guides/css-selectors) are simpler and more readable. Use XPath only when CSS selectors can't accomplish what you need.
+:::note
+For most use cases, [CSS selectors](/docs/get-started/guides/css-selectors) are simpler and more readable. Use XPath only when CSS selectors can't accomplish what you need.
+:::
 
 ## XPath syntax basics
 
@@ -28,19 +30,25 @@ XPath selectors in Doc Detective must start with `//` or `/` to be recognized as
   ```
   /html/body/div/form/input
   ```
-  **Avoid absolute paths** - they're fragile and break easily when the page structure changes.
+  
+:::warning[Avoid absolute paths]
+They're fragile and break easily when the page structure changes.
+:::
 
 - **Relative path:** Starts with `//` and finds elements anywhere in the document
   ```
   //input[@type='password']
   ```
-  **Prefer relative paths** - they're more flexible and maintainable.
+  
+:::tip[Prefer relative paths]
+They're more flexible and maintainable.
+:::
 
 ## Basic XPath patterns
 
 ### Select by element type
 
-Find all elements of a specific type:
+Find all elements of a specific type anywhere in the document:
 
 ```json
 {
@@ -52,7 +60,7 @@ Find all elements of a specific type:
 
 ### Select by attribute
 
-Find elements with a specific attribute value using `[@attribute='value']`:
+Find elements with a specific attribute value using the `[@attribute='value']` syntax:
 
 ```json
 {
@@ -64,6 +72,8 @@ Find elements with a specific attribute value using `[@attribute='value']`:
 
 ### Select by ID
 
+Target elements by their `id` attribute using the `@id` selector:
+
 ```json
 {
   "find": {
@@ -72,9 +82,13 @@ Find elements with a specific attribute value using `[@attribute='value']`:
 }
 ```
 
-**Note:** The `*` matches any element type. You can also be more specific: `//input[@id='username']`.
+:::note
+The `*` matches any element type. You can also be more specific: `//input[@id='username']`.
+:::
 
 ### Select by class
+
+Use the `contains()` function to match elements by their class attribute:
 
 ```json
 {
@@ -84,7 +98,9 @@ Find elements with a specific attribute value using `[@attribute='value']`:
 }
 ```
 
-**Note:** Use `contains()` because an element can have multiple classes. This matches any element whose `class` attribute contains "submit-button".
+:::note
+Use `contains()` because an element can have multiple classes. This matches any element whose `class` attribute contains "submit-button".
+:::
 
 ### Select by text content
 
@@ -102,7 +118,7 @@ This finds a `button` element with the exact text "Submit".
 
 ### Select by partial text
 
-Use `contains()` to match partial text:
+Use the `contains()` function to match elements that contain specific text:
 
 ```json
 {
@@ -118,7 +134,7 @@ This finds a `button` element whose text contains "Submit" (like "Submit Form" o
 
 ### Multiple attributes
 
-Use `and` to combine multiple conditions:
+Use the `and` operator to combine multiple attribute conditions:
 
 ```json
 {
@@ -130,7 +146,7 @@ Use `and` to combine multiple conditions:
 
 ### OR conditions
 
-Use `or` for alternative conditions:
+Use the `or` operator to match elements that satisfy any of the specified conditions:
 
 ```json
 {
@@ -141,6 +157,8 @@ Use `or` for alternative conditions:
 ```
 
 ### Element type and attribute
+
+Combine element types with attribute matching and text content for highly specific selectors:
 
 ```json
 {
@@ -154,7 +172,7 @@ Use `or` for alternative conditions:
 
 ### Parent elements
 
-Select the parent of an element using `..`:
+Select the parent of an element using the `parent::` axis or the `..` shorthand:
 
 ```json
 {
@@ -176,7 +194,7 @@ Or use the shorter form:
 
 ### Ancestor elements
 
-Find any ancestor (not just the direct parent):
+Find any ancestor element (not just the direct parent) using the `ancestor::` axis:
 
 ```json
 {
@@ -188,7 +206,7 @@ Find any ancestor (not just the direct parent):
 
 ### Following siblings
 
-Select the next sibling element:
+Select sibling elements that come after the current element using the `following-sibling::` axis:
 
 ```json
 {
@@ -202,7 +220,7 @@ This finds an `input` that comes after a `label` with text "Email".
 
 ### Preceding siblings
 
-Select previous siblings:
+Select sibling elements that come before the current element using the `preceding-sibling::` axis:
 
 ```json
 {
@@ -214,7 +232,7 @@ Select previous siblings:
 
 ### Descendant elements
 
-Find elements within other elements:
+Find elements nested at any depth within other elements using the `//` operator:
 
 ```json
 {
@@ -230,7 +248,7 @@ This finds any `input` within a `div` with class "form-group", regardless of nes
 
 ### Select by index
 
-Select a specific occurrence using `[]` with a number (XPath indexes start at 1):
+Select a specific occurrence using square brackets with a number (XPath indexes start at 1):
 
 ```json
 {
@@ -242,9 +260,13 @@ Select a specific occurrence using `[]` with a number (XPath indexes start at 1)
 
 This selects the second `button` element in the document.
 
-**Note:** Use parentheses to select from all matching elements. Without them, `//button[2]` means "a button that is the second button child of its parent."
+:::note
+Use parentheses to select from all matching elements. Without them, `//button[2]` means "a button that is the second button child of its parent."
+:::
 
 ### First element
+
+Select the first matching element using index `[1]`:
 
 ```json
 {
@@ -256,6 +278,8 @@ This selects the second `button` element in the document.
 
 ### Last element
 
+Select the last matching element using the `last()` function:
+
 ```json
 {
   "find": {
@@ -265,6 +289,8 @@ This selects the second `button` element in the document.
 ```
 
 ### Position greater than
+
+Select elements beyond a certain position using the `position()` function:
 
 ```json
 {
@@ -280,6 +306,8 @@ This selects all `li` elements from the third onwards.
 
 ### Attribute contains
 
+Match elements whose attributes contain a specific substring:
+
 ```json
 {
   "find": {
@@ -289,6 +317,8 @@ This selects all `li` elements from the third onwards.
 ```
 
 ### Attribute starts with
+
+Match elements whose attributes begin with a specific value:
 
 ```json
 {
@@ -314,7 +344,7 @@ This converts text to lowercase before matching.
 
 ### Not operator
 
-Exclude elements with specific attributes:
+Exclude elements with specific attributes using the `not()` function:
 
 ```json
 {
@@ -332,15 +362,27 @@ This finds enabled buttons (those without a `disabled` attribute).
 
 XPath is powerful but complex. Use CSS selectors for simple cases:
 
-- **CSS:** `#username` or `[data-testid='login-button']`
-- **XPath:** `//*[@id='username']` or `//*[@data-testid='login-button']`
+:::tip[CSS]
+`#username` or `[data-testid='login-button']`
+:::
+
+:::note[XPath]
+`//*[@id='username']` or `//*[@data-testid='login-button']`
+:::
 
 ### Use relative paths
 
-- **Good:** `//input[@type='password']`
-- **Avoid:** `/html/body/div[1]/form/div[2]/input[3]`
+:::tip[Good]
+`//input[@type='password']`
+:::
+
+:::warning[Avoid]
+`/html/body/div[1]/form/div[2]/input[3]`
+:::
 
 ### Combine text and attributes for specificity
+
+Create highly specific selectors by combining text content with attributes:
 
 ```json
 {
@@ -352,7 +394,7 @@ XPath is powerful but complex. Use CSS selectors for simple cases:
 
 ### Test selectors in browser console
 
-Use `$x()` in the browser console to test XPath selectors:
+Use the `$x()` function in the browser console to test XPath selectors:
 
 ```javascript
 $x("//button[contains(text(), 'Submit')]")
@@ -362,12 +404,19 @@ This returns an array of matching elements.
 
 ### Avoid brittle position-based selectors
 
-- **Fragile:** `//div[3]/span[2]/a[1]`
-- **Better:** `//a[contains(@class, 'download-link')]`
+:::warning[Fragile]
+`//div[3]/span[2]/a[1]`
+:::
+
+:::tip[Better]
+`//a[contains(@class, 'download-link')]`
+:::
 
 ## Common patterns
 
 ### Find input by label text
+
+Target an input field based on its associated label text:
 
 ```json
 {
@@ -389,6 +438,8 @@ Or if the input is nested inside the label:
 
 ### Find element by placeholder
 
+Target input fields by their placeholder text:
+
 ```json
 {
   "find": {
@@ -399,6 +450,8 @@ Or if the input is nested inside the label:
 
 ### Find button by aria-label
 
+Target buttons and other elements by their ARIA accessibility labels:
+
 ```json
 {
   "find": {
@@ -408,6 +461,8 @@ Or if the input is nested inside the label:
 ```
 
 ### Find link by partial href
+
+Target links that contain specific URL patterns:
 
 ```json
 {
@@ -501,7 +556,7 @@ Or if the input is nested inside the label:
 
 ### Test in browser console
 
-Use the `$x()` function (available in most browser consoles):
+Use the `$x()` function (available in most browser consoles) to test and debug your XPath selectors:
 
 ```javascript
 // Test your XPath
@@ -524,19 +579,22 @@ $x("//button[contains(text(), 'Submit')]")[0].click()
 
 ### Common issues
 
-**No elements found:**
+:::warning[No elements found]
 - Verify the element exists in the DOM
 - Check for typos in attribute names or values
 - Ensure the element is loaded (you may need to add a `wait` action)
+:::
 
-**Multiple elements found:**
+:::warning[Multiple elements found]
 - Add more specific conditions
 - Combine multiple attributes
 - Use text content to narrow the match
+:::
 
-**XPath treated as CSS:**
+:::info[XPath treated as CSS]
 - Ensure your XPath starts with `//` or `/`
 - Doc Detective determines selector type automatically
+:::
 
 ## Related resources
 
