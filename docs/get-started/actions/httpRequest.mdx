@@ -7,6 +7,9 @@ grand_parent: Tests
 description: Perform a generic HTTP request, for example to an API.
 ---
 
+import { schemas } from "doc-detective-common";
+import JSONSchemaViewer from "@theme/JSONSchemaViewer";
+
 # httpRequest
 
 The `httpRequest` action makes arbitrary HTTP calls, allowing you to interact with and validate APIs or other web services directly within your tests.
@@ -277,3 +280,8 @@ Assumes an OpenAPI definition with operation ID `getUserById` is loaded.
     }
   ]
 }
+```
+
+## Schema reference
+
+<JSONSchemaViewer schema={ schemas.httpRequest_v3 } />

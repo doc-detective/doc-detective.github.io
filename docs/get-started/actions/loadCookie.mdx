@@ -7,6 +7,9 @@ grand_parent: Tests
 description: Load a cookie from a file or environment variable into the browser.
 ---
 
+import { schemas } from "doc-detective-common";
+import JSONSchemaViewer from "@theme/JSONSchemaViewer";
+
 # loadCookie
 
 The `loadCookie` action loads a cookie from a file or environment variable into the browser. This action is useful for restoring authentication sessions, user preferences, or other stateful information that was previously saved using the [`saveCookie`](/docs/get-started/actions/saveCookie) action.
@@ -193,3 +196,7 @@ Load a cookie with detailed configuration:
 
 - [`saveCookie`](/docs/get-started/actions/saveCookie): Save a browser cookie to a file or environment variable
 - [`loadVariables`](/docs/get-started/actions/loadVariables): Load environment variables from .env files
+
+## Schema reference
+
+<JSONSchemaViewer schema={ schemas.loadCookie_v3 } />

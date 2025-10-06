@@ -7,6 +7,9 @@ grand_parent: Tests,
 description: Check if a URL returns an acceptable status code from a GET request.
 ---
 
+import { schemas } from "doc-detective-common";
+import JSONSchemaViewer from "@theme/JSONSchemaViewer";
+
 # checkLink
 
 The `checkLink` action checks if a URL returns an acceptable status code from a GET request. This action is useful for verifying that a hyperlink or image URL is valid.
@@ -230,3 +233,7 @@ After applying these changes, the test should pass:
   "resultDescription": "Returned 200"
 }
 ```
+
+## Schema reference
+
+<JSONSchemaViewer schema={ schemas.checkLink_v3 } />
