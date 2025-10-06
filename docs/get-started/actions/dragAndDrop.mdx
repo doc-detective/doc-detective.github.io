@@ -22,7 +22,7 @@ Drag-and-drop has many different implementations, and Doc Detective wants to sup
 
 :::
 
-## Use Cases
+## Use cases
 
 The `dragAndDrop` action is particularly useful for testing:
 
@@ -40,12 +40,12 @@ The `dragAndDrop` action requires an object with the following properties:
 - `source`: (Required) The element to drag from. Can be a string (element text or selector) or a detailed object.
 - `target`: (Required) The element to drop onto. Can be a string (element text or selector) or a detailed object.
 
-### Source and Target Element Properties
+### Source and target element properties
 
 When using detailed objects for `source` or `target`, you can specify:
 
 - `elementText`: (Optional) Display text of the element. If combined with `selector`, the element must match both the text and the selector.
-- `selector`: (Optional) CSS or XPath selector of the element. If combined with `elementText`, the element must match both the text and the selector.
+- `selector`: (Optional) [CSS selector](/docs/get-started/selectors/css) or [XPath selector](/docs/get-started/selectors/xpath) of the element. If combined with `elementText`, the element must match both the text and the selector.
 - `timeout`: (Optional) Maximum duration in milliseconds to wait for this specific element to exist.
 
 > For comprehensive options, see the full [`dragAndDrop`](/docs/references/schemas/draganddrop) reference.
@@ -100,7 +100,7 @@ Here are several ways you might use the `dragAndDrop` action:
 }
 ```
 
-## Related Actions
+## Related actions
 
 - [`click`](/docs/get-started/actions/click): Click elements to interact with them
 - [`find`](/docs/get-started/actions/find): Locate elements before performing other actions
