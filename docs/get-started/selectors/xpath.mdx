@@ -17,7 +17,7 @@ Use XPath selectors in Doc Detective actions like [`find`](/docs/get-started/act
 - You need to select elements by their position relative to other elements
 
 :::note
-For most use cases, [CSS selectors](/docs/get-started/guides/css-selectors) are simpler and more readable. Use XPath only when CSS selectors can't accomplish what you need.
+For most use cases, [CSS selectors](/docs/get-started/selectors/css) are simpler and more readable. Use XPath only when CSS selectors can't accomplish what you need.
 :::
 
 ## XPath syntax basics
@@ -31,18 +31,18 @@ XPath selectors in Doc Detective must start with `//` or `/` to be recognized as
   /html/body/div/form/input
   ```
   
-:::warning[Avoid absolute paths]
-They're fragile and break easily when the page structure changes.
-:::
+  :::warning[Avoid absolute paths]
+  They're fragile and break easily when the page structure changes.
+  :::
 
 - **Relative path:** Starts with `//` and finds elements anywhere in the document
   ```
   //input[@type='password']
   ```
   
-:::tip[Prefer relative paths]
-They're more flexible and maintainable.
-:::
+  :::tip[Prefer relative paths]
+  They're more flexible and maintainable.
+  :::
 
 ## Basic XPath patterns
 
@@ -598,7 +598,7 @@ $x("//button[contains(text(), 'Submit')]")[0].click()
 
 ## Related resources
 
-- [CSS selectors](/docs/get-started/guides/css-selectors): Simpler selector syntax (recommended for most cases)
+- [CSS selectors](/docs/get-started/selectors/css): Simpler selector syntax (recommended for most cases)
 - [`find` action](/docs/get-started/actions/find): Locate and interact with elements
 - [`click` action](/docs/get-started/actions/click): Click elements using selectors
 - [MDN XPath Documentation](https://developer.mozilla.org/en-US/docs/Web/XPath): Comprehensive XPath reference
