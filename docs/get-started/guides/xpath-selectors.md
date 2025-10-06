@@ -1,0 +1,547 @@
+---
+sidebar_label: XPath selectors
+description: Learn how to use XPath selectors to target elements in Doc Detective tests.
+---
+
+# XPath selectors
+
+XPath (XML Path Language) selectors provide a powerful alternative to CSS selectors for targeting elements in Doc Detective tests. While more complex than CSS selectors, XPath offers advanced capabilities for navigating complex HTML structures and selecting elements based on their content or relationships.
+
+## When to use XPath selectors
+
+Use XPath selectors in Doc Detective actions like [`find`](/docs/get-started/actions/find), [`click`](/docs/get-started/actions/click), and others that accept a `selector` property. XPath is useful when:
+
+- You need to select elements based on their text content
+- You need to navigate up the DOM tree (select parent elements)
+- CSS selectors aren't powerful enough for your use case
+- You need to select elements by their position relative to other elements
+
+**Note:** For most use cases, [CSS selectors](/docs/get-started/guides/css-selectors) are simpler and more readable. Use XPath only when CSS selectors can't accomplish what you need.
+
+## XPath syntax basics
+
+XPath selectors in Doc Detective must start with `//` or `/` to be recognized as XPath (otherwise they're treated as CSS selectors).
+
+### Absolute vs. relative paths
+
+- **Absolute path:** Starts with a single `/` and specifies the complete path from the root
+  ```
+  /html/body/div/form/input
+  ```
+  **Avoid absolute paths** - they're fragile and break easily when the page structure changes.
+
+- **Relative path:** Starts with `//` and finds elements anywhere in the document
+  ```
+  //input[@type='password']
+  ```
+  **Prefer relative paths** - they're more flexible and maintainable.
+
+## Basic XPath patterns
+
+### Select by element type
+
+Find all elements of a specific type:
+
+```json
+{
+  "find": {
+    "selector": "//button"
+  }
+}
+```
+
+### Select by attribute
+
+Find elements with a specific attribute value using `[@attribute='value']`:
+
+```json
+{
+  "find": {
+    "selector": "//input[@type='password']"
+  }
+}
+```
+
+### Select by ID
+
+```json
+{
+  "find": {
+    "selector": "//*[@id='username']"
+  }
+}
+```
+
+**Note:** The `*` matches any element type. You can also be more specific: `//input[@id='username']`.
+
+### Select by class
+
+```json
+{
+  "find": {
+    "selector": "//*[contains(@class, 'submit-button')]"
+  }
+}
+```
+
+**Note:** Use `contains()` because an element can have multiple classes. This matches any element whose `class` attribute contains "submit-button".
+
+### Select by text content
+
+One of XPath's most powerful features is selecting elements by their visible text:
+
+```json
+{
+  "find": {
+    "selector": "//button[text()='Submit']"
+  }
+}
+```
+
+This finds a `button` element with the exact text "Submit".
+
+### Select by partial text
+
+Use `contains()` to match partial text:
+
+```json
+{
+  "find": {
+    "selector": "//button[contains(text(), 'Submit')]"
+  }
+}
+```
+
+This finds a `button` element whose text contains "Submit" (like "Submit Form" or "Click to Submit").
+
+## Combining conditions
+
+### Multiple attributes
+
+Use `and` to combine multiple conditions:
+
+```json
+{
+  "find": {
+    "selector": "//input[@type='text' and @name='email']"
+  }
+}
+```
+
+### OR conditions
+
+Use `or` for alternative conditions:
+
+```json
+{
+  "find": {
+    "selector": "//button[@type='submit' or @type='button']"
+  }
+}
+```
+
+### Element type and attribute
+
+```json
+{
+  "find": {
+    "selector": "//button[@class='primary' and contains(text(), 'Sign Up')]"
+  }
+}
+```
+
+## Navigating the DOM
+
+### Parent elements
+
+Select the parent of an element using `..`:
+
+```json
+{
+  "find": {
+    "selector": "//input[@type='email']/parent::div"
+  }
+}
+```
+
+Or use the shorter form:
+
+```json
+{
+  "find": {
+    "selector": "//input[@type='email']/.."
+  }
+}
+```
+
+### Ancestor elements
+
+Find any ancestor (not just the direct parent):
+
+```json
+{
+  "find": {
+    "selector": "//input[@type='email']/ancestor::form"
+  }
+}
+```
+
+### Following siblings
+
+Select the next sibling element:
+
+```json
+{
+  "find": {
+    "selector": "//label[text()='Email']/following-sibling::input"
+  }
+}
+```
+
+This finds an `input` that comes after a `label` with text "Email".
+
+### Preceding siblings
+
+Select previous siblings:
+
+```json
+{
+  "find": {
+    "selector": "//button[@type='submit']/preceding-sibling::input"
+  }
+}
+```
+
+### Descendant elements
+
+Find elements within other elements:
+
+```json
+{
+  "find": {
+    "selector": "//div[@class='form-group']//input"
+  }
+}
+```
+
+This finds any `input` within a `div` with class "form-group", regardless of nesting depth.
+
+## Position-based selection
+
+### Select by index
+
+Select a specific occurrence using `[]` with a number (XPath indexes start at 1):
+
+```json
+{
+  "find": {
+    "selector": "(//button)[2]"
+  }
+}
+```
+
+This selects the second `button` element in the document.
+
+**Note:** Use parentheses to select from all matching elements. Without them, `//button[2]` means "a button that is the second button child of its parent."
+
+### First element
+
+```json
+{
+  "find": {
+    "selector": "(//input[@type='text'])[1]"
+  }
+}
+```
+
+### Last element
+
+```json
+{
+  "find": {
+    "selector": "(//button)[last()]"
+  }
+}
+```
+
+### Position greater than
+
+```json
+{
+  "find": {
+    "selector": "(//li)[position()>2]"
+  }
+}
+```
+
+This selects all `li` elements from the third onwards.
+
+## Advanced functions
+
+### Attribute contains
+
+```json
+{
+  "find": {
+    "selector": "//*[contains(@data-testid, 'user')]"
+  }
+}
+```
+
+### Attribute starts with
+
+```json
+{
+  "find": {
+    "selector": "//*[starts-with(@id, 'user-')]"
+  }
+}
+```
+
+### Case-insensitive text matching
+
+XPath 2.0+ supports case-insensitive matching, but browser support varies. For compatibility, use:
+
+```json
+{
+  "find": {
+    "selector": "//button[contains(translate(text(), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'submit')]"
+  }
+}
+```
+
+This converts text to lowercase before matching.
+
+### Not operator
+
+Exclude elements with specific attributes:
+
+```json
+{
+  "find": {
+    "selector": "//button[not(@disabled)]"
+  }
+}
+```
+
+This finds enabled buttons (those without a `disabled` attribute).
+
+## Best practices
+
+### Prefer CSS selectors when possible
+
+XPath is powerful but complex. Use CSS selectors for simple cases:
+
+- **CSS:** `#username` or `[data-testid='login-button']`
+- **XPath:** `//*[@id='username']` or `//*[@data-testid='login-button']`
+
+### Use relative paths
+
+- **Good:** `//input[@type='password']`
+- **Avoid:** `/html/body/div[1]/form/div[2]/input[3]`
+
+### Combine text and attributes for specificity
+
+```json
+{
+  "find": {
+    "selector": "//button[@type='submit' and contains(text(), 'Sign Up')]"
+  }
+}
+```
+
+### Test selectors in browser console
+
+Use `$x()` in the browser console to test XPath selectors:
+
+```javascript
+$x("//button[contains(text(), 'Submit')]")
+```
+
+This returns an array of matching elements.
+
+### Avoid brittle position-based selectors
+
+- **Fragile:** `//div[3]/span[2]/a[1]`
+- **Better:** `//a[contains(@class, 'download-link')]`
+
+## Common patterns
+
+### Find input by label text
+
+```json
+{
+  "find": {
+    "selector": "//label[text()='Email']/following-sibling::input"
+  }
+}
+```
+
+Or if the input is nested inside the label:
+
+```json
+{
+  "find": {
+    "selector": "//label[contains(text(), 'Email')]//input"
+  }
+}
+```
+
+### Find element by placeholder
+
+```json
+{
+  "find": {
+    "selector": "//input[@placeholder='Enter your email']"
+  }
+}
+```
+
+### Find button by aria-label
+
+```json
+{
+  "find": {
+    "selector": "//button[@aria-label='Close dialog']"
+  }
+}
+```
+
+### Find link by partial href
+
+```json
+{
+  "find": {
+    "selector": "//a[contains(@href, '/downloads')]"
+  }
+}
+```
+
+## Examples
+
+### Click a button by text
+
+```json
+{
+  "steps": [
+    {
+      "description": "Click the Sign Up button",
+      "click": {
+        "selector": "//button[text()='Sign Up']"
+      }
+    }
+  ]
+}
+```
+
+### Find input by following a label
+
+```json
+{
+  "steps": [
+    {
+      "description": "Enter email address",
+      "find": {
+        "selector": "//label[text()='Email Address']/following-sibling::input",
+        "click": true,
+        "type": "user@example.com"
+      }
+    }
+  ]
+}
+```
+
+### Find enabled submit button
+
+```json
+{
+  "steps": [
+    {
+      "description": "Click the enabled submit button",
+      "find": {
+        "selector": "//button[@type='submit' and not(@disabled)]",
+        "click": true
+      }
+    }
+  ]
+}
+```
+
+### Select third item in a list
+
+```json
+{
+  "steps": [
+    {
+      "description": "Click the third menu item",
+      "click": {
+        "selector": "(//nav//li)[3]//a"
+      }
+    }
+  ]
+}
+```
+
+### Find element with specific data attribute
+
+```json
+{
+  "steps": [
+    {
+      "description": "Find element by test ID",
+      "find": {
+        "selector": "//*[@data-testid='user-profile']"
+      }
+    }
+  ]
+}
+```
+
+## Debugging XPath selectors
+
+### Test in browser console
+
+Use the `$x()` function (available in most browser consoles):
+
+```javascript
+// Test your XPath
+$x("//button[contains(text(), 'Submit')]")
+
+// Count matches
+$x("//button[contains(text(), 'Submit')]").length
+
+// Click the first match
+$x("//button[contains(text(), 'Submit')]")[0].click()
+```
+
+### Browser developer tools
+
+1. Open Developer Tools (F12)
+2. Go to the Console tab
+3. Type `$x("your-xpath-here")` and press Enter
+4. The console will show all matching elements
+5. Hover over results to highlight them on the page
+
+### Common issues
+
+**No elements found:**
+- Verify the element exists in the DOM
+- Check for typos in attribute names or values
+- Ensure the element is loaded (you may need to add a `wait` action)
+
+**Multiple elements found:**
+- Add more specific conditions
+- Combine multiple attributes
+- Use text content to narrow the match
+
+**XPath treated as CSS:**
+- Ensure your XPath starts with `//` or `/`
+- Doc Detective determines selector type automatically
+
+## Related resources
+
+- [CSS selectors](/docs/get-started/guides/css-selectors): Simpler selector syntax (recommended for most cases)
+- [`find` action](/docs/get-started/actions/find): Locate and interact with elements
+- [`click` action](/docs/get-started/actions/click): Click elements using selectors
+- [MDN XPath Documentation](https://developer.mozilla.org/en-US/docs/Web/XPath): Comprehensive XPath reference
+- [XPath Cheat Sheet](https://devhints.io/xpath): Quick reference for XPath syntax

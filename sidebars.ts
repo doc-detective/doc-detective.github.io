@@ -70,9 +70,22 @@ const sidebars: SidebarsConfig = {
         },
       ],
     },
-            {
-          type: "category",
-          label: "Tutorials",
+    {
+      type: "category",
+      label: "Guides",
+      link: {
+        type: "generated-index",
+        description:
+          "Practical guides to help you use Doc Detective effectively.",
+      },
+      items: [
+        "get-started/guides/css-selectors",
+        "get-started/guides/xpath-selectors",
+      ],
+    },
+    {
+      type: "category",
+      label: "Tutorials",
           link: {
             type: "generated-index",
             description:
