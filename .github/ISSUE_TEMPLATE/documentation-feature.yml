@@ -1,0 +1,38 @@
+---
+name: Documentation Feature Request
+about: Suggest new documentation or improvements to existing content
+title: '[Docs Feature] '
+labels: ['documentation', 'enhancement']
+assignees: []
+---
+
+## What documentation is missing or needs improvement?
+
+<!-- Describe what documentation you'd like to see added or improved -->
+
+## Who would benefit from this?
+
+<!-- Describe the audience and use case -->
+
+## Describe the documentation you'd like
+
+<!-- What should this documentation cover? Be as specific as possible -->
+
+## Suggested structure or outline (optional)
+
+<!-- If you have ideas about how this documentation should be organized, share them here -->
+
+## Examples from other projects (optional)
+
+<!-- Link to similar documentation from other projects that you find helpful -->
+
+## Additional context
+
+<!-- Any other information that would help us understand your request -->
+
+## Are you willing to write this?
+
+<!-- Would you like to submit a pull request to add this documentation? -->
+- [ ] Yes, I can write this documentation
+- [ ] No, but I can review/provide feedback on drafts
+- [ ] No, I'm requesting that someone else write it

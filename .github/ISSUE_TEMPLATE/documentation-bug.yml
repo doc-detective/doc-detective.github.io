@@ -1,0 +1,50 @@
+---
+name: Documentation Bug Report
+about: Report an error, outdated information, or broken link in the documentation
+title: '[Docs Bug] '
+labels: ['documentation', 'bug']
+assignees: []
+---
+
+## Page or section affected
+
+<!-- Provide the URL or path to the documentation page with the issue -->
+URL: 
+
+## What's wrong?
+
+<!-- Describe the issue clearly. What's incorrect, missing, or broken? -->
+
+## What should it say instead?
+
+<!-- If you know what the correct information should be, describe it here -->
+
+## Steps to reproduce (if applicable)
+
+<!-- If this is about a procedure that doesn't work, list the steps you followed -->
+
+1. 
+2. 
+3. 
+
+## Expected result
+
+<!-- What did you expect to happen or see? -->
+
+## Actual result
+
+<!-- What actually happened or what did you see? -->
+
+## Screenshots (optional)
+
+<!-- Add screenshots to help explain the problem -->
+
+## Additional context
+
+<!-- Any other information that might be helpful -->
+
+## Are you willing to fix this?
+
+<!-- Would you like to submit a pull request to fix this issue? -->
+- [ ] Yes, I can fix this
+- [ ] No, but I can provide more information if needed

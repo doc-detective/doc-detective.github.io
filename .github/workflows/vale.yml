@@ -1,0 +1,25 @@
+name: Vale Style Checks
+
+on:
+  pull_request:
+    paths:
+      - 'docs/**/*.md'
+      - 'docs/**/*.mdx'
+      - 'blog/**/*.md'
+      - 'blog/**/*.mdx'
+
+jobs:
+  vale:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Vale
+        uses: errata-ai/vale-action@reviewdog
+        with:
+          files: docs blog
+          fail_on_error: false
+          filter_mode: nofilter
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}

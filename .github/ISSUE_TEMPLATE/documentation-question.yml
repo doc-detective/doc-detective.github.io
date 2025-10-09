@@ -1,0 +1,32 @@
+---
+name: Documentation Question
+about: Ask a question about the documentation
+title: '[Docs Question] '
+labels: ['documentation', 'question']
+assignees: []
+---
+
+## Your question
+
+<!-- What would you like to know? -->
+
+## What have you tried?
+
+<!-- What documentation have you already read? What did you try? -->
+
+## Context
+
+<!-- Why do you need this information? What are you trying to accomplish? -->
+
+## Additional information
+
+<!-- Any other details that might be relevant -->
+
+---
+
+**Note:** For general questions about using Doc Detective, please consider:
+- Joining our [Discord community](https://discord.gg/2M7wXEThfF)
+- Checking the [documentation](https://doc-detective.com/docs)
+- Searching existing [issues](https://github.com/doc-detective/doc-detective.github.io/issues)
+
+Use this issue template if you have a specific question about the documentation itself (not about using Doc Detective).
