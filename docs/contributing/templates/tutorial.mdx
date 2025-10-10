@@ -11,12 +11,14 @@ Use this template for learning-oriented documentation that guides users through 
 ## When to use this template
 
 Use a tutorial when users:
+
 - Are learning a new concept or feature
 - Need to understand a complete workflow
 - Want hands-on practice
 - May not know what they don't know yet
 
 **Examples:**
+
 - Create your first Doc Detective test
 - Build a complete test suite
 - Test a documentation site end-to-end
@@ -26,7 +28,7 @@ Use a tutorial when users:
 
 Copy and adapt this template for your tutorial:
 
-````markdown
+```markdown
 ---
 title: [Tutorial name]
 description: [What users will learn and accomplish]
@@ -64,15 +66,11 @@ description: [What users will learn and accomplish]
 
 [Detailed explanation with context.]
 
-\`\`\`[language] title="[filename]"
-[Code example]
-\`\`\`
+\`\`\`[language] title="[filename]" [Code example] \`\`\`
 
 [Explain what this code does and why.]
 
-:::tip
-[Helpful insight or best practice related to this step]
-:::
+:::tip [Helpful insight or best practice related to this step] :::
 
 ## Step 2: [Second major concept or action]
 
@@ -105,6 +103,7 @@ description: [What users will learn and accomplish]
 If you see [symptom], this means [explanation].
 
 **To fix:**
+
 1. [Step 1]
 2. [Step 2]
 
@@ -115,7 +114,7 @@ If you see [symptom], this means [explanation].
 - [Next tutorial in sequence](link)
 - [Related advanced topic](link)
 - [Additional practice](link)
-````
+```
 
 ## Writing tips
 
@@ -124,12 +123,14 @@ If you see [symptom], this means [explanation].
 Tutorials are for learning, not reference:
 
 ✅ **Do:**
+
 - Explain concepts before showing code
 - Provide context for why things work
 - Encourage experimentation
 - Make failure safe and instructive
 
 ⛔ **Don't:**
+
 - Assume prior knowledge
 - Skip explanations for brevity
 - Punish mistakes
@@ -140,23 +141,27 @@ Tutorials are for learning, not reference:
 Each step should build on previous ones:
 
 ✅ Good progression:
+
 1. Create a simple test with one action
 2. Add a second action to create a flow
 3. Add error handling
 4. Organize into a test suite
 
 ⛔ Poor progression:
+
 1. Create a simple test
 2. Deploy to production (too big a jump)
 
 ### Explain the why
 
-Users should understand not just *how* but *why*:
+Users should understand not just _how_ but _why_:
 
 ✅ Good:
+
 > Use the `find` action to verify the element exists before interacting with it. This makes tests more reliable by waiting for elements to load.
 
 ⛔ Insufficient:
+
 > Use the `find` action.
 
 ### Use a friendly tone
@@ -164,9 +169,11 @@ Users should understand not just *how* but *why*:
 Tutorials should be encouraging:
 
 ✅ Good:
+
 > Great! You've created your first test. Let's make it more useful by adding another action.
 
 ⛔ Too formal:
+
 > The test has been created. Proceed to add additional actions.
 
 ### Show the outcome
@@ -174,18 +181,23 @@ Tutorials should be encouraging:
 After each major step, show what users should see:
 
 ✅ Good:
+
 > You should now see output like this:
+>
 > ```
 > [PASS] test-1: Passed (2.3s)
 > ```
+>
 > This confirms your test ran successfully!
 
 ⛔ Missing:
+
 > Run the test.
 
 ### Test your tutorial
 
 Before submitting:
+
 1. ✅ Follow the tutorial yourself from scratch
 2. ✅ Have someone unfamiliar with the topic try it
 3. ✅ Note where they get stuck or confused
@@ -195,7 +207,7 @@ Before submitting:
 
 Here's a complete example:
 
-````markdown
+```markdown
 ---
 title: Create your first Doc Detective test
 description: Learn to write and run a simple documentation test in 10 minutes.
@@ -215,6 +227,7 @@ Learn the basics of Doc Detective by creating a simple test that verifies a web 
 ## What you'll build
 
 A test that:
+
 1. Navigates to the Doc Detective homepage
 2. Verifies the page title appears
 3. Confirms a key feature is mentioned
@@ -231,11 +244,7 @@ Doc Detective tests are defined in JSON files with a `.spec.json` extension.
 
 Create a file named `first-test.spec.json`:
 
-\`\`\`json title="first-test.spec.json"
-{
-  "tests": []
-}
-\`\`\`
+\`\`\`json title="first-test.spec.json" { "tests": [] } \`\`\`
 
 This is the basic structure. The `tests` array will contain your test definitions.
 
@@ -243,59 +252,23 @@ This is the basic structure. The `tests` array will contain your test definition
 
 Inside the `tests` array, add a test object:
 
-\`\`\`json title="first-test.spec.json"
-{
-  "tests": [
-    {
-      "id": "homepage-check",
-      "description": "Verify the Doc Detective homepage loads"
-    }
-  ]
-}
-\`\`\`
+\`\`\`json title="first-test.spec.json" { "tests": [ { "id": "homepage-check", "description": "Verify the Doc Detective homepage loads" } ] } \`\`\`
 
 The `id` uniquely identifies this test, and `description` explains what it does.
 
-:::tip
-Use descriptive IDs and descriptions. They help you understand test results and maintain tests over time.
-:::
+:::tip Use descriptive IDs and descriptions. They help you understand test results and maintain tests over time. :::
 
 ## Step 2: Add actions
 
 Tests contain `steps`—actions that Doc Detective performs. Add a `steps` array:
 
-\`\`\`json title="first-test.spec.json"
-{
-  "tests": [
-    {
-      "id": "homepage-check",
-      "description": "Verify the Doc Detective homepage loads",
-      "steps": []
-    }
-  ]
-}
-\`\`\`
+\`\`\`json title="first-test.spec.json" { "tests": [ { "id": "homepage-check", "description": "Verify the Doc Detective homepage loads", "steps": [] } ] } \`\`\`
 
 ### Navigate to a URL
 
 Add a `goTo` action to navigate to the homepage:
 
-\`\`\`json title="first-test.spec.json"
-{
-  "tests": [
-    {
-      "id": "homepage-check",
-      "description": "Verify the Doc Detective homepage loads",
-      "steps": [
-        {
-          "action": "goTo",
-          "url": "https://doc-detective.com"
-        }
-      ]
-    }
-  ]
-}
-\`\`\`
+\`\`\`json title="first-test.spec.json" { "tests": [ { "id": "homepage-check", "description": "Verify the Doc Detective homepage loads", "steps": [ { "action": "goTo", "url": "https://doc-detective.com" } ] } ] } \`\`\`
 
 The `goTo` action opens a browser and navigates to the specified URL.
 
@@ -303,27 +276,7 @@ The `goTo` action opens a browser and navigates to the specified URL.
 
 Add a `find` action to verify the page title exists:
 
-\`\`\`json title="first-test.spec.json"
-{
-  "tests": [
-    {
-      "id": "homepage-check",
-      "description": "Verify the Doc Detective homepage loads",
-      "steps": [
-        {
-          "action": "goTo",
-          "url": "https://doc-detective.com"
-        },
-        {
-          "action": "find",
-          "selector": "h1",
-          "matchText": "Doc Detective"
-        }
-      ]
-    }
-  ]
-}
-\`\`\`
+\`\`\`json title="first-test.spec.json" { "tests": [ { "id": "homepage-check", "description": "Verify the Doc Detective homepage loads", "steps": [ { "action": "goTo", "url": "https://doc-detective.com" }, { "action": "find", "selector": "h1", "matchText": "Doc Detective" } ] } ] } \`\`\`
 
 This finds an `h1` element and verifies it contains "Doc Detective".
 
@@ -331,18 +284,11 @@ This finds an `h1` element and verifies it contains "Doc Detective".
 
 Run the test using npx:
 
-\`\`\`bash
-npx doc-detective runTests --input first-test.spec.json
-\`\`\`
+\`\`\`bash npx doc-detective runTests --input first-test.spec.json \`\`\`
 
 You should see output like:
 
-\`\`\`
-[INFO] Running test: homepage-check
-[INFO] ✓ goTo - Navigated to https://doc-detective.com
-[INFO] ✓ find - Found element matching criteria
-[PASS] Test completed successfully (3.2s)
-\`\`\`
+\`\`\` [INFO] Running test: homepage-check [INFO] ✓ goTo - Navigated to https://doc-detective.com [INFO] ✓ find - Found element matching criteria [PASS] Test completed successfully (3.2s) \`\`\`
 
 Success! Your test passed.
 
@@ -374,6 +320,7 @@ Congratulations! You've created and run your first Doc Detective test. You learn
 If your `find` action fails, the selector might be incorrect.
 
 **To fix:**
+
 1. Open the URL in your browser
 2. Right-click the element and select "Inspect"
 3. Verify the selector matches the HTML
@@ -382,6 +329,7 @@ If your `find` action fails, the selector might be incorrect.
 ### Browser doesn't open
 
 Doc Detective needs a browser to run tests. Make sure:
+
 - You have Chrome, Firefox, or Edge installed
 - The browser is up to date
 - No other process is using the browser
@@ -393,7 +341,7 @@ Now that you understand the basics:
 - [Add more actions to your tests](/docs/category/actions)
 - [Learn about test contexts](/docs/get-started/config/contexts/)
 - [Write tests for your own documentation](/docs/contributing/testing)
-````
+```
 
 ## Checklist before submitting
 

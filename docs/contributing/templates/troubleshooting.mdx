@@ -11,12 +11,14 @@ Use this template for problem-solution documentation that helps users resolve is
 ## When to use this template
 
 Use troubleshooting documentation for:
+
 - Common errors users encounter
 - Issues with specific symptoms and known solutions
 - Problems that require diagnostic steps
 - Workarounds for known issues
 
 **Examples:**
+
 - "Tests fail with 'element not found' error"
 - "Browser doesn't launch"
 - "Screenshots are blank"
@@ -26,7 +28,7 @@ Use troubleshooting documentation for:
 
 Copy and adapt this template for troubleshooting entries:
 
-````markdown
+```markdown
 ---
 title: [Problem description]
 description: [One-sentence description of the issue]
@@ -54,10 +56,7 @@ description: [One-sentence description of the issue]
 
 [Provide step-by-step instructions to resolve the issue.]
 
-1. **[Action 1]**: [Explanation]
-   \`\`\`[language if applicable]
-   [Command or code]
-   \`\`\`
+1. **[Action 1]**: [Explanation] \`\`\`[language if applicable] [Command or code] \`\`\`
 
 2. **[Action 2]**: [Explanation]
 
@@ -109,7 +108,7 @@ description: [One-sentence description of the issue]
 - [Related issue](link)
 - [Related configuration](link)
 - [Related concept](link)
-````
+```
 
 ## Writing tips
 
@@ -118,14 +117,18 @@ description: [One-sentence description of the issue]
 Users search for what they see, not why it happens:
 
 ✅ Good:
+
 > # Tests fail with "Element not found"
-> 
+>
 > ## Symptoms
+>
 > - Tests pass locally but fail in CI
 > - Error message: `Error: Element with selector "#username" not found`
 
 ⛔ Less findable:
+
 > # Timing issues in CI environments
+>
 > (Users don't search for "timing issues")
 
 ### Use exact error messages
@@ -133,9 +136,11 @@ Users search for what they see, not why it happens:
 Help users find solutions by matching error text:
 
 ✅ Searchable:
+
 > Error message: `ECONNREFUSED: Connection refused at http://localhost:3000`
 
 ⛔ Less useful:
+
 > Error message about connection
 
 ### Provide concrete steps
@@ -143,11 +148,13 @@ Help users find solutions by matching error text:
 Avoid vague instructions:
 
 ✅ Specific:
+
 > 1. Open `.doc-detective.json`
 > 2. Add `"timeout": 10000` to the test configuration
 > 3. Save the file and run tests again
 
 ⛔ Vague:
+
 > Increase the timeout value in your configuration
 
 ### Show before and after
@@ -155,14 +162,17 @@ Avoid vague instructions:
 When changing configuration, show both states:
 
 ✅ Clear:
+
 > **Before:**
+>
 > ```json
-> {"timeout": 5000}
+> { "timeout": 5000 }
 > ```
 >
 > **After:**
+>
 > ```json
-> {"timeout": 10000}
+> { "timeout": 10000 }
 > ```
 
 ### Explain why solutions work
@@ -170,16 +180,18 @@ When changing configuration, show both states:
 Help users understand, don't just give commands:
 
 ✅ Educational:
+
 > Increase the timeout to 10000ms (10 seconds) to give the page more time to load. CI environments are often slower than local machines.
 
 ⛔ Just commands:
+
 > Set timeout to 10000.
 
 ## Example troubleshooting entry
 
 Here's a complete example:
 
-````markdown
+```markdown
 ---
 title: Browser doesn't launch when running tests
 description: Resolve issues where Doc Detective fails to open a browser.
@@ -213,19 +225,21 @@ Doc Detective can't locate or launch the browser for several reasons:
 Check that you have a supported browser:
 
 \`\`\`bash
+
 # Check Chrome
-google-chrome --version  # Linux
-"C:\Program Files\Google\Chrome\Application\chrome.exe" --version  # Windows
-/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --version  # macOS
+
+google-chrome --version # Linux "C:\Program Files\Google\Chrome\Application\chrome.exe" --version # Windows /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --version # macOS
 
 # Check Firefox
+
 firefox --version
 
 # Check Edge
-msedge --version
-\`\`\`
+
+msedge --version \`\`\`
 
 If the command fails, install a supported browser:
+
 - **Chrome**: https://www.google.com/chrome/
 - **Firefox**: https://www.mozilla.org/firefox/
 - **Edge**: https://www.microsoft.com/edge
@@ -234,17 +248,7 @@ If the command fails, install a supported browser:
 
 Add browser configuration to `.doc-detective.json`:
 
-\`\`\`json title=".doc-detective.json"
-{
-  "contexts": [
-    {
-      "app": {
-        "browser": "chrome"
-      }
-    }
-  ]
-}
-\`\`\`
+\`\`\`json title=".doc-detective.json" { "contexts": [ { "app": { "browser": "chrome" } } ] } \`\`\`
 
 Valid values: `"chrome"`, `"firefox"`, `"edge"`
 
@@ -252,19 +256,16 @@ Valid values: `"chrome"`, `"firefox"`, `"edge"`
 
 Close and reopen your terminal, then try again:
 
-\`\`\`bash
-npx doc-detective runTests
-\`\`\`
+\`\`\`bash npx doc-detective runTests \`\`\`
 
 ## Verify the fix
 
 Run a simple test:
 
-\`\`\`bash
-npx doc-detective runTests --input your-test.spec.json
-\`\`\`
+\`\`\`bash npx doc-detective runTests --input your-test.spec.json \`\`\`
 
 You should see:
+
 1. A browser window opens
 2. Test executes normally
 3. Browser closes after test completes
@@ -275,51 +276,19 @@ You should see:
 
 If one browser doesn't work, try another:
 
-\`\`\`json
-{
-  "contexts": [
-    {
-      "app": {
-        "browser": "firefox"
-      }
-    }
-  ]
-}
-\`\`\`
+\`\`\`json { "contexts": [ { "app": { "browser": "firefox" } } ] } \`\`\`
 
 ### Option 2: Specify browser path manually
 
 If the browser is installed in a non-standard location:
 
-\`\`\`json
-{
-  "contexts": [
-    {
-      "app": {
-        "browser": "chrome",
-        "executablePath": "/custom/path/to/chrome"
-      }
-    }
-  ]
-}
-\`\`\`
+\`\`\`json { "contexts": [ { "app": { "browser": "chrome", "executablePath": "/custom/path/to/chrome" } } ] } \`\`\`
 
 ### Option 3: Run in headless mode
 
 If browser UI isn't working but headless mode might:
 
-\`\`\`json
-{
-  "contexts": [
-    {
-      "app": {
-        "browser": "chrome",
-        "headless": true
-      }
-    }
-  ]
-}
-\`\`\`
+\`\`\`json { "contexts": [ { "app": { "browser": "chrome", "headless": true } } ] } \`\`\`
 
 ## Prevention
 
@@ -334,24 +303,12 @@ To avoid browser launch issues:
 
 If you've tried these solutions and still have issues:
 
-1. **Check detailed error logs**: Run with `--logLevel debug`
-   \`\`\`bash
-   npx doc-detective runTests --logLevel debug
-   \`\`\`
+1. **Check detailed error logs**: Run with `--logLevel debug` \`\`\`bash npx doc-detective runTests --logLevel debug \`\`\`
 
-2. **Try a minimal test**: Rule out test-specific issues
-   \`\`\`json
-   {
-     "tests": [{
-       "steps": [{
-         "action": "goTo",
-         "url": "https://example.com"
-       }]
-     }]
-   }
-   \`\`\`
+2. **Try a minimal test**: Rule out test-specific issues \`\`\`json { "tests": [{ "steps": [{ "action": "goTo", "url": "https://example.com" }] }] } \`\`\`
 
 3. **Report the issue**: [Open an issue](https://github.com/doc-detective/doc-detective/issues) with:
+
    - Your operating system and version
    - Browser and version
    - Complete error message
@@ -364,7 +321,7 @@ If you've tried these solutions and still have issues:
 - [Context configuration](/docs/get-started/config/contexts/)
 - [Supported browsers](/docs/references/browsers)
 - [Browser options reference](/docs/references/schemas/browser)
-````
+```
 
 ## Checklist before submitting
 

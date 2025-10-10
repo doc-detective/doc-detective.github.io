@@ -101,7 +101,7 @@ const sidebars: SidebarsConfig = {
         "contributing/substantial-contributions",
         "contributing/local-development",
         "contributing/review-process",
-        "contributing/testing",
+        // "contributing/testing",
         {
           type: "category",
           label: "Content Templates",

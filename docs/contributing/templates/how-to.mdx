@@ -11,12 +11,14 @@ Use this template for task-oriented documentation that helps users accomplish a 
 ## When to use this template
 
 Use a how-to guide when users:
+
 - Know what they want to accomplish
 - Need step-by-step instructions
 - Want to complete a specific task
 - Already understand basic concepts
 
 **Examples:**
+
 - How to configure browser settings
 - How to run tests in parallel
 - How to capture screenshots
@@ -26,7 +28,7 @@ Use a how-to guide when users:
 
 Copy and adapt this template for your how-to guide:
 
-````markdown
+```markdown
 ---
 title: How to [accomplish task]
 description: [One-sentence description of what users will accomplish]
@@ -50,9 +52,7 @@ description: [One-sentence description of what users will accomplish]
 
 [Provide detailed instructions. Use numbered sub-steps if needed.]
 
-\`\`\`[language] title="[filename if applicable]"
-[Code example or command]
-\`\`\`
+\`\`\`[language] title="[filename if applicable]" [Code example or command] \`\`\`
 
 [Explain what this code does or what to expect.]
 
@@ -93,7 +93,7 @@ description: [One-sentence description of what users will accomplish]
 - [Related task 1](link)
 - [Related task 2](link)
 - [Learn more about X](link)
-````
+```
 
 ## Writing tips
 
@@ -108,11 +108,13 @@ description: [One-sentence description of what users will accomplish]
 Step headings should describe actions:
 
 ✅ Good:
+
 - Step 1: Configure the test environment
 - Step 2: Create the test file
 - Step 3: Run your first test
 
 ⛔ Avoid:
+
 - Step 1: Configuration
 - Step 2: Files
 - Step 3: Execution
@@ -122,11 +124,13 @@ Step headings should describe actions:
 Start instructions with action verbs:
 
 ✅ Good:
+
 - Click the **Settings** button
 - Type `npm install` in the terminal
 - Navigate to the config file
 
 ⛔ Avoid:
+
 - You should click the Settings button
 - The user can type npm install
 - It's possible to navigate to the config
@@ -136,14 +140,17 @@ Start instructions with action verbs:
 Explain why steps are necessary:
 
 ✅ Good:
+
 > Create a `.env` file to store configuration values separately from your test code. This makes it easier to use different values for different environments.
 
 ⛔ Avoid:
+
 > Create a `.env` file.
 
 ### Test your instructions
 
 Before submitting:
+
 1. ✅ Follow your own steps exactly as written
 2. ✅ Verify the outcome matches what you documented
 3. ✅ Test on a clean environment if possible
@@ -153,7 +160,7 @@ Before submitting:
 
 Here's a complete example:
 
-````markdown
+```markdown
 ---
 title: How to run tests in parallel
 description: Speed up test execution by running multiple tests simultaneously.
@@ -173,11 +180,7 @@ Run multiple Doc Detective tests at the same time to reduce total execution time
 
 Add the `concurrency` option to your Doc Detective configuration file:
 
-\`\`\`json title=".doc-detective.json"
-{
-  "concurrency": 4
-}
-\`\`\`
+\`\`\`json title=".doc-detective.json" { "concurrency": 4 } \`\`\`
 
 This runs up to 4 tests simultaneously. Adjust based on your system resources.
 
@@ -185,9 +188,7 @@ This runs up to 4 tests simultaneously. Adjust based on your system resources.
 
 Execute tests as usual:
 
-\`\`\`bash
-npx doc-detective runTests
-\`\`\`
+\`\`\`bash npx doc-detective runTests \`\`\`
 
 Doc Detective automatically distributes tests across parallel workers.
 
@@ -195,27 +196,21 @@ Doc Detective automatically distributes tests across parallel workers.
 
 Watch the output to see parallel execution:
 
-\`\`\`
-[INFO] Running tests with concurrency: 4
-[INFO] Test 1: RUNNING
-[INFO] Test 2: RUNNING
-[INFO] Test 3: RUNNING
-[INFO] Test 4: RUNNING
-[INFO] Test 1: PASSED
-[INFO] Test 5: RUNNING
-\`\`\`
+\`\`\` [INFO] Running tests with concurrency: 4 [INFO] Test 1: RUNNING [INFO] Test 2: RUNNING [INFO] Test 3: RUNNING [INFO] Test 4: RUNNING [INFO] Test 1: PASSED [INFO] Test 5: RUNNING \`\`\`
 
 ## Verify it works
 
 Compare execution time with and without parallelization:
 
 \`\`\`bash
+
 # Without parallelization
+
 time npx doc-detective runTests --concurrency 1
 
 # With parallelization
-time npx doc-detective runTests --concurrency 4
-\`\`\`
+
+time npx doc-detective runTests --concurrency 4 \`\`\`
 
 You should see reduced execution time.
 
@@ -226,6 +221,7 @@ You should see reduced execution time.
 **Cause:** Tests may have dependencies or shared state
 
 **Solution:** Ensure tests are independent. Avoid:
+
 - Shared files or resources
 - Dependencies between tests
 - Hardcoded ports or URLs
@@ -236,18 +232,14 @@ You should see reduced execution time.
 
 **Solution:** Reduce concurrency:
 
-\`\`\`json
-{
-  "concurrency": 2
-}
-\`\`\`
+\`\`\`json { "concurrency": 2 } \`\`\`
 
 ## What's next
 
 - [Optimize test performance](/docs/tutorials/optimize-tests)
 - [Configure test contexts](/docs/get-started/config/contexts/)
 - [Run tests in CI/CD](/docs/tutorials/ci-cd)
-````
+```
 
 ## Checklist before submitting
 
