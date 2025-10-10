@@ -1,0 +1,47 @@
+name: Documentation Question
+description: Ask a question about the documentation
+title: '[Docs Question] '
+labels: ['documentation', 'question']
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Note:** For general questions about using Doc Detective, please consider:
+        - Joining our [Discord community](https://discord.gg/2M7wXEThfF)
+        - Checking the [documentation](https://doc-detective.com/docs)
+        - Searching existing [issues](https://github.com/doc-detective/doc-detective.github.io/issues)
+        
+        Use this issue template if you have a specific question about the documentation itself (not about using Doc Detective).
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Your question
+      description: What would you like to know?
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-tried
+    attributes:
+      label: What have you tried?
+      description: What documentation have you already read? What did you try?
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Why do you need this information? What are you trying to accomplish?
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-info
+    attributes:
+      label: Additional information
+      description: Any other details that might be relevant
+    validations:
+      required: false

@@ -1,0 +1,19 @@
+# Doc Detective specific terms
+# These are accepted spellings for project-specific terminology
+
+Doc Detective
+mdx
+Docusaurus
+XPath
+npx
+goTo
+checkLink
+runShell
+runCode
+saveCookie
+dragAndDrop
+matchText
+matchAttribute
+fullPage
+cropTo
+screenshot
