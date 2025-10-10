@@ -1,38 +1,63 @@
----
 name: Documentation Feature Request
-about: Suggest new documentation or improvements to existing content
+description: Suggest new documentation or improvements to existing content
 title: '[Docs Feature] '
 labels: ['documentation', 'enhancement']
 assignees: []
----
+body:
+  - type: textarea
+    id: what-is-missing
+    attributes:
+      label: What documentation is missing or needs improvement?
+      description: Describe what documentation you'd like to see added or improved
+    validations:
+      required: true
 
-## What documentation is missing or needs improvement?
+  - type: textarea
+    id: who-benefits
+    attributes:
+      label: Who would benefit from this?
+      description: Describe the audience and use case
+    validations:
+      required: true
 
-<!-- Describe what documentation you'd like to see added or improved -->
+  - type: textarea
+    id: describe-docs
+    attributes:
+      label: Describe the documentation you'd like
+      description: What should this documentation cover? Be as specific as possible
+    validations:
+      required: true
 
-## Who would benefit from this?
+  - type: textarea
+    id: suggested-structure
+    attributes:
+      label: Suggested structure or outline (optional)
+      description: If you have ideas about how this documentation should be organized, share them here
+    validations:
+      required: false
 
-<!-- Describe the audience and use case -->
+  - type: textarea
+    id: examples
+    attributes:
+      label: Examples from other projects (optional)
+      description: Link to similar documentation from other projects that you find helpful
+    validations:
+      required: false
 
-## Describe the documentation you'd like
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: Any other information that would help us understand your request
+    validations:
+      required: false
 
-<!-- What should this documentation cover? Be as specific as possible -->
-
-## Suggested structure or outline (optional)
-
-<!-- If you have ideas about how this documentation should be organized, share them here -->
-
-## Examples from other projects (optional)
-
-<!-- Link to similar documentation from other projects that you find helpful -->
-
-## Additional context
-
-<!-- Any other information that would help us understand your request -->
-
-## Are you willing to write this?
-
-<!-- Would you like to submit a pull request to add this documentation? -->
-- [ ] Yes, I can write this documentation
-- [ ] No, but I can review/provide feedback on drafts
-- [ ] No, I'm requesting that someone else write it
+  - type: checkboxes
+    id: willing-to-write
+    attributes:
+      label: Are you willing to write this?
+      description: Would you like to submit a pull request to add this documentation?
+      options:
+        - label: Yes, I can write this documentation
+        - label: No, but I can review/provide feedback on drafts
+        - label: No, I'm requesting that someone else write it
