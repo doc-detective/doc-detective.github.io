@@ -5,8 +5,6 @@ on:
     paths:
       - 'docs/**/*.md'
       - 'docs/**/*.mdx'
-      - 'blog/**/*.md'
-      - 'blog/**/*.mdx'
 
 jobs:
   vale:
