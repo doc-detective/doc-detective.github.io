@@ -15,15 +15,15 @@ Want to use the Docker image? [Check it out](https://github.com/doc-detective/do
 
 See the [Installation](/docs/get-started/installation.md) guide to get started. Come chat on [Discord](https://discord.gg/uAfSjVH7yr)!
 
-## What is Doc Detective?
+## About Doc Detective
 
 Doc Detective is a doc content testing framework that simplifies the process of keeping your docs accurate and up-to-date. You write tests, and Doc Detective runs them directly against your product to ensure your docs match your user experience. Whether it’s a UI-based process or a series of API calls, Doc Detective can help you find doc bugs before your users do.
 
 Doc Detective ingests test specifications and text files, parses them for testable actions, then executes those actions in a browser. The results (PASS/FAIL and context) are output as a JSON object so that other pieces of infrastructure can parse and manipulate them as needed.
 
-## What can Doc Detective do?
+## Supported Features
 
-Doc Detective can do a lot, especially with a bit of creativity.
+Doc Detective is a highly creative tool that can perform documentation testing and generate screenshots to support your documentation.
 
 ### Test documentation for accuracy/freshness
 
@@ -40,9 +40,9 @@ Doc Detective’s core strength is the ability to systematically check each and 
 
 When Doc Detective runs tests, it can take screenshots and make recordings. You can include this media in the documentation to complement written processes, aiding the readers who prefer visual media while making sure your videos and images are up-to-date.
 
-## What can't Doc Detective do?
+## Current Limitations
 
-It’s important to know your limits, and Doc Detective’s too.
+Doc Detective has it's own set of limitations.
 
 ### Write your documentation
 
@@ -50,9 +50,9 @@ Doc Detective doesn’t scan your code or generate documentation. It verifies th
 
 ### Write your code
 
-While Doc Detective can write tests from scanning your documentation, it can’t write code for you. Sorry.
+Doc Detective can only write test cases by scanning your documentation; it doesn't write code.
 
-## Who is Doc Detective for?
+## Target Audience
 
 As an open-source and accessible project, Doc Detective is for anyone who is interested! More specifically, here are some groups who could benefit:
 
