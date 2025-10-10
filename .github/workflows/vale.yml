@@ -15,10 +15,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Set up dependencies
+        run: npm install -g mdx2vast
+
       - name: Run Vale
         uses: errata-ai/vale-action@reviewdog
         with:
-          files: docs blog
           fail_on_error: false
           filter_mode: nofilter
         env:
