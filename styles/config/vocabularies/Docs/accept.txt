@@ -24,6 +24,8 @@ configPath
 contentPath
 contextId
 CTRL
+dragAndDrop
+draggable
 defaultCommand
 descriptionPath
 detectSteps
