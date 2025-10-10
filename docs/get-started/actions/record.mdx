@@ -19,7 +19,7 @@ The `record` action starts recording the browser viewport as a video file (MP4, 
 You can specify the recording action in several ways:
 
 - **Boolean Shorthand:** Set `record: true` to start recording with default settings (usually saved as `record_<timestamp>.mp4` in the output directory).
-- **String Shorthand:** Provide a file path directly as the value for the `record` key (e.g., `record: "test_session.webm"`). This starts recording to the specified path. Supported extensions are `.mp4`, `.webm`, and `.gif`.
+- **String Shorthand:** Provide a file path directly as the value for the `record` key (for example, `record: "test_session.webm"`). This starts recording to the specified path. Supported extensions are `.mp4`, `.webm`, and `.gif`.
 - **Object Format:** Use an object for more control over the output file:
   - `path`: (Optional) The file path where the recording will be saved. Can include directories. If omitted, a default path is generated.
   - `directory`: (Optional) The directory where the recording will be saved. If `path` includes a directory, this is ignored. Defaults to the configured output directory.
