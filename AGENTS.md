@@ -155,13 +155,13 @@ All documentation must follow the [Google Developer Style Guide](https://develop
 **Voice and Tone:**
 - Write conversationally and friendly, like a knowledgeable friend, without being frivolous or overly colloquial
 - Avoid buzzwords, jargon, exclamation marks (except rare exciting moments), and phrases like "simply" or "it's easy"
-- Don't use "please" in instructions: ✅ "Click **View**" not ❌ "Please click **View**"
+- Don't use "please" in instructions: ✅ "Click **View**" not ⛔ "Please click **View**"
 
 **Language and Grammar:**
 - Use second person ("you") rather than first person ("we")
-- Use active voice: ✅ "Click the button" not ❌ "The button can be clicked"
-- Use present tense: ✅ "The API returns data" not ❌ "The API will return data"
-- Put conditions before instructions: ✅ "If you want to save, click **Save**" not ❌ "Click **Save** if you want to save"
+- Use active voice: ✅ "Click the button" not ⛔ "The button can be clicked"
+- Use present tense: ✅ "The API returns data" not ⛔ "The API will return data"
+- Put conditions before instructions: ✅ "If you want to save, click **Save**" not ⛔ "Click **Save** if you want to save"
 
 **Formatting:**
 - Use sentence case for headings (not Title Case)
@@ -173,8 +173,8 @@ All documentation must follow the [Google Developer Style Guide](https://develop
 
 **Examples of Tone:**
 - ✅ Good: "To get the user's phone number, call `user.phoneNumber.get`."
-- ❌ Too casual: "Dude! This API is totally awesome!"
-- ❌ Too formal: "The telephone number can be retrieved by the developer via the simple expedient of using the get method."
+- ⛔ Too casual: "Dude! This API is totally awesome!"
+- ⛔ Too formal: "The telephone number can be retrieved by the developer via the simple expedient of using the get method."
 
 ### The Good Docs Project Templates
 

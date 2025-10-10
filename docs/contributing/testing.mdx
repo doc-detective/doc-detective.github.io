@@ -48,7 +48,7 @@ Good tests verify that documented procedures actually work:
 - Links resolve to real pages
 - Screenshots match current UI
 
-❌ **Don't test:**
+⛔ **Don't test:**
 - Grammar and style (use Vale for this)
 - Spelling (automated spellcheckers handle this)
 - Internal implementation details
@@ -415,7 +415,7 @@ npx doc-detective runTests --input your-test.spec.json --logLevel debug
 - Keep steps minimal
 - Test what users actually do
 
-❌ **Don't:**
+⛔ **Don't:**
 - Test implementation details
 - Create overly complex scenarios
 - Test multiple features in one test
@@ -429,7 +429,7 @@ npx doc-detective runTests --input your-test.spec.json --logLevel debug
 - Use descriptive action parameters
 - Clean up after tests (delete files, etc.)
 
-❌ **Don't:**
+⛔ **Don't:**
 - Hardcode values that might change
 - Create dependencies between tests
 - Leave test artifacts behind

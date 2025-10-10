@@ -124,7 +124,7 @@ Users search for what they see, not why it happens:
 > - Tests pass locally but fail in CI
 > - Error message: `Error: Element with selector "#username" not found`
 
-❌ Less findable:
+⛔ Less findable:
 > # Timing issues in CI environments
 > (Users don't search for "timing issues")
 
@@ -135,7 +135,7 @@ Help users find solutions by matching error text:
 ✅ Searchable:
 > Error message: `ECONNREFUSED: Connection refused at http://localhost:3000`
 
-❌ Less useful:
+⛔ Less useful:
 > Error message about connection
 
 ### Provide concrete steps
@@ -147,7 +147,7 @@ Avoid vague instructions:
 > 2. Add `"timeout": 10000` to the test configuration
 > 3. Save the file and run tests again
 
-❌ Vague:
+⛔ Vague:
 > Increase the timeout value in your configuration
 
 ### Show before and after
@@ -172,7 +172,7 @@ Help users understand, don't just give commands:
 ✅ Educational:
 > Increase the timeout to 10000ms (10 seconds) to give the page more time to load. CI environments are often slower than local machines.
 
-❌ Just commands:
+⛔ Just commands:
 > Set timeout to 10000.
 
 ## Example troubleshooting entry
