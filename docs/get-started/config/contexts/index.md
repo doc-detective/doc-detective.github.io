@@ -207,7 +207,7 @@ This context targets Windows or Linux:
 
 ## Examples
 
-### Simple Contexts
+### Basic Contexts
 
 - Run tests in Chrome on all supported platforms:
 

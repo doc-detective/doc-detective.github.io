@@ -16,7 +16,7 @@ The `find` action locates an element in the current interface based on its displ
 
 If multiple elements match the specified criteria (`elementText` and/or `selector`), the step operates on the first matched element. Ensure your criteria uniquely identify the target element.
 
-You can specify the target element directly using a string (for simple text or selector lookup) or use an object for more detailed options and interactions:
+You can specify the target element directly using a string (for basic text or selector lookup) or use an object for more detailed options and interactions:
 
 - **String Shorthand:** Provide the display text or CSS/XPath selector directly as the value for the `find` key. If elements are found by both text and selector, the element found by matching text is used.
   - Example: `"find": "Login"` or `"find": "#username"`.

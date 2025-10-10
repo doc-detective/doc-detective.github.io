@@ -13,7 +13,7 @@ Use CSS selectors in Doc Detective actions like [`find`](/docs/get-started/actio
 
 - You need to target elements by their attributes, classes, or IDs
 - You want a selector that's more reasonable to read and maintain
-- The element doesn't have easily identifiable display text
+- The element doesn't have identifiable display text
 
 ## Basic CSS selector patterns
 
@@ -241,7 +241,7 @@ Work with your engineering team to add `data-testid` or similar attributes to im
 
 ### Avoid fragile selectors
 
-Selectors that are too specific can break easily when the page structure changes:
+Selectors that are too specific can break when the page structure changes:
 
 :::warning[Fragile]
 `div > div > div > span.text`
