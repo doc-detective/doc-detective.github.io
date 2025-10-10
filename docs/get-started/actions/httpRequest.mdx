@@ -14,12 +14,12 @@ import JSONSchemaViewer from "@theme/JSONSchemaViewer";
 
 The `httpRequest` action makes arbitrary HTTP calls, allowing you to interact with and validate APIs or other web services directly within your tests.
 
-You can specify a simple GET request using a string shorthand or use an object for more complex requests and validation:
+You can specify a basic GET request using a string shorthand or use an object for more complex requests and validation:
 
-- **String Shorthand:** Provide the full URL directly as the value for the `httpRequest` key. This performs a simple GET request to that URL.
+- **String Shorthand:** Provide the full URL directly as the value for the `httpRequest` key. This performs a basic GET request to that URL.
 - **Object Format:** Use an object with the following properties:
   - `url`: (Required unless using `openApi`) The target URL for the request.
-  - `method`: (Optional) The HTTP method (e.g., `GET`, `POST`, `PUT`, `DELETE`). Defaults to `GET`.
+  - `method`: (Optional) The HTTP method (for example, `GET`, `POST`, `PUT`, `DELETE`). Defaults to `GET`.
   - `timeout`: (Optional) Maximum duration in milliseconds to wait for the request to complete.
   - `request`: (Optional) An object defining the request details:
     - `headers`: (Optional) Key-value pairs for request headers.
@@ -38,7 +38,7 @@ You can specify a simple GET request using a string shorthand or use an object f
     *Note: Properties like `request.headers`, `request.parameters`, `request.body` can override values from the OpenAPI definition or example.*
   - *Output Saving:* You can also save the response body using `path`, `directory`, `maxVariation`, and `overwrite` properties. See the [`httpRequest`](/docs/references/schemas/httprequest) reference for details.
 
-**Setting Variables:** To capture parts of the response for later steps, use the step-level `variables` object. You can assign values based on the response using expressions like `$$response.body`, `$$response.headers`, `$$response.status`, etc. You can use dot notation for nested JSON fields (e.g., `$$response.body.user.id`).
+**Setting Variables:** To capture parts of the response for later steps, use the step-level `variables` object. You can assign values based on the response using expressions like `$$response.body`, `$$response.headers`, `$$response.status`, etc. You can use dot notation for nested JSON fields (for example, `$$response.body.user.id`).
 
 > For comprehensive options, see the [`httpRequest`](/docs/references/schemas/httprequest) reference.
 
@@ -46,7 +46,7 @@ You can specify a simple GET request using a string shorthand or use an object f
 
 Here are a few ways you might use the `httpRequest` action:
 
-### Simple GET request (string shorthand)
+### Basic GET request (string shorthand)
 
 ```json
 {
@@ -54,7 +54,7 @@ Here are a few ways you might use the `httpRequest` action:
     {
       "steps": [
         {
-          "description": "Perform a simple GET request.",
+          "description": "Perform a basic GET request.",
           "httpRequest": "https://reqres.in/api/users?page=2"
         }
       ]

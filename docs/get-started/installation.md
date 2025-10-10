@@ -53,7 +53,7 @@ Downloading and running Doc Detective is straightforward. Follow these steps to 
    npx doc-detective --input sample.spec.json
    ```
 
-Congratulations! You've run your first test with Doc Detective.
+Congratulations. You've run your first test with Doc Detective.
 
 ## Next steps
 
