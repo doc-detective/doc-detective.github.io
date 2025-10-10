@@ -1,9 +1,12 @@
 ---
-title: Local Development Setup
+title: Local development setup
 description: Set up a local development environment for Doc Detective documentation.
-sidebar_label: Local Development
+sidebar_label: Local development
 sidebar_position: 5
 ---
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
 # Local development setup
 
@@ -12,6 +15,7 @@ Set up a local development environment to preview your changes, work across mult
 ## When to use local development
 
 Use local development when:
+
 - Making changes across multiple files
 - Writing substantial new content
 - Adding complex formatting or components
@@ -22,10 +26,11 @@ For quick fixes (typos, small wording changes), use the [browser-based workflow]
 
 ## System requirements
 
-- **Node.js**: Version 18 or later ([download](https://nodejs.org/))
-- **Git**: For version control ([download](https://git-scm.com/))
-- **Code editor**: VS Code recommended ([download](https://code.visualstudio.com/))
-- **Terminal**: Command line access
+- [Node.js](https://nodejs.org/) version 18 or later
+- [Git](https://git-scm.com/) for version control
+- [VS Code](https://code.visualstudio.com/) recommended as code editor
+- [Vale](https://vale.sh/) (optional) for style checking
+- Command line access (Terminal)
 
 ### Check your Node.js version
 
@@ -35,58 +40,13 @@ node --version
 
 Should show `v18.0.0` or higher.
 
-## Setup options
-
-Choose the option that works best for you:
-
-### Option 1: Dev Container (recommended for consistency)
-
-Use VS Code Dev Containers for a zero-config environment:
-
-**Prerequisites:**
-- [Docker Desktop](https://docs.docker.com/get-docker/)
-- [VS Code](https://code.visualstudio.com/)
-- [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
-
-**Steps:**
-
-1. **Fork and clone** the repository (see steps below)
-2. **Open in VS Code**
-3. **Reopen in Container**:
-   - Press `F1` or `Cmd/Ctrl+Shift+P`
-   - Select "Dev Containers: Reopen in Container"
-   - Wait for container to build (first time takes 5-10 minutes)
-4. **Start the dev server**:
-   ```bash
-   npm run start
-   ```
-
-Everything is pre-configured and ready to go!
-
-### Option 2: Local installation
-
-Install dependencies directly on your machine:
-
-**Steps:**
-
-1. **Fork and clone** the repository (see steps below)
-2. **Install dependencies**:
-   ```bash
-   cd doc-detective.github.io
-   npm install
-   ```
-3. **Start the dev server**:
-   ```bash
-   npm run start
-   ```
-
 ## Fork and clone the repository
 
 ### 1. Fork the repository
 
-1. Go to [https://github.com/doc-detective/doc-detective.github.io](https://github.com/doc-detective/doc-detective.github.io)
-2. Click **Fork** in the top right
-3. Select your GitHub account as the destination
+1. Go to [https://github.com/doc-detective/doc-detective.github.io](https://github.com/doc-detective/doc-detective.github.io).
+2. Click **Fork** in the top right.
+3. Select your GitHub account as the destination.
 
 ### 2. Clone your fork
 
@@ -105,11 +65,13 @@ git remote add upstream https://github.com/doc-detective/doc-detective.github.io
 ```
 
 Verify remotes:
+
 ```bash
 git remote -v
 ```
 
 Should show:
+
 ```
 origin    https://github.com/YOUR-USERNAME/doc-detective.github.io.git (fetch)
 origin    https://github.com/YOUR-USERNAME/doc-detective.github.io.git (push)
@@ -117,25 +79,68 @@ upstream  https://github.com/doc-detective/doc-detective.github.io.git (fetch)
 upstream  https://github.com/doc-detective/doc-detective.github.io.git (push)
 ```
 
+## Install dependencies
+
+Choose the option that works best for you:
+
+### Option 1: Dev Container (recommended for consistency)
+
+Use VS Code Dev Containers for a zero-config environment:
+
+#### Prerequisites
+
+- [Docker Desktop](https://docs.docker.com/get-docker/)
+- [VS Code](https://code.visualstudio.com/)
+- [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+
+#### Steps
+
+1. **Fork and clone** the repository (see steps below)
+2. **Open in VS Code**
+3. **Reopen in Container**:
+   - Press `F1` or `Cmd/Ctrl+Shift+P`
+   - Select "Dev Containers: Reopen in Container"
+   - Wait for container to build (first time takes 5-10 minutes)
+4. **Start the dev server**:
+   ```bash
+   npm run start
+   ```
+
+Everything is pre-configured and ready to go!
+
+### Option 2: Local installation
+
+Install dependencies directly on your machine:
+
+1. **Fork and clone** the repository (see steps below).
+2. **Install dependencies**:
+   ```bash
+   cd doc-detective.github.io
+   npm install
+   ```
+
 ## Working locally
 
-### Start the development server
+Start the development server:
 
 ```bash
 npm run start
 ```
 
-The documentation site opens at `http://localhost:3000` with live reload—changes appear instantly as you edit files.
+The documentation site opens at `http://localhost:3000` with live reload. Changes appear instantly as you edit files.
 
-### Make your changes
+To make changes,
 
 1. **Create a branch**:
+
    ```bash
    git checkout -b your-feature-name
    ```
+
    Use descriptive branch names: `add-tutorial-X`, `fix-broken-links`, `document-feature-Y`
 
 2. **Edit files**:
+
    - Documentation files are in `docs/`
    - Edit in your preferred code editor
    - Save and see changes live at `http://localhost:3000`
@@ -155,6 +160,7 @@ npm run build
 ```
 
 This runs the full build process including:
+
 - Schema generation
 - Production optimization
 - Link checking
@@ -174,33 +180,7 @@ View the production build at `http://localhost:3000`.
 
 ### Style checking with Vale
 
-Vale enforces the Google Developer Style Guide.
-
-**Install Vale:**
-
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
-<Tabs>
-  <TabItem value="mac" label="macOS">
-    ```bash
-    brew install vale
-    ```
-  </TabItem>
-  <TabItem value="windows" label="Windows">
-    ```bash
-    choco install vale
-    ```
-  </TabItem>
-  <TabItem value="linux" label="Linux">
-    ```bash
-    # Download from https://github.com/errata-ai/vale/releases
-    # Extract and add to PATH
-    ```
-  </TabItem>
-</Tabs>
-
-**Run Vale:**
+Vale enforces the documentation style guide.
 
 ```bash
 # Check all documentation
@@ -216,28 +196,20 @@ vale docs/path/to/file.mdx
 - **Warning**: Strongly consider fixing
 - **Suggestion**: Optional improvement
 
-Don't worry about fixing every suggestion—reviewers use judgment.
-
-### Link checking
-
-The build process checks links automatically. To run manually:
-
-```bash
-npm run build
-```
-
-Broken links appear as build errors.
+Don't worry about fixing every suggestion—reviewers use their judgment during reviews.
 
 ## Common tasks
 
 ### Add a new documentation page
 
-1. **Create the file**:
+1. Create the file:
+
    ```bash
    touch docs/category/your-page.mdx
    ```
 
-2. **Add front matter**:
+2. Add front matter:
+
    ```markdown
    ---
    title: Your Page Title
@@ -245,24 +217,25 @@ Broken links appear as build errors.
    sidebar_label: Sidebar Text
    sidebar_position: 3
    ---
-   
+
    # Your Page Title
-   
+
    Content goes here...
    ```
 
-3. **Update sidebar** (if needed):
-   
+3. Update the navigation (if needed):
+
    Edit `sidebars.ts` to add your page to navigation.
 
 ### Add images
 
-1. **Place image** in `static/img/`:
+1. Place images in `static/img/`:
+
    ```bash
    cp screenshot.png static/img/features/
    ```
 
-2. **Reference in docs**:
+2. Reference images in docs with paths relative to `static`:
    ```markdown
    ![Description of image](/img/features/screenshot.png)
    ```
@@ -279,17 +252,17 @@ Use fenced code blocks with language identifiers:
 ```
 ````
 
-### Test documentation with Doc Detective
+{/* ### Test documentation with Doc Detective
 
 If your documentation includes testable procedures:
 
-1. **Create a test file** (e.g., `docs/your-feature.spec.json`)
-2. **Run tests**:
+1. Create a test file (like `docs/your-feature.spec.json`)
+2. Run tests:
    ```bash
    npm run doc-detective
    ```
 
-See [Testing Guide](testing) for details.
+See [Testing the docs](testing) for details. */}
 
 ## Troubleshooting
 
@@ -312,19 +285,21 @@ npm install
 npm run build
 ```
 
-### Changes not appearing
+### Changes aren't appearing
 
 Hard refresh your browser:
+
 - **Windows/Linux**: `Ctrl+Shift+R`
 - **macOS**: `Cmd+Shift+R`
 
 Or restart the dev server:
+
 ```bash
 # Press Ctrl+C to stop
 npm run start
 ```
 
-### Vale not finding configuration
+### Vale can't find its configuration
 
 Make sure you're running Vale from the repository root:
 
@@ -335,20 +310,22 @@ vale docs/
 
 ### npm install fails
 
-**Check Node.js version:**
-```bash
-node --version  # Should be 18 or higher
-```
+1. Check Node.js version:
 
-**Update Node.js if needed:** Download from [nodejs.org](https://nodejs.org/)
+   ```bash
+   node --version  # Should be 18 or higher
+   ```
 
-**Clear npm cache:**
-```bash
-npm cache clean --force
-npm install
-```
+   If needed, update [Node.js](https://nodejs.org/).
 
-## Git workflow
+1. Clear npm cache:
+
+   ```bash
+   npm cache clean --force
+   npm install
+   ```
+
+## Git workflows
 
 ### Sync with upstream
 
@@ -384,14 +361,14 @@ git commit -m "Add troubleshooting section for X"
 git push origin your-branch-name
 ```
 
-### Create a pull request
+### Create a pull request (on GitHub)
 
-1. Go to your fork on GitHub
-2. Click "Compare & pull request"
-3. Fill out the PR template
-4. Click "Create pull request"
+1. Go to your fork on GitHub.
+2. Click **Compare & pull request**.
+3. Fill out the PR template.
+4. Click **Create pull request**.
 
-See [Standard Contributions](standard-contributions) or [Substantial Contributions](substantial-contributions) for PR guidelines.
+See [Standard changes](standard-contributions) or [Substantial changes](substantial-contributions) for PR guidelines.
 
 ## Development tips
 
@@ -422,14 +399,15 @@ Create editor snippets for common patterns:
 
 ### Watch for common mistakes
 
-- **Wrong file extension**: Use `.mdx`, not `.md`
+- **Wrong file extension**: Use `.mdx`, not `.md`.
 - **Missing front matter**: All docs need title, description, etc.
-- **Wrong link format**: Use `/docs/path`, not `./path` or `../path`
-- **Unescaped special characters**: Escape `<`, `>`, `{`, `}` in text
+- **Wrong link format**: Use `/docs/path`, not `./path` or `../path`.
+- **Unescaped special characters**: Escape `<`, `>`, `{`, `}` in text.
 
 ### Use VS Code extensions
 
-Recommended extensions:
+Recommended extensions include
+
 - **MDX**: Syntax highlighting for `.mdx` files
 - **Vale**: Inline style checking
 - **Code Spell Checker**: Catch typos
@@ -437,10 +415,11 @@ Recommended extensions:
 
 ## Next steps
 
-Now that your environment is set up:
+Now that your environment is set up you're ready to contribute!
 
-- **Small contributions**: See [Standard Contributions](standard-contributions)
-- **Large projects**: See [Substantial Contributions](substantial-contributions)
-- **Questions?**: Ask in [Discord](https://discord.gg/2M7wXEThfF)
+- [Standard changes](standard-contributions)
+- [Substantial changes](substantial-contributions)
+
+Questions? Ask in [Discord](https://discord.gg/2M7wXEThfF).
 
 Happy documenting! 📝
