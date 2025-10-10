@@ -28,7 +28,7 @@ Use feature documentation when:
 
 Copy and adapt this template for your feature documentation:
 
-```markdown
+````markdown
 ---
 title: [Feature name]
 description: [One-sentence description of what this feature does]
@@ -60,15 +60,23 @@ description: [One-sentence description of what this feature does]
 
 ### Basic example
 
-\`\`\`[language] title="[filename]" [Code showing simplest usage] \`\`\`
+```[language] title="[filename]"
+[Code showing simplest usage]
+```
 
 [Explain what this code does and what to expect.]
 
 ### Advanced example
 
+```[language] title="[filename]"
+[More complex example]
+```
+
 [Optional: Show a more complex or real-world usage.]
 
-\`\`\`[language] title="[filename]" [More complex example] \`\`\`
+```[language] title="[filename]"
+[More complex example]
+```
 
 [Explain the additional capabilities demonstrated.]
 
@@ -83,7 +91,9 @@ description: [One-sentence description of what this feature does]
 
 ### Example configuration
 
-\`\`\`json title=".doc-detective.json" { "featureName": { "option1": "value", "option2": 20 } } \`\`\`
+```json title=".doc-detective.json"
+{ "featureName": { "option1": "value", "option2": 20 } }
+```
 
 ## Migration guide
 
@@ -93,13 +103,17 @@ description: [One-sentence description of what this feature does]
 
 [Show how users currently do this.]
 
-\`\`\`[language] [Old way] \`\`\`
+```[language]
+[Old way]
+```
 
 ### To new behavior
 
 [Show how users should do this now.]
 
-\`\`\`[language] [New way] \`\`\`
+```[language]
+[New way]
+```
 
 ### Breaking changes
 
@@ -139,7 +153,7 @@ description: [One-sentence description of what this feature does]
 - [Related feature or action](link)
 - [Configuration reference](link)
 - [Tutorial using this feature](link)
-```
+````
 
 ## Writing tips
 
@@ -231,7 +245,7 @@ If behavior varies by version:
 
 Here's a complete example:
 
-```markdown
+````markdown
 ---
 title: Screenshot cropping
 description: Capture screenshots of specific elements instead of the entire page.
@@ -263,7 +277,9 @@ When documenting specific features, you often want screenshots that focus on a p
 
 Capture just a specific button:
 
-\`\`\`json title="screenshot-button.spec.json" { "tests": [ { "steps": [ { "action": "goTo", "url": "https://doc-detective.com" }, { "action": "screenshot", "path": "get-started-button.png", "cropTo": { "selector": "a[href='/docs/get-started']" } } ] } ] } \`\`\`
+```json title="screenshot-button.spec.json"
+{ "tests": [ { "steps": [ { "action": "goTo", "url": "https://doc-detective.com" }, { "action": "screenshot", "path": "get-started-button.png", "cropTo": { "selector": "a[href='/docs/get-started']" } } ] } ] }
+```
 
 This captures only the "Get Started" link, not the entire page.
 
@@ -271,7 +287,9 @@ This captures only the "Get Started" link, not the entire page.
 
 Crop to an element with padding:
 
-\`\`\`json title="screenshot-with-padding.spec.json" { "tests": [ { "steps": [ { "action": "goTo", "url": "https://doc-detective.com" }, { "action": "screenshot", "path": "navigation-menu.png", "cropTo": { "selector": "nav.navbar", "padding": 20 } } ] } ] } \`\`\`
+```json title="screenshot-with-padding.spec.json"
+{ "tests": [ { "steps": [ { "action": "goTo", "url": "https://doc-detective.com" }, { "action": "screenshot", "path": "navigation-menu.png", "cropTo": { "selector": "nav.navbar", "padding": 20 } } ] } ] }
+```
 
 Adds 20 pixels of padding around the navigation element for context.
 
@@ -289,7 +307,9 @@ Adds 20 pixels of padding around the navigation element for context.
 
 ### Example configuration
 
-\`\`\`json title=".doc-detective.json" { "tests": [ { "steps": [ { "action": "screenshot", "path": "feature.png", "cropTo": { "selector": "#feature-section", "padding": 15 } } ] } ] } \`\`\`
+```json title=".doc-detective.json"
+{ "tests": [ { "steps": [ { "action": "screenshot", "path": "feature.png", "cropTo": { "selector": "#feature-section", "padding": 15 } } ] } ] }
+```
 
 ## Migration guide
 
@@ -297,11 +317,15 @@ If you were using full-page screenshots and want to crop:
 
 ### From full-page screenshots
 
-\`\`\`json { "action": "screenshot", "path": "page.png", "fullPage": true } \`\`\`
+```json
+{ "action": "screenshot", "path": "page.png", "fullPage": true }
+```
 
 ### To element-based cropping
 
-\`\`\`json { "action": "screenshot", "path": "element.png", "cropTo": { "selector": "#target-element" } } \`\`\`
+```json
+{ "action": "screenshot", "path": "element.png", "cropTo": { "selector": "#target-element" } }
+```
 
 ### Breaking changes
 
@@ -345,7 +369,7 @@ None. This is a backward-compatible addition. Existing screenshots continue to w
 - [screenshot action reference](/docs/get-started/actions/screenshot)
 - [CSS selectors guide](/docs/get-started/selectors/css)
 - [Tutorial: Capture screenshots](/docs/get-started/tutorials/capture-screenshot)
-```
+````
 
 ## Checklist before submitting
 

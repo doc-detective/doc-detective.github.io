@@ -1,10 +1,10 @@
 ---
-title: Reference Documentation Template
+title: Reference Template
 description: Template for creating technical reference documentation.
-sidebar_label: Reference Template
+sidebar_label: Reference
 ---
 
-# Reference Documentation Template
+# Reference template
 
 Use this template for technical reference documentation like API documentation, configuration options, or command-line reference.
 
@@ -18,9 +18,9 @@ Use reference documentation for:
 - Schema or data format specifications
 - Complete lists of options or parameters
 
-**Examples:**
+Examples:
 
-- Doc Detective action reference (find, click, type, etc.)
+- Doc Detective action reference (`find`, `click`, `type`, etc.)
 - Configuration file schema
 - CLI command reference
 - Environment variables reference
@@ -46,7 +46,6 @@ description: [One-sentence description of what this does]
 ```[language]
 [Syntax pattern with placeholders]
 ```
-````
 
 ## Parameters
 
@@ -133,8 +132,7 @@ description: [One-sentence description of what this does]
 - [Related item 1](#)
 - [Related item 2](#)
 - [Tutorial using this](#)
-
-`````
+````
 
 ## Writing tips
 
@@ -143,19 +141,19 @@ description: [One-sentence description of what this does]
 Reference documentation should be authoritative:
 
 ✅ Good:
-> **Type:** `string | number`
-> **Required:** No
-> **Default:** `"auto"`
-> **Valid values:** `"auto"`, `"light"`, `"dark"`, or any number 0-100
+
+**Type:** `string | number`<br/> **Required:** No<br/> **Default:** `"auto"`<br/> **Valid values:** `"auto"`, `"light"`, `"dark"`, or any number 0-100
 
 ⛔ Vague:
-> Theme setting (optional)
+
+Theme setting (optional)
 
 ### Use consistent structure
 
 All entries in a reference should follow the same pattern:
 
 ✅ Consistent:
+
 - Every parameter has: Type, Required, Default (if applicable), Description
 - Every example has: Code block, Explanation
 - Every section appears in the same order
@@ -165,9 +163,11 @@ All entries in a reference should follow the same pattern:
 Reference docs should cover unusual behavior:
 
 ✅ Complete:
+
 > If `timeout` is set to `0`, the action waits indefinitely. If `timeout` is negative, it defaults to 5000ms.
 
 ⛔ Incomplete:
+
 > The timeout value in milliseconds.
 
 ### Provide multiple examples
@@ -175,6 +175,7 @@ Reference docs should cover unusual behavior:
 Show common use cases:
 
 ✅ Good examples:
+
 - Basic: Minimal configuration
 - Intermediate: Common options
 - Advanced: Complex real-world usage
@@ -184,271 +185,12 @@ Show common use cases:
 
 Help users discover related information:
 
-````markdown
+```markdown
 ## See also
 
 - **Conceptual**: [Understanding test contexts](/docs/concepts/contexts)
 - **How-to**: [How to configure contexts](/docs/how-to/configure-contexts)
 - **Related actions**: [goTo action](/docs/references/goto)
-`````
-
-## Example reference documentation
-
-Here's a complete example:
-
-````markdown
----
-title: find action
-description: Verify that an element exists on the page and optionally matches criteria.
----
-
-# find
-
-Locates an element on the page using a selector and optionally verifies its content, attributes, or state. The test fails if the element isn't found or doesn't match the specified criteria.
-
-## Syntax
-
-```json
-{
-  "action": "find",
-  "selector": "string",
-  "matchText": "string",
-  "timeout": number
-}
-```
-````
-
-## Parameters
-
-| Parameter | Type | Required | Default | Description |
-| --- | --- | --- | --- | --- |
-| action | string | Yes | - | Must be `"find"` |
-| selector | string | Yes | - | CSS selector or XPath to locate the element |
-| matchText | string | No | - | Text that the element must contain |
-| matchAttribute | object | No | - | Attribute the element must have (see below) |
-| timeout | number | No | 5000 | Maximum time to wait for element (milliseconds) |
-| visible | boolean | No | true | Whether element must be visible |
-
-### selector
-
-**Type:** `string`  
-**Required:** Yes
-
-CSS selector or XPath expression to locate the element.
-
-**Examples:**
-
-- CSS: `"#element-id"`, `".class-name"`, `"button[type='submit']"`
-- XPath: `"//button[@type='submit']"`, `"//div[contains(text(), 'Welcome')]"`
-
-See [CSS Selectors](/docs/get-started/selectors/css) and [XPath](/docs/get-started/selectors/xpath) for details.
-
-### matchText
-
-**Type:** `string`  
-**Required:** No
-
-If specified, the element's text content must contain this string. Matching is case-sensitive and checks the element's visible text.
-
-**Example:** `"Welcome back"` matches elements containing that text.
-
-### matchAttribute
-
-**Type:** `object`  
-**Required:** No
-
-Verifies an element has a specific attribute with a specific value.
-
-**Properties:**
-
-- `name` (string, required): Attribute name
-- `value` (string, required): Expected attribute value
-
-**Example:** `{"name": "href", "value": "https://example.com"}`
-
-### timeout
-
-**Type:** `number`  
-**Required:** No  
-**Default:** `5000`
-
-Maximum time in milliseconds to wait for the element to appear. If the element isn't found within this time, the action fails.
-
-**Valid range:** 0 to 60000 (0 waits indefinitely)
-
-### visible
-
-**Type:** `boolean`  
-**Required:** No  
-**Default:** `true`
-
-Whether the element must be visible on the page. If `true`, elements that are hidden via CSS (`display: none`, `visibility: hidden`, etc.) don't match.
-
-## Return value
-
-**Type:** `object`
-
-Returns information about the found element:
-
-```json
-{
-  "status": "pass",
-  "element": {
-    "selector": "#submit-button",
-    "text": "Submit",
-    "visible": true
-  }
-}
-```
-
-## Examples
-
-### Basic example
-
-Find an element by ID:
-
-```json
-{
-  "action": "find",
-  "selector": "#username"
-}
-```
-
-Verifies an element with ID `username` exists on the page.
-
-### Find with text matching
-
-Verify a heading contains specific text:
-
-```json
-{
-  "action": "find",
-  "selector": "h1",
-  "matchText": "Welcome to Doc Detective"
-}
-```
-
-Finds an `h1` element containing "Welcome to Doc Detective".
-
-### Find with attribute matching
-
-Verify a link points to the correct URL:
-
-```json
-{
-  "action": "find",
-  "selector": "a.download-link",
-  "matchAttribute": {
-    "name": "href",
-    "value": "https://doc-detective.com/download"
-  }
-}
-```
-
-Finds a link with class `download-link` that has the specified `href` attribute.
-
-### Advanced example with timeout
-
-Wait up to 10 seconds for a dynamically loaded element:
-
-```json
-{
-  "action": "find",
-  "selector": ".loading-complete",
-  "timeout": 10000,
-  "visible": true
-}
-```
-
-Waits up to 10 seconds for an element with class `loading-complete` to become visible.
-
-## Remarks
-
-- **Implicit waiting**: The `find` action automatically waits for the element to appear (up to `timeout`). You don't need a separate `wait` action.
-- **Multiple matches**: If multiple elements match the selector, `find` uses the first one.
-- **Case sensitivity**: Text matching is case-sensitive. `"Welcome"` doesn't match `"welcome"`.
-- **Whitespace**: Leading and trailing whitespace in `matchText` is significant.
-- **Performance**: Using specific selectors (IDs) is faster than complex CSS selectors or XPath.
-
-## See also
-
-- **Related actions**: [click](/docs/get-started/actions/click), [type](/docs/get-started/actions/type)
-- **Selectors**: [CSS selectors guide](/docs/get-started/selectors/css), [XPath guide](/docs/get-started/selectors/xpath)
-- **Tutorial**: How to find elements (example placeholder)
-
-````
-
-Find an element by ID:
-
-```json
-{
-  "action": "find",
-  "selector": "#username"
-}
-````
-
-Verifies an element with ID `username` exists on the page.
-
-### Find with text matching
-
-Verify a heading contains specific text:
-
-```json
-{
-  "action": "find",
-  "selector": "h1",
-  "matchText": "Welcome to Doc Detective"
-}
-```
-
-Finds an `h1` element containing "Welcome to Doc Detective".
-
-### Find with attribute matching
-
-Verify a link points to the correct URL:
-
-```json
-{
-  "action": "find",
-  "selector": "a.download-link",
-  "matchAttribute": {
-    "name": "href",
-    "value": "https://doc-detective.com/download"
-  }
-}
-```
-
-Finds a link with class `download-link` that has the specified `href` attribute.
-
-### Advanced example with timeout
-
-Wait up to 10 seconds for a dynamically loaded element:
-
-```json
-{
-  "action": "find",
-  "selector": ".loading-complete",
-  "timeout": 10000,
-  "visible": true
-}
-```
-
-Waits up to 10 seconds for an element with class `loading-complete` to become visible.
-
-## Remarks
-
-- **Implicit waiting**: The `find` action automatically waits for the element to appear (up to `timeout`). You don't need a separate `wait` action.
-- **Multiple matches**: If multiple elements match the selector, `find` uses the first one.
-- **Case sensitivity**: Text matching is case-sensitive. `"Welcome"` doesn't match `"welcome"`.
-- **Whitespace**: Leading and trailing whitespace in `matchText` is significant.
-- **Performance**: Using specific selectors (IDs) is faster than complex CSS selectors or XPath.
-
-## See also
-
-- **Related actions**: [click](/docs/get-started/actions/click), [type](/docs/get-started/actions/type)
-- **Selectors**: [CSS selectors guide](/docs/get-started/selectors/css), [XPath guide](/docs/get-started/selectors/xpath)
-- **Tutorial**: How to find elements (example placeholder)
-
 ```
 
 ## Checklist before submitting

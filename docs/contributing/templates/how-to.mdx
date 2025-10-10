@@ -1,10 +1,10 @@
 ---
-title: How-To Guide Template
+title: How-To guide template
 description: Template for creating task-oriented documentation.
-sidebar_label: How-To Template
+sidebar_label: How-To
 ---
 
-# How-To Guide Template
+# How-To guide template
 
 Use this template for task-oriented documentation that helps users accomplish a specific goal.
 
@@ -17,7 +17,7 @@ Use a how-to guide when users:
 - Want to complete a specific task
 - Already understand basic concepts
 
-**Examples:**
+Examples:
 
 - How to configure browser settings
 - How to run tests in parallel
@@ -28,7 +28,7 @@ Use a how-to guide when users:
 
 Copy and adapt this template for your how-to guide:
 
-```markdown
+````markdown
 ---
 title: How to [accomplish task]
 description: [One-sentence description of what users will accomplish]
@@ -52,7 +52,9 @@ description: [One-sentence description of what users will accomplish]
 
 [Provide detailed instructions. Use numbered sub-steps if needed.]
 
-\`\`\`[language] title="[filename if applicable]" [Code example or command] \`\`\`
+```[language] title="[filename if applicable]"
+[Code example or command]
+```
 
 [Explain what this code does or what to expect.]
 
@@ -93,7 +95,7 @@ description: [One-sentence description of what users will accomplish]
 - [Related task 1](link)
 - [Related task 2](link)
 - [Learn more about X](link)
-```
+````
 
 ## Writing tips
 
@@ -155,91 +157,6 @@ Before submitting:
 2. ✅ Verify the outcome matches what you documented
 3. ✅ Test on a clean environment if possible
 4. ✅ Note any assumptions or prerequisites
-
-## Example how-to guide
-
-Here's a complete example:
-
-```markdown
----
-title: How to run tests in parallel
-description: Speed up test execution by running multiple tests simultaneously.
----
-
-# How to run tests in parallel
-
-Run multiple Doc Detective tests at the same time to reduce total execution time. This is useful when you have many tests or tests that take a long time to complete.
-
-## Before you begin
-
-- Doc Detective installed (`npm install -g doc-detective`)
-- At least two test files to run
-- Understanding of [test configuration](/docs/references/schemas/config)
-
-## Step 1: Enable parallel execution
-
-Add the `concurrency` option to your Doc Detective configuration file:
-
-\`\`\`json title=".doc-detective.json" { "concurrency": 4 } \`\`\`
-
-This runs up to 4 tests simultaneously. Adjust based on your system resources.
-
-## Step 2: Run your tests
-
-Execute tests as usual:
-
-\`\`\`bash npx doc-detective runTests \`\`\`
-
-Doc Detective automatically distributes tests across parallel workers.
-
-## Step 3: Monitor execution
-
-Watch the output to see parallel execution:
-
-\`\`\` [INFO] Running tests with concurrency: 4 [INFO] Test 1: RUNNING [INFO] Test 2: RUNNING [INFO] Test 3: RUNNING [INFO] Test 4: RUNNING [INFO] Test 1: PASSED [INFO] Test 5: RUNNING \`\`\`
-
-## Verify it works
-
-Compare execution time with and without parallelization:
-
-\`\`\`bash
-
-# Without parallelization
-
-time npx doc-detective runTests --concurrency 1
-
-# With parallelization
-
-time npx doc-detective runTests --concurrency 4 \`\`\`
-
-You should see reduced execution time.
-
-## Troubleshooting
-
-### Tests fail in parallel but pass individually
-
-**Cause:** Tests may have dependencies or shared state
-
-**Solution:** Ensure tests are independent. Avoid:
-
-- Shared files or resources
-- Dependencies between tests
-- Hardcoded ports or URLs
-
-### System becomes unresponsive
-
-**Cause:** Too many parallel tests for available resources
-
-**Solution:** Reduce concurrency:
-
-\`\`\`json { "concurrency": 2 } \`\`\`
-
-## What's next
-
-- [Optimize test performance](/docs/tutorials/optimize-tests)
-- [Configure test contexts](/docs/get-started/config/contexts/)
-- [Run tests in CI/CD](/docs/tutorials/ci-cd)
-```
 
 ## Checklist before submitting
 

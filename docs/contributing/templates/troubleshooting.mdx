@@ -1,10 +1,10 @@
 ---
-title: Troubleshooting Entry Template
+title: Troubleshooting entry template
 description: Template for creating problem-solution documentation.
-sidebar_label: Troubleshooting Template
+sidebar_label: Troubleshooting
 ---
 
-# Troubleshooting Entry Template
+# Troubleshooting entry template
 
 Use this template for problem-solution documentation that helps users resolve issues.
 
@@ -17,7 +17,7 @@ Use troubleshooting documentation for:
 - Problems that require diagnostic steps
 - Workarounds for known issues
 
-**Examples:**
+Examples:
 
 - "Tests fail with 'element not found' error"
 - "Browser doesn't launch"
@@ -56,7 +56,7 @@ description: [One-sentence description of the issue]
 
 [Provide step-by-step instructions to resolve the issue.]
 
-1. **[Action 1]**: [Explanation] \`\`\`[language if applicable] [Command or code] \`\`\`
+1. **[Action 1]**: [Explanation]
 
 2. **[Action 2]**: [Explanation]
 
@@ -191,7 +191,7 @@ Help users understand, don't just give commands:
 
 Here's a complete example:
 
-```markdown
+````markdown
 ---
 title: Browser doesn't launch when running tests
 description: Resolve issues where Doc Detective fails to open a browser.
@@ -224,19 +224,16 @@ Doc Detective can't locate or launch the browser for several reasons:
 
 Check that you have a supported browser:
 
-\`\`\`bash
+```bash
 
 # Check Chrome
-
-google-chrome --version # Linux "C:\Program Files\Google\Chrome\Application\chrome.exe" --version # Windows /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --version # macOS
+google-chrome --version # Linux
+"C:\Program Files\Google\Chrome\Application\chrome.exe" --version # Windows
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --version # macOS
 
 # Check Firefox
-
 firefox --version
-
-# Check Edge
-
-msedge --version \`\`\`
+```
 
 If the command fails, install a supported browser:
 
@@ -248,7 +245,17 @@ If the command fails, install a supported browser:
 
 Add browser configuration to `.doc-detective.json`:
 
-\`\`\`json title=".doc-detective.json" { "contexts": [ { "app": { "browser": "chrome" } } ] } \`\`\`
+```json title=".doc-detective.json"
+{
+  "contexts": [
+    {
+      "app": {
+        "browser": "chrome"
+      }
+    }
+  ]
+}
+```
 
 Valid values: `"chrome"`, `"firefox"`, `"edge"`
 
@@ -256,13 +263,17 @@ Valid values: `"chrome"`, `"firefox"`, `"edge"`
 
 Close and reopen your terminal, then try again:
 
-\`\`\`bash npx doc-detective runTests \`\`\`
+```bash
+npx doc-detective
+```
 
 ## Verify the fix
 
 Run a simple test:
 
-\`\`\`bash npx doc-detective runTests --input your-test.spec.json \`\`\`
+```bash
+npx doc-detective --input your-test.spec.json
+```
 
 You should see:
 
@@ -276,19 +287,51 @@ You should see:
 
 If one browser doesn't work, try another:
 
-\`\`\`json { "contexts": [ { "app": { "browser": "firefox" } } ] } \`\`\`
+```json
+{ "contexts": [{ "app": { "browser": "firefox" } }] }
+```
 
 ### Option 2: Specify browser path manually
 
 If the browser is installed in a non-standard location:
 
-\`\`\`json { "contexts": [ { "app": { "browser": "chrome", "executablePath": "/custom/path/to/chrome" } } ] } \`\`\`
+```json
+{
+  "contexts": [
+    {
+      "app": { "browser": "chrome", "executablePath": "/custom/path/to/chrome" }
+    }
+  ]
+}
+```
 
 ### Option 3: Run in headless mode
 
 If browser UI isn't working but headless mode might:
 
-\`\`\`json { "contexts": [ { "app": { "browser": "chrome", "headless": true } } ] } \`\`\`
+```json
+{ "contexts": [{ "app": { "browser": "chrome", "headless": true } }] }
+```
+
+## Prevention
+
+```json
+{
+  "contexts": [
+    {
+      "app": { "browser": "chrome", "executablePath": "/custom/path/to/chrome" }
+    }
+  ]
+}
+```
+
+### Option 3: Run in headless mode
+
+If browser UI isn't working but headless mode might:
+
+```json
+{ "contexts": [{ "app": { "browser": "chrome", "headless": true } }] }
+```
 
 ## Prevention
 
@@ -303,9 +346,9 @@ To avoid browser launch issues:
 
 If you've tried these solutions and still have issues:
 
-1. **Check detailed error logs**: Run with `--logLevel debug` \`\`\`bash npx doc-detective runTests --logLevel debug \`\`\`
+1. **Check detailed error logs**: Run with `--logLevel debug` `bash npx doc-detective runTests --logLevel debug `
 
-2. **Try a minimal test**: Rule out test-specific issues \`\`\`json { "tests": [{ "steps": [{ "action": "goTo", "url": "https://example.com" }] }] } \`\`\`
+2. **Try a minimal test**: Rule out test-specific issues `json { "tests": [{ "steps": [{ "action": "goTo", "url": "https://example.com" }] }] } `
 
 3. **Report the issue**: [Open an issue](https://github.com/doc-detective/doc-detective/issues) with:
 
@@ -321,7 +364,7 @@ If you've tried these solutions and still have issues:
 - [Context configuration](/docs/get-started/config/contexts/)
 - [Supported browsers](/docs/references/browsers)
 - [Browser options reference](/docs/references/schemas/browser)
-```
+````
 
 ## Checklist before submitting
 
