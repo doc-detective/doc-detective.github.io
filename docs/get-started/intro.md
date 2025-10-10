@@ -13,7 +13,7 @@ npx doc-detective
 
 Want to use the Docker image? [Check it out](https://github.com/doc-detective/docker-image).
 
-See the [Installation](/docs/get-started/installation.md) guide to get started. Come chat on [Discord](https://discord.gg/uAfSjVH7yr)!
+See the [Installation](/docs/get-started/installation.md) guide to get started. Come chat on [Discord](https://discord.gg/uAfSjVH7yr).
 
 ## What is Doc Detective?
 
@@ -54,7 +54,7 @@ While Doc Detective can write tests from scanning your documentation, it can’t
 
 ## Who is Doc Detective for?
 
-As an open-source and accessible project, Doc Detective is for anyone who is interested! More specifically, here are some groups who could benefit:
+As an open-source and accessible project, Doc Detective is for anyone who is interested. More specifically, here are some groups who could benefit:
 
 - **Small teams:** There’s often limited personnel or budget dedicated to a project, and documentation takes a backseat as a result. With Doc Detective, you can spend less time reviewing published documentation and trust that it is still functional and accurate for the end user.
 - **Large teams:** The more people you have contributing to a project, the faster it can change shape. In cases where development is outpacing documentation, Doc Detective keeps a watchful eye on the changes made and note any inconsistencies.
