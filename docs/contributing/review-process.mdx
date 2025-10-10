@@ -1,7 +1,7 @@
 ---
-title: Review Process
-description: What to expect when your documentation contribution is reviewed.
-sidebar_label: Review Process
+title: Review process
+description: What to expect when your contribution is reviewed.
+sidebar_label: Review process
 sidebar_position: 6
 ---
 
@@ -13,19 +13,20 @@ Understand what happens after you submit a pull request and how to navigate the 
 
 We strive to provide timely feedback:
 
-- **Initial response**: Within 2 business days
-- **Complete review**: Within 5 business days for standard contributions
-- **Expedited review**: Within 24 hours for critical fixes
+- **Initial response**: Within 2 business days.
+- **Complete review**: Within 5 business days for standard contributions.
+- **Expedited review**: Within 24 hours for critical fixes.
 
-**Critical fixes** include:
+Critical fixes include
+
 - Security documentation issues
 - Incorrect information that could break user workflows
 - Broken links to essential resources
 - Major accessibility issues
 
 If you don't receive a response within these timeframes, feel free to:
+
 - Comment on the PR asking for an update
-- Ping `@doc-detective/maintainers` in the PR
 - Ask in [Discord](https://discord.gg/2M7wXEThfF)
 
 ## Automated checks
@@ -44,7 +45,7 @@ Before human review, automated checks verify your contribution.
 In your pull request, you'll see status checks:
 
 - ✅ **Green check**: Passed
-- ⛔ **Red X**: Failed
+- ❌ **Red X**: Failed
 - 🟡 **Yellow circle**: Running
 
 ### If checks fail
@@ -56,18 +57,22 @@ Don't panic! Failed checks are common and usually easy to fix.
 Vale checks writing style. Common issues:
 
 **"Use second person instead of first person"**
+
 - ⛔ `We recommend using...`
 - ✅ `Use...` or `You can use...`
 
 **"Avoid using 'please' in instructions"**
+
 - ⛔ `Please click the button`
 - ✅ `Click the button`
 
 **"Use active voice"**
+
 - ⛔ `The file can be uploaded by...`
 - ✅ `Upload the file by...`
 
 **Handling Vale suggestions:**
+
 - **Errors**: Should be fixed
 - **Warnings**: Strongly consider fixing
 - **Suggestions**: Optional—reviewers use judgment
@@ -78,13 +83,15 @@ If you disagree with a Vale suggestion, explain why in a comment. Reviewers can 
 
 Usually indicate syntax errors:
 
-**Common causes:**
+Common causes include
+
 - Unclosed code blocks (missing closing ` ``` `)
 - Invalid front matter (YAML syntax errors)
 - Broken Markdown syntax
 - Missing closing tags in JSX
 
-**How to fix:**
+How to fix failures:
+
 1. Check the error message for the specific file and line number
 2. Fix the syntax error
 3. If working locally, run `npm run build` to verify
@@ -94,13 +101,15 @@ Usually indicate syntax errors:
 
 Means a link is broken or inaccessible:
 
-**Common causes:**
+Common causes include
+
 - Typo in URL
 - Link to a page that doesn't exist yet
 - External site is temporarily down
 - Case sensitivity issue in path
 
-**How to fix:**
+How to fix:
+
 1. Check the error message for which link failed
 2. Verify the URL is correct
 3. For internal links, ensure the file exists at that path
@@ -185,7 +194,8 @@ Must be addressed before merging:
 - **Broken links**: Links that don't work
 - **Build failures**: Syntax errors preventing deployment
 
-**How to respond:**
+How to respond:
+
 - Fix the issue
 - Commit and push changes
 - Reply to the comment explaining what you fixed
@@ -199,7 +209,8 @@ Optional improvements:
 - **Related content**: Suggestions for future enhancements
 - **Style suggestions**: Minor improvements to match conventions
 
-**How to respond:**
+How to respond:
+
 - Make the change if you agree
 - Or explain why you prefer your approach
 - Or note it for future improvement
@@ -212,7 +223,8 @@ Reviewer needs clarification:
 - "Can you explain what this code does?"
 - "Is this the recommended method?"
 
-**How to respond:**
+How to respond:
+
 - Answer the question in a comment
 - Consider if the documentation should include this clarification
 - Update the docs if the question reveals a gap
@@ -246,7 +258,7 @@ The pull request automatically updates with your new commits.
 
 ### Re-requesting review
 
-After addressing feedback:
+After addressing feedback, you can re-request review:
 
 1. **Resolve conversations**: Click "Resolve conversation" on addressed comments
 2. **Leave unresolved**: Keep conversations open if you have questions
@@ -269,19 +281,19 @@ Most disagreements resolve through discussion.
 
 Congratulations! Your contribution will be merged soon.
 
-**What happens next:**
+What happens next:
 
 1. **Maintainer merges**: A maintainer with merge permissions merges your PR
 2. **Automatic deployment**: GitHub Actions automatically deploys to production
 3. **Live in minutes**: Your changes appear on doc-detective.com within 5-10 minutes
-4. **Notification**: You receive a notification that your PR was merged
 
 ### After merge
 
-- **Close related issues**: If your PR addresses an issue, it should close automatically
-- **Celebrate**: You've contributed to open source! 🎉
-- **Share**: Tweet about it, add to your portfolio, tell friends
-- **Keep contributing**: Found something else to improve?
+Celebrate! 🎉 You've contributed to open source! Post about it, add to your portfolio, tell your friends.
+
+If your PR addresses an issue, it should close automatically.
+
+Found something else to improve? Open another PR!
 
 ## Special cases
 
@@ -339,11 +351,10 @@ Each reviewer may provide feedback. Address all feedback before final approval.
 
 - **Ask in the PR**: Comment asking for clarification
 - **Ask in Discord**: [Join the Discord](https://discord.gg/2M7wXEThfF) and ask in #documentation
-- **Tag maintainers**: Use `@doc-detective/maintainers` for urgent questions
 
 ### Need more time?
 
-Life happens. If you can't address feedback right away:
+Life happens. If you can't address feedback right away,
 
 1. **Comment on the PR**: Let reviewers know you'll return to it
 2. **Mark as draft**: Convert to draft PR if you need more time
@@ -360,6 +371,6 @@ Life happens. If you can't address feedback right away:
 
 ### You're now a contributor!
 
-Thank you for making Doc Detective better. Your contribution, no matter how small, helps thousands of users.
+Thank you for making Doc Detective better. Your contribution, no matter how small, helps all of our users.
 
 Every great open source contributor started with one pull request. This is yours. 🌟

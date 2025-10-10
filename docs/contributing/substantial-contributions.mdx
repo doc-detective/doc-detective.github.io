@@ -5,6 +5,9 @@ sidebar_label: Substantial changes
 sidebar_position: 4
 ---
 
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
 # Substantial changes (30+ minutes)
 
 Major documentation projects that significantly expand or improve the Doc Detective documentation.
@@ -22,10 +25,10 @@ Major documentation projects that significantly expand or improve the Doc Detect
 
 For substantial contributions, it's important to align with maintainers before investing significant time:
 
-1. **Check for existing issues**: Look for [documentation issues](https://github.com/doc-detective/doc-detective.github.io/issues?q=is%3Aissue+is%3Aopen+label%3Adocumentation) or feature requests
-2. **Open a discussion**: If no issue exists, open one describing your plans
-3. **Get feedback**: Wait for maintainer input before starting major work
-4. **Claim the work**: Comment on the issue to let others know you're working on it
+1. **Check for existing issues**: Look for [documentation issues](https://github.com/doc-detective/doc-detective.github.io/issues?q=is%3Aissue+is%3Aopen+label%3Adocumentation) or feature requests.
+2. **Open a discussion**: If no issue exists, open one describing your plans.
+3. **Get feedback**: Wait for maintainer input before starting major work. If you don't hear back in a few days, politely ping in the issue or on [Discord](https://discord.gg/2M7wXEThfF).
+4. **Claim the work**: Comment on the issue to let others know you're working on it.
 
 This prevents duplicate effort and ensures your contribution aligns with project goals.
 
@@ -33,28 +36,14 @@ This prevents duplicate effort and ensures your contribution aligns with project
 
 Substantial contributions require a local development environment to efficiently work across multiple files and see real-time previews.
 
-👉 See [Local Development Setup](local-development) for detailed instructions
-
-Quick setup:
-```bash
-# Clone your fork
-git clone https://github.com/YOUR-USERNAME/doc-detective.github.io.git
-cd doc-detective.github.io
-
-# Install dependencies
-npm install
-
-# Start local development server
-npm run start
-```
-
-The site runs at `http://localhost:3000` with live reload.
+👉 See [Local development](local-development) for detailed instructions.
 
 ## Plan your contribution
 
 ### Understand the user journey
 
-Before writing, consider:
+Before writing, consider
+
 - **Who** is the target audience?
 - **What** are they trying to accomplish?
 - **Why** would they read this documentation?
@@ -65,67 +54,28 @@ Before writing, consider:
 Use templates to structure your content:
 
 #### Tutorial
-**Purpose**: Guide users through learning a concept end-to-end
 
-**Use when**: Users need to understand a complete workflow or feature
+Tutorials guide users through learning a concept end-to-end. You should use them when users need to understand a complete workflow or feature.
 
 👉 [Tutorial template](templates/tutorial)
 
 #### How-to guide
-**Purpose**: Help users accomplish a specific task
 
-**Use when**: Users know what they want to do but need instructions
+How-to guides help users accomplish a specific task. They're generalized instructions for common tasks. They're great when users know what they want to do but need instructions.
 
 👉 [How-to template](templates/how-to)
 
 #### Reference
-**Purpose**: Provide technical specifications and details
 
-**Use when**: Users need to look up specific information
+References provide technical specifications and details and are useful when users need to look up specific information.
 
 👉 [Reference template](templates/reference)
 
 #### Feature documentation
-**Purpose**: Document what changed and how to use new functionality
 
-**Use when**: A feature is new or has changed significantly
+Feature docs are conceptual overviews about what a feature can do and why/when you'd want to use it. They're educational and should be created or updated when a feature is new or has changed significantly.
 
 👉 [Feature template](templates/feature)
-
-### Outline your content
-
-Create an outline before writing:
-
-```markdown
-# Title
-
-## Overview
-- What this feature/concept is
-- Why it matters
-
-## Before you begin
-- Prerequisites
-- Required setup
-
-## Main content sections
-- Section 1: Core concept/action
-- Section 2: Next concept/action
-- Section 3: Additional details
-
-## Examples
-- Basic example
-- Advanced example
-
-## Troubleshooting (if applicable)
-- Common issue 1
-- Common issue 2
-
-## What's next
-- Related topics
-- Next steps
-```
-
-Share your outline in the issue for early feedback.
 
 ## Writing substantial documentation
 
@@ -150,6 +100,7 @@ Don't try to write everything at once:
 4. **Move to next section**: Repeat the process
 
 Commit often with clear messages:
+
 - `Add overview section to feature X documentation`
 - `Document basic example for Y tutorial`
 - `Add troubleshooting section for Z`
@@ -159,6 +110,7 @@ Commit often with clear messages:
 Substantial documentation needs examples users can learn from:
 
 #### Basic example
+
 Show the simplest use case:
 
 ```json title="basic-test.spec.json"
@@ -177,6 +129,7 @@ Show the simplest use case:
 ```
 
 #### Advanced example
+
 Show real-world usage with more complexity:
 
 ```json title="advanced-test.spec.json"
@@ -220,32 +173,38 @@ Show real-world usage with more complexity:
 
 ### Add visual aids
 
-Consider adding:
+Consider adding
+
 - **Diagrams**: Use [Mermaid](https://mermaid.js.org/) for flowcharts and diagrams
 - **Screenshots**: Show key UI elements or results
 - **Videos**: For complex workflows (link to hosted videos)
 
 Example Mermaid diagram:
 
-```markdown
-\`\`\`mermaid
+<Tabs>
+<TabItem value="markdown" label="Markdown" default>
+````markdown
+```mermaid
 graph TD;
     A[Write docs] --> B[Add tests];
     B --> C[Run tests];
     C --> D{Tests pass?};
     D -->|Yes| E[Deploy];
     D -->|No| A;
-\`\`\`
 ```
-
-### Cross-link related content
-
-Help users discover related information:
-
-- Link to prerequisites
-- Reference related actions or concepts
-- Provide "What's next" suggestions
-- Link to troubleshooting if applicable
+````
+</TabItem>
+<TabItem value="rendered" label="Rendered">
+```mermaid
+graph TD;
+    A[Write docs] --> B[Add tests];
+    B --> C[Run tests];
+    C --> D{Tests pass?};
+    D -->|Yes| E[Deploy];
+    D -->|No| A;
+```
+</TabItem>
+</Tabs>
 
 ## Testing your documentation
 
@@ -267,7 +226,7 @@ Every code example should be tested:
 2. **Test variations**: Ensure options are documented correctly
 3. **Check edge cases**: Document limitations if found
 
-### Doc Detective tests
+{/* ### Doc Detective tests
 
 If your documentation includes testable procedures, consider adding Doc Detective tests:
 
@@ -287,7 +246,7 @@ If your documentation includes testable procedures, consider adding Doc Detectiv
 
 Place test files in the same directory as the documentation they test.
 
-👉 See [Testing Guide](testing) for details on writing Doc Detective tests
+👉 See [Testing Guide](testing) for details on writing Doc Detective tests */}
 
 ## Review process for substantial contributions
 
@@ -305,14 +264,15 @@ Expect more detailed feedback on substantial contributions:
 
 Don't expect to get it perfect on the first try:
 
-1. **Address feedback**: Make requested changes
-2. **Ask questions**: If feedback is unclear, ask for clarification
-3. **Suggest alternatives**: If you disagree, explain your reasoning
-4. **Iterate**: Multiple review rounds are normal
+1. **Address feedback**: Make requested changes.
+2. **Ask questions**: If feedback is unclear, ask for clarification.
+3. **Suggest alternatives**: If you disagree, explain your reasoning.
+4. **Iterate**: Multiple review rounds are normal.
 
 ### Technical writer involvement
 
 For substantial contributions, a technical writer may:
+
 - Provide structural feedback
 - Suggest alternative approaches
 - Help with clarity and consistency
@@ -322,36 +282,29 @@ This is collaborative—your subject matter expertise plus writing expertise pro
 
 ## After your contribution is merged
 
-### Celebrate! 🎉
-
-You've made a significant contribution to Doc Detective. Thank you!
-
-### Follow-up tasks
-
-Consider:
-- **Monitor for questions**: Watch the issue/PR for user questions
-- **Improve based on feedback**: Users might reveal gaps or confusion
-- **Keep it updated**: If the feature changes, update the docs
+Celebrate! 🎉 You've made a significant contribution to Doc Detective. Thank you!
 
 ### Share your work
 
 Help others discover your contribution:
-- Share on social media
-- Mention it in the Discord server
-- Add it to your portfolio
+
+- Share on social media. Doc Detective is active [on LinkedIn](https://www.linkedin.com/company/doc-detective) and will happily reshare contribution announcements.
+- Mention it in the Discord server.
+- Add it to your portfolio.
 
 ## Need help?
 
 Substantial contributions benefit from collaboration:
 
-- **Planning phase**: Discuss approach in the issue or Discord
-- **During writing**: Ask questions in draft pull requests
-- **During review**: Don't hesitate to ask for clarification
-- **Stuck?**: Reach out in [Discord](https://discord.gg/2M7wXEThfF)—maintainers are happy to help
+- **Planning phase**: Discuss your approach in the issue or Discord.
+- **During writing**: Ask questions in draft pull requests.
+- **During review**: Don't hesitate to ask for clarification.
+- **Stuck?**: Reach out in [Discord](https://discord.gg/2M7wXEThfF)—maintainers are happy to help.
 
 ## Recognition
 
 Substantial contributions are highlighted:
+
 - Release notes mention significant documentation improvements
 - Contributors page lists all contributors
 - Social media shoutouts for major contributions
