@@ -342,6 +342,8 @@ Doc Detective includes default markup patterns for Markdown and DITA files. Here
 
 #### DITA patterns
 
+Doc Detective extracts tests from DITA task topics using semantic markup. It recognizes DITA elements like `<uicontrol>`, `<userinput>`, `<systemoutput>`, `<shortcut>`, and `<cmdname>` within `<cmd>` elements and automatically generates tests from properly structured DITA content.
+
 ````json
 {
   "fileTypes": [
@@ -350,11 +352,160 @@ Doc Detective includes default markup patterns for Markdown and DITA files. Here
       "extensions": ["dita", "ditamap", "xml"],
       "markup": [
         {
+          "name": "clickUiControl",
+          "regex": [
+            "<cmd>\\s*(?:[Cc]lick|[Tt]ap|[Ss]elect|[Pp]ress|[Cc]hoose)\\s+(?:the\\s+)?<uicontrol>([^<]+)<\\/uicontrol>"
+          ],
+          "actions": ["click"]
+        },
+        {
+          "name": "typeIntoUiControl",
+          "regex": [
+            "<cmd>\\s*(?:[Tt]ype|[Ee]nter|[Ii]nput)\\s+<userinput>([^<]+)<\\/userinput>\\s+(?:in|into)(?:\\s+the)?\\s+<uicontrol>([^<]+)<\\/uicontrol>"
+          ],
+          "actions": [
+            {
+              "type": {
+                "keys": "$1",
+                "selector": "$2"
+              }
+            }
+          ]
+        },
+        {
+          "name": "navigateToXref",
+          "regex": [
+            "<cmd>\\s*(?:[Nn]avigate\\s+to|[Oo]pen|[Gg]o\\s+to|[Vv]isit|[Bb]rowse\\s+to)\\s+<xref\\s+[^>]*href=\"(https?:\\/\\/[^\"]+)\"[^>]*>"
+          ],
+          "actions": ["goTo"]
+        },
+        {
+          "name": "runShellCmdWithCodeblock",
+          "regex": [
+            "<cmd>\\s*(?:[Rr]un|[Ee]xecute)\\s+(?:the\\s+)?(?:following\\s+)?(?:command)[^<]*<\\/cmd>\\s*<info>\\s*<codeblock[^>]*outputclass=\"(?:shell|bash)\"[^>]*>([\\s\\S]*?)<\\/codeblock>"
+          ],
+          "actions": [
+            {
+              "runShell": {
+                "command": "$1"
+              }
+            }
+          ]
+        },
+        {
+          "name": "verifySystemOutput",
+          "regex": [
+            "<cmd>\\s*(?:[Vv]erify|[Cc]heck|[Cc]onfirm|[Ee]nsure)\\s+[^<]*<systemoutput>([^<]+)<\\/systemoutput>"
+          ],
+          "actions": ["find"]
+        },
+        {
+          "name": "findUiControl",
+          "regex": [
+            "<uicontrol>([^<]+)<\\/uicontrol>"
+          ],
+          "actions": ["find"]
+        },
+        {
+          "name": "verifyWindowTitle",
+          "regex": [
+            "<wintitle>([^<]+)<\\/wintitle>"
+          ],
+          "actions": ["find"]
+        },
+        {
+          "name": "keyboardShortcut",
+          "regex": [
+            "<cmd>\\s*(?:[Pp]ress)\\s+<shortcut>([^<]+)<\\/shortcut>"
+          ],
+          "actions": [
+            {
+              "type": {
+                "keys": "$1"
+              }
+            }
+          ]
+        },
+        {
+          "name": "executeCmdName",
+          "regex": [
+            "<cmd>\\s*(?:[Ee]xecute|[Rr]un)\\s+<cmdname>([^<]+)<\\/cmdname>"
+          ],
+          "actions": [
+            {
+              "runShell": {
+                "command": "$1"
+              }
+            }
+          ]
+        },
+        {
+          "name": "checkExternalXref",
+          "regex": [
+            "<xref\\s+[^>]*scope=\"external\"[^>]*href=\"(https?:\\/\\/[^\"]+)\"[^>]*>",
+            "<xref\\s+[^>]*href=\"(https?:\\/\\/[^\"]+)\"[^>]*scope=\"external\"[^>]*>"
+          ],
+          "actions": ["checkLink"]
+        },
+        {
           "name": "checkHyperlink",
           "regex": [
             "<xref\\s+href=\"(https?:\\/\\/[^\"]+)\"[^>]*>"
           ],
           "actions": ["checkLink"]
+        },
+        {
+          "name": "checkLinkElement",
+          "regex": [
+            "<link\\s+href=\"(https?:\\/\\/[^\"]+)\"[^>]*>"
+          ],
+          "actions": ["checkLink"]
+        },
+        {
+          "name": "runShellCodeblock",
+          "regex": [
+            "<codeblock[^>]*outputclass=\"(?:shell|bash)\"[^>]*>([\\s\\S]*?)<\\/codeblock>"
+          ],
+          "actions": [
+            {
+              "runShell": {
+                "command": "$1"
+              }
+            }
+          ]
+        },
+        {
+          "name": "runCode",
+          "regex": [
+            "<codeblock[^>]*outputclass=\"(python|py|javascript|js)\"[^>]*>([\\s\\S]*?)<\\/codeblock>"
+          ],
+          "actions": [
+            {
+              "unsafe": true,
+              "runCode": {
+                "language": "$1",
+                "code": "$2"
+              }
+            }
+          ]
+        },
+        {
+          "name": "httpRequestFormat",
+          "regex": [
+            "<codeblock[^>]*outputclass=\"http\"[^>]*>\\s*([A-Z]+)\\s+([^\\s]+)(?:\\s+HTTP\\/[\\d.]+)?\\s*(?:\\r?\\n|&#xA;)((?:[^\\s<]+:\\s+[^\\r\\n<]+(?:\\r?\\n|&#xA;))*)(?:\\s*(?:\\r?\\n|&#xA;)([\\s\\S]*?))?\\s*<\\/codeblock>"
+          ],
+          "actions": [
+            {
+              "httpRequest": {
+                "method": "$1",
+                "url": "$2",
+                "request": {
+                  "headers": "$3",
+                  "body": "$4"
+                }
+              }
+            }
+          ]
         },
         {
           "name": "clickOnscreenText",
@@ -386,45 +537,57 @@ Doc Detective includes default markup patterns for Markdown and DITA files. Here
           "name": "typeText",
           "regex": ["\\b(?:[Pp]ress|[Ee]nter|[Tt]ype)\\b\\s+\"([^\"]+)\""],
           "actions": ["type"]
-        },
-        {
-          "name": "httpRequestFormat",
-          "regex": [
-            "<codeblock[^>]*outputclass=\"http\"[^>]*>\\s*([A-Z]+)\\s+([^\\s]+)(?:\\s+HTTP\\/[\\d.]+)?\\s*(?:\\r?\\n|&#xA;)((?:[^\\s<]+:\\s+[^\\r\\n<]+(?:\\r?\\n|&#xA;))*)(?:\\s*(?:\\r?\\n|&#xA;)([\\s\\S]*?))?\\s*<\\/codeblock>"
-          ],
-          "actions": [
-            {
-              "httpRequest": {
-                "method": "$1",
-                "url": "$2",
-                "request": {
-                  "headers": "$3",
-                  "body": "$4"
-                }
-              }
-            }
-          ]
-        },
-        {
-          "name": "runCode",
-          "regex": [
-            "<codeblock[^>]*outputclass=\"(bash|python|py|javascript|js)\"[^>]*>([\\s\\S]*?)<\\/codeblock>"
-          ],
-          "actions": [
-            {
-              "unsafe": true,
-              "runCode": {
-                "language": "$1",
-                "code": "$2"
-              }
-            }
-          ]
         }
       ]
     }
   ]
 }
 ````
+
+##### DITA semantic elements
+
+DITA task topics use semantic elements to structure procedural documentation. Doc Detective recognizes these elements and extracts the appropriate test actions:
+
+**UI Elements:**
+- `<uicontrol>` - UI controls like buttons, fields, menus, and options
+- `<wintitle>` - Window or dialog titles
+- `<menucascade>` - Menu sequences (e.g., File > Save As)
+
+**User Input:**
+- `<userinput>` - Text that users should type
+- `<shortcut>` - Keyboard shortcuts (e.g., Ctrl+S, Alt+F4)
+
+**System Output:**
+- `<systemoutput>` - Expected output from commands or system responses
+- `<msgph>` - Message text from the application
+
+**Command Execution:**
+- `<cmdname>` - Command names to execute
+- `<codeblock>` - Code blocks with `outputclass` for language specification
+
+**Navigation:**
+- `<xref>` - Cross-references and external links
+
+##### DITA action verb patterns
+
+Doc Detective recognizes specific action verbs in `<cmd>` elements to determine which test action to generate:
+
+**Click actions** - Triggers `click`:
+- click, tap, select, press, choose
+
+**Type actions** - Triggers `type`:
+- type, enter, input
+
+**Navigation actions** - Triggers `goTo`:
+- navigate to, open, go to, visit, browse to
+
+**Verification actions** - Triggers `find`:
+- verify, check, confirm, ensure
+
+**Command execution** - Triggers `runShell`:
+- run, execute
+
+When these verbs appear with DITA semantic elements, Doc Detective automatically extracts the complete action. For example, `<cmd>Click the <uicontrol>Save</uicontrol> button</cmd>` generates `{ "click": "Save" }`.
 
 #### Default markup pattern descriptions
 
@@ -472,24 +635,100 @@ Doc Detective includes default markup patterns for Markdown and DITA files. Here
 
 ##### DITA patterns
 
+**clickUiControl**: Detects click verbs with `<uicontrol>` elements in DITA `<cmd>` elements and clicks on that UI control.
+
+- Pattern: `<cmd>Click the <uicontrol>Submit</uicontrol> button</cmd>`
+- Action: Clicks the "Submit" button using its text content
+- Recognized verbs: click, tap, select, press, choose
+
+**typeIntoUiControl**: Detects type verbs with `<userinput>` and `<uicontrol>` elements and types text into the specified field.
+
+- Pattern: `<cmd>Type <userinput>testuser</userinput> into the <uicontrol>Username</uicontrol> field</cmd>`
+- Action: Types "testuser" into the field labeled "Username"
+- Recognized verbs: type, enter, input
+
+**navigateToXref**: Detects navigation verbs with `<xref>` elements in `<cmd>` elements and opens the URL.
+
+- Pattern: `<cmd>Navigate to <xref href="https://example.com">Example Site</xref></cmd>`
+- Action: Opens https://example.com in the browser
+- Recognized verbs: navigate to, open, go to, visit, browse to
+
+**runShellCmdWithCodeblock**: Detects run/execute commands followed by shell codeblocks in `<info>` elements.
+
+- Pattern: `<cmd>Run the following command</cmd>` followed by `<info><codeblock outputclass="shell">npm install</codeblock></info>`
+- Action: Executes "npm install" as a shell command
+- Recognized verbs: run, execute
+
+**verifySystemOutput**: Detects verification verbs with `<systemoutput>` elements and checks for expected output.
+
+- Pattern: `<cmd>Verify the output shows <systemoutput>Success</systemoutput></cmd>`
+- Action: Searches for "Success" on the current page
+- Recognized verbs: verify, check, confirm, ensure
+
+**findUiControl**: Detects standalone `<uicontrol>` elements and verifies they exist on the page.
+
+- Pattern: `<uicontrol>Save Button</uicontrol>`
+- Action: Searches for "Save Button" on the current page
+
+**verifyWindowTitle**: Detects `<wintitle>` elements and verifies the window or dialog title exists.
+
+- Pattern: `<wintitle>Settings Dialog</wintitle>`
+- Action: Searches for "Settings Dialog" on the current page
+
+**keyboardShortcut**: Detects press verbs with `<shortcut>` elements and types the keyboard shortcut.
+
+- Pattern: `<cmd>Press <shortcut>Ctrl+S</shortcut> to save</cmd>`
+- Action: Types the keyboard combination Ctrl+S
+
+**executeCmdName**: Detects execute/run verbs with `<cmdname>` elements and runs the command.
+
+- Pattern: `<cmd>Execute <cmdname>npm test</cmdname></cmd>`
+- Action: Executes "npm test" as a shell command
+- Recognized verbs: run, execute
+
+**checkExternalXref**: Detects `<xref>` elements with `scope="external"` and checks link accessibility.
+
+- Pattern: `<xref href="https://docs.example.com" scope="external">Documentation</xref>`
+- Action: Performs a GET request to verify the link returns a valid status code
+
 **checkHyperlink**: Detects DITA xref elements with HTTP/HTTPS URLs and checks that they return a valid HTTP status code.
 
 - Pattern: `<xref href="https://example.com">Link</xref>`
 - Action: Performs a GET request to verify the link is accessible
 
-**clickOnscreenText**: Detects action verbs followed by bold text and clicks on that element.
+**checkLinkElement**: Detects `<link>` elements and checks they return a valid status code.
 
-- Pattern: `Click <b>Button Name</b>`, `Tap <b>Menu Item</b>`, `Select <b>Option</b>`
+- Pattern: `<link href="https://example.com">Example</link>`
+- Action: Performs a GET request to verify the link is accessible
+
+**runShellCodeblock**: Detects standalone shell/bash codeblocks and executes them.
+
+- Pattern: `<codeblock outputclass="bash">echo "Hello"</codeblock>`
+- Action: Executes the shell command
+
+**runCode**: Detects code blocks in supported languages (Python, JavaScript) and executes them.
+
+- Pattern: `<codeblock outputclass="python">print("Hello")</codeblock>`
+- Action: Executes the code (marked as unsafe)
+
+**httpRequestFormat**: Detects HTTP request codeblocks and executes the request.
+
+- Pattern: `<codeblock outputclass="http">GET /api/users HTTP/1.1</codeblock>` with method, URL, headers, and optional body
+- Action: Executes the HTTP request with the specified parameters
+
+**clickOnscreenText**: Detects action verbs followed by bold text (legacy pattern for backwards compatibility).
+
+- Pattern: `Click <b>Button Name</b>`
 - Action: Clicks on the specified element using its text content
 
-**findOnscreenText**: Detects any bold text and verifies it exists on the page.
+**findOnscreenText**: Detects bold text (legacy pattern for backwards compatibility).
 
 - Pattern: `<b>Any Bold Text</b>`
 - Action: Searches for the text on the current page
 
-**goToUrl**: Detects navigation instructions with xref elements and opens the URL.
+**goToUrl**: Detects navigation instructions with xref elements (legacy pattern for backwards compatibility).
 
-- Pattern: `Go to <xref href="https://example.com">Page Name</xref>`, `Navigate to <xref href="https://example.com">Site</xref>`
+- Pattern: `Go to <xref href="https://example.com">Page</xref>`
 - Action: Opens the specified URL in the browser
 
 **screenshotImage**: Detects image elements with a screenshot outputclass and takes a screenshot.
@@ -497,20 +736,10 @@ Doc Detective includes default markup patterns for Markdown and DITA files. Here
 - Pattern: `<image href="image.png" outputclass="screenshot"/>`
 - Action: Saves a screenshot to the specified path
 
-**typeText**: Detects typing instructions with quoted text and types the content.
+**typeText**: Detects typing instructions with quoted text (legacy pattern for backwards compatibility).
 
-- Pattern: `Type "Hello World"`, `Enter "username"`
+- Pattern: `Type "Hello World"`
 - Action: Types the specified text into the active element
-
-**httpRequestFormat**: Detects HTTP request code blocks and executes the request.
-
-- Pattern: `<codeblock outputclass="http">POST /api/users HTTP/1.1</codeblock>` with method, URL, headers, and optional body
-- Action: Executes the HTTP request with the specified parameters
-
-**runCode**: Detects code blocks in supported languages and executes the code.
-
-- Pattern: Code blocks with `bash`, `python`, `py`, `javascript`, or `js` outputclass (excluding those marked with `testIgnore`)
-- Action: Executes the code in the specified language (marked as unsafe)
 
 The `regex` property defines the regular expression patterns to match, and the `actions` property defines the actions to perform when the pattern is detected. With the default configuration, Doc Detective would take the following Markdown and generate tests automatically:
 
@@ -601,6 +830,116 @@ Detected tests:
         },
         {
           "screenshot": "search-results.png"
+        }
+      ]
+    }
+  ]
+}
+```
+
+**DITA task topic example with semantic elements:**
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="create-user-account">
+  <title>Create a User Account</title>
+  <!-- test testId="user-account-test" detectSteps=true -->
+  <taskbody>
+    <context>
+      <p>This procedure shows how to create a new user account in the system.</p>
+    </context>
+    <steps>
+      <step>
+        <cmd>Navigate to <xref href="https://app.example.com/login" format="html" scope="external">the application</xref></cmd>
+      </step>
+      <step>
+        <cmd>Click the <uicontrol>Sign In</uicontrol> button</cmd>
+      </step>
+      <step>
+        <cmd>Type <userinput>admin@example.com</userinput> into the <uicontrol>Username</uicontrol> field</cmd>
+      </step>
+      <step>
+        <cmd>Type <userinput>password123</userinput> into the <uicontrol>Password</uicontrol> field</cmd>
+      </step>
+      <step>
+        <cmd>Press <shortcut>Ctrl+Enter</shortcut> to submit the form</cmd>
+      </step>
+      <step>
+        <cmd>Click the <uicontrol>New User</uicontrol> button</cmd>
+      </step>
+      <step>
+        <cmd>Verify the <wintitle>Create User</wintitle> dialog appears</cmd>
+      </step>
+      <step>
+        <cmd>Execute <cmdname>npm test</cmdname> to run validation checks</cmd>
+      </step>
+      <step>
+        <cmd>Run the following command</cmd>
+        <info>
+          <codeblock outputclass="shell">curl -X POST https://api.example.com/users</codeblock>
+        </info>
+      </step>
+      <step>
+        <cmd>Verify the output shows <systemoutput>User created successfully</systemoutput></cmd>
+      </step>
+    </steps>
+    <result>
+      <p>The new user account is created and ready to use.</p>
+    </result>
+  </taskbody>
+  <!-- test end -->
+</task>
+```
+
+Detected tests:
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "goTo": "https://app.example.com/login"
+        },
+        {
+          "click": "Sign In"
+        },
+        {
+          "type": {
+            "keys": "admin@example.com",
+            "selector": "Username"
+          }
+        },
+        {
+          "type": {
+            "keys": "password123",
+            "selector": "Password"
+          }
+        },
+        {
+          "type": {
+            "keys": "Ctrl+Enter"
+          }
+        },
+        {
+          "click": "New User"
+        },
+        {
+          "find": "Create User"
+        },
+        {
+          "runShell": {
+            "command": "npm test"
+          }
+        },
+        {
+          "runShell": {
+            "command": "curl -X POST https://api.example.com/users"
+          }
+        },
+        {
+          "find": "User created successfully"
         }
       ]
     }
