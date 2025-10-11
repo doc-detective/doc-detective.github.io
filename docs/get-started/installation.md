@@ -34,8 +34,8 @@ Downloading and running Doc Detective is straightforward. Follow these steps to 
              "find": "Example Domain"
            },
            {
-             "description": "Verify that the 'More information...' link is present and working",
-             "click": "More information..."
+             "description": "Verify that the 'Learn more' link is present and working",
+             "click": "Learn more"
            },
            {
              "description": "Capture a screenshot of the resulting page",
