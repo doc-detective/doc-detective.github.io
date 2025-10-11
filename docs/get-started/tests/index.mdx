@@ -140,6 +140,28 @@ Doc Detective supports different comment patterns depending on your file type:
 - Test end: `// (test end)`
 - Ignore blocks: `// (test ignore start)` and `// (test ignore end)`
 
+**DITA XML files** (`.dita`, `.ditamap`, `.xml`):
+
+DITA (Darwin Information Typing Architecture) files use XML processing instructions to define tests. Processing instructions must start with `<?doc-detective` for Doc Detective to recognize them.
+
+DITA supports two syntax options:
+
+**YAML format (multiline):**
+- Test comments: `<?doc-detective test\ntestId: my-test\ndetectSteps: false\n?>`
+- Step comments: `<?doc-detective step checkLink: "https://example.com" ?>`
+- Test end: `<?doc-detective test end?>`
+- Ignore blocks: `<?doc-detective test ignore start?>` and `<?doc-detective test ignore end?>`
+
+**XML attribute format (single line):**
+- Test comments: `<?doc-detective test testId="my-test" detectSteps=false ?>`
+- Step comments: `<?doc-detective step checkLink="https://example.com" ?>`
+- Test end: `<?doc-detective test end?>`
+- Ignore blocks: `<?doc-detective test ignore start?>` and `<?doc-detective test ignore end?>`
+
+Attribute values are automatically converted to the appropriate type: booleans (`detectSteps=false`), numbers (`wait=500`), and strings. You can use dot notation for nested objects—for example, `<?doc-detective step httpRequest.url="https://api.example.com" httpRequest.method="GET" ?>` creates a nested `httpRequest` object with `url` and `method` properties.
+
+> **Note:** DITA isn't enabled by default. To use DITA detection, add `"dita"` to your config's `fileTypes` array or define custom patterns. See the [config reference](/docs/references/schemas/config) for details.
+
 #### Examples
 
 Here's an example using **JSON syntax** in Markdown:

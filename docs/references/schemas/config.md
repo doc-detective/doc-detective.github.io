@@ -22,7 +22,7 @@ detectSteps | boolean | Optional. Whether or not to detect steps in input files 
 allowUnsafeSteps | boolean | Optional. Whether or not to run potentially unsafe steps, such as those that might modify files or system state. | 
 logLevel | string | Optional. Amount of detail to output when performing an operation.<br/><br/>Accepted values: `silent`, `error`, `warning`, `info`, `debug` | `info`
 runOn | array of object([context](/docs/references/schemas/context)) | Optional. Contexts to run the test in. Overrides contexts defined at the config and spec levels. | 
-fileTypes | array of one of: string, object([File type (custom)](/docs/references/schemas/file-type-custom)), object([File type (executable)](/docs/references/schemas/file-type-executable)) | Optional. Configuration for file types and their markup detection. | ``["markdown","asciidoc","html"]``
+fileTypes | array of one of: string, object([File type (custom)](/docs/references/schemas/file-type-custom)), object([File type (executable)](/docs/references/schemas/file-type-executable)) | Optional. Configuration for file types and their markup detection. Built-in types include `markdown`, `asciidoc`, `html`, and `dita`. | ``["markdown","asciidoc","html"]``
 integrations | object([Integrations options](/docs/references/schemas/integrations-options)) | Optional. Options for connecting to external services. | 
 telemetry | object([Telemetry options](/docs/references/schemas/telemetry-options)) | Optional. Options around sending telemetry for Doc Detective usage. | ``{"send":true}``
 concurrentRunners | integer,boolean | Optional. Number of concurrent test runners. Set to true to use CPU core count (capped at 4).<br/><br/>Minimum: 1 | `1`
