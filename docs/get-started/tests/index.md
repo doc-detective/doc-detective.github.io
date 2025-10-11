@@ -93,15 +93,15 @@ Here's an example test for performing a Google search and saving a screenshot of
 }
 ```
 
-### Inline JSON
+### Inline JSON or YAML
 
-You can define tests directly in your documentation source files using inline JSON. Inline JSON is useful for small, simple tests that you want to keep close to the content they test.
+You can define tests directly in your documentation source files using inline JSON or YAML. Inline tests are useful for small, simple tests that you want to keep close to the content they test.
 
 Inline tests are also excellent for maintaining tests because they are easy to update and keep in sync with the content they test as the content changes.
 
 > Inline tests depend on your [config](/docs/references/schemas/config)'s `fileType` definitions. This page uses the default Markdown configuration, but you should update your config to match your documentation source files.
 
-Inline tests use specially formatted comments with JSON objects to declare the tests and steps. Doc Detective reads the input file, line by line, and extracts the tests and steps from the comments. You can declare multiple tests and steps in a single file, using your config's test start, test end, step, and ignore patterns.
+Inline tests use specially formatted comments with JSON or YAML objects to declare the tests and steps. Doc Detective reads the input file, line by line, and extracts the tests and steps from the comments. You can declare multiple tests and steps in a single file, using your config's test start, test end, step, and ignore patterns.
 
 > All test and step comments must be on a single line. Doc Detective doesn't support multi-line comments.
 
@@ -113,7 +113,33 @@ When you declare a step, you can specify any of the properties of the action you
 
 If you declare a step without declaring a test, Doc Detective automatically creates a test to contain the step.
 
-Here's an example of an inline test for performing a Google search and saving a screenshot of the results:
+#### Comment patterns by file type
+
+Doc Detective supports different comment patterns depending on your file type:
+
+**Markdown files** (`.md`, `.markdown`, `.mdx`):
+- JSX-style comments: `{/* test { "testId": "my-test" } */}`
+- HTML comments: `<!-- test { "testId": "my-test" } -->`
+- Markdown link comments: `[comment]: # (test { "testId": "my-test" })`
+- Step comments: `{/* step { "goTo": "https://example.com" } */}`
+- Test end: `{/* test end */}` or `<!-- test end -->` or `[comment]: # (test end)`
+- Ignore blocks: `{/* test ignore start */}` and `{/* test ignore end */}`
+
+**HTML files** (`.html`, `.htm`):
+- Test comments: `<!-- test { "testId": "my-test" } -->`
+- Step comments: `<!-- step { "goTo": "https://example.com" } -->`
+- Test end: `<!-- test end -->`
+- Ignore blocks: `<!-- test ignore start -->` and `<!-- test ignore end -->`
+
+**AsciiDoc files** (`.adoc`, `.asciidoc`, `.asc`):
+- Line comments: `// (test { "testId": "my-test" })`
+- Step comments: `// (step { "goTo": "https://example.com" })`
+- Test end: `// (test end)`
+- Ignore blocks: `// (test ignore start)` and `// (test ignore end)`
+
+#### Examples
+
+Here's an example using **JSON syntax** in Markdown:
 
 ```markdown
 [comment]: # 'test {"testId": "kitten-search"}'
@@ -136,6 +162,63 @@ To search for American Shorthair kittens,
 [comment]: # "test end"
 ```
 
+Here's the same example using **YAML syntax** in Markdown:
+
+```markdown
+{/* test testId: kitten-search */}
+
+To search for American Shorthair kittens,
+
+1. Go to [Google](https://www.google.com).
+
+   {/* step goTo: https://www.google.com */}
+
+2. In the search bar, enter "American Shorthair kittens", then press Enter.
+
+   {/* step find:
+              selector: "[title=Search]"
+              click: true 
+   */}
+   {/* step type:
+              - "American Shorthair kittens"
+              - "$ENTER$"
+   */}
+   {/* step wait: 5000 */}
+
+![Search results](search-results.png)
+
+{/* step screenshot: search-results.png */}
+{/* test end */}
+```
+
+**HTML example**:
+
+```html
+<!-- test { "testId": "navigation-test" } -->
+<p>Navigate to our homepage:</p>
+<!-- step { "goTo": "https://example.com" } -->
+
+<p>Click the menu button:</p>
+<!-- step { "click": "Menu" } -->
+
+<!-- test end -->
+```
+
+**AsciiDoc example**:
+
+```asciidoc
+// (test { "testId": "doc-test" })
+== Getting Started
+
+Navigate to the application:
+// (step { "goTo": "https://app.example.com" })
+
+Click the *Start* button:
+// (step { "click": "Start" })
+
+// (test end)
+```
+
 ### Detected tests
 
 Doc Detective can automatically generate tests based on your documentation source files and your `fileTypes` configuration. Detected tests are useful for large, complex test suites that you want to keep in sync with your documentation. Test detection works by setting `detectSteps` to `true` and defining markup patterns and associated actions in the `fileTypes.markup` array in your [config](/docs/references/schemas/config), which Doc Detective uses to extract steps from your doc source files. You can define multiple test patterns in your config to extract different types of tests from your documentation.
@@ -144,67 +227,127 @@ Detected tests are useful for keeping your tests in sync with your documentation
 
 > You can mix detected tests with [inline tests](#inline-json) to declare steps that might not be covered in your content, such starting or stopping a recording.
 
-For example, markup for Markdown files might look like this:
+Doc Detective includes several default markup patterns for Markdown files. Here are all the built-in patterns:
 
 ```json
 {
-  ...
   "fileTypes": [
     {
-      "name": "Markdown",
+      "name": "markdown",
       "extensions": ["md", "markdown", "mdx"],
-      ...
       "markup": [
         {
-          "name": "Hyperlink",
-          "regex": ["(?<!!)\\[.+?\\]\\(.+?\\)"],
+          "name": "checkHyperlink",
+          "regex": [
+            "(?<!\\!)\\[[^\\]]+\\]\\(\\s*(https?:\\/\\/[^\\s)]+)(?:\\s+\"[^\"]*\")?\\s*\\)"
+          ],
           "actions": ["checkLink"]
         },
         {
-          "name": "Navigation link",
+          "name": "clickOnscreenText",
           "regex": [
-            "(?:[Cc]hose|[Oo]pen|[Cc]lick|[Nn]avigate to|[Gg]o to)(?<!!)\\s+\\[.+?\\]\\(.+?\\)"
+            "\\b(?:[Cc]lick|[Tt]ap|[Ll]eft-click|[Cc]hoose|[Ss]elect|[Cc]heck)\\b\\s+\\*\\*((?:(?!\\*\\*).)+)\\*\\*"
+          ],
+          "actions": ["click"]
+        },
+        {
+          "name": "findOnscreenText",
+          "regex": ["\\*\\*((?:(?!\\*\\*).)+)\\*\\*"],
+          "actions": ["find"]
+        },
+        {
+          "name": "goToUrl",
+          "regex": [
+            "\\b(?:[Gg]o\\s+to|[Oo]pen|[Nn]avigate\\s+to|[Vv]isit|[Aa]ccess|[Pp]roceed\\s+to|[Ll]aunch)\\b\\s+\\[[^\\]]+\\]\\(\\s*(https?:\\/\\/[^\\s)]+)(?:\\s+\"[^\"]*\")?\\s*\\)"
           ],
           "actions": ["goTo"]
         },
         {
-          "name": "Onscreen text",
-          "regex": ["\\*\\*(.+?)\\*\\*"],
-          "actions": ["find"]
+          "name": "screenshotImage",
+          "regex": [
+            "!\\[[^\\]]*\\]\\(\\s*([^\\s)]+)(?:\\s+\"[^\"]*\")?\\s*\\)\\s*\\{(?=[^}]*\\.screenshot)[^}]*\\}"
+          ],
+          "actions": ["screenshot"]
         },
         {
-          "name": "Click",
-          "regex": ["(?:[Cc]lick|[Pp]ress|[Cc]hoose|[Tt]ap)\\s+\\*\\*(.+?)\\*\\*"],
-          "actions": [{
-            "find": {
-              "selector": "aria/$1",
-              "click": true
-            }
-          }]
+          "name": "typeText",
+          "regex": ["\\b(?:press|enter|type)\\b\\s+\"([^\"]+)\""],
+          "actions": ["type"]
         },
         {
-          "name": "Image",
-          "regex": ["!\\[.+?\\]\\((.+?)\\)"],
+          "name": "httpRequestFormat",
+          "regex": [
+            "```(?:http)?\\r?\\n([A-Z]+)\\s+([^\\s]+)(?:\\s+HTTP\\/[\\d.]+)?\\r?\\n((?:[^\\s]+:\\s+[^\\s]+\\r?\\n)*)?(?:\\s+([\\s\\S]*?)\\r?\\n+)?```"
+          ],
           "actions": [
             {
-              "screenshot": {
-                "path": "$1",
-                "directory": "samples",
-                "maxVariation": 5,
-                "overwrite": "byVariation"
+              "httpRequest": {
+                "method": "$1",
+                "url": "$2",
+                "request": {
+                  "headers": "$3",
+                  "body": "$4"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "runCode",
+          "regex": [
+            "```(bash|python|py|javascript|js)(?![^\\r\\n]*testIgnore)[^\\r\\n]*\\r?\\n([\\s\\S]*?)\\r?\\n```"
+          ],
+          "actions": [
+            {
+              "unsafe": true,
+              "runCode": {
+                "language": "$1",
+                "code": "$2"
               }
             }
           ]
         }
       ]
-      ...
     }
-  ],
-  ...
+  ]
 }
 ```
 
-The `regex` property defines the regular expression patterns to match, and the `actions` property defines the actions to perform when the pattern is detected. With the above config, Doc Detective would take the following Markdown and generate tests for every hyperlink, navigation link, onscreen text, and image.
+#### Default markup pattern descriptions
+
+**checkHyperlink**: Detects standard Markdown links (excluding images) and checks that they return a valid HTTP status code.
+- Pattern: `[link text](https://example.com)`
+- Action: Performs a GET request to verify the link is accessible
+
+**clickOnscreenText**: Detects action verbs followed by bold text and clicks on that element.
+- Pattern: `Click **Button Name**`, `Tap **Menu Item**`, `Select **Option**`
+- Action: Clicks on the specified element using its text content
+
+**findOnscreenText**: Detects any bold text and verifies it exists on the page.
+- Pattern: `**Any Bold Text**`
+- Action: Searches for the text on the current page
+
+**goToUrl**: Detects navigation instructions with links and opens the URL.
+- Pattern: `Go to [Page Name](https://example.com)`, `Navigate to [Site](https://example.com)`
+- Action: Opens the specified URL in the browser
+
+**screenshotImage**: Detects images with a `.screenshot` class or attribute and takes a screenshot.
+- Pattern: `![Alt text](image.png){.screenshot}`
+- Action: Saves a screenshot to the specified path
+
+**typeText**: Detects typing instructions with quoted text and types the content.
+- Pattern: `Type "Hello World"`, `Enter "username"`
+- Action: Types the specified text into the active element
+
+**httpRequestFormat**: Detects HTTP request code blocks and executes the request.
+- Pattern: HTTP request in code blocks with method, URL, headers, and body
+- Action: Executes the HTTP request with the specified parameters
+
+**runCode**: Detects code blocks in supported languages and executes the code.
+- Pattern: Code blocks with `bash`, `python`, `py`, `javascript`, or `js` language tags (excluding those marked with `testIgnore`)
+- Action: Executes the code in the specified language (marked as unsafe)
+
+The `regex` property defines the regular expression patterns to match, and the `actions` property defines the actions to perform when the pattern is detected. With the default configuration, Doc Detective would take the following Markdown and generate tests automatically:
 
 Markdown:
 
@@ -215,6 +358,9 @@ To get started,
 
 1. Go to [Acme Console](https://console.acme.com).
 2. Click **Search**.
+3. Type "American Shorthair kittens".
+
+Check out our [documentation](https://docs.example.com) for more information.
 
 ![Search results](search-results.png){ .screenshot }
 ```
@@ -235,6 +381,12 @@ Detected tests:
           "click": "Search"
         },
         {
+          "type": "American Shorthair kittens"
+        },
+        {
+          "checkLink": "https://docs.example.com"
+        },
+        {
           "screenshot": "search-results.png"
         }
       ]
@@ -242,6 +394,49 @@ Detected tests:
   ]
 }
 ```
+
+### Custom markup patterns
+
+You can extend or override the default patterns by defining custom markup patterns in your configuration:
+
+```json
+{
+  "fileTypes": [
+    {
+      "name": "markdown",
+      "extensions": ["md", "markdown", "mdx"],
+      "markup": [
+        {
+          "name": "customAction",
+          "regex": ["\\b(?:custom)\\b\\s+\\*\\*(.+?)\\*\\*"],
+          "actions": [
+            {
+              "find": {
+                "selector": "aria/$1",
+                "timeout": 10000
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+#### Other file types
+
+Doc Detective also includes default configurations for HTML and AsciiDoc files, though these only include inline statement patterns for test definitions and don't include markup patterns for detected tests:
+
+**HTML files** (`.html`, `.htm`):
+- Uses HTML comment syntax for inline test statements
+- Example: `<!-- test { "testId": "my-test" } -->`
+
+**AsciiDoc files** (`.adoc`, `.asciidoc`, `.asc`):
+- Uses AsciiDoc comment syntax for inline test statements  
+- Example: `// (test { "testId": "my-test" })`
+
+To add detected test functionality to HTML or AsciiDoc files, you would need to define custom markup patterns in your configuration similar to the Markdown examples above.
 
 ### Default actions
 

@@ -1,9 +1,17 @@
 {
   "name": "doc-detective-docs",
+<<<<<<< HEAD
   "version": "3.0.4",
+||||||| 960ef9d
+  "version": "3.0.3",
+=======
+  "version": "3.0.6",
+>>>>>>> main
   "scripts": {
     "docusaurus": "docusaurus",
+    "prestart": "npm run build-schemas",
     "start": "docusaurus start",
+    "prebuild": "npm run build-schemas",
     "build": "docusaurus build",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
@@ -19,28 +27,51 @@
     "doc-detective": "npx doc-detective@latest runTests"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@apidevtools/json-schema-ref-parser": "^12.0.2",
     "@docusaurus/core": "^3.8.1",
     "@docusaurus/preset-classic": "^3.8.1",
     "@docusaurus/theme-mermaid": "^3.8.1",
     "@emotion/styled": "^11.14.0",
+||||||| 960ef9d
+    "@apidevtools/json-schema-ref-parser": "^12.0.2",
+    "@docusaurus/core": "3.7.0",
+    "@docusaurus/preset-classic": "3.7.0",
+    "@docusaurus/theme-mermaid": "^3.7.0",
+    "@emotion/styled": "^11.14.0",
+=======
+    "@apidevtools/json-schema-ref-parser": "^14.2.0",
+    "@docusaurus/core": "^3.8.1",
+    "@docusaurus/preset-classic": "^3.8.1",
+    "@docusaurus/theme-mermaid": "^3.8.1",
+    "@emotion/styled": "^11.14.1",
+>>>>>>> main
     "@inkeep/docusaurus": "^2.0.16",
     "@mdx-js/react": "^3.1.0",
-    "@mui/icons-material": "^6.4.3",
-    "@mui/material": "^6.4.3",
+    "@mui/icons-material": "^7.3.1",
+    "@mui/material": "^7.3.1",
     "clsx": "^2.1.1",
+<<<<<<< HEAD
     "doc-detective-common": "^3.1.1",
     "dotenv": "^16.5.0",
+||||||| 960ef9d
+    "doc-detective-common": "^3.0.9",
+    "dotenv": "^16.5.0",
+=======
+    "doc-detective-common": "^3.3.0",
+    "docusaurus-json-schema-plugin": "^1.15.0",
+    "dotenv": "^17.2.1",
+>>>>>>> main
     "https-browserify": "^1.0.0",
     "os-browserify": "^0.3.0",
     "path-browserify": "^1.0.1",
     "posthog-docusaurus": "^2.0.4",
     "prism-react-renderer": "^2.4.1",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "react-markdown": "^9.0.3",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-markdown": "^10.1.0",
     "stream-http": "^3.2.0",
-    "yaml": "^2.7.1"
+    "yaml": "^2.8.1"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^3.2.6",
@@ -56,9 +87,9 @@
     "@storybook/react": "^8.5.3",
     "@storybook/react-webpack5": "^8.5.3",
     "@storybook/test": "^8.5.3",
-    "@vvago/vale": "^3.9.4",
+    "@vvago/vale": "^3.12.0",
     "storybook": "^8.5.3",
-    "typescript": "~5.7.3"
+    "typescript": "~5.8.3"
   },
   "browserslist": {
     "production": [
