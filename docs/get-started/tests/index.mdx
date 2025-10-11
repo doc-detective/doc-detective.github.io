@@ -388,6 +388,24 @@ Doc Detective includes default markup patterns for Markdown and DITA files. Here
           "actions": ["type"]
         },
         {
+          "name": "httpRequestFormat",
+          "regex": [
+            "<codeblock[^>]*outputclass=\"http\"[^>]*>\\s*([A-Z]+)\\s+([^\\s]+)(?:\\s+HTTP\\/[\\d.]+)?\\s*(?:\\r?\\n|&#xA;)((?:[^\\s<]+:\\s+[^\\r\\n<]+(?:\\r?\\n|&#xA;))*)(?:\\s*(?:\\r?\\n|&#xA;)([\\s\\S]*?))?\\s*<\\/codeblock>"
+          ],
+          "actions": [
+            {
+              "httpRequest": {
+                "method": "$1",
+                "url": "$2",
+                "request": {
+                  "headers": "$3",
+                  "body": "$4"
+                }
+              }
+            }
+          ]
+        },
+        {
           "name": "runCode",
           "regex": [
             "<codeblock[^>]*outputclass=\"(bash|python|py|javascript|js)\"[^>]*>([\\s\\S]*?)<\\/codeblock>"
@@ -483,6 +501,11 @@ Doc Detective includes default markup patterns for Markdown and DITA files. Here
 
 - Pattern: `Type "Hello World"`, `Enter "username"`
 - Action: Types the specified text into the active element
+
+**httpRequestFormat**: Detects HTTP request code blocks and executes the request.
+
+- Pattern: `<codeblock outputclass="http">POST /api/users HTTP/1.1</codeblock>` with method, URL, headers, and optional body
+- Action: Executes the HTTP request with the specified parameters
 
 **runCode**: Detects code blocks in supported languages and executes the code.
 
