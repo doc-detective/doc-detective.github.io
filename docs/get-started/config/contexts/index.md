@@ -86,7 +86,7 @@ Or using the object format:
 
 #### Chrome Dimensions and Visibility
 
-You can specify browser window dimensions, viewport dimensions, and visibility (`headless`). `headless` must be `false` (i.e., run in headed mode) to use the `record` action.
+You can specify browser window dimensions, viewport dimensions, and visibility (`headless`). `headless` must be `false` (that is, run in headed mode) to use the `record` action.
 
 ```json
 {
@@ -207,7 +207,7 @@ This context targets Windows or Linux:
 
 ## Examples
 
-### Simple Contexts
+### Basic Contexts
 
 - Run tests in Chrome on all supported platforms:
 

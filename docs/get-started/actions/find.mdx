@@ -16,7 +16,7 @@ The `find` action locates an element in the current interface based on its displ
 
 If multiple elements match the specified criteria (`elementText` and/or `selector`), the step operates on the first matched element. Ensure your criteria uniquely identify the target element.
 
-You can specify the target element directly using a string (for simple text or selector lookup) or use an object for more detailed options and interactions:
+You can specify the target element directly using a string (for basic text or selector lookup) or use an object for more detailed options and interactions:
 
 - **String Shorthand:** Provide the display text or CSS/XPath selector directly as the value for the `find` key. If elements are found by both text and selector, the element found by matching text is used.
   - Example: `"find": "Login"` or `"find": "#username"`.
@@ -26,7 +26,7 @@ You can specify the target element directly using a string (for simple text or s
   - `timeout`: (Optional) Maximum duration in milliseconds to wait for the element to exist (default: 5000).
   - `moveTo`: (Optional) Move the cursor to the element. If the element isn't visible, it's scrolled into view (default: `true`).
   - `click`: (Optional) Click the element after finding it. Can be `true` (for a default left click), `"left"`, `"right"`, `"middle"`, or an object like `{ "button": "right" }`.
-  - `type`: (Optional) Type keys after finding the element. Requires the element to be made active first (e.g., by using `click: true`). Accepts a string or an object like `{ "keys": "my text", "inputDelay": 100 }`. See [`type`](type) for details.
+  - `type`: (Optional) Type keys after finding the element. Requires the element to be made active first (for example, by using `click: true`). Accepts a string or an object like `{ "keys": "my text", "inputDelay": 100 }`. See [`type`](type) for details.
 
 **Setting Variables:** To capture a found element's attributes into variables for later steps, use the step-level `variables` object. You can assign values based on the element using expressions like `$$element.text`.
 

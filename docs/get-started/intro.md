@@ -15,7 +15,7 @@ Want to use the Docker image? [Check it out](https://github.com/doc-detective/do
 
 See the [Installation](/docs/get-started/installation.md) guide to get started. Come chat on [Discord](https://discord.gg/uAfSjVH7yr)!
 
-## What is Doc Detective?
+## What's Doc Detective?
 
 Doc Detective is a doc content testing framework that simplifies the process of keeping your docs accurate and up-to-date. You write tests, and Doc Detective runs them directly against your product to ensure your docs match your user experience. Whether it’s a UI-based process or a series of API calls, Doc Detective can help you find doc bugs before your users do.
 
@@ -27,13 +27,13 @@ Doc Detective can do a lot, especially with a bit of creativity.
 
 ### Test documentation for accuracy/freshness
 
-Doc Detective’s core strength is the ability to systematically check each and every element of your documentation for adherence to the reality of your product. Each of the following items can be inspected:
+Doc Detective’s core strength is the ability to systematically check each and every element of your documentation for adherence to the reality of your product. You can inspect each of the following items:
 
 - Existence of page elements
 - Written text (such as a heading or a button string)
 - Screenshots
 - Links
-- API endpoints, functionality, and responses
+- API endpoints, capabilities, and responses
 - Anything you can write a script to verify
 
 ### Generate screenshots or video to accompany documentation
@@ -54,9 +54,9 @@ While Doc Detective can write tests from scanning your documentation, it can’t
 
 ## Who is Doc Detective for?
 
-As an open-source and accessible project, Doc Detective is for anyone who is interested! More specifically, here are some groups who could benefit:
+As an open source and accessible project, Doc Detective is for anyone who's interested. More specifically, here are some groups who could benefit:
 
-- **Small teams:** There’s often limited personnel or budget dedicated to a project, and documentation takes a backseat as a result. With Doc Detective, you can spend less time reviewing published documentation and trust that it is still functional and accurate for the end user.
+- **Small teams:** There’s often limited personnel or budget dedicated to a project, and documentation often gets deprioritized as a result. With Doc Detective, you can spend less time reviewing published documentation and trust that it's still functional and accurate for the end user.
 - **Large teams:** The more people you have contributing to a project, the faster it can change shape. In cases where development is outpacing documentation, Doc Detective keeps a watchful eye on the changes made and note any inconsistencies.
 - **Anything in between:** You can be a team of one or of one thousand and still find a use for Doc Detective. When it comes time to address the documentation of your project, look to Doc Detective to ease the burden and help bring consistency and accuracy to the end user.
 
