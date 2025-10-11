@@ -10,14 +10,14 @@ Field | Type | Description | Default
 $schema | string | Optional. JSON Schema for this object.<br/><br/>Accepted values: `https://raw.githubusercontent.com/doc-detective/common/refs/heads/main/dist/schemas/config_v3.schema.json` | 
 configId | string | Optional. Identifier for the configuration. | 
 configPath | string | ReadOnly. Path to the configuration file. | 
-input | one of:<br/>- string<br/>- array of string | Optional. Path(s) to test specifications and documentation source files. May be paths to specific files or to directories to scan for files. | `.`
+input | one of:<br/>- string<br/>- array of string | Optional. Paths to test specifications and documentation source files. May be paths to specific files or to directories to scan for files. | `.`
 output | string | Optional. Path of the directory in which to store the output of Doc Detective commands. If a file path is specified, Doc Detective attempts to honor the file name specified, but file path behavior is controlled by the configured reporters. | `.`
 recursive | boolean | Optional. If `true` searches `input`, `setup`, and `cleanup` paths recursively for test specifications and source files. | `true`
 relativePathBase | string | Optional. Whether paths should be interpreted as relative to the current working directory (`cwd`) or to the file in which they're specified (`file`).<br/><br/>Accepted values: `cwd`, `file` | `file`
 loadVariables | string | Optional. Load environment variables from the specified `.env` file. | 
 origin | string | Optional. Default protocol and domain to use for relative URLs. | 
-beforeAny | one of:<br/>- string<br/>- array of string | Optional. Path(s) to test specifications to perform before those specified by `input`. Useful for setting up testing environments. | 
-afterAll | one of:<br/>- string<br/>- array of string | Optional. Path(s) to test specifications to perform after those specified by `input`. Useful for cleaning up testing environments. | 
+beforeAny | one of:<br/>- string<br/>- array of string | Optional. Paths to test specifications to perform before those specified by `input`. Useful for setting up testing environments. | 
+afterAll | one of:<br/>- string<br/>- array of string | Optional. Paths to test specifications to perform after those specified by `input`. Useful for cleaning up testing environments. | 
 detectSteps | boolean | Optional. Whether or not to detect steps in input files based on defined markup. | `true`
 allowUnsafeSteps | boolean | Optional. Whether or not to run potentially unsafe steps, such as those that might modify files or system state. | 
 logLevel | string | Optional. Amount of detail to output when performing an operation.<br/><br/>Accepted values: `silent`, `error`, `warning`, `info`, `debug` | `info`

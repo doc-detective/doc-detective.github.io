@@ -160,6 +160,15 @@ DITA supports two syntax options:
 
 Attribute values are automatically converted to the appropriate type: booleans (`detectSteps=false`), numbers (`wait=500`), and strings. You can use dot notation for nested objects—for example, `<?doc-detective step httpRequest.url="https://api.example.com" httpRequest.method="GET" ?>` creates a nested `httpRequest` object with `url` and `method` properties.
 
+You can also use HTML comment syntax as an alternative to processing instructions:
+
+- Test comments: `<!-- test testId="my-test" detectSteps=false -->`
+- Step comments: `<!-- step checkLink="https://example.com" -->`
+- Test end: `<!-- test end -->`
+- Ignore blocks: `<!-- test ignore start -->` and `<!-- test ignore end -->`
+
+HTML comments and processing instructions work identically. You can use whichever fits your documentation workflow better, or mix them in the same file.
+
 > **Note:** DITA isn't enabled by default. To use DITA detection, add `"dita"` to your config's `fileTypes` array or define custom patterns. See the [config reference](/docs/references/schemas/config) for details.
 
 #### Examples
@@ -243,7 +252,9 @@ Detected tests are useful for keeping your tests in sync with your documentation
 
 > You can mix detected tests with [inline tests](#inline-json-or-yaml) to declare steps that might not be covered in your content, such starting or stopping a recording.
 
-Doc Detective includes several default markup patterns for Markdown files. Here are all the built-in patterns:
+Doc Detective includes default markup patterns for Markdown and DITA files. Here are the built-in patterns:
+
+#### Markdown patterns
 
 ````json
 {
@@ -329,7 +340,77 @@ Doc Detective includes several default markup patterns for Markdown files. Here 
 }
 ````
 
+#### DITA patterns
+
+````json
+{
+  "fileTypes": [
+    {
+      "name": "dita",
+      "extensions": ["dita", "ditamap", "xml"],
+      "markup": [
+        {
+          "name": "checkHyperlink",
+          "regex": [
+            "<xref\\s+href=\"(https?:\\/\\/[^\"]+)\"[^>]*>"
+          ],
+          "actions": ["checkLink"]
+        },
+        {
+          "name": "clickOnscreenText",
+          "regex": [
+            "\\b(?:[Cc]lick|[Tt]ap|[Ll]eft-click|[Cc]hoose|[Ss]elect|[Cc]heck)\\b\\s+<b>((?:(?!<\\/b>).)+)<\\/b>"
+          ],
+          "actions": ["click"]
+        },
+        {
+          "name": "findOnscreenText",
+          "regex": ["<b>((?:(?!<\\/b>).)+)<\\/b>"],
+          "actions": ["find"]
+        },
+        {
+          "name": "goToUrl",
+          "regex": [
+            "\\b(?:[Gg]o\\s+to|[Oo]pen|[Nn]avigate\\s+to|[Vv]isit|[Aa]ccess|[Pp]roceed\\s+to|[Ll]aunch)\\b\\s+<xref\\s+href=\"(https?:\\/\\/[^\"]+)\"[^>]*>"
+          ],
+          "actions": ["goTo"]
+        },
+        {
+          "name": "screenshotImage",
+          "regex": [
+            "<image\\s+[^>]*href=\"([^\"]+)\"[^>]*outputclass=\"[^\"]*screenshot[^\"]*\"[^>]*\\/>"
+          ],
+          "actions": ["screenshot"]
+        },
+        {
+          "name": "typeText",
+          "regex": ["\\b(?:[Pp]ress|[Ee]nter|[Tt]ype)\\b\\s+\"([^\"]+)\""],
+          "actions": ["type"]
+        },
+        {
+          "name": "runCode",
+          "regex": [
+            "<codeblock[^>]*outputclass=\"(bash|python|py|javascript|js)\"[^>]*>([\\s\\S]*?)<\\/codeblock>"
+          ],
+          "actions": [
+            {
+              "unsafe": true,
+              "runCode": {
+                "language": "$1",
+                "code": "$2"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+````
+
 #### Default markup pattern descriptions
+
+##### Markdown patterns
 
 **checkHyperlink**: Detects standard Markdown links (excluding images) and checks that they return a valid HTTP status code.
 
@@ -371,6 +452,43 @@ Doc Detective includes several default markup patterns for Markdown files. Here 
 - Pattern: Code blocks with `bash`, `python`, `py`, `javascript`, or `js` language tags (excluding those marked with `testIgnore`)
 - Action: Executes the code in the specified language (marked as unsafe)
 
+##### DITA patterns
+
+**checkHyperlink**: Detects DITA xref elements with HTTP/HTTPS URLs and checks that they return a valid HTTP status code.
+
+- Pattern: `<xref href="https://example.com">Link</xref>`
+- Action: Performs a GET request to verify the link is accessible
+
+**clickOnscreenText**: Detects action verbs followed by bold text and clicks on that element.
+
+- Pattern: `Click <b>Button Name</b>`, `Tap <b>Menu Item</b>`, `Select <b>Option</b>`
+- Action: Clicks on the specified element using its text content
+
+**findOnscreenText**: Detects any bold text and verifies it exists on the page.
+
+- Pattern: `<b>Any Bold Text</b>`
+- Action: Searches for the text on the current page
+
+**goToUrl**: Detects navigation instructions with xref elements and opens the URL.
+
+- Pattern: `Go to <xref href="https://example.com">Page Name</xref>`, `Navigate to <xref href="https://example.com">Site</xref>`
+- Action: Opens the specified URL in the browser
+
+**screenshotImage**: Detects image elements with a screenshot outputclass and takes a screenshot.
+
+- Pattern: `<image href="image.png" outputclass="screenshot"/>`
+- Action: Saves a screenshot to the specified path
+
+**typeText**: Detects typing instructions with quoted text and types the content.
+
+- Pattern: `Type "Hello World"`, `Enter "username"`
+- Action: Types the specified text into the active element
+
+**runCode**: Detects code blocks in supported languages and executes the code.
+
+- Pattern: Code blocks with `bash`, `python`, `py`, `javascript`, or `js` outputclass (excluding those marked with `testIgnore`)
+- Action: Executes the code in the specified language (marked as unsafe)
+
 The `regex` property defines the regular expression patterns to match, and the `actions` property defines the actions to perform when the pattern is detected. With the default configuration, Doc Detective would take the following Markdown and generate tests automatically:
 
 Markdown:
@@ -385,6 +503,58 @@ To get started,
 Check out our [documentation](https://docs.example.com) for more information.
 
 ![Search results](search-results.png){ .screenshot }
+```
+
+Detected tests:
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "goTo": "https://console.acme.com"
+        },
+        {
+          "click": "Search"
+        },
+        {
+          "type": "American Shorthair kittens"
+        },
+        {
+          "checkLink": "https://docs.example.com"
+        },
+        {
+          "screenshot": "search-results.png"
+        }
+      ]
+    }
+  ]
+}
+```
+
+**DITA example with detected tests:**
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="getting-started">
+  <title>Getting Started</title>
+  <!-- test testId="dita-detected-test" detectSteps=true -->
+  <body>
+    <p>To get started,</p>
+    <ol>
+      <li>Go to <xref href="https://console.acme.com">Acme Console</xref>.</li>
+      <li>Click <b>Search</b>.</li>
+      <li>Type "American Shorthair kittens".</li>
+    </ol>
+    <p>Check out our <xref href="https://docs.example.com">documentation</xref> for more information.</p>
+    <fig>
+      <image href="search-results.png" outputclass="screenshot"/>
+    </fig>
+  </body>
+  <!-- test end -->
+</topic>
 ```
 
 Detected tests:
@@ -446,7 +616,7 @@ You can extend or override the default patterns by defining custom markup patter
 
 #### Other file types
 
-Doc Detective also includes default configurations for HTML and AsciiDoc files, though these only include inline statement patterns for test definitions and don't include markup patterns for detected tests:
+Doc Detective also includes default configurations for HTML and AsciiDoc files. These currently only include inline statement patterns for test definitions and don't include markup patterns for detected tests:
 
 **HTML files** (`.html`, `.htm`):
 
@@ -458,11 +628,15 @@ Doc Detective also includes default configurations for HTML and AsciiDoc files, 
 - Uses AsciiDoc comment syntax for inline test statements
 - Example: `// (test { "testId": "my-test" })`
 
+**DITA files** (`.dita`, `.ditamap`, `.xml`):
+
+DITA includes both inline statement patterns (processing instructions and HTML comments) and markup patterns for detected tests. See the [DITA inline statements](#inline-json-or-yaml) and [default markup patterns](#detected-tests) sections above for complete documentation.
+
 To add detected test functionality to HTML or AsciiDoc files, you would need to define custom markup patterns in your configuration similar to the Markdown examples above.
 
 ### Default actions
 
-If you only need to perform simple steps, you can define actions using a shorthand of only specifying the action name. Doc Detective uses default actions, substituting the first capture group (or if there are no capture groups, the entire match) from the regex pattern into the most common location for the action. In the above example, the config generates a `goTo` action for every Markdown hyperlink preceded by a navigation verb.
+If you only need to perform basic steps, you can define actions using a shorthand of only specifying the action name. Doc Detective uses default actions, substituting the first capture group (or if there are no capture groups, the entire match) from the regex pattern into the most common location for the action. In the above example, the config generates a `goTo` action for every Markdown hyperlink preceded by a navigation verb.
 
 The default actions are as follows:
 
