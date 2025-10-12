@@ -12,7 +12,7 @@ A [test](/docs/get-started/tests) in Doc Detective is a series of steps, where e
 
 ## What does this test do?
 
-This test navigates to `https://example.com`, checks for the presence of the `<h1>` heading with the text `Example Domain`, and verifies that the `More information...` link is present. It then clicks the link and captures a screenshot of the resulting page.
+This test navigates to `https://example.com`, checks for the presence of the `<h1>` heading with the text `Example Domain`, and verifies that the `Learn more` link is present. It then clicks the link and captures a screenshot of the resulting page.
 
 ## Prerequisites
 
@@ -53,8 +53,8 @@ To create your first test, follow these steps:
              "find": "Example Domain"
            },
            {
-             "description": "Verify that the 'More information...' link is present and working",
-             "click": "More information..."
+             "description": "Verify that the 'Learn more' link is present and working",
+             "click": "Learn more"
            },
            {
              "description": "Capture a screenshot of the resulting page",
@@ -70,7 +70,7 @@ To create your first test, follow these steps:
 
    - [`goTo`](/docs/get-started/actions/goTo): Navigates to the specified URL, https://example.com, to start the test flow.
    - [`find`](/docs/get-started/actions/find): Locates elements on the page using CSS selectors such as HTML tags like `h1` or `a`, and validates their presence and text content.
-   - [`click`](/docs/get-started/actions/click): Clicks on the specified element, in this case, the `More information...` link.
+   - [`click`](/docs/get-started/actions/click): Clicks on the specified element, in this case, the `Learn more` link.
    - [`screenshot`](/docs/get-started/actions/screenshot): Captures a screenshot of the current page and saves it to the specified path.
 
 4. Save the file.
@@ -149,8 +149,8 @@ After running the test, you should see the results in your terminal, which Doc D
                 {
                   "result": "PASS",
                   "resultDescription": "Clicked element. Found element by text. Clicked element.",
-                  "description": "Verify that the 'More information...' link is present and working",
-                  "click": "More information...",
+                  "description": "Verify that the 'Learn more' link is present and working",
+                  "click": "Learn more",
                   "stepId": "d5851502-807f-4cb9-981c-338201278f29"
                 },
                 {
