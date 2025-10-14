@@ -13,7 +13,7 @@ npx doc-detective
 
 Want to use the Docker image? [Check it out](https://github.com/doc-detective/docker-image).
 
-See the [Installation](/docs/get-started/installation.md) guide to get started. Come chat on [Discord](https://discord.gg/uAfSjVH7yr)!
+See the [Installation](/docs/get-started/installation) guide to get started. Come chat on [Discord](https://discord.gg/uAfSjVH7yr)!
 
 ## What's Doc Detective?
 
@@ -62,4 +62,4 @@ As an open source and accessible project, Doc Detective is for anyone who's inte
 
 ## Next steps
 
-Want to take Doc Detective for a spin? [Get started](/docs/get-started/installation.md).
+Want to take Doc Detective for a spin? [Get started](/docs/get-started/installation).
