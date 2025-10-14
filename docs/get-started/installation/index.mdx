@@ -1,0 +1,53 @@
+---
+sidebar_label: Installation
+---
+
+import spec from "./sample.spec.json";
+import CodeBlock from '@theme/CodeBlock';
+
+# Installation
+
+Downloading and running Doc Detective is straightforward. Follow these steps to install Doc Detective and run your first test:
+
+1. Install prerequisites:
+
+    - [Node.js](https://nodejs.org/) v18.20.0 or later
+
+2. In a terminal, install Doc Detective globally:
+
+    <CodeBlock language="bash" title="Install Doc Detective">
+      npm i -g doc-detective
+    </CodeBlock>
+    {/* step runShell: "npm i -g doc-detective" */}
+
+    :::note
+
+    If you're working in a local copy of the `doc-detective` repository, you need to run `npm i` to install local dependencies.
+
+    :::
+
+3.  Save this file to your current directory as _sample.spec.json_:
+
+    <CodeBlock language="json" title="sample.spec.json">
+      {JSON.stringify(spec, null, 2)}
+    </CodeBlock>
+
+4. Run a test, pointing to the file you just created:
+
+    <CodeBlock language="bash" title="Run test">
+      npx doc-detective --input sample.spec.json
+    </CodeBlock>
+    {/* step runShell:
+    command: "npx doc-detective --input sample.spec.json"
+    workingDirectory: "." */}
+
+
+Congratulations! You've run your first test with Doc Detective. :tada:
+
+You should see output in the terminal indicating the progress and results of the test. Results are also saved in a `testResults-<timestamp>.json` file in the current directory (configurable with the `--output` option), and this test saves a screenshot to example.png:
+
+[![Sample test screenshot](./example.png)](./example.png)
+
+## Next steps
+
+Next up, take a look at some of the [concepts](/docs/get-started/concepts) native to Doc Detective, check out some of the guided [tutorials](/docs/category/tutorials), or explore how to write [tests](/docs/get-started/tests) and [actions](/docs/category/actions) to automate your documentation testing.
