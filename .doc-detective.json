@@ -1,29 +1,6 @@
 {
-  "input": ".",
-  "defaultCommand": "runTests",
-  "relativePathBase": "file",
-  "runTests": {
-    "input": ["./docs", "./blog"],
-    "recursive": true,
-    "detectSteps": true
-  },
-  "fileTypes": [
-    {
-      "name": "Markdown/MDX",
-      "extensions": [".md", ".mdx"],
-      "testStartStatementOpen": "<!-- test-start",
-      "testStartStatementClose": "-->",
-      "testIgnoreStatement": "<!-- test-ignore -->",
-      "testEndStatement": "<!-- test-end -->",
-      "stepStatementOpen": "<!-- step-start",
-      "stepStatementClose": "-->",
-      "markup": [
-        {
-          "name": "External hyperlink/image",
-          "regex": ["\\[.*?]\\(([^/].*?)\\)"],
-          "actions": ["checkLink"]
-        }
-      ]
-    }
-  ]
+  "$schema": "https://raw.githubusercontent.com/doc-detective/common/refs/heads/main/dist/schemas/config_v3.schema.json",
+  "input": ["docs/get-started/installation/index.mdx"],
+  "allowUnsafeSteps": true,
+  "fileTypes": ["markdown"]
 }

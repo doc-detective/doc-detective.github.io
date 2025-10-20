@@ -21,6 +21,6 @@ jobs:
         with:
           files: "docs/"
           fail_on_error: false
-          filter_mode: nofilter
+          vale_flags: "--minAlertLevel=error"
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}

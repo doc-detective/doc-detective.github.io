@@ -18,7 +18,7 @@ const sidebars: SidebarsConfig = {
       label: "Get started",
       items: [
         "get-started/intro",
-        "get-started/installation",
+        "get-started/installation/index",
         "get-started/concepts",
         "get-started/create-your-first-test",
         "get-started/sample-tests",
