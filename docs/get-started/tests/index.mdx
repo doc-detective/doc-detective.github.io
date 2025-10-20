@@ -153,7 +153,14 @@ DITA supports multiple syntax options:
 - Ignore blocks: `<?doc-detective test ignore start?>` and `<?doc-detective test ignore end?>`
 
 **YAML format:**
-- Test comments: `<?doc-detective test\ntestId: my-test\ndetectSteps: false\n?>`
+- Test comments:
+  
+  ```
+  <?doc-detective test
+    testId: my-test
+    detectSteps: false
+  ?>
+  ```
 - Step comments: `<?doc-detective step checkLink: "https://example.com" ?>`
 - Test end: `<?doc-detective test end?>`
 - Ignore blocks: `<?doc-detective test ignore start?>` and `<?doc-detective test ignore end?>`
