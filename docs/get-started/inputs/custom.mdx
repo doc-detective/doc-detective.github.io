@@ -134,7 +134,7 @@ Matches "Find the button element" and generates:
 
 ### Default actions
 
-For simple patterns, you can use action shortcuts. Doc Detective substitutes the first capture group (or entire match) into the default location:
+For basic patterns, you can use action shortcuts. Doc Detective substitutes the first capture group (or entire match) into the default location:
 
 ```json
 {
@@ -267,9 +267,9 @@ npx doc-detective --input sample.cdoc --config custom-config.json
 
 ## Best practices
 
-- **Start simple**: Begin with basic patterns and add complexity as needed
+- **Start with basics**: Begin with basic patterns and add complexity as needed
 - **Test thoroughly**: Validate patterns with various input examples
-- **Use descriptive names**: Name patterns clearly to understand their purpose
+- **Use descriptive names**: Give patterns descriptive names so you can understand their purpose
 - **Document patterns**: Add comments in your config to explain custom patterns
 - **Consider escaping**: Properly escape special characters in regex patterns
 - **Optimize regex**: Use specific patterns to avoid unintended matches
