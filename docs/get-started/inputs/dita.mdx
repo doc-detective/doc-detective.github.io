@@ -112,6 +112,15 @@ Doc Detective recognizes specific action verbs in `<cmd>` elements to determine 
 
 When these verbs appear with DITA semantic elements, Doc Detective automatically extracts the complete action. For example, `<cmd>Click the <uicontrol>Save</uicontrol> button</cmd>` generates `{ "click": "Save" }`.
 
+## Best practices
+
+- Use semantic DITA elements (`<uicontrol>`, `<userinput>`, etc.) for accurate test detection
+- Structure procedures as DITA task topics with `<steps>` and `<cmd>` elements
+- Use `scope="external"` on `<xref>` elements for external links
+- Add `outputclass` attributes to `<codeblock>` elements to specify language
+- Combine inline processing instructions with detected tests for comprehensive coverage
+- Use action verbs consistently (click, type, navigate, verify, etc.)
+
 ## Default DITA patterns
 
 ### Key patterns
@@ -255,15 +264,6 @@ For a complete list of patterns, see the [configuration reference](/docs/referen
   ]
 }
 ```
-
-## Best practices
-
-- Use semantic DITA elements (`<uicontrol>`, `<userinput>`, etc.) for accurate test detection
-- Structure procedures as DITA task topics with `<steps>` and `<cmd>` elements
-- Use `scope="external"` on `<xref>` elements for external links
-- Add `outputclass` attributes to `<codeblock>` elements to specify language
-- Combine inline processing instructions with detected tests for comprehensive coverage
-- Use action verbs consistently (click, type, navigate, verify, etc.)
 
 ## Next steps
 

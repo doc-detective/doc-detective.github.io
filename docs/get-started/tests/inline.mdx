@@ -26,6 +26,17 @@ When you declare a step, you can specify any of the properties of the action you
 
 If you declare a step without declaring a test, Doc Detective automatically creates a test to contain the step.
 
+## Benefits of inline tests
+
+Inline tests offer several advantages:
+
+- **Proximity to content**: Tests are defined right next to the instructions they validate, making it easier to keep them in sync.
+- **Easy maintenance**: When you update documentation, the associated tests are immediately visible and can be updated at the same time.
+- **Documentation as code**: Tests become part of the documentation source, ensuring that documentation and testing evolve together.
+- **Quick validation**: Small, focused tests can be quickly added to validate specific instructions or procedures.
+
+Inline tests can be combined with [detected tests](detected) to create comprehensive test coverage with minimal manual test definition.
+
 ## Comment patterns by file type
 
 Doc Detective supports different comment patterns depending on your file type. For more information about input formats, see [Input formats](/docs/get-started/inputs/overview).
@@ -167,14 +178,3 @@ Click the *Start* button:
 
 // (test end)
 ```
-
-## Benefits of inline tests
-
-Inline tests offer several advantages:
-
-- **Proximity to content**: Tests are defined right next to the instructions they validate, making it easier to keep them in sync.
-- **Easy maintenance**: When you update documentation, the associated tests are immediately visible and can be updated at the same time.
-- **Documentation as code**: Tests become part of the documentation source, ensuring that documentation and testing evolve together.
-- **Quick validation**: Small, focused tests can be quickly added to validate specific instructions or procedures.
-
-Inline tests can be combined with [detected tests](detected) to create comprehensive test coverage with minimal manual test definition.

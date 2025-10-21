@@ -43,6 +43,14 @@ Markdown files support multiple comment styles for inline tests:
 
 All three styles work identically. Choose the style that fits your documentation workflow.
 
+## Best practices
+
+- Use **bold text** for UI elements you want to interact with (buttons, menu items, etc.)
+- Use explicit navigation verbs (go to, navigate to, etc.) before links you want to open
+- Add the `.screenshot` class to images you want to capture as screenshots
+- Combine inline and detected tests for comprehensive coverage
+- Use `testIgnore` in code blocks that should not be executed as tests
+
 ## Detected test patterns
 
 Doc Detective includes default markup patterns for Markdown files that automatically detect tests from your documentation content.
@@ -279,14 +287,6 @@ In this example:
 - The navigation and button clicks are detected automatically
 - Specific form field typing is defined inline for precise control
 - `detectSteps: true` enables detection within the test block
-
-## Best practices
-
-- Use **bold text** for UI elements you want to interact with (buttons, menu items, etc.)
-- Use explicit navigation verbs (go to, navigate to, etc.) before links you want to open
-- Add the `.screenshot` class to images you want to capture as screenshots
-- Combine inline and detected tests for comprehensive coverage
-- Use `testIgnore` in code blocks that should not be executed as tests
 
 ## Next steps
 
