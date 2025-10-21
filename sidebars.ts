@@ -35,7 +35,36 @@ const sidebars: SidebarsConfig = {
       },
       items: ["get-started/config/contexts/index"],
     },
-    "get-started/tests/index",
+    {
+      type: "category",
+      label: "Tests",
+      link: {
+        type: "doc",
+        id: "get-started/tests/overview",
+      },
+      items: [
+        "get-started/tests/overview",
+        "get-started/tests/standalone",
+        "get-started/tests/inline",
+        "get-started/tests/detected",
+      ],
+    },
+    {
+      type: "category",
+      label: "Input formats",
+      link: {
+        type: "doc",
+        id: "get-started/inputs/overview",
+      },
+      items: [
+        "get-started/inputs/overview",
+        "get-started/inputs/markdown",
+        "get-started/inputs/dita",
+        "get-started/inputs/asciidoc",
+        "get-started/inputs/html",
+        "get-started/inputs/custom",
+      ],
+    },
     {
       type: "category",
       label: "Actions",
