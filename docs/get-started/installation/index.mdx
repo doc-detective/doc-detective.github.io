@@ -48,6 +48,39 @@ You should see output in the terminal indicating the progress and results of the
 
 [![Sample test screenshot](./example.png)](./example.png)
 
+## Configuration via environment variable
+
+You can configure Doc Detective using the `DOC_DETECTIVE_CONFIG` environment variable without creating a config file.
+
+Set the environment variable to a JSON string containing your configuration:
+
+```bash title="Basic usage"
+export DOC_DETECTIVE_CONFIG='{"logLevel":"debug"}'
+npx doc-detective
+```
+
+For example, to disable telemetry and set a custom output directory:
+
+```bash title="Multiple options"
+export DOC_DETECTIVE_CONFIG='{"logLevel":"error","telemetry":{"send":false},"output":"./test-results"}'
+npx doc-detective --input sample.spec.json
+```
+
+### Configuration priority
+
+When multiple configuration sources are present, Doc Detective applies them in this order (later values override earlier ones):
+
+1. Default values
+2. Config file values (`.doc-detective.json`, etc.)
+3. **Environment variable values** (`DOC_DETECTIVE_CONFIG`)
+4. Command-line arguments (highest priority)
+
+:::note
+
+Make sure your JSON is properly formatted and values are valid. If `DOC_DETECTIVE_CONFIG` contains invalid JSON or values, Doc Detective will display an error and exit.
+
+:::
+
 ## Next steps
 
 Next up, take a look at some of the [concepts](/docs/get-started/concepts) native to Doc Detective, check out some of the guided [tutorials](/docs/category/tutorials), or explore how to write [tests](/docs/get-started/tests) and [actions](/docs/category/actions) to automate your documentation testing.
