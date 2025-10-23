@@ -11,7 +11,7 @@ Options for connecting to external services.
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
-openApi | array of unknown | Optional. No description provided. | 
+openApi | array of [openApi](/docs/references/schemas/openApi) | Optional. OpenAPI definitions to load. These are automatically made available in test contexts, letting `httpRequest` actions reference them by `operationId` or `name`. See the [openApi](/docs/references/schemas/openApi) schema for details. | 
 
 ## Examples
 
