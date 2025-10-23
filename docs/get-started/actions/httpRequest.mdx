@@ -26,7 +26,7 @@ You can specify a basic GET request using a string shorthand or use an object fo
     - `parameters`: (Optional) Key-value pairs for query string parameters.
     - `body`: (Optional) The request body. Can be a string or JSON object.
   - `response`: (Optional) An object defining expected response validation:
-    - `headers`: (Optional) Key-value pairs for expected response headers. Values must be strings.
+    - `headers`: (Optional) Key-value pairs for expected response headers. Values must be strings. If specified, the step fails if any expected header is missing or has a different value in the actual response.
     - `body`: (Optional) Expected response body. Can be a string or JSON object.
   - `statusCodes`: (Optional) An array of acceptable HTTP status codes. If the response code is not in this list, the step fails (default: `[200]`).
   - `openApi`: (Optional) Define the request based on an OpenAPI definition. Can be a string (operation ID) or an object:
