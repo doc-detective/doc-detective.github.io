@@ -3,6 +3,12 @@
 
 Configuration options for Doc Detective operations.
 
+:::note
+
+You can also configure Doc Detective using the `DOC_DETECTIVE_CONFIG` environment variable instead of a config file. Set it to a JSON string with your configuration options. See the [installation guide](/docs/get-started/installation#configuration-via-environment-variable) for details.
+
+:::
+
 ## Fields
 
 Field | Type | Description | Default
