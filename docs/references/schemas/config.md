@@ -25,6 +25,7 @@ logLevel | string | Optional. Amount of detail to output when performing an oper
 runOn | array of object([context](/docs/references/schemas/context)) | Optional. Contexts to run the test in. Overrides contexts defined at the config and spec levels. | 
 fileTypes | array of one of: string, object([File type (custom)](/docs/references/schemas/file-type-custom)), object([File type (executable)](/docs/references/schemas/file-type-executable)) | Optional. Configuration for file types and their markup detection. | ``["markdown","asciidoc","html","dita"]``
 integrations | object([Integrations options](/docs/references/schemas/integrations-options)) | Optional. Options for connecting to external services. | 
+apiMaxWaitTime | integer | Optional. Maximum time in seconds to wait for API-based test execution to complete. Only applicable when `integrations.docDetectiveApi.apiKey` is configured. | `600`
 telemetry | object([Telemetry options](/docs/references/schemas/telemetry-options)) | Optional. Options around sending telemetry for Doc Detective usage. | ``{"send":true}``
 concurrentRunners | integer,boolean | Optional. Number of concurrent test runners. Set to true to use CPU core count (capped at 4).<br/><br/>Minimum: 1 | `1`
 environment | object([Environment details](/docs/references/schemas/environment-details)) | ReadOnly. Environment information for the system running Doc Detective. | 
@@ -155,5 +156,16 @@ debug | one of:<br/>- boolean<br/>- string | Optional. Enable debugging mode. `t
 ```json
 {
   "debug": "stepThrough"
+}
+```
+
+```json
+{
+  "integrations": {
+    "docDetectiveApi": {
+      "apiKey": "your-api-key"
+    }
+  },
+  "apiMaxWaitTime": 300
 }
 ```
