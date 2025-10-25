@@ -48,6 +48,27 @@ You should see output in the terminal indicating the progress and results of the
 
 [![Sample test screenshot](./example.png)](./example.png)
 
+## Environment Variables
+
+You can customize Doc Detective's behavior with environment variables.
+
+### DOC_DETECTIVE_API_URL
+
+Override the default Doc Detective API endpoint. Use this for enterprise or custom API deployments.
+
+Default: `https://api.doc-detective.com/v1`
+
+Set the environment variable before running tests:
+
+```bash
+export DOC_DETECTIVE_API_URL=https://custom-api.example.com/v1
+npx doc-detective --input sample.spec.json
+```
+
+This variable only works when you've set an API key with `integrations.docDetectiveApi.apiKey` in your config. When you set an API key, Doc Detective runs tests via the API instead of locally.
+
+For more information, see the [configuration reference](/docs/references/schemas/config) and [integrations options](/docs/references/schemas/integrations-options).
+
 ## Next steps
 
 Next up, take a look at some of the [concepts](/docs/get-started/concepts) native to Doc Detective, check out some of the guided [tutorials](/docs/category/tutorials), or explore how to write [tests](/docs/get-started/tests) and [actions](/docs/category/actions) to automate your documentation testing.
