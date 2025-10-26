@@ -1,0 +1,181 @@
+---
+sidebar_label: User workflow
+description: Test multi-step user workflows with end-to-end form filling and validation
+---
+
+# Testing a multi-step user workflow
+
+## When to use this
+
+Use this approach when you document complete workflows that span multiple pages or interactions, such as registration flows, checkout processes, or onboarding sequences. Testing these end-to-end ensures each step still works and properly leads to the next.
+
+## What this tests
+
+- Navigation between pages works
+- Forms accept input correctly
+- Buttons and links are clickable
+- Success messages appear
+- Workflow completes from start to finish
+
+## Prerequisites
+
+- [Doc Detective installed](/docs/get-started/installation)
+- Access to the web application
+- Test account credentials (if needed)
+
+## Complete example
+
+```json title="user-workflow.spec.json"
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Navigate to the registration page",
+          "goTo": "https://example.com/register"
+        },
+        {
+          "description": "Wait for registration form to load",
+          "find": {
+            "selector": "#registration-form",
+            "timeout": 5000
+          }
+        },
+        {
+          "description": "Fill in username",
+          "find": {
+            "selector": "#username",
+            "click": true,
+            "type": "testuser_doc_detective"
+          }
+        },
+        {
+          "description": "Fill in email address",
+          "find": {
+            "selector": "#email",
+            "click": true,
+            "type": "testuser@example.com"
+          }
+        },
+        {
+          "description": "Fill in password",
+          "find": {
+            "selector": "#password",
+            "click": true,
+            "type": "SecurePassword123!"
+          }
+        },
+        {
+          "description": "Fill in password confirmation",
+          "find": {
+            "selector": "#confirm-password",
+            "click": true,
+            "type": "SecurePassword123!"
+          }
+        },
+        {
+          "description": "Accept terms of service",
+          "click": {
+            "selector": "#terms-checkbox"
+          }
+        },
+        {
+          "description": "Submit the registration form",
+          "click": {
+            "selector": "button[type='submit']"
+          }
+        },
+        {
+          "description": "Wait for success message",
+          "find": {
+            "selector": ".success-message",
+            "matchText": "Account created successfully",
+            "timeout": 10000
+          }
+        },
+        {
+          "description": "Capture confirmation page",
+          "screenshot": {
+            "path": "screenshots/registration-success.png"
+          }
+        },
+        {
+          "description": "Verify redirect to dashboard",
+          "find": {
+            "selector": ".dashboard-welcome",
+            "matchText": "Welcome, testuser_doc_detective",
+            "timeout": 5000
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+## Expected output
+
+When the test passes, you should see:
+
+```json
+{
+  "summary": {
+    "steps": {
+      "pass": 11,
+      "fail": 0
+    }
+  }
+}
+```
+
+The workflow executes from start to finish: the form is filled, submitted, success message appears, and the user is redirected to the dashboard.
+
+## Common variations
+
+**Test form validation:**
+
+```json
+{
+  "steps": [
+    {
+      "description": "Submit form without filling required field",
+      "click": {
+        "selector": "button[type='submit']"
+      }
+    },
+    {
+      "description": "Verify error message appears",
+      "find": {
+        "selector": ".error-message",
+        "matchText": "This field is required"
+      }
+    }
+  ]
+}
+```
+
+**Wait for dynamic content to load:**
+
+```json
+{
+  "description": "Wait for loading spinner to disappear",
+  "wait": {
+    "duration": 2000
+  }
+}
+```
+
+**Use alternative selectors:**
+
+```json
+{
+  "description": "Click submit button using text",
+  "click": "Create Account"
+}
+```
+
+## Next steps
+
+- Learn more about the [`find`](/docs/get-started/actions/find) action for interacting with forms
+- Explore the [fill fields tutorial](/docs/get-started/tutorials/fill-fields)
+- Review [selectors](/docs/category/selectors) for different ways to target elements

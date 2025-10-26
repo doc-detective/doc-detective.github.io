@@ -1,0 +1,189 @@
+---
+sidebar_label: REST API tutorial
+description: Test REST API documentation with request/response validation and variable chaining
+---
+
+# Testing a REST API tutorial
+
+## When to use this
+
+Use this approach when you document REST APIs with curl commands or code examples that demonstrate endpoint usage. API documentation must stay synchronized with actual API behavior, including request/response formats and status codes.
+
+## What this tests
+
+- API endpoints are accessible
+- Request bodies match documented format
+- Response bodies contain expected fields and values
+- Status codes match documentation
+- API calls can be chained (using data from one call in another)
+
+## Prerequisites
+
+- [Doc Detective installed](/docs/get-started/installation)
+- Access to the API you're testing (production or staging)
+- API credentials if required
+
+## Complete example
+
+```json title="api-tutorial.spec.json"
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Create a new user",
+          "httpRequest": {
+            "url": "https://reqres.in/api/users",
+            "method": "POST",
+            "request": {
+              "body": {
+                "name": "Test User",
+                "email": "test@example.com",
+                "job": "Documentation Tester"
+              }
+            },
+            "response": {
+              "body": {
+                "name": "Test User",
+                "email": "test@example.com",
+                "job": "Documentation Tester",
+                "id": "string",
+                "createdAt": "string"
+              }
+            },
+            "statusCodes": [201]
+          },
+          "variables": {
+            "USER_ID": "$$response.body.id"
+          }
+        },
+        {
+          "description": "Retrieve the created user by ID",
+          "httpRequest": {
+            "url": "https://reqres.in/api/users/$USER_ID",
+            "method": "GET",
+            "response": {
+              "body": {
+                "data": {
+                  "id": "number"
+                }
+              }
+            },
+            "statusCodes": [200]
+          }
+        },
+        {
+          "description": "Update the user",
+          "httpRequest": {
+            "url": "https://reqres.in/api/users/$USER_ID",
+            "method": "PUT",
+            "request": {
+              "body": {
+                "name": "Updated User",
+                "job": "Senior Documentation Tester"
+              }
+            },
+            "response": {
+              "body": {
+                "name": "Updated User",
+                "job": "Senior Documentation Tester",
+                "updatedAt": "string"
+              }
+            },
+            "statusCodes": [200]
+          }
+        },
+        {
+          "description": "Delete the user",
+          "httpRequest": {
+            "url": "https://reqres.in/api/users/$USER_ID",
+            "method": "DELETE",
+            "statusCodes": [204]
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+## Expected output
+
+When the test passes, you should see output showing all API calls succeeded:
+
+```json
+{
+  "summary": {
+    "steps": {
+      "pass": 4,
+      "fail": 0
+    }
+  }
+}
+```
+
+The user is created, retrieved, updated, and deleted successfully. The response bodies match the documented structure, and status codes are as expected.
+
+## Common variations
+
+**Test authentication with headers:**
+
+```json
+{
+  "description": "Call authenticated endpoint",
+  "httpRequest": {
+    "url": "https://api.example.com/protected",
+    "method": "GET",
+    "request": {
+      "headers": {
+        "Authorization": "Bearer $API_TOKEN"
+      }
+    },
+    "statusCodes": [200]
+  }
+}
+```
+
+**Validate specific response fields:**
+
+```json
+{
+  "description": "Check user has expected role",
+  "httpRequest": {
+    "url": "https://api.example.com/users/123",
+    "method": "GET",
+    "response": {
+      "body": {
+        "id": 123,
+        "role": "admin",
+        "email": "/.*@example\\.com$/"
+      }
+    },
+    "statusCodes": [200]
+  }
+}
+```
+
+**Test error responses:**
+
+```json
+{
+  "description": "Verify 404 for non-existent user",
+  "httpRequest": {
+    "url": "https://api.example.com/users/99999",
+    "method": "GET",
+    "response": {
+      "body": {
+        "error": "User not found"
+      }
+    },
+    "statusCodes": [404]
+  }
+}
+```
+
+## Next steps
+
+- Learn more about the [`httpRequest`](/docs/get-started/actions/httpRequest) action
+- Explore [variables](/docs/get-started/actions/loadVariables) for chaining API calls
+- Review [OpenAPI integration](/docs/references/schemas/httprequest) for automatic test generation

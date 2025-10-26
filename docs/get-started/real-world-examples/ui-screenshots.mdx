@@ -1,0 +1,154 @@
+---
+sidebar_label: UI screenshots
+description: Validate screenshots in UI walkthroughs with automated capture and visual comparison
+---
+
+# Validating screenshots in a UI walkthrough
+
+## When to use this
+
+Use this approach when your documentation includes UI walkthroughs with screenshots. Screenshots go stale when UIs change. Automated screenshot capture ensures visual documentation stays current.
+
+## What this tests
+
+- Pages load successfully
+- Key UI elements are present
+- Screenshots are captured at correct moments
+- Visual changes are detected (if using comparison)
+
+## Prerequisites
+
+- [Doc Detective installed](/docs/get-started/installation)
+- Access to the web application
+- Browser installed (Firefox, Chrome, or Safari)
+
+## Complete example
+
+```json title="ui-screenshots.spec.json"
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Navigate to the application homepage",
+          "goTo": "https://example.com"
+        },
+        {
+          "description": "Wait for page to fully load",
+          "find": {
+            "selector": "h1",
+            "timeout": 10000
+          }
+        },
+        {
+          "description": "Capture homepage screenshot",
+          "screenshot": {
+            "path": "screenshots/homepage.png"
+          }
+        },
+        {
+          "description": "Click on the dashboard link",
+          "click": {
+            "selector": "a[href='/dashboard']"
+          }
+        },
+        {
+          "description": "Wait for dashboard to load",
+          "find": {
+            "selector": ".dashboard-container",
+            "timeout": 10000
+          }
+        },
+        {
+          "description": "Capture dashboard screenshot with comparison",
+          "screenshot": {
+            "path": "screenshots/dashboard.png",
+            "maxVariation": 0.05,
+            "overwrite": "aboveVariation"
+          }
+        },
+        {
+          "description": "Navigate to settings",
+          "goTo": "https://example.com/settings"
+        },
+        {
+          "description": "Wait for settings page",
+          "find": {
+            "selector": "#settings-form",
+            "timeout": 10000
+          }
+        },
+        {
+          "description": "Capture settings screenshot",
+          "screenshot": {
+            "path": "screenshots/settings.png",
+            "maxVariation": 0.05,
+            "overwrite": "aboveVariation"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+## Expected output
+
+When the test passes, you should see:
+
+```json
+{
+  "summary": {
+    "steps": {
+      "pass": 9,
+      "fail": 0
+    }
+  }
+}
+```
+
+Screenshot files are created in the `screenshots/` directory. If screenshots already exist and `maxVariation` is set, Doc Detective compares new screenshots with existing ones and only overwrites them if differences exceed the threshold.
+
+## Common variations
+
+**Capture full-page screenshots:**
+
+```json
+{
+  "description": "Capture full page including scrollable content",
+  "screenshot": {
+    "path": "screenshots/full-page.png",
+    "fullPage": true
+  }
+}
+```
+
+**Screenshot specific elements:**
+
+```json
+{
+  "description": "Capture only the navigation bar",
+  "screenshot": {
+    "path": "screenshots/navbar.png",
+    "selector": ".navbar"
+  }
+}
+```
+
+**Always overwrite screenshots:**
+
+```json
+{
+  "description": "Update screenshot every time",
+  "screenshot": {
+    "path": "screenshots/latest.png",
+    "overwrite": "always"
+  }
+}
+```
+
+## Next steps
+
+- Learn more about the [`screenshot`](/docs/get-started/actions/screenshot) action
+- Explore [visual comparison options](/docs/references/schemas/screenshot) for change detection
+- Review the [capture screenshot tutorial](/docs/get-started/tutorials/capture-screenshot) for more details
