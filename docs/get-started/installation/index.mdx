@@ -4,10 +4,15 @@ sidebar_label: Installation
 
 import spec from "./sample.spec.json";
 import CodeBlock from '@theme/CodeBlock';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 # Installation
 
-Downloading and running Doc Detective is straightforward. Follow these steps to install Doc Detective and run your first test:
+Downloading and running Doc Detective is straightforward. You can install Doc Detective using NPX (Node.js) or Docker. Follow the instructions for your preferred method:
+
+<Tabs>
+  <TabItem value="npx" label="NPX" default>
 
 1. Install prerequisites:
 
@@ -41,6 +46,39 @@ Downloading and running Doc Detective is straightforward. Follow these steps to 
     command: "npx doc-detective --input sample.spec.json"
     workingDirectory: "." */}
 
+  </TabItem>
+  <TabItem value="docker" label="Docker">
+
+1. Install prerequisites:
+
+    - [Docker](https://docs.docker.com/get-docker/)
+
+2. Pull the Doc Detective Docker image:
+
+    <CodeBlock language="bash" title="Pull Docker image">
+      docker pull docdetective/doc-detective
+    </CodeBlock>
+
+3. Save this file to your current directory as _sample.spec.json_:
+
+    <CodeBlock language="json" title="sample.spec.json">
+      {JSON.stringify(spec, null, 2)}
+    </CodeBlock>
+
+4. Run a test, pointing to the file you just created:
+
+    <CodeBlock language="bash" title="Run test">
+      docker run -v $(pwd):/workspace docdetective/doc-detective --input /workspace/sample.spec.json
+    </CodeBlock>
+
+    :::note
+
+    This command mounts your current directory to `/workspace` in the container, giving Doc Detective access to your test specification and enabling it to output results and screenshots.
+
+    :::
+
+  </TabItem>
+</Tabs>
 
 Congratulations! You've run your first test with Doc Detective. :tada:
 
