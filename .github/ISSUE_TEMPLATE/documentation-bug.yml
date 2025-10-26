@@ -1,0 +1,83 @@
+name: Documentation Bug Report
+description: Report an error, outdated information, or broken link in the documentation
+title: '[Docs Bug] '
+labels: ['documentation', 'bug']
+assignees: []
+body:
+  - type: input
+    id: url
+    attributes:
+      label: Page or section affected
+      description: Provide the URL or path to the documentation page with the issue
+      placeholder: 'https://doc-detective.com/docs/...'
+    validations:
+      required: true
+
+  - type: textarea
+    id: whats-wrong
+    attributes:
+      label: What's wrong?
+      description: Describe the issue clearly. What's incorrect, missing, or broken?
+    validations:
+      required: true
+
+  - type: textarea
+    id: should-say
+    attributes:
+      label: What should it say instead?
+      description: If you know what the correct information should be, describe it here
+    validations:
+      required: false
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to reproduce (if applicable)
+      description: If this is about a procedure that doesn't work, list the steps you followed
+      placeholder: |
+        1. 
+        2. 
+        3.
+    validations:
+      required: false
+
+  - type: textarea
+    id: expected-result
+    attributes:
+      label: Expected result
+      description: What did you expect to happen or see?
+    validations:
+      required: false
+
+  - type: textarea
+    id: actual-result
+    attributes:
+      label: Actual result
+      description: What actually happened or what did you see?
+    validations:
+      required: false
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots (optional)
+      description: Add screenshots to help explain the problem
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: Any other information that might be helpful
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: willing-to-fix
+    attributes:
+      label: Are you willing to fix this?
+      description: Would you like to submit a pull request to fix this issue?
+      options:
+        - label: Yes, I can fix this
+        - label: No, but I can provide more information if needed

@@ -1,0 +1,26 @@
+name: Vale Style Checks
+
+on:
+  pull_request:
+    paths:
+      - 'docs/**/*.md'
+      - 'docs/**/*.mdx'
+
+jobs:
+  vale:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up dependencies
+        run: npm install -g mdx2vast
+
+      - name: Run Vale
+        uses: errata-ai/vale-action@v2.1.1
+        with:
+          files: "docs/"
+          fail_on_error: false
+          vale_flags: "--minAlertLevel=error"
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
