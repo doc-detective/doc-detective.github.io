@@ -52,12 +52,14 @@ Downloading and running Doc Detective is straightforward. You can install Doc De
 1. Install prerequisites:
 
     - [Docker](https://docs.docker.com/get-docker/)
+    {/* step checkLink: "https://docs.docker.com/get-docker/" */}
 
 2. Pull the Doc Detective Docker image:
 
     <CodeBlock language="bash" title="Pull Docker image">
       docker pull docdetective/doc-detective
     </CodeBlock>
+    {/* step runShell: "docker pull docdetective/doc-detective" */}
 
 3. Save this file to your current directory as _sample.spec.json_:
 
@@ -72,16 +74,25 @@ Downloading and running Doc Detective is straightforward. You can install Doc De
         <CodeBlock language="bash" title="Run test">
           {"docker run -v $(pwd):/workspace docdetective/doc-detective --input /workspace/sample.spec.json"}
         </CodeBlock>
+        {/* step runShell:
+        command: "docker run -v $(pwd):/workspace docdetective/doc-detective --input /workspace/sample.spec.json"
+        workingDirectory: "." */}
       </TabItem>
       <TabItem value="windows-powershell" label="Windows (PowerShell)">
         <CodeBlock language="powershell" title="Run test">
           {"docker run -v ${PWD}:/workspace docdetective/doc-detective --input /workspace/sample.spec.json"}
         </CodeBlock>
+        {/* step runShell:
+        command: "docker run -v ${PWD}:/workspace docdetective/doc-detective --input /workspace/sample.spec.json"
+        workingDirectory: "." */}
       </TabItem>
       <TabItem value="windows-cmd" label="Windows (cmd)">
         <CodeBlock language="cmd" title="Run test">
           {"docker run -v %cd%:/workspace docdetective/doc-detective --input /workspace/sample.spec.json"}
         </CodeBlock>
+        {/* step runShell:
+        command: "docker run -v %cd%:/workspace docdetective/doc-detective --input /workspace/sample.spec.json"
+        workingDirectory: "." */}
       </TabItem>
     </Tabs>
 
