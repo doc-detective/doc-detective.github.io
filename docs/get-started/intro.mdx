@@ -3,15 +3,33 @@ title: Introduction
 sidebar_label: Introduction
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Doc Detective
 
 Validate your content with Doc Detective:
+
+<Tabs>
+  <TabItem value="npx" label="NPX" default>
 
 ```bash
 npx doc-detective
 ```
 
-Want to use the Docker image? [Check it out](https://github.com/doc-detective/docker-image).
+  </TabItem>
+  <TabItem value="docker" label="Docker">
+
+```bash
+docker run -v .:/app docdetective/docdetective
+```
+
+:::note
+The `-v` argument mounts your current directory (`.`) to `/app` in the container, giving Doc Detective access to your test specifications.
+:::
+
+  </TabItem>
+</Tabs>
 
 See the [Installation](/docs/get-started/installation) guide to get started. Come chat on [Discord](https://discord.gg/uAfSjVH7yr)!
 

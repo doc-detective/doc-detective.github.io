@@ -2,6 +2,9 @@
 sidebar_label: Create your first test
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Create your first test
 
 In this tutorial, you will create a basic test that navigates to a webpage, validates the presence of specific elements, and captures a screenshot. This will introduce you to fundamental Doc Detective actions that are essential for creating more advanced tests in the future.
@@ -77,11 +80,28 @@ To create your first test, follow these steps:
 
 5. In your terminal, enter the following command to run the test:
 
+   <Tabs>
+     <TabItem value="npx" label="NPX" default>
+
    ```bash
    npx doc-detective --input homepage-check.spec.json
    ```
 
-   By default, Doc Detective scans the current directory for valid tests, but you can specify your test file using the `--input` argument. For more information, see [Run tests](/docs/get-started/sample-tests.md#run-tests).
+     </TabItem>
+     <TabItem value="docker" label="Docker">
+
+   ```bash
+   docker run -v .:/app docdetective/docdetective --input /app/homepage-check.spec.json
+   ```
+
+   :::note
+   The `-v` argument mounts your current directory (`.`) to `/app` in the container, giving Doc Detective access to your test specification and enabling it to output results and screenshots.
+   :::
+
+     </TabItem>
+   </Tabs>
+
+   By default, Doc Detective scans the current directory for valid tests, but you can specify your test file using the `--input` argument. For more information, see [Run tests](/docs/get-started/sample-tests#run-tests).
 
 ## Outcome
 

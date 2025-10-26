@@ -1,45 +1,58 @@
 ---
-description: Run a test that fills all fields in a form, then captures a screenshot of the result.
+description: Run a test that fills all fields in a form, capturing a video of the changes.
 ---
 
-# Capture screenshot
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-This example fills in all of the fields on the Watson and Holmes Intake Form, then captures a screenshot of the result for posterity.
+# Record video
+
+This example fills in all the fields on the Watson and Holmes Intake Form, while capturing a video record.
 
 To run the test:
 
 1. Download the [TestExamples.zip](./TestExamples.zip) file and expand it on your local drive.
-2. In a terminal window, navigate to the `TestExamples` directory.
-3. Start your local server.
+2. In a terminal window, navigate to the `TestExamples` directory:
 
     ```shell
-    live-server
+    cd TestExamples
     ```
 
-4. Enter the command 
+3. Run the _form-filler3.json_ test spec with Doc Detective:
+
+   <Tabs>
+     <TabItem value="npx" label="NPX" default>
 
    ```shell
-   npx doc-detective@dev -i form-filler2.json
+   npx doc-detective@dev -i form-filler3.json
    ```
 
-While the form is too large to fit on the computer screen, increasing the window and viewport settings allows you to capture the entire form in a single image.
+     </TabItem>
+     <TabItem value="docker" label="Docker">
 
-![All fields completed.](./img/form-filled-2-complete.png)
+   ```shell
+   docker run -v .:/app docdetective/docdetective:dev -i /app/form-filler3.json
+   ```
+
+   :::note
+   The `-v` argument mounts your current directory (`.`) to `/app` in the container.
+   :::
+
+     </TabItem>
+   </Tabs>
+
+To record, you must run the test with _headless_ mode turned off. The display window of the browser constrains the view area of the screenshot and video functions.
 
 ## Code walkthrough
 
-These are the notable additions to the script used in the [Fill in fields](fill-fields) tutorial.
+These are the notable additions to the script used in the [Capture screenshot](capture-screenshot) tutorial.
 
-To capture the full form, this example runs in _headless_ mode. The screenshot can then capture the entire virtual viewport.
+For this example, the _headless_ setting must be false, so that the test actions are visible in the browser.
 
 ```json
                     "browsers": {
                         "name": "chrome",
-                        "headless": true,
-                        "window": {
-                            "width": 1200,
-                            "height": 1500
-                        },
+                        "headless": false,
                         "viewport": {
                             "width": 1180,
                             "height": 1480
@@ -47,49 +60,22 @@ To capture the full form, this example runs in _headless_ mode. The screenshot c
                     }
 ```
 
-Filling in most of the fields is the same as filling in the First and Last Name values in the previous example. You find an element by its label, click the element, then type a value. 
+Start the recording with the [`record`](/docs/get-started/actions/record) action and an optional output path.
 
 ```json
                 {
-                    "description": "Type in the Street Address",
-                    "find": {
-                        "elementText": "Street Address:",
-                        "click": true,
-                        "type": "123 Broadberry Lane"
-                    }
+                    "description": "Start recording.",
+                    "record": "./output/form-filler3-recording.mp4"
                 },
 ```
 
-You use the same syntax to enter the value in a drop-down menu; for example, the Type of Case.
+After the actions are complete, stop the recording with the [`stopRecord`](/docs/get-started/actions/stopRecord) action.
 
 ```json
                 {
-                    "description": "Select the Type of Case",
-                    "find": {
-                        "elementText": "Type of Case:",
-                        "click": true,
-                        "type": "Blackmail"
-                    }
-                },
-```
-
-You can click a radio button directly by name.
-
-```json
-                {
-                    "description": "Click the Postal Mail button",
-                    "click": "Postal Mail"
-                },
-```
-
-Use the screenshot action with an output path to capture the state of the form once the fields are complete. 
-
-```json
-
-                {
-                    "description": "Capture a screenshot of the completed form.",
-                    "screenshot": "./output/form-filled-2-complete.png"
-                },
+                    "description": "Stop recording.",
+                    "stopRecord": true
+                }
 ```
 
 
@@ -108,11 +94,7 @@ Use the screenshot action with an output path to capture the state of the form o
                     ],
                     "browsers": {
                         "name": "chrome",
-                        "headless": true,
-                        "window": {
-                            "width": 1200,
-                            "height": 1500
-                        },
+                        "headless": false,
                         "viewport": {
                             "width": 1180,
                             "height": 1480
@@ -124,6 +106,10 @@ Use the screenshot action with an output path to capture the state of the form o
                 {
                     "description": "Go to the specified URL",
                     "goTo": "http://localhost:8080/watson_and_holmes_intake_form.html"
+                },
+                {
+                    "description": "Start recording.",
+                    "record": "./output/form-filler3-recording.mp4"
                 },
                 {
                     "description": "Type in the First Name",
@@ -226,17 +212,11 @@ Use the screenshot action with an output path to capture the state of the form o
                     }
                 },
                 {
-                    "description": "Capture a screenshot of the completed form.",
-                    "screenshot": "./output/form-filled-2-complete.png"
-                },
-                {
-                    "description": "Pause long enough to see the changes.",
-                    "wait": 10000
+                    "description": "Stop recording.",
+                    "stopRecord": true
                 }
             ]
         }
     ]
 }
 ```
-
-Next step: [Record video](./record-video)
