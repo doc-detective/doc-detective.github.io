@@ -4,6 +4,9 @@ title: Custom inputs
 description: Define custom input formats and markup patterns for your documentation.
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Custom input formats
 
 You can define custom input formats and extend existing formats by modifying your [configuration file](/docs/references/schemas/config). This allows you to support new file types or customize test detection for your specific documentation patterns.
@@ -39,12 +42,12 @@ To define a custom file type, add an entry to the `fileTypes` array in your conf
 
 **Optional properties for inline tests:**
 
-- `testStartStatementOpen`: Pattern that starts a test declaration (e.g., `"<!-- test "`)
-- `testStartStatementClose`: Pattern that ends a test declaration (e.g., `" -->"`)
-- `testEndStatementOpen`: Pattern that marks the end of a test (e.g., `"<!-- test end"`)
-- `testEndStatementClose`: Pattern that closes the test end marker (e.g., `" -->"`)
-- `stepStatementOpen`: Pattern that starts a step declaration (e.g., `"<!-- step "`)
-- `stepStatementClose`: Pattern that ends a step declaration (e.g., `" -->"`)
+- `testStartStatementOpen`: Pattern that starts a test declaration (for example, `"<!-- test "`)
+- `testStartStatementClose`: Pattern that ends a test declaration (for example, `" -->"`)
+- `testEndStatementOpen`: Pattern that marks the end of a test (for example, `"<!-- test end"`)
+- `testEndStatementClose`: Pattern that closes the test end marker (for example, `" -->"`)
+- `stepStatementOpen`: Pattern that starts a step declaration (for example, `"<!-- step "`)
+- `stepStatementClose`: Pattern that ends a step declaration (for example, `" -->"`)
 - `testIgnoreStatement`: Pattern for ignoring blocks
 
 **Optional properties for detected tests:**
@@ -261,9 +264,26 @@ To test your custom patterns:
 3. Run Doc Detective with the `--input` flag pointing to your file
 4. Check the generated test results to verify patterns were detected correctly
 
+<Tabs>
+  <TabItem value="npx" label="NPX" default>
+
 ```bash
 npx doc-detective --input sample.cdoc --config custom-config.json
 ```
+
+  </TabItem>
+  <TabItem value="docker" label="Docker">
+
+```bash
+docker run -v .:/app docdetective/docdetective --input /app/sample.cdoc --config /app/custom-config.json
+```
+
+:::note
+The `-v` argument mounts your current directory (`.`) to `/app` in the container.
+:::
+
+  </TabItem>
+</Tabs>
 
 ## Best practices
 

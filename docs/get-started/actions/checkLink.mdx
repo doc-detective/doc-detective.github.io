@@ -7,6 +7,8 @@ grand_parent: Tests,
 description: Check if a URL returns an acceptable status code from a GET request.
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 import { schemas } from "doc-detective-common";
 import JSONSchemaViewer from "@theme/JSONSchemaViewer";
 
@@ -175,9 +177,26 @@ Consider the following test configuration, which checks the validity of `https:/
 
 To run the test, use the following command:
 
+<Tabs>
+  <TabItem value="npx" label="NPX" default>
+
 ```bash
 npx doc-detective -i bad-certificate.json
 ```
+
+  </TabItem>
+  <TabItem value="docker" label="Docker">
+
+```bash
+docker run -v .:/app docdetective/docdetective -i /app/bad-certificate.json
+```
+
+:::note
+The `-v` argument mounts your current directory (`.`) to `/app` in the container.
+:::
+
+  </TabItem>
+</Tabs>
 
 This command executes the test, but it fails, returning the following response:
 
