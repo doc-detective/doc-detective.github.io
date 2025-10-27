@@ -116,16 +116,32 @@ docker run -v .:/app docdetective/docdetective --config /app/.doc-detective.json
   </TabItem>
 </Tabs>
 
-{/* ### Run remotely hosted tests
+### Remotely hosted tests
 
 You can run tests hosted remotely by specifying the URL of the test file with the `--input` argument. For example, to run tests from a file hosted at `https://doc-detective.com/sample.spec.json`, run the following command:
+
+<Tabs>
+  <TabItem value="npx" label="NPX" default>
 
 ```bash
 npx doc-detective --input https://doc-detective.com/sample.spec.json
 ```
 
+  </TabItem>
+  <TabItem value="docker" label="Docker">
+
+```bash
+docker run docdetective/docdetective --input https://doc-detective.com/sample.spec.json
+```
+
+:::note
+The `-v` argument is not necessary for remotely hosted tests since Docker doesn't need access to local files.
+:::
+
+  </TabItem>
+</Tabs>
+
 These tests run the same way as local tests, but Doc Detective fetches the test file from the specified URL and stores it in a temporary directory. The URL must be accessible to the machine running the tests.
-*/}
 
 ## Next steps
 
