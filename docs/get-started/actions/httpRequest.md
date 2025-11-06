@@ -25,6 +25,7 @@ You can specify a simple GET request using a string shorthand or use an object f
   - `response`: (Optional) An object defining expected response validation:
     - `headers`: (Optional) Key-value pairs for expected response headers. Values must be strings.
     - `body`: (Optional) Expected response body. Can be a string or JSON object.
+    - `required`: (Optional) Array of field paths that must exist in the response body. Supports dot notation (e.g., `"user.name"`) and array indices (e.g., `"items[0].id"`).
   - `statusCodes`: (Optional) An array of acceptable HTTP status codes. If the response code is not in this list, the step fails (default: `[200]`).
   - `openApi`: (Optional) Define the request based on an OpenAPI definition. Can be a string (operation ID) or an object:
     - `name`: (Optional) Name of the registered OpenAPI definition (if multiple are loaded).
@@ -169,6 +170,87 @@ Here are a few ways you might use the `httpRequest` action:
   ]
 }
 ```
+
+### Validate field existence without checking values
+
+The `response.required` property allows you to verify that specific fields exist in the response without validating their exact values. This is useful for dynamic fields like timestamps, UUIDs, or session tokens.
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Validate that response contains required fields.",
+          "httpRequest": {
+            "url": "https://api.example.com/users/123",
+            "response": {
+              "required": ["id", "email", "createdAt"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+You can use dot notation for nested fields and bracket notation for array indices:
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Validate nested and array fields.",
+          "httpRequest": {
+            "url": "https://api.example.com/orders",
+            "response": {
+              "required": [
+                "user.profile.name",
+                "user.settings.notifications",
+                "orders[0].id",
+                "orders[0].items[0].productId"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+You can combine `required` with `body` validation to check both field existence and specific values:
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Validate field existence and specific values.",
+          "httpRequest": {
+            "url": "https://api.example.com/auth",
+            "response": {
+              "required": ["sessionToken", "expiresAt", "user.id"],
+              "body": {
+                "status": "success",
+                "user": {
+                  "role": "admin"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+> **Note:** Fields with `null`, `undefined`, `""`, `0`, or `false` values are considered to exist and will pass validation.
 
 ### Use OpenAPI definition (by operation ID)
 
