@@ -14,10 +14,12 @@ A [test specification](/docs/references/schemas/specification) is a group of tes
 **Structure:**
 ```json
 {
-  "tests": [ /* array of test objects */ ],
-  "contexts": [ /* optional array of context objects */ ]
+  "tests": [],
+  "contexts": []
 }
 ```
+
+**Note:** The `tests` array contains test objects, and the optional `contexts` array defines browser/app configurations.
 
 **Key properties:**
 - `tests`: Array of test objects (required)
@@ -34,9 +36,11 @@ A [test](/docs/get-started/tests) is a sequence of steps to perform. Conceptuall
 {
   "id": "unique-test-id",
   "description": "Test description",
-  "steps": [ /* array of step objects */ ]
+  "steps": []
 }
 ```
+
+**Note:** The `steps` array contains step objects, each defining a single action.
 
 **Key properties:**
 - `id`: Unique identifier (optional but recommended)
@@ -53,10 +57,11 @@ A step is a portion of a test that includes a single action. Conceptually parall
 ```json
 {
   "action": "actionName",
-  "description": "Step description",
-  /* action-specific parameters */
+  "description": "Step description"
 }
 ```
+
+**Note:** Replace `actionName` with the specific action type and add action-specific parameters.
 
 **Key properties:**
 - `action`: Action identifier (required)
