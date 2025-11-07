@@ -20,7 +20,7 @@ A step is a portion of a test that includes a single action. Conceptually parall
 
 ## Action
 
-An action is the task performed in a step. Doc Detective supports a variety of actions:
+An action performs a task in a step. Doc Detective supports a variety of actions:
 
 | Name                                                        | Description                                                                                                                                               |
 | :---------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -34,8 +34,8 @@ An action is the task performed in a step. Doc Detective supports a variety of a
 | [loadVariables](/docs/get-started/actions/loadVariables) | Load environment variables from a `.env` file.                                                                                                            |
 | [saveCookie](/docs/get-started/actions/saveCookie)       | Save a specific browser cookie to a file or environment variable for later reuse.                                                                         |
 | [loadCookie](/docs/get-started/actions/loadCookie)       | Load a specific cookie from a file or environment variable into the browser.                                                                              |
-| [record](/docs/get-started/actions/record)               | Capture a video of test run.                                                                                                                              |
-| [stopRecord](/docs/get-started/actions/stopRecord)       | Stop capturing a video of test run.                                                                                                                       |
+| [record](/docs/get-started/actions/record)               | Capture a video of the test run.                                                                                                                              |
+| [stopRecord](/docs/get-started/actions/stopRecord)       | Stop capturing a video of the test run.                                                                                                                       |
 | [type](/docs/get-started/actions/type)                   | Type keys. To type special keys, begin and end the string with `$` and use the special key’s enum. For example, to type the Escape key, enter `$ESCAPE$`. |
 | [wait](/docs/get-started/actions/wait)                   | Pause before performing the next action.                                                                                                                  |
 
