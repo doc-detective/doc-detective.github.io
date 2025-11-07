@@ -42,6 +42,6 @@ We may update this Privacy Policy to reflect changes in our data practices. We'l
 
 ## 6. Contact us
 
-If you have any questions or concerns about this Privacy Policy or the Extension's data practices, please file an issue at the Extension's [GitHub repo](https://www.github.com/doc-detective/doc-detective-companion/issues).
+If you have any questions or concerns about this Privacy Policy or the Extension's data practices, please file an issue at the Extension's [GitHub repo](https://github.com/doc-detective/doc-detective-companion/issues).
 
 By using the Extension, you agree to abide by this Privacy Policy. Please discontinue use of the Extension if you do not agree with the terms outlined here.
