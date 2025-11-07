@@ -1,0 +1,665 @@
+---
+title: API reference summary
+sidebar_label: API reference
+description: Complete API reference for all Doc Detective actions, parameters, and return values
+---
+
+# API reference summary
+
+This page provides a complete reference of all Doc Detective actions with their parameters, return values, and usage patterns. This is optimized for programmatic usage and AI agents.
+
+## Action overview
+
+Doc Detective supports the following actions. Each action is specified as a step in a test with an `action` field.
+
+### Navigation actions
+
+#### goTo
+
+Navigate the browser to a specified URL.
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| action | `"goTo"` | Yes | - | Action identifier |
+| url | string | Yes | - | URL to navigate to. Can be absolute URL, relative path, or variable reference |
+| origin | string | No | - | Protocol and domain prepended to URL when URL is a path |
+
+**Example:**
+
+```json
+{
+  "action": "goTo",
+  "url": "https://example.com"
+}
+```
+
+**Shorthand:** `"goTo": "https://example.com"`
+
+**Return fields:**
+- `result`: "PASS" or "FAIL"
+- `resultDescription`: Description of the result
+
+---
+
+### Element interaction actions
+
+#### find
+
+Locate an element on the page and optionally interact with it.
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| action | `"find"` | Yes | - | Action identifier |
+| selector | string | Conditional | - | CSS or XPath selector. Required if elementText not provided |
+| elementText | string | Conditional | - | Display text of element. Required if selector not provided |
+| timeout | number | No | 5000 | Maximum duration in milliseconds to wait for element |
+| moveTo | boolean | No | true | Move cursor to element and scroll into view if needed |
+| click | boolean \| string \| object | No | false | Click element. Can be true, "left", "right", "middle", or object with button property |
+| type | string \| object | No | - | Type keys after finding element. Requires element to be active first |
+
+**Example:**
+
+```json
+{
+  "action": "find",
+  "selector": "#submit-button",
+  "click": true
+}
+```
+
+**Shorthand:** `"find": "#submit-button"` or `"find": "Button Text"`
+
+**Return fields:**
+- `result`: "PASS" or "FAIL"
+- `resultDescription`: Description of the result
+- Element attributes can be captured using variables
+
+---
+
+#### click
+
+Click or tap an element on the page.
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| action | `"click"` | Yes | - | Action identifier |
+| selector | string | No | - | CSS or XPath selector of element to click |
+| elementText | string | No | - | Display text of element to click |
+| button | string | No | "left" | Mouse button to use: "left", "right", or "middle" |
+
+**Example:**
+
+```json
+{
+  "action": "click",
+  "selector": "#submit-button",
+  "button": "left"
+}
+```
+
+**Shorthand:** `"click": "#submit-button"`
+
+**Return fields:**
+- `result`: "PASS" or "FAIL"
+- `resultDescription`: Description of the result
+
+---
+
+#### type
+
+Type keys, including special keys.
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| action | `"type"` | Yes | - | Action identifier |
+| keys | string | Yes | - | Keys to type. Use $KEY_NAME$ for special keys (e.g., $ENTER$, $ESCAPE$) |
+| inputDelay | number | No | 0 | Delay between keystrokes in milliseconds |
+
+**Example:**
+
+```json
+{
+  "action": "type",
+  "keys": "username@example.com$ENTER$"
+}
+```
+
+**Shorthand:** `"type": "text to type"`
+
+**Special keys:** `$ENTER$`, `$TAB$`, `$ESCAPE$`, `$BACKSPACE$`, `$DELETE$`, `$ARROWUP$`, `$ARROWDOWN$`, `$ARROWLEFT$`, `$ARROWRIGHT$`, `$SHIFT$`, `$CONTROL$`, `$ALT$`, `$META$`
+
+**Return fields:**
+- `result`: "PASS" or "FAIL"
+- `resultDescription`: Description of the result
+
+---
+
+#### dragAndDrop
+
+Drag an element to a target location.
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| action | `"dragAndDrop"` | Yes | - | Action identifier |
+| selector | string | Yes | - | CSS or XPath selector of element to drag |
+| targetSelector | string | Yes | - | CSS or XPath selector of target element |
+
+**Example:**
+
+```json
+{
+  "action": "dragAndDrop",
+  "selector": "#draggable-item",
+  "targetSelector": "#drop-zone"
+}
+```
+
+**Return fields:**
+- `result`: "PASS" or "FAIL"
+- `resultDescription`: Description of the result
+
+---
+
+### Capture actions
+
+#### screenshot
+
+Capture a screenshot of the current page or element.
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| action | `"screenshot"` | Yes | - | Action identifier |
+| path | string | Yes | - | File path where screenshot will be saved |
+| selector | string | No | - | CSS or XPath selector of element to screenshot |
+| fullPage | boolean | No | false | Capture full scrollable page instead of viewport |
+
+**Example:**
+
+```json
+{
+  "action": "screenshot",
+  "path": "homepage.png",
+  "fullPage": true
+}
+```
+
+**Shorthand:** `"screenshot": "homepage.png"`
+
+**Return fields:**
+- `result`: "PASS" or "FAIL"
+- `resultDescription`: Description of the result
+- `path`: Actual path where screenshot was saved
+
+---
+
+#### record
+
+Start recording a video of the test run.
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| action | `"record"` | Yes | - | Action identifier |
+| path | string | Yes | - | File path where video will be saved |
+
+**Example:**
+
+```json
+{
+  "action": "record",
+  "path": "test-recording.webm"
+}
+```
+
+**Shorthand:** `"record": "test-recording.webm"`
+
+**Return fields:**
+- `result`: "PASS" or "FAIL"
+- `resultDescription`: Description of the result
+
+---
+
+#### stopRecord
+
+Stop recording the current video.
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| action | `"stopRecord"` | Yes | - | Action identifier |
+
+**Example:**
+
+```json
+{
+  "action": "stopRecord"
+}
+```
+
+**Return fields:**
+- `result`: "PASS" or "FAIL"
+- `resultDescription`: Description of the result
+- `path`: Path where video was saved
+
+---
+
+### Validation actions
+
+#### checkLink
+
+Check if a URL returns an acceptable status code.
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| action | `"checkLink"` | Yes | - | Action identifier |
+| url | string | Yes | - | URL to check |
+| statusCodes | number[] | No | [200] | Array of acceptable HTTP status codes |
+| origin | string | No | - | Protocol and domain prepended to URL when URL is a path |
+
+**Example:**
+
+```json
+{
+  "action": "checkLink",
+  "url": "https://api.example.com/status",
+  "statusCodes": [200, 201, 204]
+}
+```
+
+**Shorthand:** `"checkLink": "https://api.example.com/status"`
+
+**Return fields:**
+- `result`: "PASS" or "FAIL"
+- `resultDescription`: Description of the result
+- `statusCode`: Actual status code received
+
+---
+
+#### httpRequest
+
+Perform an HTTP request (API testing).
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| action | `"httpRequest"` | Yes | - | Action identifier |
+| url | string | Yes | - | URL to request |
+| method | string | No | "GET" | HTTP method: "GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS" |
+| requestHeaders | object | No | {} | Request headers as key-value pairs |
+| requestData | object | No | - | Request body data |
+| statusCodes | number[] | No | [200] | Array of acceptable HTTP status codes |
+
+**Example:**
+
+```json
+{
+  "action": "httpRequest",
+  "url": "https://api.example.com/users",
+  "method": "POST",
+  "requestHeaders": {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer $TOKEN$"
+  },
+  "requestData": {
+    "name": "John Doe",
+    "email": "john@example.com"
+  },
+  "statusCodes": [200, 201]
+}
+```
+
+**Return fields:**
+- `result`: "PASS" or "FAIL"
+- `resultDescription`: Description of the result
+- `statusCode`: HTTP status code received
+- `responseHeaders`: Response headers
+- `responseData`: Response body data
+
+---
+
+### Timing actions
+
+#### wait
+
+Pause execution for a specified duration.
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| action | `"wait"` | Yes | - | Action identifier |
+| duration | number | Yes | - | Duration to wait in milliseconds |
+
+**Example:**
+
+```json
+{
+  "action": "wait",
+  "duration": 2000
+}
+```
+
+**Shorthand:** `"wait": 2000`
+
+**Return fields:**
+- `result`: "PASS"
+- `resultDescription`: Description of the result
+
+---
+
+### Environment actions
+
+#### runShell
+
+Execute a shell command.
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| action | `"runShell"` | Yes | - | Action identifier |
+| command | string | Yes | - | Shell command to execute |
+| workingDirectory | string | No | "." | Working directory for command execution |
+| exitCodes | number[] | No | [0] | Array of acceptable exit codes |
+
+**Example:**
+
+```json
+{
+  "action": "runShell",
+  "command": "npm run build",
+  "workingDirectory": "./my-project",
+  "exitCodes": [0]
+}
+```
+
+**Shorthand:** `"runShell": "npm run build"`
+
+**Return fields:**
+- `result`: "PASS" or "FAIL"
+- `resultDescription`: Description of the result
+- `exitCode`: Exit code of the command
+- `stdout`: Standard output
+- `stderr`: Standard error output
+
+---
+
+#### runCode
+
+Execute JavaScript code in the browser context.
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| action | `"runCode"` | Yes | - | Action identifier |
+| code | string | Yes | - | JavaScript code to execute |
+
+**Example:**
+
+```json
+{
+  "action": "runCode",
+  "code": "return document.title;"
+}
+```
+
+**Shorthand:** `"runCode": "return document.title;"`
+
+**Return fields:**
+- `result`: "PASS" or "FAIL"
+- `resultDescription`: Description of the result
+- `returnValue`: Value returned by the code
+
+---
+
+#### loadVariables
+
+Load environment variables from a file.
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| action | `"loadVariables"` | Yes | - | Action identifier |
+| path | string | Yes | - | Path to .env file |
+
+**Example:**
+
+```json
+{
+  "action": "loadVariables",
+  "path": ".env"
+}
+```
+
+**Shorthand:** `"loadVariables": ".env"`
+
+**Return fields:**
+- `result`: "PASS" or "FAIL"
+- `resultDescription`: Description of the result
+
+**Usage:** After loading, variables can be referenced with `$VARIABLE_NAME$` in subsequent steps.
+
+---
+
+### Cookie actions
+
+#### saveCookie
+
+Save a browser cookie to a file or environment variable.
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| action | `"saveCookie"` | Yes | - | Action identifier |
+| name | string | Yes | - | Name of the cookie to save |
+| path | string | No | - | File path to save cookie. If not provided, saves to environment variable |
+
+**Example:**
+
+```json
+{
+  "action": "saveCookie",
+  "name": "auth_token",
+  "path": "auth-cookie.json"
+}
+```
+
+**Return fields:**
+- `result`: "PASS" or "FAIL"
+- `resultDescription`: Description of the result
+
+---
+
+#### loadCookie
+
+Load a cookie from a file or environment variable into the browser.
+
+**Parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| action | `"loadCookie"` | Yes | - | Action identifier |
+| name | string | Yes | - | Name of the cookie to load |
+| path | string | No | - | File path to load cookie from. If not provided, loads from environment variable |
+
+**Example:**
+
+```json
+{
+  "action": "loadCookie",
+  "name": "auth_token",
+  "path": "auth-cookie.json"
+}
+```
+
+**Return fields:**
+- `result`: "PASS" or "FAIL"
+- `resultDescription`: Description of the result
+
+---
+
+## Common patterns
+
+### Form submission workflow
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        { "action": "goTo", "url": "https://example.com/form" },
+        { "action": "find", "selector": "#name", "click": true, "type": "John Doe" },
+        { "action": "find", "selector": "#email", "click": true, "type": "john@example.com" },
+        { "action": "click", "selector": "button[type='submit']" },
+        { "action": "find", "selector": ".success-message" }
+      ]
+    }
+  ]
+}
+```
+
+### API testing with authentication
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        { "action": "loadVariables", "path": ".env" },
+        {
+          "action": "httpRequest",
+          "url": "https://api.example.com/login",
+          "method": "POST",
+          "requestData": { "username": "$USERNAME$", "password": "$PASSWORD$" },
+          "statusCodes": [200]
+        },
+        {
+          "action": "httpRequest",
+          "url": "https://api.example.com/users",
+          "method": "GET",
+          "requestHeaders": { "Authorization": "Bearer $TOKEN$" }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Screenshot capture workflow
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        { "action": "goTo", "url": "https://example.com" },
+        { "action": "wait", "duration": 1000 },
+        { "action": "screenshot", "path": "homepage.png", "fullPage": true },
+        { "action": "click", "selector": "#menu-button" },
+        { "action": "screenshot", "path": "menu-open.png" }
+      ]
+    }
+  ]
+}
+```
+
+### Video recording workflow
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        { "action": "record", "path": "tutorial.webm" },
+        { "action": "goTo", "url": "https://example.com/tutorial" },
+        { "action": "click", "selector": "#start-button" },
+        { "action": "find", "selector": "#step-1" },
+        { "action": "click", "selector": "#next" },
+        { "action": "find", "selector": "#step-2" },
+        { "action": "stopRecord" }
+      ]
+    }
+  ]
+}
+```
+
+## Result structure
+
+All actions return a result object with standard fields:
+
+```json
+{
+  "result": "PASS" | "FAIL" | "WARNING" | "SKIPPED",
+  "resultDescription": "Human-readable description",
+  "stepId": "unique-step-identifier",
+  // Action-specific fields
+}
+```
+
+**Standard result values:**
+- `PASS`: Action completed successfully
+- `FAIL`: Action failed
+- `WARNING`: Non-critical issue
+- `SKIPPED`: Action was not executed
+
+## Error handling
+
+When a step fails, the error information is available in:
+
+- `result`: Will be "FAIL"
+- `resultDescription`: Contains error message
+- Additional fields may include stack traces or error codes
+
+**Best practices:**
+1. Check `summary.steps.fail` in output to detect failures
+2. Parse `resultDescription` for specific error messages
+3. Implement retry logic for flaky tests
+4. Set appropriate `timeout` values on actions
+5. Use `try/catch` equivalent in your orchestration code
+
+## Variable substitution
+
+Variables can be used in any string parameter:
+
+1. **Environment variables:** `$ENV_VAR_NAME$`
+2. **Loaded variables:** `$LOADED_VAR$` (after `loadVariables`)
+3. **Captured variables:** Use `variables` field at step level
+
+**Example:**
+
+```json
+{
+  "action": "goTo",
+  "url": "$BASE_URL$/login",
+  "variables": {
+    "pageTitle": "$$element.text"
+  }
+}
+```
+
+## See also
+
+- [Quick Start for AI Agents](/docs/get-started/quick-start-for-ai) - Getting started guide
+- [Full schema references](/docs/references/schemas/specification) - Complete JSON schemas
+- [Tutorials](/docs/category/tutorials) - Step-by-step examples
+- [Actions](/docs/category/actions) - Detailed action documentation

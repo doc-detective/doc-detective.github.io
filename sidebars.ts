@@ -19,6 +19,8 @@ const sidebars: SidebarsConfig = {
       items: [
         "get-started/intro",
         "get-started/installation/index",
+        "get-started/quick-start-for-ai",
+        "get-started/api-reference",
         "get-started/concepts",
         "get-started/create-your-first-test",
         "get-started/sample-tests",
