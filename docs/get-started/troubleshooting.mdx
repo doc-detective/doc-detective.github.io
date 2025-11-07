@@ -1,0 +1,788 @@
+---
+title: Troubleshooting and common errors
+sidebar_label: Troubleshooting
+description: Common errors, solutions, and debugging strategies for Doc Detective tests
+---
+
+# Troubleshooting and common errors
+
+This guide helps you identify and resolve common issues when implementing Doc Detective tests. Each error includes the symptom, cause, and solution.
+
+## Element not found errors
+
+### Error: "Element not found"
+
+**Symptom:** Test fails with message "Element not found" or "Could not find element matching selector"
+
+**Causes:**
+1. Element doesn't exist on the page
+2. Element hasn't loaded yet
+3. Incorrect selector
+4. Element is in iframe
+5. Page navigation hasn't completed
+
+**Solutions:**
+
+```json
+// Add wait before finding element
+{
+  "steps": [
+    { "action": "goTo", "url": "https://example.com" },
+    { "action": "wait", "duration": 2000 },
+    { "action": "find", "selector": "#slow-loading-element" }
+  ]
+}
+
+// Increase timeout on find action
+{
+  "action": "find",
+  "selector": "#element",
+  "timeout": 10000
+}
+
+// Use more specific selector
+{
+  "action": "find",
+  "selector": "button[data-testid='submit-button']"
+}
+
+// Combine selector and text for precision
+{
+  "action": "find",
+  "selector": "button.primary",
+  "elementText": "Submit"
+}
+```
+
+**Debugging steps:**
+1. Verify selector in browser DevTools
+2. Check if element is inside iframe (requires different handling)
+3. Confirm element exists after page loads
+4. Try using text-based finding: `"elementText": "Button Text"`
+
+---
+
+### Error: "Multiple elements match selector"
+
+**Symptom:** Test interacts with wrong element when multiple elements match
+
+**Cause:** Non-specific selector matches multiple elements (first match is used)
+
+**Solution:**
+
+```json
+// Make selector more specific
+{
+  "action": "click",
+  "selector": "#user-form button[type='submit']"
+}
+
+// Use unique identifier
+{
+  "action": "click",
+  "selector": "[data-testid='unique-submit-button']"
+}
+
+// Combine selector with text
+{
+  "action": "click",
+  "selector": "button",
+  "elementText": "Submit Form"
+}
+```
+
+---
+
+## Navigation errors
+
+### Error: "Navigation timeout"
+
+**Symptom:** Test fails with "Navigation timeout" or "Page did not load"
+
+**Causes:**
+1. Page takes too long to load
+2. Network issues
+3. Invalid URL
+4. Page redirect loop
+5. JavaScript blocking page load
+
+**Solutions:**
+
+```json
+// Increase global timeout in config
+{
+  "contexts": [
+    {
+      "app": {
+        "name": "chrome",
+        "options": {
+          "navigationTimeout": 60000
+        }
+      }
+    }
+  ]
+}
+
+// Verify URL is correct
+{
+  "action": "goTo",
+  "url": "https://example.com/page"
+}
+
+// Check network connectivity first
+{
+  "steps": [
+    { "action": "checkLink", "url": "https://example.com" },
+    { "action": "goTo", "url": "https://example.com/page" }
+  ]
+}
+```
+
+---
+
+### Error: "Origin not set"
+
+**Symptom:** Test fails with "Origin not set" when using relative paths
+
+**Cause:** Using relative path without setting origin
+
+**Solution:**
+
+```json
+// Set origin in config file
+{
+  "contexts": [
+    {
+      "app": {
+        "origin": "https://example.com"
+      }
+    }
+  ]
+}
+
+// Or specify origin in goTo action
+{
+  "action": "goTo",
+  "url": "/about",
+  "origin": "https://example.com"
+}
+
+// Or use full URL
+{
+  "action": "goTo",
+  "url": "https://example.com/about"
+}
+```
+
+---
+
+## Click and interaction errors
+
+### Error: "Element not clickable"
+
+**Symptom:** Test fails with "Element not clickable" or "Element is obscured"
+
+**Causes:**
+1. Element is behind another element
+2. Element is disabled
+3. Element hasn't scrolled into view
+4. Element is hidden by CSS
+
+**Solutions:**
+
+```json
+// Ensure element is scrolled into view (default behavior)
+{
+  "action": "find",
+  "selector": "#button",
+  "moveTo": true,
+  "click": true
+}
+
+// Wait for overlays to disappear
+{
+  "steps": [
+    { "action": "goTo", "url": "https://example.com" },
+    { "action": "wait", "duration": 1000 },
+    { "action": "click", "selector": "#button" }
+  ]
+}
+
+// Use JavaScript click as fallback
+{
+  "action": "runCode",
+  "code": "document.querySelector('#button').click();"
+}
+```
+
+---
+
+### Error: "Element is not editable"
+
+**Symptom:** Cannot type into element
+
+**Cause:** Element is not an input field or is disabled
+
+**Solution:**
+
+```json
+// Click element first to focus it
+{
+  "action": "find",
+  "selector": "#input-field",
+  "click": true,
+  "type": "text to type"
+}
+
+// Verify element is input or contenteditable
+{
+  "action": "find",
+  "selector": "input[type='text']",
+  "click": true,
+  "type": "text"
+}
+```
+
+---
+
+## API and HTTP errors
+
+### Error: "Unexpected status code"
+
+**Symptom:** HTTP request fails with wrong status code
+
+**Cause:** API returned different status code than expected
+
+**Solution:**
+
+```json
+// Accept multiple status codes
+{
+  "action": "httpRequest",
+  "url": "https://api.example.com/users",
+  "method": "POST",
+  "statusCodes": [200, 201, 204]
+}
+
+// Check API is accessible first
+{
+  "steps": [
+    { 
+      "action": "checkLink", 
+      "url": "https://api.example.com/health",
+      "statusCodes": [200]
+    },
+    {
+      "action": "httpRequest",
+      "url": "https://api.example.com/users",
+      "method": "GET"
+    }
+  ]
+}
+```
+
+---
+
+### Error: "Request failed with authentication error"
+
+**Symptom:** API returns 401 or 403
+
+**Cause:** Missing or invalid authentication
+
+**Solution:**
+
+```json
+// Load environment variables with credentials
+{
+  "steps": [
+    { "action": "loadVariables", "path": ".env" },
+    {
+      "action": "httpRequest",
+      "url": "https://api.example.com/users",
+      "method": "GET",
+      "requestHeaders": {
+        "Authorization": "Bearer $API_TOKEN$"
+      }
+    }
+  ]
+}
+
+// Or use cookie-based authentication
+{
+  "steps": [
+    { "action": "goTo", "url": "https://example.com/login" },
+    { "action": "find", "selector": "#username", "click": true, "type": "$USERNAME$" },
+    { "action": "find", "selector": "#password", "click": true, "type": "$PASSWORD$" },
+    { "action": "click", "selector": "#submit" },
+    { "action": "saveCookie", "name": "session_token", "path": "session.json" },
+    { "action": "loadCookie", "name": "session_token", "path": "session.json" }
+  ]
+}
+```
+
+---
+
+## Configuration errors
+
+### Error: "Browser not found" or "Browser failed to launch"
+
+**Symptom:** Doc Detective can't start browser
+
+**Causes:**
+1. Browser not installed
+2. Incorrect browser path
+3. Missing dependencies
+4. Headless mode not supported
+
+**Solutions:**
+
+```bash
+# Install Chrome/Chromium
+# Ubuntu/Debian
+sudo apt-get install chromium-browser
+
+# macOS
+brew install --cask google-chrome
+
+# Or use Firefox
+# Ubuntu/Debian
+sudo apt-get install firefox
+```
+
+```json
+// Configure browser in .doc-detective.json
+{
+  "contexts": [
+    {
+      "app": {
+        "name": "firefox",
+        "options": {
+          "headless": true
+        }
+      }
+    }
+  ]
+}
+
+// Or use Chrome with specific path
+{
+  "contexts": [
+    {
+      "app": {
+        "name": "chrome",
+        "options": {
+          "executablePath": "/usr/bin/google-chrome"
+        }
+      }
+    }
+  ]
+}
+```
+
+---
+
+### Error: "Config file not found"
+
+**Symptom:** Doc Detective doesn't load config
+
+**Cause:** Config file in wrong location or wrong name
+
+**Solution:**
+
+```bash
+# Create config in current directory
+touch .doc-detective.json
+
+# Or specify config path
+npx doc-detective --config /path/to/.doc-detective.json
+```
+
+---
+
+## Test specification errors
+
+### Error: "Invalid test specification"
+
+**Symptom:** Test file doesn't parse or validate
+
+**Cause:** Invalid JSON or missing required fields
+
+**Solution:**
+
+```json
+// Ensure valid JSON structure
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "action": "goTo",
+          "url": "https://example.com"
+        }
+      ]
+    }
+  ]
+}
+
+// Validate JSON syntax
+// Use JSON validator: https://jsonlint.com/
+
+// Check required fields:
+// - "tests" array
+// - "steps" array in each test
+// - "action" field in each step
+```
+
+---
+
+### Error: "Unknown action type"
+
+**Symptom:** Test fails with "Unknown action" or "Invalid action"
+
+**Cause:** Typo in action name or unsupported action
+
+**Solution:**
+
+```json
+// Verify action name spelling
+{
+  "action": "goTo",  // Correct (camelCase)
+  "url": "https://example.com"
+}
+
+// Not: "goto", "go_to", "GOTO"
+
+// Valid actions:
+// goTo, find, click, type, screenshot, checkLink, 
+// httpRequest, wait, runShell, runCode, dragAndDrop,
+// loadVariables, saveCookie, loadCookie, record, stopRecord
+```
+
+---
+
+## File and path errors
+
+### Error: "File not found" or "Path does not exist"
+
+**Symptom:** Can't read/write files
+
+**Causes:**
+1. Incorrect file path
+2. Missing directory
+3. Permission issues
+
+**Solutions:**
+
+```json
+// Use absolute paths
+{
+  "action": "screenshot",
+  "path": "/home/user/screenshots/image.png"
+}
+
+// Or relative to working directory
+{
+  "action": "screenshot",
+  "path": "./screenshots/image.png"
+}
+
+// Create directory first with runShell
+{
+  "steps": [
+    { "action": "runShell", "command": "mkdir -p screenshots" },
+    { "action": "screenshot", "path": "screenshots/image.png" }
+  ]
+}
+```
+
+---
+
+### Error: "Permission denied"
+
+**Symptom:** Can't write to directory
+
+**Cause:** No write permission
+
+**Solution:**
+
+```bash
+# Check and fix permissions
+chmod -R 755 /path/to/directory
+
+# Or write to temp directory
+```
+
+```json
+{
+  "action": "screenshot",
+  "path": "/tmp/screenshot.png"
+}
+```
+
+---
+
+## Variable and environment errors
+
+### Error: "Variable not defined"
+
+**Symptom:** Variable reference like `$VAR$` not replaced
+
+**Cause:** Variable not loaded or doesn't exist
+
+**Solution:**
+
+```json
+// Load variables before use
+{
+  "steps": [
+    { "action": "loadVariables", "path": ".env" },
+    { "action": "goTo", "url": "$BASE_URL$/page" }
+  ]
+}
+
+// Or use environment variables
+// Set in shell:
+// export BASE_URL=https://example.com
+```
+
+```bash
+# Create .env file
+echo "BASE_URL=https://example.com" > .env
+echo "USERNAME=testuser" >> .env
+echo "PASSWORD=testpass" >> .env
+```
+
+---
+
+## Timing and performance issues
+
+### Error: "Timeout waiting for element"
+
+**Symptom:** Element exists but test times out
+
+**Cause:** Element loads slowly or dynamically
+
+**Solution:**
+
+```json
+// Increase timeout on specific action
+{
+  "action": "find",
+  "selector": "#slow-element",
+  "timeout": 15000
+}
+
+// Add explicit wait
+{
+  "steps": [
+    { "action": "goTo", "url": "https://example.com" },
+    { "action": "wait", "duration": 3000 },
+    { "action": "find", "selector": "#dynamic-content" }
+  ]
+}
+
+// Wait for specific condition with runCode
+{
+  "steps": [
+    { "action": "goTo", "url": "https://example.com" },
+    {
+      "action": "runCode",
+      "code": "return new Promise(resolve => { const check = () => { if (document.querySelector('#element')) resolve(true); else setTimeout(check, 100); }; check(); });"
+    },
+    { "action": "find", "selector": "#element" }
+  ]
+}
+```
+
+---
+
+## Docker-specific errors
+
+### Error: "Cannot mount directory"
+
+**Symptom:** Docker can't access test files
+
+**Cause:** Directory not mounted to container
+
+**Solution:**
+
+```bash
+# Mount current directory
+docker run -v .:/app docdetective/docdetective --input /app/tests.spec.json
+
+# Mount specific directory
+docker run -v /path/to/tests:/app docdetective/docdetective --input /app/tests.spec.json
+
+# Multiple mounts
+docker run \
+  -v ./tests:/app/tests \
+  -v ./output:/app/output \
+  docdetective/docdetective --input /app/tests/*.spec.json
+```
+
+---
+
+## Debugging strategies
+
+### Enable verbose logging
+
+```json
+// Add to config file
+{
+  "logLevel": "debug",
+  "tests": [ /* ... */ ]
+}
+```
+
+```bash
+# Or use CLI flag
+npx doc-detective --input test.spec.json --logLevel debug
+```
+
+---
+
+### Test selectors in browser
+
+1. Open browser DevTools (F12)
+2. Use Console to test selector:
+   ```javascript
+   document.querySelector('#my-selector')
+   document.querySelectorAll('.my-class')
+   ```
+3. Verify element exists and is unique
+4. Test XPath:
+   ```javascript
+   $x('//button[@id="submit"]')
+   ```
+
+---
+
+### Isolate failing steps
+
+```json
+// Comment out steps to isolate issue
+{
+  "tests": [
+    {
+      "steps": [
+        { "action": "goTo", "url": "https://example.com" },
+        // { "action": "click", "selector": "#button1" },
+        // { "action": "click", "selector": "#button2" },
+        { "action": "click", "selector": "#button3" }
+      ]
+    }
+  ]
+}
+```
+
+---
+
+### Capture screenshots for debugging
+
+```json
+// Add screenshots between steps
+{
+  "steps": [
+    { "action": "goTo", "url": "https://example.com" },
+    { "action": "screenshot", "path": "debug-1-after-load.png" },
+    { "action": "click", "selector": "#button" },
+    { "action": "screenshot", "path": "debug-2-after-click.png" },
+    { "action": "find", "selector": "#result" },
+    { "action": "screenshot", "path": "debug-3-final.png" }
+  ]
+}
+```
+
+---
+
+### Check test results JSON
+
+```bash
+# View full test results
+cat testResults-*.json | jq '.'
+
+# Check failed steps
+cat testResults-*.json | jq '.specs[].tests[].contexts[].steps[] | select(.result == "FAIL")'
+
+# Get failure descriptions
+cat testResults-*.json | jq '.specs[].tests[].contexts[].steps[] | select(.result == "FAIL") | .resultDescription'
+```
+
+---
+
+## Common patterns and solutions
+
+### Pattern: Dynamic content loading
+
+```json
+{
+  "steps": [
+    { "action": "goTo", "url": "https://example.com" },
+    { "action": "wait", "duration": 2000 },
+    { "action": "runCode", "code": "return document.readyState === 'complete';" },
+    { "action": "find", "selector": "#dynamic-content" }
+  ]
+}
+```
+
+---
+
+### Pattern: Authentication flow
+
+```json
+{
+  "steps": [
+    { "action": "loadVariables", "path": ".env" },
+    { "action": "goTo", "url": "https://example.com/login" },
+    { "action": "find", "selector": "#username", "click": true, "type": "$USERNAME$" },
+    { "action": "find", "selector": "#password", "click": true, "type": "$PASSWORD$" },
+    { "action": "click", "selector": "button[type='submit']" },
+    { "action": "find", "selector": ".dashboard", "timeout": 10000 },
+    { "action": "saveCookie", "name": "auth_token" }
+  ]
+}
+```
+
+---
+
+### Pattern: Form validation testing
+
+```json
+{
+  "steps": [
+    { "action": "goTo", "url": "https://example.com/form" },
+    { "action": "click", "selector": "#submit" },
+    { "action": "find", "selector": ".error-message", "elementText": "Required field" },
+    { "action": "find", "selector": "#name", "click": true, "type": "John Doe" },
+    { "action": "click", "selector": "#submit" },
+    { "action": "find", "selector": ".success-message" }
+  ]
+}
+```
+
+---
+
+## Getting help
+
+If you can't resolve an issue:
+
+1. **Check documentation:**
+   - [Quick Start for AI](/docs/get-started/quick-start-for-ai)
+   - [API Reference](/docs/get-started/api-reference)
+   - [Actions](/docs/category/actions)
+
+2. **Enable debug logging:**
+   ```bash
+   npx doc-detective --input test.spec.json --logLevel debug
+   ```
+
+3. **Ask the community:**
+   - [Discord](https://discord.gg/uAfSjVH7yr)
+   - [GitHub Issues](https://github.com/doc-detective/doc-detective/issues)
+
+4. **Provide context:**
+   - Test specification JSON
+   - Error message and stack trace
+   - Doc Detective version
+   - Operating system and browser
+   - Full test results JSON
