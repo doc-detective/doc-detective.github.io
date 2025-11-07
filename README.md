@@ -2,6 +2,35 @@
 
 Documentation for [Doc Detective](https://doc-detective.com) - keep your docs in sync with your product. Always.
 
+## 🤖 For AI Agents and Programmatic Usage
+
+If you're an AI coding agent or need structured information for programmatic usage:
+
+- **[Quick Start for AI Agents](https://doc-detective.com/docs/get-started/quick-start-for-ai)** - Structured guide with JSON examples and common patterns
+- **[API Reference Summary](https://doc-detective.com/docs/get-started/api-reference)** - Complete action parameters, return values, and usage
+- **[Troubleshooting Guide](https://doc-detective.com/docs/get-started/troubleshooting)** - Common errors and solutions with code examples
+
+**Key concepts:**
+- Doc Detective validates documentation by running JSON-defined tests against your product
+- Tests consist of actions (goTo, find, click, screenshot, httpRequest, etc.)
+- Results are output as structured JSON for parsing and automation
+- Ideal for CI/CD pipelines, automated documentation testing, and API validation
+
+**Minimal example:**
+```json
+{
+  "tests": [{
+    "steps": [
+      {"action": "goTo", "url": "https://example.com"},
+      {"action": "find", "selector": "h1"},
+      {"action": "screenshot", "path": "result.png"}
+    ]
+  }]
+}
+```
+
+Run with: `npx doc-detective --input test.spec.json`
+
 ## 🤝 Contributing
 
 We welcome contributions from everyone! Whether you're fixing a typo or writing a complete tutorial, your contribution matters.

@@ -1,22 +1,69 @@
 ---
 sidebar_label: Concepts
+description: Core concepts and terminology for Doc Detective test framework
 ---
 
 # Concepts
 
-Learn the key concepts that form the foundation of Doc Detective.
+Learn the key concepts that form the foundation of Doc Detective. These concepts map to JSON structures in test specifications.
 
 ## Test specification
 
 A [test specification](/docs/references/schemas/specification) is a group of tests to run in one or more contexts. Conceptually parallel to a document.
 
+**Structure:**
+```json
+{
+  "tests": [ /* array of test objects */ ],
+  "contexts": [ /* optional array of context objects */ ]
+}
+```
+
+**Key properties:**
+- `tests`: Array of test objects (required)
+- `contexts`: Array defining browser/app configurations (optional)
+
+---
+
 ## Test
 
 A [test](/docs/get-started/tests) is a sequence of steps to perform. Conceptually parallel to a procedure.
 
+**Structure:**
+```json
+{
+  "id": "unique-test-id",
+  "description": "Test description",
+  "steps": [ /* array of step objects */ ]
+}
+```
+
+**Key properties:**
+- `id`: Unique identifier (optional but recommended)
+- `description`: Human-readable description (optional)
+- `steps`: Array of step objects (required)
+
+---
+
 ## Step
 
 A step is a portion of a test that includes a single action. Conceptually parallel to a step in a procedure.
+
+**Structure:**
+```json
+{
+  "action": "actionName",
+  "description": "Step description",
+  /* action-specific parameters */
+}
+```
+
+**Key properties:**
+- `action`: Action identifier (required)
+- `description`: Human-readable description (optional)
+- Action-specific parameters vary by action type
+
+---
 
 ## Action
 
@@ -46,3 +93,45 @@ A [context](/docs/references/schemas/context) consists of an application and pla
 ## Next steps
 
 - [Create your first test](/docs/get-started/create-your-first-test)
+
+**Action categories:**
+- **Navigation:** goTo
+- **Element interaction:** find, click, type, dragAndDrop
+- **Capture:** screenshot, record, stopRecord
+- **Validation:** checkLink, httpRequest
+- **Environment:** runShell, runCode, loadVariables, saveCookie, loadCookie
+- **Timing:** wait
+
+---
+
+## Variables
+
+Variables allow dynamic content in tests. Use the format `$VARIABLE_NAME$` to reference variables.
+
+**Sources:**
+- Environment variables
+- Variables loaded from `.env` file via `loadVariables`
+- Variables captured in steps using the `variables` property
+
+**Example:**
+```json
+{
+  "steps": [
+    {"action": "loadVariables", "path": ".env"},
+    {"action": "goTo", "url": "$BASE_URL$/login"}
+  ]
+}
+```
+
+---
+
+## Result types
+
+Each step returns a result status:
+
+- **PASS:** Step completed successfully
+- **FAIL:** Step failed to complete
+- **WARNING:** Non-critical issue detected
+- **SKIPPED:** Step was not executed
+
+---
