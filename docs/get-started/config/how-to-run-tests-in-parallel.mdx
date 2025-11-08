@@ -1,0 +1,358 @@
+---
+title: How to run tests in parallel
+description: Configure concurrent test runners to speed up test execution.
+sidebar_label: Run tests in parallel
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# How to run tests in parallel
+
+Running tests in parallel can significantly reduce test execution time by utilizing multiple CPU cores. This guide shows you how to configure concurrent test runners in Doc Detective.
+
+## Before you begin
+
+- Have Doc Detective installed
+- Have multiple tests to run
+- Understand [basic configuration](/docs/get-started/config/how-to-create-config-file)
+
+## Understanding parallel execution
+
+Doc Detective can run multiple tests simultaneously using the `concurrentRunners` configuration option. Each runner operates independently, executing tests in separate processes.
+
+**Benefits:**
+- Faster test execution for large test suites
+- Better utilization of available CPU resources
+- Reduced overall testing time in CI/CD pipelines
+
+**Considerations:**
+- Increased memory usage (each runner needs memory)
+- Potential conflicts if tests modify shared resources
+- More complex debugging when tests fail
+
+## Set up parallel test execution
+
+### Step 1: Add concurrentRunners to your config
+
+Open your configuration file and add the `concurrentRunners` option:
+
+```json title=".doc-detective.json"
+{
+  "input": "./docs",
+  "output": "./test-results",
+  "concurrentRunners": 2
+}
+```
+
+This configuration runs tests using 2 parallel runners.
+
+### Step 2: Choose the right number of runners
+
+**Use a specific number:**
+```json
+{
+  "concurrentRunners": 4
+}
+```
+
+Explicitly sets the number of concurrent runners to 4.
+
+**Use automatic detection:**
+```json
+{
+  "concurrentRunners": true
+}
+```
+
+Doc Detective automatically uses the number of CPU cores available (capped at 4).
+
+### Step 3: Run your tests
+
+Execute tests as usual:
+
+<Tabs>
+  <TabItem value="npx" label="NPX" default>
+
+```bash
+npx doc-detective runTests
+```
+
+  </TabItem>
+  <TabItem value="docker" label="Docker">
+
+```bash
+docker run -v .:/app docdetective/docdetective runTests --config /app/.doc-detective.json
+```
+
+:::note
+The `-v` argument mounts your current directory (`.`) to `/app` in the container.
+:::
+
+  </TabItem>
+</Tabs>
+
+Doc Detective will distribute tests across the configured number of runners.
+
+## Choose the optimal number of runners
+
+### For local development
+
+Start with 2-4 runners:
+
+```json
+{
+  "concurrentRunners": 2
+}
+```
+
+This provides faster execution without overwhelming your system.
+
+### For CI/CD pipelines
+
+Use automatic detection or match available cores:
+
+```json
+{
+  "concurrentRunners": true
+}
+```
+
+Most CI environments have 2-4 cores available. Let Doc Detective optimize based on the environment.
+
+### For large test suites
+
+Consider the number of tests:
+
+- **< 10 tests**: Sequential execution (`concurrentRunners: 1`) may be faster due to overhead
+- **10-50 tests**: Use 2-4 runners
+- **> 50 tests**: Use 4+ runners (up to the number of CPU cores)
+
+### CPU core limits
+
+Doc Detective caps `concurrentRunners: true` at 4 to prevent system overload. For more than 4 runners, specify explicitly:
+
+```json
+{
+  "concurrentRunners": 8
+}
+```
+
+**Warning:** More runners don't always mean faster execution. Monitor system resources and test execution time to find the optimal number.
+
+## Handle shared resources
+
+Tests running in parallel may conflict if they access shared resources. Follow these practices:
+
+### Use unique test data
+
+Each test should use unique identifiers:
+
+```json
+{
+  "tests": [
+    {
+      "id": "user-test-1",
+      "steps": [
+        {
+          "action": "httpRequest",
+          "url": "https://api.example.com/users",
+          "requestData": {
+            "username": "test-user-1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "user-test-2",
+      "steps": [
+        {
+          "action": "httpRequest",
+          "url": "https://api.example.com/users",
+          "requestData": {
+            "username": "test-user-2"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Avoid file system conflicts
+
+If tests write to files, use unique filenames:
+
+```json
+{
+  "steps": [
+    {
+      "action": "screenshot",
+      "path": "./screenshots/test-{{testId}}-{{timestamp}}.png"
+    }
+  ]
+}
+```
+
+### Isolate database operations
+
+Use separate test databases or add unique prefixes to test data:
+
+```json
+{
+  "loadVariables": ".env.test",
+  "beforeAny": "./setup/create-test-db.spec.json",
+  "afterAll": "./cleanup/drop-test-db.spec.json"
+}
+```
+
+## Monitor parallel execution
+
+### Check runner activity
+
+Doc Detective logs indicate which runner is executing each test:
+
+```
+[Runner 1] Running test: user-authentication
+[Runner 2] Running test: product-search
+[Runner 1] Test passed: user-authentication
+[Runner 2] Test passed: product-search
+```
+
+### Measure execution time
+
+Compare execution times with different runner counts:
+
+```bash
+# Sequential (1 runner)
+time npx doc-detective runTests
+
+# Parallel (4 runners)
+time npx doc-detective runTests
+```
+
+### Identify bottlenecks
+
+If parallel execution isn't faster:
+- Check for shared resource conflicts
+- Verify tests are truly independent
+- Monitor CPU and memory usage during execution
+
+## Trade-offs between speed and resource usage
+
+### Memory considerations
+
+Each runner requires memory for:
+- Browser instances (if using browser-based tests)
+- Test data and variables
+- Process overhead
+
+**Estimate memory needs:**
+- Sequential execution: ~500MB-1GB
+- 2 runners: ~1-2GB
+- 4 runners: ~2-4GB
+
+### CPU utilization
+
+Parallel execution works best when:
+- CPU has idle capacity
+- Tests are CPU-bound (not waiting on I/O)
+- System has sufficient cooling (for sustained loads)
+
+### Debugging complexity
+
+Parallel execution makes debugging harder:
+- Interleaved log output
+- Race conditions may appear
+- Harder to reproduce failures
+
+**When debugging, use sequential execution:**
+
+```json
+{
+  "concurrentRunners": 1,
+  "logLevel": "debug"
+}
+```
+
+## Example configurations
+
+### Local development with moderate parallelism
+
+```json title=".doc-detective.json"
+{
+  "input": "./docs",
+  "output": "./test-results",
+  "concurrentRunners": 2,
+  "logLevel": "info"
+}
+```
+
+### CI/CD with maximum parallelism
+
+```json title=".doc-detective.ci.json"
+{
+  "input": "./docs",
+  "output": "./test-results",
+  "concurrentRunners": true,
+  "logLevel": "error"
+}
+```
+
+### Debugging configuration (sequential)
+
+```json title=".doc-detective.debug.json"
+{
+  "input": "./docs",
+  "output": "./test-results",
+  "concurrentRunners": 1,
+  "logLevel": "debug",
+  "debug": true
+}
+```
+
+## Troubleshooting
+
+### Tests fail only in parallel mode
+
+**Cause:** Shared resource conflicts or race conditions.
+
+**Solution:**
+- Run tests sequentially to verify they pass
+- Check for shared file system access
+- Ensure tests use unique test data
+- Add delays or synchronization where needed
+
+### Parallel execution is slower
+
+**Cause:** Overhead exceeds benefits for small test suites or I/O-bound tests.
+
+**Solution:**
+- Use sequential execution for < 10 tests
+- Increase concurrentRunners for larger test suites
+- Profile tests to identify I/O bottlenecks
+
+### System becomes unresponsive
+
+**Cause:** Too many concurrent runners for available resources.
+
+**Solution:**
+- Reduce `concurrentRunners` to 2-3
+- Monitor system resources during test execution
+- Close other applications while running tests
+
+### Memory errors during execution
+
+**Cause:** Insufficient memory for the number of runners.
+
+**Solution:**
+- Reduce `concurrentRunners`
+- Increase system memory
+- Close browser instances between tests
+
+## What's next
+
+- Learn about [environment variables](/docs/get-started/config/how-to-use-environment-variables) for managing test data
+- Set up [before and after hooks](/docs/get-started/config/how-to-setup-hooks) for test setup
+- Explore [multiple test environments](/docs/get-started/config/how-to-setup-multiple-environments) for different execution contexts
+- See the [config reference](/docs/references/schemas/config) for all options
