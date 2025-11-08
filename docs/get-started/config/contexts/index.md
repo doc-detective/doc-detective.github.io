@@ -18,7 +18,98 @@ When Doc Detective runs tests, it evaluates the defined contexts against the cur
 
 For comprehensive options, see the [context](/docs/references/schemas/context) reference.
 
-## Specifying contexts
+## How to choose a context
+
+Selecting the right context depends on your testing goals and target audience:
+
+### Choose based on your audience
+
+**Testing documentation for a specific platform:**
+- Use a single platform: `"platforms": "windows"` or `"platforms": "mac"`
+- Example: macOS-only software documentation
+
+**Testing cross-platform documentation:**
+- Use multiple platforms: `"platforms": ["windows", "mac", "linux"]`
+- Example: Web application documentation
+
+**Testing browser-specific features:**
+- Specify the browser your users will use
+- Chrome for most web applications
+- Firefox for Firefox-specific features
+- WebKit/Safari for Safari-specific features or iOS web content
+
+### Choose based on test requirements
+
+**Browser capabilities:**
+- Use Chrome for video recording (only browser supporting the `record` action)
+- Use Chrome for the widest feature support
+- Use WebKit for testing Safari rendering
+
+**Headless vs. headed mode:**
+- `headless: true` for CI/CD pipelines (faster, no display needed)
+- `headless: false` for debugging and developing tests (see what's happening)
+- Note: WebKit/Safari doesn't support headless mode
+
+**Viewport and window size:**
+- Set specific dimensions for screenshot consistency
+- Test responsive designs with different viewport sizes
+- Ensure content fits within the visible area
+
+### Common context patterns
+
+**Development and debugging:**
+```json
+{
+  "platforms": ["windows", "mac", "linux"],
+  "browsers": {
+    "name": "chrome",
+    "headless": false,
+    "viewport": { "width": 1280, "height": 720 }
+  }
+}
+```
+
+**CI/CD pipeline:**
+```json
+{
+  "platforms": ["linux"],
+  "browsers": {
+    "name": "chrome",
+    "headless": true
+  }
+}
+```
+
+**Cross-browser testing:**
+```json
+[
+  {
+    "platforms": ["windows", "mac", "linux"],
+    "browsers": "chrome"
+  },
+  {
+    "platforms": ["windows", "mac", "linux"],
+    "browsers": "firefox"
+  },
+  {
+    "platforms": "mac",
+    "browsers": "webkit"
+  }
+]
+```
+
+**Video recording:**
+```json
+{
+  "platforms": ["windows", "mac", "linux"],
+  "browsers": {
+    "name": "chrome",
+    "headless": false
+  }
+}
+```
+
+## How to specify contexts
 
 You can specify contexts at three different levels, in order of precedence:
 
@@ -26,11 +117,82 @@ You can specify contexts at three different levels, in order of precedence:
 - **Spec**: Contexts defined in a [`specification`](/docs/references/schemas/specification) override config-level contexts and apply to all tests within that spec unless overridden.
 - **Test**: Contexts defined within a specific [`test`](/docs/references/schemas/test) override config- and spec-level contexts and apply only to that test.
 
-Contexts are defined using a `runOn` array containing context objects. For example:
+Contexts are defined using a `runOn` array containing context objects.
+
+### Specify contexts in a config file
+
+Add contexts to your configuration file to set defaults for all tests:
+
+```json title=".doc-detective.json"
+{
+  "input": ".",
+  "output": "./test-results",
+  "runOn": [
+    {
+      "platforms": ["windows", "mac", "linux"],
+      "browsers": "chrome"
+    }
+  ]
+}
+```
+
+All tests will use these contexts unless overridden at the spec or test level.
+
+### Specify contexts in a test specification
+
+Add contexts to a specification file to override config-level contexts for all tests in that spec:
+
+```json title="api-tests.spec.json"
+{
+  "runOn": [
+    {
+      "platforms": ["linux"],
+      "browsers": {
+        "name": "chrome",
+        "headless": true
+      }
+    }
+  ],
+  "tests": [
+    {
+      "id": "test-api-endpoints",
+      "steps": []
+    }
+  ]
+}
+```
+
+All tests in this spec file will run on Linux with headless Chrome, regardless of config-level contexts.
+
+### Specify contexts in a test
+
+Add contexts to a specific test to override both config and spec-level contexts:
 
 ```json
 {
-  ...
+  "tests": [
+    {
+      "id": "test-safari-specific-feature",
+      "runOn": [
+        {
+          "platforms": "mac",
+          "browsers": "webkit"
+        }
+      ],
+      "steps": []
+    }
+  ]
+}
+```
+
+This test will only run on macOS with WebKit, regardless of contexts defined at the config or spec level.
+
+### Specify multiple contexts
+
+To run the same test in multiple contexts, provide multiple context objects in the `runOn` array:
+
+```json
+{
   "runOn": [
     {
       "platforms": ["windows", "mac", "linux"],
@@ -42,12 +204,59 @@ Contexts are defined using a `runOn` array containing context objects. For examp
     },
     {
       "platforms": "mac",
-      "browsers": "webkit" // or "safari"
+      "browsers": "webkit"
     }
-  ],
-  ...
+  ]
 }
 ```
+
+Doc Detective will run the test once for each context that matches the current platform.
+
+### Use shorthand syntax
+
+For simple contexts, you can use string or array syntax:
+
+**Single browser, multiple platforms:**
+```json
+{
+  "platforms": ["windows", "mac", "linux"],
+  "browsers": "chrome"
+}
+```
+
+**Multiple browsers, multiple platforms:**
+```json
+{
+  "platforms": ["windows", "mac"],
+  "browsers": ["chrome", "firefox"]
+}
+```
+
+### Use detailed browser configuration
+
+For advanced browser settings, use object syntax:
+
+```json
+{
+  "platforms": ["windows", "mac", "linux"],
+  "browsers": {
+    "name": "chrome",
+    "headless": false,
+    "window": {
+      "width": 1280,
+      "height": 800
+    },
+    "viewport": {
+      "width": 1200,
+      "height": 720
+    }
+  }
+}
+```
+
+## Specifying contexts (legacy heading)
+
+**Note:** This section describes the same content as "How to specify contexts" above. See that section for the most current information.
 
 ## Browsers
 

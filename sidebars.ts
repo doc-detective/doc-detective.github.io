@@ -33,7 +33,12 @@ const sidebars: SidebarsConfig = {
         description:
           "Doc Detective tries to have sane defaults, but it also allows for a lot of customization. This section covers the various configuration options available to you.",
       },
-      items: ["get-started/config/contexts/index"],
+      items: [
+        "get-started/config/how-to-create-config-file",
+        "get-started/config/contexts/index",
+        "get-started/config/how-to-setup-openapi",
+        "get-started/config/additional-guides",
+      ],
     },
     {
       type: "category",

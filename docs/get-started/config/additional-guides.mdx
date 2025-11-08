@@ -1,0 +1,201 @@
+---
+title: Additional configuration how-to guides
+description: Future configuration guides to help users with specific configuration tasks.
+sidebar_label: Additional config guides
+---
+
+# Additional configuration how-to guides
+
+This page outlines additional configuration-related how-to guides that would be valuable for Doc Detective users. These represent common configuration scenarios and tasks that users may need help with.
+
+## Planned how-to guides
+
+### How to run tests in parallel
+
+**Purpose:** Show users how to configure concurrent test runners to speed up test execution.
+
+**Key topics:**
+- Setting `concurrentRunners` option
+- Understanding CPU core limits
+- Best practices for parallel execution
+- Handling shared resources between tests
+- Trade-offs between speed and resource usage
+
+**Related to:** `concurrentRunners` configuration option
+
+---
+
+### How to use environment variables in tests
+
+**Purpose:** Help users manage sensitive data and environment-specific values using environment variables.
+
+**Key topics:**
+- Creating and using `.env` files
+- Loading variables with `loadVariables`
+- Referencing variables in tests using `$VARIABLE_NAME` syntax
+- Managing different environments (dev, staging, production)
+- Security best practices for credentials
+
+**Related to:** `loadVariables` configuration option, [loadVariables action](/docs/get-started/actions/loadVariables)
+
+---
+
+### How to set up before and after hooks
+
+**Purpose:** Demonstrate how to run setup and cleanup tests automatically.
+
+**Key topics:**
+- Using `beforeAny` for test setup
+- Using `afterAll` for cleanup
+- Creating reusable setup specifications
+- Managing test data lifecycle
+- Handling failures in hooks
+
+**Related to:** `beforeAny` and `afterAll` configuration options
+
+---
+
+### How to configure file type detection
+
+**Purpose:** Show users how to customize which file types Doc Detective processes and how it detects tests in them.
+
+**Key topics:**
+- Understanding the `fileTypes` array
+- Using built-in file types (markdown, asciidoc, html, dita)
+- Extending existing file types
+- Creating custom file types
+- Configuring inline test detection patterns
+
+**Related to:** `fileTypes` configuration option, [input formats](/docs/get-started/inputs/overview), [custom inputs](/docs/get-started/inputs/custom)
+
+---
+
+### How to configure test detection in documentation
+
+**Purpose:** Help users control how Doc Detective finds and extracts tests from documentation files.
+
+**Key topics:**
+- Understanding `detectSteps` option
+- Configuring inline test markers
+- Using markup patterns for automatic test generation
+- Balancing automatic detection with explicit tests
+- Debugging detection issues
+
+**Related to:** `detectSteps` configuration option, [detected tests](/docs/get-started/tests/detected), [inline tests](/docs/get-started/tests/inline)
+
+---
+
+### How to debug failing tests
+
+**Purpose:** Show users how to use debug configuration options to troubleshoot test failures.
+
+**Key topics:**
+- Using `debug: true` for breakpoint support
+- Using `debug: "stepThrough"` for step-by-step execution
+- Setting `logLevel` to `debug` for detailed output
+- Running tests in headed mode for visual debugging
+- Understanding test output and error messages
+
+**Related to:** `debug` and `logLevel` configuration options
+
+---
+
+### How to set up multiple test environments
+
+**Purpose:** Demonstrate how to configure Doc Detective for different testing environments.
+
+**Key topics:**
+- Creating separate config files for each environment
+- Using the `--config` flag to select configurations
+- Managing environment-specific settings
+- Structuring configuration for CI/CD vs local development
+- Sharing common configuration across environments
+
+**Related to:** Overall configuration strategy, `--config` CLI flag
+
+---
+
+### How to configure browsers for testing
+
+**Purpose:** Deep dive into browser configuration options for different testing scenarios.
+
+**Key topics:**
+- Choosing between Chrome, Firefox, and WebKit
+- Configuring headless vs headed mode
+- Setting viewport and window dimensions
+- Browser-specific limitations and capabilities
+- Optimizing browser settings for CI/CD
+
+**Related to:** [Contexts](/docs/get-started/config/contexts/), browser configuration options
+
+---
+
+### How to test DITA documentation
+
+**Purpose:** Show users how to configure Doc Detective for DITA documentation testing.
+
+**Key topics:**
+- Understanding `processDitaMaps` option
+- Configuring DITA file type detection
+- Testing DITA topics and maps
+- Handling DITA-specific markup
+- Best practices for DITA documentation testing
+
+**Related to:** `processDitaMaps` configuration option, [DITA input format](/docs/get-started/inputs/dita)
+
+---
+
+### How to configure relative paths
+
+**Purpose:** Help users understand and configure how Doc Detective resolves relative paths.
+
+**Key topics:**
+- Understanding `relativePathBase` option
+- Differences between `cwd` and `file` base paths
+- When to use each approach
+- Impact on portability and CI/CD
+- Troubleshooting path resolution issues
+
+**Related to:** `relativePathBase` configuration option
+
+---
+
+### How to configure API origin
+
+**Purpose:** Show users how to set a default origin for relative URLs in tests.
+
+**Key topics:**
+- Using the `origin` configuration option
+- Testing localhost vs production
+- Combining `origin` with environment variables
+- Switching between environments
+- Best practices for URL management
+
+**Related to:** `origin` configuration option, [goTo action](/docs/get-started/actions/goTo), [httpRequest action](/docs/get-started/actions/httpRequest)
+
+---
+
+### How to enable website crawling
+
+**Purpose:** Demonstrate how to automatically test websites by crawling sitemaps.
+
+**Key topics:**
+- Understanding the `crawl` option
+- Testing sitemap.xml files
+- Automatic link checking across sites
+- Performance considerations for large sites
+- Filtering and limiting crawl scope
+
+**Related to:** `crawl` configuration option, [checkLink action](/docs/get-started/actions/checkLink)
+
+---
+
+## Contributing
+
+If you'd like to help write any of these guides, please:
+
+1. Review the [how-to template](/docs/contribute/docs/templates/how-to)
+2. Follow the contribution guidelines in the Contribute section
+3. Submit a pull request with your guide
+
+For questions or suggestions about these guides, please [open an issue](https://github.com/doc-detective/doc-detective.github.io/issues) on GitHub.
