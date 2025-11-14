@@ -14,6 +14,13 @@ import JSONSchemaViewer from "@theme/JSONSchemaViewer";
 
 The `httpRequest` action makes arbitrary HTTP calls, allowing you to interact with and validate APIs or other web services directly within your tests.
 
+**Quick reference:**
+- **Purpose:** Test API endpoints and web services
+- **Common use:** API documentation validation, integration testing
+- **Supported methods:** GET, POST, PUT, DELETE, PATCH, HEAD, OPTIONS
+- **Validation:** Status codes, response headers, response body
+- **Variables:** Can capture response data for use in subsequent steps
+
 You can specify a basic GET request using a string shorthand or use an object for more complex requests and validation:
 
 - **String Shorthand:** Provide the full URL directly as the value for the `httpRequest` key. This performs a basic GET request to that URL.

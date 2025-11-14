@@ -14,6 +14,13 @@ import JSONSchemaViewer from "@theme/JSONSchemaViewer";
 
 The `runShell` action runs a shell command or script on the local machine and evaluates the results, extending Doc Detective's testing capabilities to anything you can script.
 
+**Quick reference:**
+- **Purpose:** Execute shell commands, build scripts, run CLI tools
+- **Common use:** Build documentation, run tests, setup/cleanup, verify CLI outputs
+- **Shell:** Uses system default (cmd on Windows, bash/sh on Unix-like systems)
+- **Validation:** Exit codes, stdout/stderr output
+- **Variables:** Can capture command output for use in subsequent steps
+
 `runShell` uses your device's native shell (`cmd` on Windows, `bash` or other default shell on macOS/Linux) to execute the command in the context of the current user.
 
 You can specify the command directly as a string or use an object for more options:

@@ -1,0 +1,483 @@
+---
+title: Quick start for AI agents
+sidebar_label: Quick start for AI
+description: A structured guide for AI coding agents and chat interfaces to quickly understand and implement Doc Detective tests.
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Quick start for AI agents
+
+This guide provides structured information for AI coding agents and chat interfaces to understand and implement Doc Detective tests programmatically.
+
+## Core concepts at a glance
+
+Doc Detective validates documentation by running automated tests against your product. Tests are defined in JSON format and executed via CLI or Docker.
+
+**Key components:**
+- **Test specification**: JSON file containing one or more tests
+- **Test**: A sequence of steps to validate documentation
+- **Step**: A single action with specific parameters
+- **Action**: The operation to perform (navigate, find, click, screenshot, etc.)
+
+## Minimal working example
+
+```json title="minimal-test.spec.json"
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "action": "goTo",
+          "url": "https://example.com"
+        },
+        {
+          "action": "find",
+          "selector": "h1",
+          "elementText": "Example Domain"
+        },
+        {
+          "action": "screenshot",
+          "path": "example.png"
+        }
+      ]
+    }
+  ]
+}
+```
+
+**Run the test:**
+
+<Tabs>
+  <TabItem value="npx" label="NPX" default>
+
+```bash
+npx doc-detective --input minimal-test.spec.json
+```
+
+  </TabItem>
+  <TabItem value="docker" label="Docker">
+
+```bash
+docker run -v .:/app docdetective/docdetective --input /app/minimal-test.spec.json
+```
+
+  </TabItem>
+</Tabs>
+
+## Test specification structure
+
+All test specifications follow this JSON schema:
+
+```json
+{
+  "tests": [
+    {
+      "id": "optional-test-identifier",
+      "description": "Optional human-readable description",
+      "contexts": [
+        {
+          "app": {
+            "name": "chrome",
+            "options": {
+              "headless": true,
+              "width": 1280,
+              "height": 720
+            }
+          }
+        }
+      ],
+      "steps": [
+        {
+          "action": "actionName",
+          "description": "Optional step description"
+        }
+      ]
+    }
+  ]
+}
+```
+
+**Note:** Replace `"action": "actionName"` with the specific action and its parameters.
+
+**Required fields:**
+- `tests`: Array of test objects
+- `steps`: Array of step objects within each test
+- `action`: String identifying the action type in each step
+
+**Optional but recommended:**
+- `id`: Unique identifier for the test
+- `description`: Human-readable description for tests and steps
+- `contexts`: Array defining browser/app configurations
+
+## Common action patterns
+
+### Navigation
+
+```json
+{
+  "action": "goTo",
+  "url": "https://example.com/page"
+}
+```
+
+### Find element by text
+
+```json
+{
+  "action": "find",
+  "elementText": "Submit"
+}
+```
+
+### Find element by CSS selector
+
+```json
+{
+  "action": "find",
+  "selector": "#submit-button"
+}
+```
+
+### Find element and click
+
+```json
+{
+  "action": "find",
+  "selector": "button[type='submit']",
+  "click": true
+}
+```
+
+### Find element, click, and type
+
+```json
+{
+  "action": "find",
+  "selector": "#search-input",
+  "click": true,
+  "type": "search query"
+}
+```
+
+### Click element
+
+```json
+{
+  "action": "click",
+  "selector": ".nav-button"
+}
+```
+
+### Type text
+
+```json
+{
+  "action": "type",
+  "keys": "text to type"
+}
+```
+
+### Take screenshot
+
+```json
+{
+  "action": "screenshot",
+  "path": "screenshot.png"
+}
+```
+
+### Check link status
+
+```json
+{
+  "action": "checkLink",
+  "url": "https://example.com/api/endpoint"
+}
+```
+
+### HTTP request
+
+```json
+{
+  "action": "httpRequest",
+  "url": "https://api.example.com/endpoint",
+  "method": "GET",
+  "requestHeaders": {
+    "Authorization": "Bearer token"
+  }
+}
+```
+
+### Wait
+
+```json
+{
+  "action": "wait",
+  "duration": 2000
+}
+```
+
+### Run shell command
+
+```json
+{
+  "action": "runShell",
+  "command": "npm run build"
+}
+```
+
+## Complete action reference
+
+| Action | Purpose | Key Parameters |
+|--------|---------|----------------|
+| `goTo` | Navigate to URL | `url` (string) |
+| `find` | Locate element | `selector` (string), `elementText` (string), `click` (boolean), `type` (string) |
+| `click` | Click element | `selector` (string), `elementText` (string), `button` (string: "left", "right", "middle") |
+| `type` | Type keys | `keys` (string) |
+| `screenshot` | Capture screenshot | `path` (string) |
+| `checkLink` | Verify link status | `url` (string), `statusCodes` (array) |
+| `httpRequest` | Make HTTP request | `url` (string), `method` (string), `requestHeaders` (object), `requestData` (object) |
+| `wait` | Pause execution | `duration` (number in ms) |
+| `runShell` | Execute command | `command` (string), `workingDirectory` (string) |
+| `dragAndDrop` | Drag element | `selector` (string), `targetSelector` (string) |
+| `loadVariables` | Load env variables | `path` (string) |
+| `saveCookie` | Save browser cookie | `name` (string), `path` (string) |
+| `loadCookie` | Load browser cookie | `name` (string), `path` (string) |
+| `record` | Start video recording | `path` (string) |
+| `stopRecord` | Stop video recording | None |
+
+## Output format
+
+Doc Detective outputs results as JSON. Default output file: `testResults-<timestamp>.json`
+
+```json
+{
+  "summary": {
+    "specs": { "pass": 1, "fail": 0, "warning": 0, "skipped": 0 },
+    "tests": { "pass": 1, "fail": 0, "warning": 0, "skipped": 0 },
+    "contexts": { "pass": 1, "fail": 0, "warning": 0, "skipped": 0 },
+    "steps": { "pass": 4, "fail": 0, "warning": 0, "skipped": 0 }
+  },
+  "specs": [
+    {
+      "tests": [
+        {
+          "result": "PASS",
+          "contexts": [
+            {
+              "result": "PASS",
+              "steps": [
+                {
+                  "result": "PASS",
+                  "resultDescription": "Action completed successfully",
+                  "action": { /* action details */ },
+                  "stepId": "unique-id"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+**Result values:**
+- `PASS`: Step/test succeeded
+- `FAIL`: Step/test failed
+- `WARNING`: Non-critical issue
+- `SKIPPED`: Step/test not executed
+
+## Configuration file
+
+Create `.doc-detective.json` in your project root for default settings:
+
+```json title=".doc-detective.json"
+{
+  "input": "**/*.spec.json",
+  "output": "./test-results",
+  "contexts": [
+    {
+      "app": {
+        "name": "chrome",
+        "options": {
+          "headless": true,
+          "width": 1280,
+          "height": 720
+        }
+      }
+    }
+  ],
+  "runShell": {
+    "workingDirectory": "."
+  }
+}
+```
+
+## CLI arguments
+
+Override config file settings with CLI arguments:
+
+```bash
+npx doc-detective [options]
+```
+
+**Common options:**
+- `--input <path>`: Test file(s) to run (comma-separated or glob pattern)
+- `--config <path>`: Config file path (default: `.doc-detective.json`)
+- `--output <path>`: Output directory for results
+- `--recursive`: Search subdirectories
+- `--setup <path>`: Setup script to run before tests
+- `--cleanup <path>`: Cleanup script to run after tests
+
+## Error handling patterns
+
+When implementing Doc Detective tests programmatically:
+
+1. **Parse output JSON**: Check `summary.steps.fail` count
+2. **Handle failed steps**: Read `resultDescription` for error details
+3. **Retry logic**: Implement retries for flaky tests
+4. **Timeout handling**: Set appropriate `timeout` values on actions
+5. **Cleanup**: Ensure cleanup scripts run even on failure
+
+## Common use cases
+
+### Validate documentation tutorial
+
+```json
+{
+  "tests": [
+    {
+      "id": "tutorial-validation",
+      "steps": [
+        { "action": "goTo", "url": "https://example.com/tutorial" },
+        { "action": "find", "selector": "#step-1" },
+        { "action": "click", "selector": "#next-button" },
+        { "action": "find", "selector": "#step-2" },
+        { "action": "screenshot", "path": "tutorial-step-2.png" }
+      ]
+    }
+  ]
+}
+```
+
+### Test API documentation
+
+```json
+{
+  "tests": [
+    {
+      "id": "api-endpoint-test",
+      "steps": [
+        {
+          "action": "httpRequest",
+          "url": "https://api.example.com/users",
+          "method": "GET",
+          "statusCodes": [200],
+          "requestHeaders": {
+            "Content-Type": "application/json"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Validate form workflow
+
+```json
+{
+  "tests": [
+    {
+      "id": "form-submission",
+      "steps": [
+        { "action": "goTo", "url": "https://example.com/form" },
+        { "action": "find", "selector": "#name", "click": true, "type": "John Doe" },
+        { "action": "find", "selector": "#email", "click": true, "type": "john@example.com" },
+        { "action": "click", "selector": "#submit" },
+        { "action": "find", "selector": ".success-message" }
+      ]
+    }
+  ]
+}
+```
+
+## Selector strategies
+
+### CSS selectors (recommended)
+
+- By ID: `#element-id`
+- By class: `.class-name`
+- By attribute: `[data-testid="value"]`
+- By tag: `div`, `button`, `input`
+- Combined: `form input[type="submit"]`
+
+### XPath selectors
+
+- Absolute: `/html/body/div/button`
+- Relative: `//button[@id="submit"]`
+- By text: `//button[text()="Submit"]`
+
+### Best practices
+
+1. **Prefer specific selectors**: Use IDs or data-testid attributes
+2. **Avoid brittle selectors**: Don't rely on deep nesting or position
+3. **Use text matching**: Combine selectors with `elementText` for precision
+4. **Test selectors**: Validate selectors work in browser DevTools first
+
+## Variables and dynamic content
+
+Use environment variables for dynamic values:
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        { "action": "loadVariables", "path": ".env" },
+        { "action": "goTo", "url": "$BASE_URL" },
+        { "action": "find", "selector": "#username", "click": true, "type": "$USERNAME" }
+      ]
+    }
+  ]
+}
+```
+
+## Integration patterns
+
+### CI/CD pipeline
+
+```yaml
+# GitHub Actions example
+- name: Run Doc Detective tests
+  run: npx doc-detective --input tests/**/*.spec.json
+  
+- name: Upload results
+  uses: actions/upload-artifact@v3
+  with:
+    name: test-results
+    path: testResults-*.json
+```
+
+### Automated documentation testing
+
+```bash
+# Pre-deployment hook
+npx doc-detective --input docs/**/*.spec.json
+if [ $? -ne 0 ]; then
+  echo "Documentation tests failed"
+  exit 1
+fi
+```
+
+## Next steps
+
+- [Full action reference](/docs/category/actions) - Detailed parameters for each action
+- [Configuration schema](/docs/references/schemas/config) - Complete configuration options
+- [Test schema](/docs/references/schemas/specification) - Full test specification schema
+- [Selectors guide](/docs/category/selectors) - Advanced selector techniques
+- [Tutorials](/docs/category/tutorials) - Step-by-step examples
