@@ -1,0 +1,466 @@
+---
+title: How to configure file type detection
+description: Customize which file types Doc Detective processes and how it detects tests in them.
+sidebar_label: Configure file type detection
+---
+
+# How to configure file type detection
+
+Doc Detective can process various documentation formats and detect tests within them. This guide shows you how to configure file type detection to customize which files Doc Detective processes and how it finds tests.
+
+## Before you begin
+
+- Have Doc Detective installed
+- Understand [basic configuration](/docs/get-started/config/how-to-create-config-file)
+- Know which file types you want to process
+
+## Understanding file types
+
+Doc Detective supports several built-in file types:
+- **Markdown** (`.md`, `.markdown`, `.mdx`)
+- **AsciiDoc** (`.adoc`, `.asciidoc`)
+- **HTML** (`.html`, `.htm`)
+- **DITA** (`.dita`, `.xml`)
+
+Each file type has default patterns for detecting tests and inline statements.
+
+## Use built-in file types
+
+### Specify file types in config
+
+Add the `fileTypes` array to your configuration:
+
+```json title=".doc-detective.json"
+{
+  "input": "./docs",
+  "output": "./test-results",
+  "fileTypes": ["markdown", "html"]
+}
+```
+
+Doc Detective processes only the specified file types.
+
+### Default file types
+
+If you don't specify `fileTypes`, Doc Detective uses all built-in types:
+
+```json
+{
+  "fileTypes": ["markdown", "asciidoc", "html", "dita"]
+}
+```
+
+### Process only specific formats
+
+For a Markdown-only documentation site:
+
+```json
+{
+  "fileTypes": ["markdown"]
+}
+```
+
+## Extend existing file types
+
+### Add custom extensions
+
+Extend a built-in file type with additional extensions:
+
+```json
+{
+  "fileTypes": [
+    {
+      "extends": "markdown",
+      "extensions": ["md", "markdown", "mdx", "mdoc"]
+    }
+  ]
+}
+```
+
+### Customize inline test markers
+
+Override default test detection patterns:
+
+```json
+{
+  "fileTypes": [
+    {
+      "extends": "markdown",
+      "inlineStatements": {
+        "testStart": "<!-- TEST_START (.*?) -->",
+        "testEnd": "<!-- TEST_END -->",
+        "step": "<!-- STEP (.*?) -->"
+      }
+    }
+  ]
+}
+```
+
+### Add custom markup patterns
+
+Define how Doc Detective extracts tests from content:
+
+```json
+{
+  "fileTypes": [
+    {
+      "extends": "markdown",
+      "markup": [
+        {
+          "name": "api-endpoint",
+          "regex": "API:\\s*(GET|POST|PUT|DELETE)\\s+`([^`]+)`",
+          "actions": [
+            {
+              "httpRequest": {
+                "method": "$1",
+                "url": "$2"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+## Create custom file types
+
+### Define a new file type
+
+Create a completely custom file type:
+
+```json
+{
+  "fileTypes": [
+    {
+      "name": "custom-docs",
+      "extensions": ["cdoc", "custom"],
+      "testStartStatementOpen": "## TEST:",
+      "testStartStatementClose": "",
+      "testEndStatementOpen": "## END_TEST",
+      "testEndStatementClose": "",
+      "stepStatementOpen": "## STEP:",
+      "stepStatementClose": "",
+      "markup": [
+        {
+          "name": "navigate",
+          "regex": "@goto (.+)",
+          "actions": ["goTo"]
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Required properties
+
+- `name`: Descriptive name for the file type
+- `extensions`: Array of file extensions (without dots)
+
+### Optional properties
+
+- `testStartStatementOpen`/`testStartStatementClose`: Patterns for test start markers
+- `testEndStatementOpen`/`testEndStatementClose`: Patterns for test end markers
+- `stepStatementOpen`/`stepStatementClose`: Patterns for step markers
+- `markup`: Array of markup pattern definitions
+
+## Configure inline test detection
+
+### Understanding inline statements
+
+Inline statements are special comments that mark tests in documentation:
+
+```markdown
+<!-- test {"id": "my-test"} -->
+
+Navigate to the application:
+
+<!-- step {"action": "goTo", "url": "https://example.com"} -->
+
+<!-- test end -->
+```
+
+### Customize statement patterns
+
+Change how Doc Detective recognizes inline statements:
+
+```json
+{
+  "fileTypes": [
+    {
+      "extends": "markdown",
+      "inlineStatements": {
+        "testStart": "\\[TEST\\s*(.*?)\\]",
+        "testEnd": "\\[/TEST\\]",
+        "step": "\\[STEP\\s*(.*?)\\]",
+        "ignoreStart": "\\[IGNORE\\]",
+        "ignoreEnd": "\\[/IGNORE\\]"
+      }
+    }
+  ]
+}
+```
+
+### Use different markers
+
+Match your team's documentation style:
+
+```json
+{
+  "fileTypes": [
+    {
+      "extends": "markdown",
+      "inlineStatements": {
+        "testStart": ":::test\\s*(.*?)\\s*:::",
+        "testEnd": ":::endtest:::",
+        "step": ":::step\\s*(.*?)\\s*:::"
+      }
+    }
+  ]
+}
+```
+
+## Use markup patterns for automatic detection
+
+### What are markup patterns
+
+Markup patterns define how Doc Detective automatically generates tests from documentation content without inline markers.
+
+### Basic pattern structure
+
+```json
+{
+  "name": "pattern-name",
+  "regex": "pattern-to-match",
+  "actions": ["action-to-generate"]
+}
+```
+
+### Example: Detect code blocks
+
+Automatically test code examples:
+
+```json
+{
+  "fileTypes": [
+    {
+      "extends": "markdown",
+      "markup": [
+        {
+          "name": "bash-commands",
+          "regex": "```bash\\s+([^`]+)```",
+          "actions": [
+            {
+              "runShell": {
+                "command": "$1"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Example: Detect API calls
+
+Generate HTTP requests from formatted text:
+
+```json
+{
+  "markup": [
+    {
+      "name": "api-calls",
+      "regex": "API:\\s*(GET|POST)\\s+`([^`]+)`",
+      "actions": [
+        {
+          "httpRequest": {
+            "method": "$1",
+            "url": "$2"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Using capture groups
+
+Regular expression capture groups (`$1`, `$2`, etc.) are substituted into actions:
+
+```json
+{
+  "markup": [
+    {
+      "name": "click-buttons",
+      "regex": "Click the \\*\\*(.+?)\\*\\* button",
+      "actions": [
+        {
+          "click": {
+            "selector": "aria/$1[role='button']"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+Matches: "Click the **Submit** button"
+
+Generates:
+```json
+{
+  "click": {
+    "selector": "aria/Submit[role='button']"
+  }
+}
+```
+
+## Balance automatic detection with explicit tests
+
+### When to use automatic detection
+
+Use markup patterns when:
+- Documentation follows consistent patterns
+- Tests are simple and predictable
+- You want to minimize manual test writing
+
+### When to use explicit tests
+
+Use inline test markers when:
+- Tests are complex or customized
+- You need precise control over test behavior
+- Documentation patterns vary significantly
+
+### Combine both approaches
+
+Use automatic detection for simple cases and explicit tests for complex ones:
+
+```json
+{
+  "fileTypes": [
+    {
+      "extends": "markdown",
+      "inlineStatements": {
+        "testStart": "<!-- test (.*?) -->",
+        "testEnd": "<!-- test end -->",
+        "step": "<!-- step (.*?) -->"
+      },
+      "markup": [
+        {
+          "name": "simple-links",
+          "regex": "\\[Check this link\\]\\(([^)]+)\\)",
+          "actions": [
+            {
+              "checkLink": {
+                "url": "$1"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+## Example configurations
+
+### Markdown with custom markers
+
+```json title=".doc-detective.json"
+{
+  "fileTypes": [
+    {
+      "extends": "markdown",
+      "extensions": ["md", "mdx"],
+      "inlineStatements": {
+        "testStart": ":::test-start\\s*(.*?)\\s*:::",
+        "testEnd": ":::test-end:::",
+        "step": ":::step\\s*(.*?)\\s*:::"
+      },
+      "markup": [
+        {
+          "name": "api-calls",
+          "regex": "\\*\\*API:\\*\\*\\s*(GET|POST)\\s+`([^`]+)`",
+          "actions": [
+            {
+              "httpRequest": {
+                "method": "$1",
+                "url": "$2"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Multiple custom file types
+
+```json title=".doc-detective.json"
+{
+  "fileTypes": [
+    "markdown",
+    {
+      "name": "custom-wiki",
+      "extensions": ["wiki"],
+      "testStartStatementOpen": "{{TEST",
+      "testStartStatementClose": "}}",
+      "testEndStatementOpen": "{{END_TEST}}",
+      "testEndStatementClose": ""
+    },
+    {
+      "name": "restructuredtext",
+      "extensions": ["rst"],
+      "testStartStatementOpen": ".. test::",
+      "testStartStatementClose": "",
+      "testEndStatementOpen": ".. test-end::",
+      "testEndStatementClose": ""
+    }
+  ]
+}
+```
+
+## Troubleshooting
+
+### Tests not detected in files
+
+**Cause:** File extension not registered or patterns don't match.
+
+**Solution:**
+- Verify file extension is in the `extensions` array
+- Check that patterns match your documentation syntax
+- Enable debug logging to see detection details
+
+### Too many false positives
+
+**Cause:** Markup patterns too broad.
+
+**Solution:**
+- Make regex patterns more specific
+- Add context requirements to patterns
+- Use explicit test markers instead
+
+### Pattern substitution not working
+
+**Cause:** Capture groups not matching expected content.
+
+**Solution:**
+- Test regex patterns using a regex tester
+- Verify capture group numbers are correct
+- Check for proper escaping of special characters
+
+## What's next
+
+- Learn about [test detection in documentation](/docs/get-started/config/how-to-configure-test-detection)
+- Explore [custom input formats](/docs/get-started/inputs/custom) for detailed examples
+- See [detected tests](/docs/get-started/tests/detected) for automatic test generation
+- Review the [config reference](/docs/references/schemas/config) for all options
