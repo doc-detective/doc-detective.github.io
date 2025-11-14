@@ -28,6 +28,7 @@ You can specify a basic GET request using a string shorthand or use an object fo
   - `response`: (Optional) An object defining expected response validation:
     - `headers`: (Optional) Key-value pairs for expected response headers. Values must be strings.
     - `body`: (Optional) Expected response body. Can be a string or JSON object.
+    - `required`: (Optional) Array of field paths that must exist in the response body. Uses dot notation for nested fields (for example, `user.name`) and bracket notation for array indices (for example, `items[0].id`). Fields can have any value, including `null`.
   - `statusCodes`: (Optional) An array of acceptable HTTP status codes. If the response code is not in this list, the step fails (default: `[200]`).
   - `openApi`: (Optional) Define the request based on an OpenAPI definition. Can be a string (operation ID) or an object:
     - `name`: (Optional) Name of the registered OpenAPI definition (if multiple are loaded).
@@ -281,6 +282,115 @@ Assumes an OpenAPI definition with operation ID `getUserById` is loaded.
   ]
 }
 ```
+
+### Validate fields with dynamic values
+
+When testing APIs that return unpredictable values (like timestamps, UUIDs, or session tokens), you can verify that fields exist without asserting their exact values.
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Verify user response includes required fields.",
+          "httpRequest": {
+            "url": "https://api.example.com/users/123",
+            "method": "GET",
+            "response": {
+              "required": ["id", "email", "createdAt", "sessionToken"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Validate nested fields and arrays
+
+Use dot notation for nested object fields and bracket notation for array elements to validate complex response structures.
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Verify nested user profile fields exist.",
+          "httpRequest": {
+            "url": "https://api.example.com/users/123",
+            "method": "GET",
+            "response": {
+              "required": [
+                "user.profile.name",
+                "user.profile.avatar",
+                "user.settings.notifications"
+              ]
+            }
+          }
+        },
+        {
+          "description": "Verify array elements contain required fields.",
+          "httpRequest": {
+            "url": "https://api.example.com/orders",
+            "method": "GET",
+            "response": {
+              "required": [
+                "orders[0].id",
+                "orders[0].total",
+                "orders[0].items[0].productId"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Combine required fields with body validation
+
+You can use both `response.required` and `response.body` together to validate that certain fields exist while asserting specific values for others.
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Validate both specific values and required fields.",
+          "httpRequest": {
+            "url": "https://api.example.com/users",
+            "method": "POST",
+            "request": {
+              "body": {
+                "username": "testuser",
+                "role": "admin"
+              }
+            },
+            "response": {
+              "required": ["sessionToken", "expiresAt", "user.id"],
+              "body": {
+                "status": "success",
+                "user": {
+                  "role": "admin"
+                }
+              }
+            },
+            "statusCodes": [201]
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+> **Note:** Fields with `null`, `""`, `0`, or `false` values are considered to exist and will pass validation.
+
 
 ## Schema reference
 
