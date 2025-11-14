@@ -389,6 +389,9 @@ You can use both `response.required` and `response.body` together to validate th
 }
 ```
 
+> **Note:** Fields with `null`, `""`, `0`, or `false` values are considered to exist and will pass validation.
+
+
 ## Schema reference
 
 <JSONSchemaViewer schema={ schemas.httpRequest_v3 } />
