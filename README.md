@@ -71,7 +71,7 @@ npm run serve       # Preview production build locally
 npm run doc-detective  # Run documentation tests
 ```
 
-**📖 [Full local development guide →](https://doc-detective.com/docs/contributing/local-development)**
+**📖 [Full local development guide →](https://doc-detective.com/docs/contribute/docs/local-development)**
 
 ## 📝 Documentation structure
 
@@ -94,7 +94,7 @@ docs/
 Doc Detective tests its own documentation! Learn about our testing approach:
 
 - **Run tests**: `npm run doc-detective`
-- **Write tests**: See our [Testing Guide](https://doc-detective.com/docs/contributing/testing)
+- **Write tests**: See our [Testing Guide](https://doc-detective.com/docs/contribute/docs/testing)
 - **Test files**: Look for `.spec.json` files throughout the docs
 
 ## 🤔 Questions or ideas?
