@@ -21,7 +21,7 @@ Fix typos, broken links, or small issues directly in your browser:
 Add examples, troubleshooting tips, or new content:
 
 - Follow our [Standard Contributions Guide](https://doc-detective.com/docs/contribute/docs/standard-contributions)
-- Use our [content templates](https://doc-detective.com/docs/contributing/templates/) for structure
+- Use our [content templates](https://doc-detective.com/docs/category/content-templates) for structure
 - Set up [local development](#local-development) (optional)
 
 ### Substantial contributions (30+ minutes)
