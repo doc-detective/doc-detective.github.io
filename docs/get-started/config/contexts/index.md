@@ -1,7 +1,7 @@
 ---
 title: Contexts
 layout: default
-nav_order: 1
+nav_order: 2
 parent: Configuration
 description: Define the contexts (platform and browser combinations) where tests should run.
 ---

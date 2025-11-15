@@ -14,6 +14,7 @@ input | one of:<br/>- string<br/>- array of string | Optional. Path(s) to test s
 output | string | Optional. Path of the directory in which to store the output of Doc Detective commands. If a file path is specified, Doc Detective attempts to honor the file name specified, but file path behavior is controlled by the configured reporters. | `.`
 recursive | boolean | Optional. If `true` searches `input`, `setup`, and `cleanup` paths recursively for test specifications and source files. | `true`
 relativePathBase | string | Optional. Whether paths should be interpreted as relative to the current working directory (`cwd`) or to the file in which they're specified (`file`).<br/><br/>Accepted values: `cwd`, `file` | `file`
+concurrentRunners | one of:<br/>- boolean<br/>- number | Optional. Number of concurrent test runners to use for parallel execution. If set to `true`, automatically detects CPU count and caps at 4 runners. If set to a number, uses that exact value with no cap. | `1`
 loadVariables | string | Optional. Load environment variables from the specified `.env` file. | 
 origin | string | Optional. Default protocol and domain to use for relative URLs. | 
 beforeAny | one of:<br/>- string<br/>- array of string | Optional. Path(s) to test specifications to perform before those specified by `input`. Useful for setting up testing environments. | 
@@ -46,6 +47,22 @@ debug | one of:<br/>- boolean<br/>- string | Optional. Enable debugging mode. `t
   "fileTypes": [
     "markdown"
   ]
+}
+```
+
+```json
+{
+  "input": "tests/",
+  "concurrentRunners": true,
+  "logLevel": "info"
+}
+```
+
+```json
+{
+  "input": "tests/",
+  "concurrentRunners": 8,
+  "logLevel": "debug"
 }
 ```
 
