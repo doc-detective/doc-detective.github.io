@@ -30,6 +30,14 @@ You must specify the `runCode` action using an object format with the following 
   - `stdio`: (Optional) A string or regular expression to validate against the code's combined stdout and stderr. If the output doesn't match, the step fails. Regex must start and end with `/` (for example, `/^hello world.*/`).
   - *Output Saving:* You can also save the code's output using `path`, `directory`, `maxVariation`, and `overwrite` properties. See the [`runCode`](/docs/references/schemas/runcode) reference for details.
 
+**Output Regression Testing:** If `path` is specified and `maxVariation` is set, and a reference file exists at the target `path`, the action compares the new code output to the reference file content. If the difference is within `maxVariation`, the step passes. If it exceeds the threshold, the step returns WARNING, and behavior depends on the `overwrite` setting:
+
+- `"never"` (default): The reference file is not modified.
+- `"always"`: The reference file is always replaced with the new output.
+- `"aboveVariation"`: The reference file is replaced only if the difference exceeds `maxVariation`, allowing you to capture updated artifacts for review.
+
+This allows tests to continue while flagging output changes that exceed your acceptable variation threshold.
+
 **Setting Variables:** To capture output into variables for later steps, use the step-level `variables` object. You can assign values based on the code's output using expressions like `$$stdio.stdout`, `$$stdio.stderr`, or `$$exitCode`.
 
 > For comprehensive options, see the [`runCode`](/docs/references/schemas/runcode) reference.
