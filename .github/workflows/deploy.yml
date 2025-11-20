@@ -13,10 +13,10 @@ jobs:
     name: Build Docusaurus
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 #v6.0.0
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 #v6.0.0
         with:
           cache: npm
 
@@ -31,7 +31,7 @@ jobs:
           POSTHOG_API_KEY: ${{ secrets.POSTHOG_API_KEY }}
 
       - name: Upload Build Artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b #v4.0.0
         with:
           path: build
 
@@ -53,7 +53,7 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e #v4.0.5
 
   sync_inkeep:
     name: Sync Content with Inkeep
@@ -65,7 +65,7 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 #v6.0.0
     - name: Check for changes
       uses: dorny/paths-filter@v2
       id: changes
@@ -75,7 +75,7 @@ jobs:
             - 'docs/**'      
     - name: Sync Sources
       if: steps.changes.outputs.docs == 'true'
-      uses: inkeep/pr-commenter-action@v10
+      uses: inkeep/pr-commenter-action@84ccc7c74b72f628ec7e2b572e0cb7afd5898594 #v10
       env:
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       with:
