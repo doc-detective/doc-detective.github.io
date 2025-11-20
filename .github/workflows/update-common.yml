@@ -10,7 +10,9 @@ on:
         description: 'The doc-detective-common version.'
         required: false
         default: 'latest'
-
+defaults:
+  run:
+    shell: bash
 jobs:
   update:
     permissions:

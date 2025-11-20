@@ -6,7 +6,9 @@ on:
       - main
     # Review gh actions docs if you want to further define triggers, paths, etc
     # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#on
-
+defaults:
+  run:
+    shell: bash
 jobs:
   build:
     name: Test deployment
