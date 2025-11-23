@@ -145,6 +145,11 @@ const sidebars: SidebarsConfig = {
         {
           type: "category",
           label: "Content Templates",
+          link: {
+            type: "generated-index",
+            description:
+              "Use these templates as starting points when creating new documentation. Each template follows The Good Docs Project guidelines and includes guidance on structure, content, and best practices.",
+          },
           items: [
             "contribute/docs/templates/how-to",
             "contribute/docs/templates/tutorial",

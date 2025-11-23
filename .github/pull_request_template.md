@@ -44,8 +44,8 @@ Closes # Related to #
 <!-- Mark items as complete with [x] -->
 
 - [ ] I have signed the [Contributor License Agreement](https://cla-assistant.io/doc-detective/doc-detective.github.io)
-- [ ] My changes follow the [contribution guidelines](/docs/contributing/)
-- [ ] I have used the appropriate [content template](/docs/contributing/templates/) (if applicable)
+- [ ] My changes follow the [contribution guidelines](/docs/contribute/docs)
+- [ ] I have used the appropriate [content template](/docs/category/content-templates) (if applicable)
 - [ ] All new content files use `.mdx` extension
 - [ ] Front matter is included on all new pages
 - [ ] Links use absolute paths (e.g., `/docs/page` not `../page`)
@@ -61,6 +61,6 @@ Closes # Related to #
 
 **For reviewers:**
 
-- See [Review Process](/docs/contributing/review-process) for guidelines
+- See [Review Process](/docs/contribute/docs/review-process) for guidelines
 - Focus on technical accuracy and user value
 - Don't block on minor style issues—automation handles those
