@@ -34,6 +34,66 @@ Tests tell Doc Detective what actions to perform, how, and where. Tests are made
   - [**type**](/docs/get-started/actions/type): Type keys. To type special keys, begin and end the string with `$` and use the special key's enum. For example, to type the Escape key, enter `$ESCAPE$`.
   - [**wait**](/docs/get-started/actions/wait): Pause before performing the next action.
 
+## Test results
+
+When Doc Detective runs a test, the result is one of three statuses:
+
+- **PASS**: The test completed successfully.
+- **FAIL**: The test encountered an error or assertion failure.
+- **SKIPPED**: The test couldn't run in the current environment.
+
+### Skipped tests
+
+When Doc Detective runs tests, it checks if each [context](/docs/get-started/config/contexts) matches your current environment. If a context specifies a platform or browser that doesn't match the system running the test, Doc Detective skips that context and its associated test.
+
+Doc Detective skips tests when:
+
+- **Platform mismatch**: The context specifies a platform (Windows, macOS, or Linux) that doesn't match your current operating system.
+- **Browser unavailable**: The context specifies a browser that isn't installed or available on your system.
+- **All contexts skipped**: If all contexts for a test are skipped, the entire test is marked as SKIPPED (not PASS).
+
+When a test is skipped, the results show a SKIPPED status in the output JSON:
+
+```json
+{
+  "summary": {
+    "tests": {
+      "pass": 0,
+      "fail": 0,
+      "warning": 0,
+      "skipped": 1  // Test was skipped
+    },
+    "contexts": {
+      "pass": 0,
+      "fail": 0,
+      "warning": 0,
+      "skipped": 1  // Context didn't match environment
+    }
+  },
+  "specs": [
+    {
+      "result": "SKIPPED",
+      "tests": [
+        {
+          "result": "SKIPPED",
+          "contexts": [
+            {
+              "result": "SKIPPED",
+              "platform": "windows",  // Current platform: linux
+              "browser": {
+                "name": "chrome"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+This keeps your test reporting accurate and prevents skipped tests from incorrectly appearing as passing.
+
 ## Define a test
 
 You can define test specs in multiple ways:

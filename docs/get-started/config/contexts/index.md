@@ -205,60 +205,6 @@ This context targets Windows or Linux:
 }
 ```
 
-## Skipped tests
-
-When Doc Detective runs tests, it checks if each context matches your current environment. If a context specifies a platform or browser that doesn't match the system running the test, Doc Detective skips that context and its associated test.
-
-Doc Detective skips tests when:
-
-- **Platform mismatch**: The context specifies a platform (Windows, macOS, or Linux) that doesn't match your current operating system.
-- **Browser unavailable**: The context specifies a browser that isn't installed or available on your system.
-- **All contexts skipped**: If all contexts for a test are skipped, the entire test is marked as SKIPPED (not PASS).
-
-### Test results
-
-When a test is skipped, the results show a SKIPPED status in the output JSON:
-
-```json
-{
-  "summary": {
-    "tests": {
-      "pass": 0,
-      "fail": 0,
-      "warning": 0,
-      "skipped": 1  // Test was skipped
-    },
-    "contexts": {
-      "pass": 0,
-      "fail": 0,
-      "warning": 0,
-      "skipped": 1  // Context didn't match environment
-    }
-  },
-  "specs": [
-    {
-      "result": "SKIPPED",
-      "tests": [
-        {
-          "result": "SKIPPED",
-          "contexts": [
-            {
-              "result": "SKIPPED",
-              "platform": "windows",  // Current platform: linux
-              "browser": {
-                "name": "chrome"
-              }
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}
-```
-
-This keeps your test reporting accurate and prevents skipped tests from incorrectly appearing as passing.
-
 ## Examples
 
 ### Basic Contexts
