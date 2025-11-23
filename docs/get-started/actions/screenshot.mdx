@@ -26,10 +26,17 @@ You can specify the screenshot action in several ways:
     - `never`: Never overwrite the reference image (default).
     - `always`: Always overwrite the reference image with the new capture.
     - `aboveVariation`: Overwrite only if the visual difference exceeds `maxVariation`.
-  - `crop`: (Optional) Crop the screenshot to a specific element. Provide a CSS/XPath selector string (for example, `"#myElement"`) or an object:
-    - `selector`: (Required in object) The [CSS selector](/docs/get-started/selectors/css) or [XPath selector](/docs/get-started/selectors/xpath) of the element to crop to.
-    - `elementText`: (Optional) Display text to further specify the element if the selector isn't unique.
+  - `crop`: (Optional) Crop the screenshot to a specific element. Provide a CSS/XPath selector string (for example, `"#myElement"`) or an object with element finding properties:
+    - `selector`: (Optional) The [CSS selector](/docs/get-started/selectors/css) or [XPath selector](/docs/get-started/selectors/xpath) of the element to crop to.
+    - `elementText`: (Optional) Display text of the element to crop to.
+    - `elementId`: (Optional) The ID attribute of the element. Supports regex patterns using `/pattern/` syntax.
+    - `elementTestId`: (Optional) The `data-testid` attribute of the element. Supports regex patterns.
+    - `elementClass`: (Optional) Class name or array of class names that the element must have.
+    - `elementAttribute`: (Optional) Object of attribute key-value pairs that the element must have.
+    - `elementAria`: (Optional) The computed accessible name of the element. Supports regex patterns.
     - `padding`: (Optional) Add padding around the element before cropping. Can be a single number (all sides) or an object `{ top, right, bottom, left }`.
+    
+    If you specify multiple element finding properties, the element must match all of them. For complete details on element finding, see the [`find`](/docs/get-started/actions/find) action.
 
 **Visual Regression Testing:** If `maxVariation` is set and a reference image exists at the target `path`, the action compares the new screenshot to the reference. If the difference is within `maxVariation`, the step passes. If it exceeds the threshold, the step returns WARNING, and behavior depends on the `overwrite` setting.
 
