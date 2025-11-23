@@ -1,0 +1,47 @@
+name: Optimize new SVG images
+on:
+  pull_request:
+    branches:
+      - main
+defaults:
+  run:
+    shell: bash
+jobs:
+  svgs:
+    name: Optimize SVGs
+    runs-on: ubuntu-latest
+    permissions:
+      # Give the default GITHUB_TOKEN write permission to commit and push the
+      # added or changed files to the repository.
+      contents: write
+    steps:
+    
+      - name: Checkout repository
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 #v6.0.0
+
+      - name: Check for changed SVGs
+        uses: tj-actions/changed-files@24d32ffd492484c1d75e0c0b894501ddb9d30d62 # v47.0.0
+        id: changed-files
+        with:
+          safe_output: false # set to false because we are using an environment variable to store the output and avoid command injection.
+          files: |
+            **/*.svg
+
+      - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 #v6.0.0
+        if: steps.changed-files.outputs.any_changed == 'true'
+
+      - name: Optimize files
+        if: steps.changed-files.outputs.any_changed == 'true'
+        env:
+          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+        run: |
+          npm install -g svgo
+          for file in ${ALL_CHANGED_FILES}; do
+            npx svgo --multipass "$file" --output "$file"
+          done
+
+      - name: Commit optimized SVGs
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: stefanzweifel/git-auto-commit-action@28e16e81777b558cc906c8750092100bbb34c5e3 #v7.0.0
+        with:
+          commit_message: "auto: optimize SVGs"
