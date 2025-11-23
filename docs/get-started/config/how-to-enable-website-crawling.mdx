@@ -1,0 +1,263 @@
+---
+title: How to enable website crawling
+description: Automatically test websites by crawling sitemaps.
+sidebar_label: Enable website crawling
+---
+
+# How to enable website crawling
+
+Doc Detective can automatically discover and test pages by crawling `sitemap.xml` files. This guide shows you how to enable and configure website crawling.
+
+## Before you begin
+
+- Have Doc Detective installed
+- Have a website with a `sitemap.xml` file
+- Understand [basic configuration](/docs/get-started/config/how-to-create-config-file)
+
+## Enable crawling
+
+### Basic configuration
+
+```json title=".doc-detective.json"
+{
+  "input": "https://example.com/sitemap.xml",
+  "crawl": true
+}
+```
+
+Doc Detective:
+1. Fetches the sitemap
+2. Finds all URLs
+3. Checks each URL
+
+### Combined with local tests
+
+```json
+{
+  "input": [
+    "./docs",
+    "https://example.com/sitemap.xml"
+  ],
+  "crawl": true
+}
+```
+
+Tests both local documentation and crawled website.
+
+## How crawling works
+
+### Sitemap structure
+
+```xml title="sitemap.xml"
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://example.com/</loc>
+  </url>
+  <url>
+    <loc>https://example.com/about</loc>
+  </url>
+  <url>
+    <loc>https://example.com/products</loc>
+  </url>
+</urlset>
+```
+
+### What Doc Detective does
+
+For each URL in the sitemap, Doc Detective:
+- Checks if the page loads (HTTP 200)
+- Optionally checks links on the page
+- Reports any errors
+
+## Test specific sitemaps
+
+### Single sitemap
+
+```json
+{
+  "input": "https://example.com/sitemap.xml",
+  "crawl": true
+}
+```
+
+### Multiple sitemaps
+
+```json
+{
+  "input": [
+    "https://example.com/sitemap.xml",
+    "https://blog.example.com/sitemap.xml",
+    "https://docs.example.com/sitemap.xml"
+  ],
+  "crawl": true
+}
+```
+
+### Sitemap index
+
+If your sitemap is an index pointing to other sitemaps:
+
+```xml title="sitemap-index.xml"
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>https://example.com/sitemap-main.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://example.com/sitemap-blog.xml</loc>
+  </sitemap>
+</sitemapindex>
+```
+
+Doc Detective follows the index automatically.
+
+## Performance considerations
+
+### Limit concurrency
+
+```json
+{
+  "input": "https://example.com/sitemap.xml",
+  "crawl": true,
+  "concurrentRunners": 2
+}
+```
+
+Prevents overwhelming the server with too many simultaneous requests.
+
+### Large sitemaps
+
+For sites with thousands of pages:
+
+```json
+{
+  "input": "https://example.com/sitemap.xml",
+  "crawl": true,
+  "concurrentRunners": 4,
+  "logLevel": "error"
+}
+```
+
+- Use more runners for faster execution
+- Set log level to `error` to reduce output
+
+## Combined with link checking
+
+### Check all links on crawled pages
+
+```json
+{
+  "input": "https://example.com/sitemap.xml",
+  "crawl": true,
+  "fileTypes": ["html"],
+  "detectSteps": true
+}
+```
+
+With appropriate markup patterns, Doc Detective can check links on each page.
+
+### Custom link checking
+
+```json
+{
+  "input": "https://example.com/sitemap.xml",
+  "crawl": true,
+  "fileTypes": [
+    {
+      "extends": "html",
+      "markup": [
+        {
+          "name": "links",
+          "regex": "<a\\s+href=\"([^\"]+)\"",
+          "actions": [
+            {
+              "checkLink": {
+                "url": "$1"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+## Use cases
+
+### Continuous monitoring
+
+Check that all pages load:
+
+```json title=".doc-detective.ci.json"
+{
+  "input": "https://example.com/sitemap.xml",
+  "crawl": true,
+  "logLevel": "error"
+}
+```
+
+Run in CI/CD to catch broken pages.
+
+### Documentation sites
+
+Test documentation structure:
+
+```json
+{
+  "input": "https://docs.example.com/sitemap.xml",
+  "crawl": true,
+  "fileTypes": ["html"]
+}
+```
+
+### Combined testing
+
+```json
+{
+  "input": [
+    "./tests/critical-paths.spec.json",
+    "https://example.com/sitemap.xml"
+  ],
+  "crawl": true
+}
+```
+
+Run explicit tests plus automatic crawling.
+
+## Troubleshooting
+
+### Crawling too slow
+
+**Cause:** Too many pages or low concurrency.
+
+**Solution:**
+- Increase `concurrentRunners`
+- Test specific sitemaps instead of index
+- Filter sitemap to critical pages
+
+### Rate limiting errors
+
+**Cause:** Too many concurrent requests.
+
+**Solution:**
+- Reduce `concurrentRunners`
+- Add delays between requests
+- Check with site administrator
+
+### Some pages not crawled
+
+**Cause:** Not in sitemap or blocked by robots.txt.
+
+**Solution:**
+- Verify pages are in sitemap
+- Check robots.txt allows crawling
+- Test pages explicitly in separate tests
+
+## What's next
+
+- Learn about [running tests in parallel](/docs/get-started/config/how-to-run-tests-in-parallel)
+- Explore [checkLink action](/docs/get-started/actions/checkLink) for link checking
+- Configure [file type detection](/docs/get-started/config/how-to-configure-file-type-detection)
+- See the [config reference](/docs/references/schemas/config)

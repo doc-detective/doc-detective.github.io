@@ -1,0 +1,353 @@
+---
+title: How to set up an OpenAPI integration
+description: Configure Doc Detective to test APIs using OpenAPI specifications.
+sidebar_label: Set up OpenAPI integration
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# How to set up an OpenAPI integration
+
+Doc Detective can test APIs by reading OpenAPI (formerly Swagger) specification files. This guide shows you how to configure OpenAPI integration in your Doc Detective configuration file.
+
+## Before you begin
+
+- Have Doc Detective installed
+- Have access to an OpenAPI specification file (local or URL)
+- Understand [how to create a configuration file](/docs/get-started/config/how-to-create-config-file)
+
+## What is OpenAPI integration?
+
+OpenAPI integration lets Doc Detective:
+
+- **Validate API requests and responses** against your OpenAPI schema
+- **Use example data** from your OpenAPI specification in tests
+- **Mock API responses** for testing when the API isn't available
+- **Reference operations** by `operationId` instead of defining full HTTP requests
+
+This makes API testing easier and ensures your documentation stays in sync with your API specification.
+
+## Add OpenAPI to your configuration
+
+### Step 1: Define the OpenAPI integration
+
+Add an `integrations.openApi` array to your configuration file. Each entry represents an OpenAPI specification:
+
+```json title=".doc-detective.json"
+{
+  "integrations": {
+    "openApi": [
+      {
+        "name": "MyAPI",
+        "descriptionPath": "https://api.example.com/openapi.json"
+      }
+    ]
+  }
+}
+```
+
+- `name`: A unique identifier you'll use to reference this API in tests
+- `descriptionPath`: URL or local file path to the OpenAPI specification
+
+### Step 2: Use the OpenAPI integration in tests
+
+Reference the OpenAPI integration in your test steps using the `openApi` object:
+
+```json title="api-test.spec.json"
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "action": "httpRequest",
+          "openApi": {
+            "name": "MyAPI",
+            "operationId": "getUserById"
+          },
+          "requestParams": {
+            "userId": "123"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+Doc Detective automatically:
+- Finds the operation with `operationId: "getUserById"` in your OpenAPI spec
+- Constructs the correct URL and HTTP method
+- Validates the request and response against the schema
+
+## Configure OpenAPI options
+
+### Set default headers
+
+Add authentication or other headers that apply to all requests for this API:
+
+```json
+{
+  "integrations": {
+    "openApi": [
+      {
+        "name": "MyAPI",
+        "descriptionPath": "https://api.example.com/openapi.json",
+        "headers": {
+          "Authorization": "Bearer $API_TOKEN",
+          "X-API-Version": "v2"
+        }
+      }
+    ]
+  }
+}
+```
+
+Use `$VARIABLE_NAME` syntax to reference environment variables loaded via `loadVariables`.
+
+### Use example data from OpenAPI
+
+Configure Doc Detective to automatically use example data from your OpenAPI specification:
+
+```json
+{
+  "integrations": {
+    "openApi": [
+      {
+        "name": "MyAPI",
+        "descriptionPath": "https://api.example.com/openapi.json",
+        "useExample": "both"
+      }
+    ]
+  }
+}
+```
+
+Options for `useExample`:
+- `"request"`: Use examples for request data
+- `"response"`: Use examples for response data
+- `"both"`: Use examples for both requests and responses
+- `"none"` (default): Don't use examples
+
+### Choose a specific example
+
+If your OpenAPI spec has multiple examples, specify which one to use:
+
+```json
+{
+  "integrations": {
+    "openApi": [
+      {
+        "name": "MyAPI",
+        "descriptionPath": "https://api.example.com/openapi.json",
+        "useExample": "both",
+        "exampleKey": "success-case"
+      }
+    ]
+  }
+}
+```
+
+### Set a default server
+
+If your OpenAPI spec defines multiple servers, specify which one to use:
+
+```json
+{
+  "integrations": {
+    "openApi": [
+      {
+        "name": "MyAPI",
+        "descriptionPath": "https://api.example.com/openapi.json",
+        "server": "https://staging.example.com"
+      }
+    ]
+  }
+}
+```
+
+### Control schema validation
+
+Configure how strictly Doc Detective validates requests and responses:
+
+```json
+{
+  "integrations": {
+    "openApi": [
+      {
+        "name": "MyAPI",
+        "descriptionPath": "https://api.example.com/openapi.json",
+        "validateAgainstSchema": "response"
+      }
+    ]
+  }
+}
+```
+
+Options:
+- `"both"` (default): Validate both requests and responses
+- `"request"`: Only validate requests
+- `"response"`: Only validate responses
+- `"none"`: Don't validate against the schema
+
+### Enable mock responses
+
+Test your documentation without making real API calls:
+
+```json
+{
+  "integrations": {
+    "openApi": [
+      {
+        "name": "MyAPI",
+        "descriptionPath": "https://api.example.com/openapi.json",
+        "mockResponse": true,
+        "useExample": "both"
+      }
+    ]
+  }
+}
+```
+
+When `mockResponse` is `true`, Doc Detective uses the example or schema from your OpenAPI spec instead of making actual HTTP requests.
+
+## Use multiple OpenAPI specifications
+
+You can configure multiple OpenAPI specifications for different APIs:
+
+```json title=".doc-detective.json"
+{
+  "integrations": {
+    "openApi": [
+      {
+        "name": "UserAPI",
+        "descriptionPath": "https://api.example.com/users/openapi.json",
+        "headers": {
+          "Authorization": "Bearer $USER_API_TOKEN"
+        }
+      },
+      {
+        "name": "PaymentAPI",
+        "descriptionPath": "./specs/payment-api.yaml",
+        "headers": {
+          "Authorization": "Bearer $PAYMENT_API_TOKEN"
+        },
+        "server": "https://payment-staging.example.com"
+      }
+    ]
+  }
+}
+```
+
+In your tests, specify which API to use with the `name` property:
+
+```json
+{
+  "steps": [
+    {
+      "action": "httpRequest",
+      "openApi": {
+        "name": "UserAPI",
+        "operationId": "getUser"
+      }
+    },
+    {
+      "action": "httpRequest",
+      "openApi": {
+        "name": "PaymentAPI",
+        "operationId": "createPayment"
+      }
+    }
+  ]
+}
+```
+
+## Complete example
+
+Here's a comprehensive OpenAPI configuration with multiple APIs and various options:
+
+```json title=".doc-detective.json"
+{
+  "$schema": "https://raw.githubusercontent.com/doc-detective/common/refs/heads/main/dist/schemas/config_v3.schema.json",
+  "input": "./docs",
+  "output": "./test-results",
+  "loadVariables": ".env",
+  "integrations": {
+    "openApi": [
+      {
+        "name": "ProductionAPI",
+        "descriptionPath": "https://api.example.com/v2/openapi.json",
+        "headers": {
+          "Authorization": "Bearer $PROD_API_TOKEN",
+          "X-Client-ID": "doc-detective"
+        },
+        "validateAgainstSchema": "both",
+        "useExample": "both"
+      },
+      {
+        "name": "StagingAPI",
+        "descriptionPath": "./specs/openapi-staging.yaml",
+        "server": "https://staging-api.example.com",
+        "headers": {
+          "Authorization": "Bearer $STAGING_API_TOKEN"
+        },
+        "validateAgainstSchema": "response",
+        "mockResponse": false
+      },
+      {
+        "name": "MockAPI",
+        "descriptionPath": "./specs/openapi-mock.yaml",
+        "mockResponse": true,
+        "useExample": "both",
+        "validateAgainstSchema": "none"
+      }
+    ]
+  }
+}
+```
+
+## Troubleshooting
+
+### OpenAPI specification not loading
+
+**Cause:** The `descriptionPath` URL or file path is incorrect or inaccessible.
+
+**Solution:** 
+- Verify the URL is accessible in your browser
+- For local files, ensure the path is correct relative to your configuration file
+- Check that you have read permissions for local files
+
+### Schema validation failures
+
+**Cause:** Your requests or responses don't match the OpenAPI schema.
+
+**Solution:**
+- Review the validation error message for specific schema mismatches
+- Verify your test data matches the expected format in the OpenAPI spec
+- Set `validateAgainstSchema: "none"` temporarily to isolate the issue
+- Check that you're using the correct OpenAPI specification version
+
+### Operation not found
+
+**Cause:** The specified `operationId` doesn't exist in the OpenAPI specification.
+
+**Solution:**
+- Open your OpenAPI spec and verify the `operationId` is defined
+- Check for typos in the `operationId` value
+- Ensure you're referencing the correct API by `name`
+
+### Authentication errors
+
+**Cause:** Missing or incorrect authentication headers.
+
+**Solution:**
+- Verify your environment variables are loaded correctly
+- Check that the header format matches your API's requirements
+- Test your authentication credentials separately using a tool like curl or Postman
+
+## What's next
+
+- Learn about the [httpRequest action](/docs/get-started/actions/httpRequest) to make API calls in tests
+- See the [OpenAPI reference](/docs/references/schemas/openapi) for all configuration options
+- Explore [environment variables](/docs/get-started/config/how-to-create-config-file#environment-variables) for managing API credentials
+- Read about [test contexts](/docs/get-started/config/contexts/) for running tests in different environments

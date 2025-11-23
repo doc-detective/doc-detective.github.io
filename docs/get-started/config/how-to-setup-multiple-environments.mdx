@@ -1,0 +1,257 @@
+---
+title: How to set up multiple test environments
+description: Configure Doc Detective for different testing environments like dev, staging, and production.
+sidebar_label: Set up multiple environments
+---
+
+# How to set up multiple test environments
+
+Different testing environments require different configurations. This guide shows you how to set up and manage multiple environment configurations for Doc Detective.
+
+## Before you begin
+
+- Have Doc Detective installed
+- Understand [basic configuration](/docs/get-started/config/how-to-create-config-file)
+- Have multiple environments to test (dev, staging, production)
+
+## Create environment-specific config files
+
+### Development configuration
+
+```json title=".doc-detective.dev.json"
+{
+  "input": "./docs",
+  "output": "./test-results/dev",
+  "loadVariables": ".env.development",
+  "logLevel": "debug",
+  "runOn": [
+    {
+      "platforms": ["windows", "mac", "linux"],
+      "browsers": {
+        "name": "chrome",
+        "headless": false
+      }
+    }
+  ]
+}
+```
+
+### Staging configuration
+
+```json title=".doc-detective.staging.json"
+{
+  "input": "./docs",
+  "output": "./test-results/staging",
+  "loadVariables": ".env.staging",
+  "logLevel": "info",
+  "runOn": [
+    {
+      "platforms": ["linux"],
+      "browsers": {
+        "name": "chrome",
+        "headless": true
+      }
+    }
+  ]
+}
+```
+
+### Production configuration
+
+```json title=".doc-detective.prod.json"
+{
+  "input": "./docs",
+  "output": "./test-results/prod",
+  "loadVariables": ".env.production",
+  "logLevel": "error",
+  "concurrentRunners": 4,
+  "runOn": [
+    {
+      "platforms": ["linux"],
+      "browsers": {
+        "name": "chrome",
+        "headless": true
+      }
+    }
+  ]
+}
+```
+
+## Create environment-specific `.env` files
+
+### Development environment
+
+```bash title=".env.development"
+API_URL=http://localhost:3000
+API_KEY=dev-key-12345
+LOG_LEVEL=debug
+HEADLESS=false
+```
+
+### Staging environment
+
+```bash title=".env.staging"
+API_URL=https://staging-api.example.com
+API_KEY=staging-key-67890
+LOG_LEVEL=info
+HEADLESS=true
+```
+
+### Production environment
+
+```bash title=".env.production"
+API_URL=https://api.example.com
+API_KEY=prod-key-abcde
+LOG_LEVEL=error
+HEADLESS=true
+```
+
+## Run tests in different environments
+
+### Use the `--config` flag
+
+Specify which configuration to use:
+
+```bash
+# Development
+npx doc-detective runTests --config .doc-detective.dev.json
+
+# Staging
+npx doc-detective runTests --config .doc-detective.staging.json
+
+# Production
+npx doc-detective runTests --config .doc-detective.prod.json
+```
+
+### Create npm scripts
+
+Add convenience scripts to `package.json`:
+
+```json title="package.json"
+{
+  "scripts": {
+    "test:dev": "doc-detective runTests --config .doc-detective.dev.json",
+    "test:staging": "doc-detective runTests --config .doc-detective.staging.json",
+    "test:prod": "doc-detective runTests --config .doc-detective.prod.json"
+  }
+}
+```
+
+Run with npm:
+
+```bash
+npm run test:dev
+npm run test:staging
+npm run test:prod
+```
+
+## Share common configuration
+
+### Create a base configuration
+
+```json title=".doc-detective.base.json"
+{
+  "input": "./docs",
+  "recursive": true,
+  "fileTypes": ["markdown", "html"],
+  "concurrentRunners": 2
+}
+```
+
+### Extend in environment-specific configs
+
+Reference common settings and override as needed:
+
+```json title=".doc-detective.dev.json"
+{
+  "$extends": ".doc-detective.base.json",
+  "output": "./test-results/dev",
+  "loadVariables": ".env.development",
+  "logLevel": "debug"
+}
+```
+
+**Note:** The `$extends` feature may not be available in all versions. Check your Doc Detective version documentation.
+
+## Structure configuration for CI/CD
+
+### CI configuration
+
+```json title=".doc-detective.ci.json"
+{
+  "input": "./docs",
+  "output": "./test-results/ci",
+  "loadVariables": ".env.ci",
+  "logLevel": "info",
+  "concurrentRunners": true,
+  "runOn": [
+    {
+      "platforms": ["linux"],
+      "browsers": {
+        "name": "chrome",
+        "headless": true
+      }
+    }
+  ]
+}
+```
+
+### GitHub Actions example
+
+```yaml title=".github/workflows/test.yml"
+name: Doc Detective Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run tests
+        run: npx doc-detective runTests --config .doc-detective.ci.json
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
+          API_URL: ${{ secrets.API_URL }}
+```
+
+## Manage environment-specific settings
+
+### Different test suites per environment
+
+Development tests everything:
+```json title=".doc-detective.dev.json"
+{
+  "input": "./docs"
+}
+```
+
+Production tests only critical paths:
+```json title=".doc-detective.prod.json"
+{
+  "input": "./docs/critical-tests"
+}
+```
+
+### Environment-specific hooks
+
+```json title=".doc-detective.dev.json"
+{
+  "beforeAny": "./setup/dev-setup.spec.json",
+  "afterAll": "./cleanup/dev-cleanup.spec.json"
+}
+```
+
+```json title=".doc-detective.prod.json"
+{
+  "beforeAny": "./setup/prod-setup.spec.json",
+  "afterAll": "./cleanup/prod-cleanup.spec.json"
+}
+```
+
+## What's next
+
+- Learn about [environment variables](/docs/get-started/config/how-to-use-environment-variables)
+- Set up [before and after hooks](/docs/get-started/config/how-to-setup-hooks)
+- Configure [contexts](/docs/get-started/config/contexts/) for different browsers
+- See the [config reference](/docs/references/schemas/config) for all options

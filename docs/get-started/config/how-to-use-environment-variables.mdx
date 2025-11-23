@@ -1,0 +1,497 @@
+---
+title: How to use environment variables in tests
+description: Manage sensitive data and environment-specific values using environment variables.
+sidebar_label: Use environment variables
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# How to use environment variables in tests
+
+Environment variables help you manage sensitive data like API keys, passwords, and environment-specific configuration without hardcoding values in your tests. This guide shows you how to use environment variables in Doc Detective.
+
+## Before you begin
+
+- Have Doc Detective installed
+- Understand [basic configuration](/docs/get-started/config/how-to-create-config-file)
+- Have sensitive data or environment-specific values to manage
+
+## Why use environment variables
+
+Environment variables provide several benefits:
+
+- **Security**: Keep credentials out of version control
+- **Flexibility**: Switch between environments (dev, staging, production) easily
+- **Portability**: Share tests without exposing sensitive data
+- **Configuration**: Manage environment-specific settings centrally
+
+## Create a `.env` file
+
+### Step 1: Create the file
+
+In your project directory, create a file named `.env`:
+
+```bash title=".env"
+API_KEY=your-api-key-here
+API_URL=https://api.example.com
+USERNAME=test-user
+PASSWORD=test-password
+ENVIRONMENT=development
+```
+
+### Step 2: Add to `.gitignore`
+
+Prevent the `.env` file from being committed to version control:
+
+```bash title=".gitignore"
+.env
+.env.*
+!.env.example
+```
+
+### Step 3: Create an example file
+
+Create `.env.example` with placeholder values to help others set up their environment:
+
+```bash title=".env.example"
+API_KEY=your-api-key-here
+API_URL=https://api.example.com
+USERNAME=your-username
+PASSWORD=your-password
+ENVIRONMENT=development
+```
+
+## Load environment variables
+
+### Configure Doc Detective to load variables
+
+Add the `loadVariables` option to your configuration file:
+
+```json title=".doc-detective.json"
+{
+  "input": "./docs",
+  "output": "./test-results",
+  "loadVariables": ".env"
+}
+```
+
+Doc Detective loads variables from the specified file before running tests.
+
+### Use different files for different environments
+
+Create separate `.env` files for each environment:
+
+```bash
+.env.development
+.env.staging
+.env.production
+```
+
+Specify which file to use in your configuration:
+
+```json title=".doc-detective.dev.json"
+{
+  "loadVariables": ".env.development"
+}
+```
+
+```json title=".doc-detective.prod.json"
+{
+  "loadVariables": ".env.production"
+}
+```
+
+## Reference variables in tests
+
+### Use `$VARIABLE_NAME` syntax
+
+Reference environment variables in your test specifications using `$VARIABLE_NAME`:
+
+```json title="api-test.spec.json"
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "action": "httpRequest",
+          "url": "$API_URL/users",
+          "requestHeaders": {
+            "Authorization": "Bearer $API_KEY"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+Doc Detective automatically replaces `$VARIABLE_NAME` with the value from your `.env` file.
+
+### Variables in all action properties
+
+Environment variables work in any string property:
+
+**URLs:**
+```json
+{
+  "action": "goTo",
+  "url": "$BASE_URL/login"
+}
+```
+
+**Selectors:**
+```json
+{
+  "action": "find",
+  "selector": "#$ELEMENT_ID"
+}
+```
+
+**Text to type:**
+```json
+{
+  "action": "type",
+  "text": "$USERNAME"
+}
+```
+
+**File paths:**
+```json
+{
+  "action": "screenshot",
+  "path": "$OUTPUT_DIR/screenshot.png"
+}
+```
+
+## Manage different environments
+
+### Development environment
+
+```bash title=".env.development"
+API_URL=http://localhost:3000
+API_KEY=dev-key-12345
+LOG_LEVEL=debug
+HEADLESS=false
+```
+
+### Staging environment
+
+```bash title=".env.staging"
+API_URL=https://staging-api.example.com
+API_KEY=staging-key-67890
+LOG_LEVEL=info
+HEADLESS=true
+```
+
+### Production environment
+
+```bash title=".env.production"
+API_URL=https://api.example.com
+API_KEY=prod-key-abcde
+LOG_LEVEL=error
+HEADLESS=true
+```
+
+### Switch environments
+
+Run tests with different environment files:
+
+<Tabs>
+  <TabItem value="dev" label="Development" default>
+
+```bash
+npx doc-detective runTests --config .doc-detective.dev.json
+```
+
+  </TabItem>
+  <TabItem value="staging" label="Staging">
+
+```bash
+npx doc-detective runTests --config .doc-detective.staging.json
+```
+
+  </TabItem>
+  <TabItem value="prod" label="Production">
+
+```bash
+npx doc-detective runTests --config .doc-detective.prod.json
+```
+
+  </TabItem>
+</Tabs>
+
+## Load variables programmatically
+
+### Use the loadVariables action
+
+Load environment variables within a test:
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "action": "loadVariables",
+          "path": ".env.custom"
+        },
+        {
+          "action": "httpRequest",
+          "url": "$API_URL/data"
+        }
+      ]
+    }
+  ]
+}
+```
+
+This loads variables at runtime, useful for loading different variables per test.
+
+### Override config-level variables
+
+Variables loaded with the `loadVariables` action override those loaded via the config file:
+
+```json title=".doc-detective.json"
+{
+  "loadVariables": ".env"
+}
+```
+
+```json title="test.spec.json"
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "action": "loadVariables",
+          "path": ".env.override"
+        }
+      ]
+    }
+  ]
+}
+```
+
+Variables from `.env.override` take precedence.
+
+## Security best practices
+
+### Never commit sensitive data
+
+**Bad:**
+```json
+{
+  "action": "httpRequest",
+  "requestHeaders": {
+    "Authorization": "Bearer sk_live_abc123xyz"
+  }
+}
+```
+
+**Good:**
+```json
+{
+  "action": "httpRequest",
+  "requestHeaders": {
+    "Authorization": "Bearer $API_KEY"
+  }
+}
+```
+
+### Use restricted permissions
+
+Store credentials with minimal required permissions:
+
+```bash title=".env"
+# Use read-only API key for tests
+API_KEY=readonly-key-12345
+
+# Don't use admin credentials
+# ADMIN_API_KEY=admin-key-67890
+```
+
+### Rotate credentials regularly
+
+Change test credentials periodically and update `.env` files:
+
+```bash
+# Old credentials (rotate every 90 days)
+# API_KEY=old-key-12345
+
+# New credentials
+API_KEY=new-key-67890
+```
+
+### Encrypt `.env` files in CI/CD
+
+Use CI/CD platform secrets management:
+
+**GitHub Actions:**
+```yaml
+env:
+  API_KEY: ${{ secrets.API_KEY }}
+  API_URL: ${{ secrets.API_URL }}
+```
+
+**GitLab CI:**
+```yaml
+variables:
+  API_KEY: $CI_API_KEY
+  API_URL: $CI_API_URL
+```
+
+### Validate environment variables
+
+Check that required variables are set before running tests:
+
+```json
+{
+  "beforeAny": "./setup/validate-env.spec.json"
+}
+```
+
+```json title="setup/validate-env.spec.json"
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "action": "runShell",
+          "command": "test -n \"$API_KEY\" || exit 1"
+        },
+        {
+          "action": "runShell",
+          "command": "test -n \"$API_URL\" || exit 1"
+        }
+      ]
+    }
+  ]
+}
+```
+
+## Example: Complete environment setup
+
+### Configuration file
+
+```json title=".doc-detective.json"
+{
+  "input": "./docs",
+  "output": "./test-results",
+  "loadVariables": ".env",
+  "runOn": [
+    {
+      "platforms": ["windows", "mac", "linux"],
+      "browsers": {
+        "name": "chrome",
+        "headless": "$HEADLESS"
+      }
+    }
+  ]
+}
+```
+
+### Environment file
+
+```bash title=".env"
+# API Configuration
+API_URL=https://api.example.com
+API_KEY=your-api-key-here
+API_VERSION=v2
+
+# Test Credentials
+USERNAME=test-user
+PASSWORD=test-password
+
+# Browser Configuration
+HEADLESS=true
+
+# Output Configuration
+OUTPUT_DIR=./test-results
+SCREENSHOT_DIR=./screenshots
+```
+
+### Test specification
+
+```json title="api-test.spec.json"
+{
+  "tests": [
+    {
+      "id": "user-authentication",
+      "steps": [
+        {
+          "action": "goTo",
+          "url": "$API_URL/login"
+        },
+        {
+          "action": "type",
+          "selector": "#username",
+          "text": "$USERNAME"
+        },
+        {
+          "action": "type",
+          "selector": "#password",
+          "text": "$PASSWORD"
+        },
+        {
+          "action": "click",
+          "selector": "#login-button"
+        },
+        {
+          "action": "screenshot",
+          "path": "$SCREENSHOT_DIR/logged-in.png"
+        }
+      ]
+    }
+  ]
+}
+```
+
+## Troubleshooting
+
+### Variables not being replaced
+
+**Cause:** Variable not defined in `.env` file or file not loaded.
+
+**Solution:**
+- Verify the variable exists in your `.env` file
+- Check the `loadVariables` path in your config
+- Ensure `.env` file is in the correct location
+- Use `$` prefix: `$VARIABLE_NAME` not `VARIABLE_NAME`
+
+### Different values in different environments
+
+**Cause:** Using wrong `.env` file for the environment.
+
+**Solution:**
+- Verify which config file you're using
+- Check that the config file points to the correct `.env` file
+- Use separate config files for each environment
+
+### Credentials not working
+
+**Cause:** Environment variables contain incorrect or expired credentials.
+
+**Solution:**
+- Verify credentials are current
+- Check for extra spaces or newlines in `.env` file
+- Test credentials manually (e.g., with curl)
+- Rotate credentials if expired
+
+### Special characters in values
+
+**Cause:** Special characters in environment variable values need escaping.
+
+**Solution:**
+- Enclose values with special characters in quotes:
+  ```bash
+  PASSWORD="p@ssw0rd!#"
+  API_KEY="key-with-special-chars="
+  ```
+
+## What's next
+
+- Learn about [running tests in parallel](/docs/get-started/config/how-to-run-tests-in-parallel)
+- Set up [before and after hooks](/docs/get-started/config/how-to-setup-hooks) for environment setup
+- Configure [multiple test environments](/docs/get-started/config/how-to-setup-multiple-environments)
+- See the [loadVariables action](/docs/get-started/actions/loadVariables) reference
