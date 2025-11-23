@@ -1,10 +1,10 @@
 {
   "name": "doc-detective-docs",
-  "version": "3.4.0",
+  "version": "3.5.0",
   "scripts": {
     "docusaurus": "docusaurus",
     "prestart": "npm run build-schemas",
-    "start": "docusaurus start",
+    "start": "docusaurus start --host 0.0.0.0",
     "prebuild": "npm run build-schemas",
     "build": "docusaurus build",
     "swizzle": "docusaurus swizzle",
@@ -33,7 +33,7 @@
     "buffer": "^6.0.3",
     "clsx": "^2.1.1",
     "crypto-browserify": "^3.12.1",
-    "doc-detective-common": "^3.4.1",
+    "doc-detective-common": "^3.5.0",
     "docusaurus-json-schema-plugin": "^1.15.0",
     "dotenv": "^17.2.3",
     "https-browserify": "^1.0.0",
