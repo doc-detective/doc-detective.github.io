@@ -36,10 +36,11 @@ Tests tell Doc Detective what actions to perform, how, and where. Tests are made
 
 ## Test results
 
-When Doc Detective runs a test, the result is one of three statuses:
+When Doc Detective runs a test, the result is one of four statuses:
 
 - **PASS**: The test completed successfully.
 - **FAIL**: The test encountered an error or assertion failure.
+- **WARNING**: The test detected differences during regression testing that exceeded the specified threshold.
 - **SKIPPED**: The test couldn't run in the current environment.
 
 ### Skipped tests
@@ -93,6 +94,65 @@ When a test is skipped, the results show a SKIPPED status in the output JSON:
 ```
 
 This keeps your test reporting accurate and prevents skipped tests from incorrectly appearing as passing.
+
+### Warning results
+
+WARNING results occur during regression testing when differences exceed your specified threshold. When you use actions like `screenshot`, `runShell`, or `runCode` with regression testing, Doc Detective compares the new output to a reference baseline.
+
+You get a WARNING when:
+
+- **Visual regression testing**: A screenshot differs from the reference image by more than the `maxVariation` threshold.
+- **Output regression testing**: Command or code output differs from the reference file by more than the `maxVariation` threshold.
+
+When a step returns WARNING:
+
+- The test continues executing (unlike FAIL, which stops the test).
+- The new output is captured for review.
+- Whether the reference is updated depends on the `overwrite` setting.
+
+The output JSON shows the WARNING status:
+
+```json
+{
+  "summary": {
+    "tests": {
+      "pass": 0,
+      "fail": 0,
+      "warning": 1,  // Test completed with warnings
+      "skipped": 0
+    },
+    "contexts": {
+      "pass": 0,
+      "fail": 0,
+      "warning": 1,  // Context had regression differences
+      "skipped": 0
+    }
+  },
+  "specs": [
+    {
+      "result": "WARNING",
+      "tests": [
+        {
+          "result": "WARNING",
+          "contexts": [
+            {
+              "result": "WARNING",
+              "steps": [
+                {
+                  "action": "screenshot",
+                  "result": "WARNING"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+This lets you catch and review unexpected changes while your test suite continues running.
 
 ## Define a test
 
