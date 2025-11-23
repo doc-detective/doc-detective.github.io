@@ -1,0 +1,417 @@
+---
+title: How to configure test detection in documentation
+description: Control how Doc Detective finds and extracts tests from documentation files.
+sidebar_label: Configure test detection
+---
+
+# How to configure test detection in documentation
+
+Doc Detective can automatically detect and extract tests from your documentation files. This guide shows you how to control test detection behavior using the `detectSteps` option and related configuration.
+
+## Before you begin
+
+- Have Doc Detective installed
+- Understand [basic configuration](/docs/get-started/config/how-to-create-config-file)
+- Know how you want tests detected in your documentation
+
+## Understanding test detection
+
+Doc Detective offers three ways to define tests:
+
+1. **Standalone tests**: Separate `.spec.json` files
+2. **Inline tests**: Explicit test markers in documentation
+3. **Detected tests**: Automatic extraction from documentation patterns
+
+The `detectSteps` option controls whether automatic detection is enabled.
+
+## Enable or disable test detection
+
+### Enable detection (default)
+
+```json title=".doc-detective.json"
+{
+  "input": "./docs",
+  "detectSteps": true
+}
+```
+
+Doc Detective scans documentation for patterns and generates tests automatically.
+
+### Disable detection
+
+```json title=".doc-detective.json"
+{
+  "input": "./docs",
+  "detectSteps": false
+}
+```
+
+Doc Detective only runs explicit standalone and inline tests.
+
+## Configure inline test markers
+
+### Use default markers
+
+Default Markdown inline markers:
+
+```markdown
+<!-- test {"id": "my-test"} -->
+
+Your documentation content here.
+
+<!-- step {"action": "goTo", "url": "https://example.com"} -->
+
+<!-- test end -->
+```
+
+### Customize marker syntax
+
+Change marker patterns to match your style:
+
+```json
+{
+  "fileTypes": [
+    {
+      "extends": "markdown",
+      "inlineStatements": {
+        "testStart": ":::test\\s*(.*?)\\s*:::",
+        "testEnd": ":::test-end:::",
+        "step": ":::step\\s*(.*?)\\s*:::",
+        "ignoreStart": ":::ignore:::",
+        "ignoreEnd": ":::end-ignore:::"
+      }
+    }
+  ]
+}
+```
+
+Usage:
+
+```markdown
+:::test {"id": "navigation-test"} :::
+
+Navigate to the homepage.
+
+:::step {"action": "goTo", "url": "/"} :::
+
+:::test-end:::
+```
+
+## Use markup patterns for detection
+
+### Define detection patterns
+
+Create patterns to automatically generate tests:
+
+```json
+{
+  "fileTypes": [
+    {
+      "extends": "markdown",
+      "markup": [
+        {
+          "name": "bold-text-finder",
+          "regex": "\\*\\*(.+?)\\*\\*",
+          "actions": [
+            {
+              "find": {
+                "matchText": "$1"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+This pattern finds all bold text and generates `find` actions.
+
+### Example: Detect navigation instructions
+
+```json
+{
+  "markup": [
+    {
+      "name": "navigation",
+      "regex": "Navigate to \\[(.+?)\\]\\(([^)]+)\\)",
+      "actions": [
+        {
+          "goTo": {
+            "url": "$2"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+Matches: "Navigate to [Homepage](https://example.com)"
+
+Generates:
+```json
+{
+  "goTo": {
+    "url": "https://example.com"
+  }
+}
+```
+
+### Example: Detect button clicks
+
+```json
+{
+  "markup": [
+    {
+      "name": "button-clicks",
+      "regex": "Click \\*\\*(.+?)\\*\\*",
+      "actions": [
+        {
+          "click": {
+            "selector": "aria/$1[role='button']"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+Matches: "Click **Submit**"
+
+Generates:
+```json
+{
+  "click": {
+    "selector": "aria/Submit[role='button']"
+  }
+}
+```
+
+## Balance automatic detection with explicit tests
+
+### When to use automatic detection
+
+**Pros:**
+- Less manual test writing
+- Tests stay in sync with documentation
+- Consistent test coverage
+
+**Cons:**
+- Less control over test behavior
+- May generate unnecessary tests
+- Harder to debug
+
+**Best for:**
+- Simple, predictable test scenarios
+- Documentation with consistent patterns
+- Initial test coverage
+
+### When to use explicit tests
+
+**Pros:**
+- Complete control over test behavior
+- Easier to debug and maintain
+- Can handle complex scenarios
+
+**Cons:**
+- More manual work
+- Tests can drift from documentation
+- Requires discipline to maintain
+
+**Best for:**
+- Complex test scenarios
+- Custom test logic
+- Critical test paths
+
+### Hybrid approach
+
+Combine both for optimal results:
+
+```json
+{
+  "detectSteps": true,
+  "fileTypes": [
+    {
+      "extends": "markdown",
+      "inlineStatements": {
+        "testStart": "<!-- test (.*?) -->",
+        "testEnd": "<!-- test end -->",
+        "step": "<!-- step (.*?) -->"
+      },
+      "markup": [
+        {
+          "name": "simple-patterns",
+          "regex": "Check \\[(.+?)\\]\\(([^)]+)\\)",
+          "actions": [
+            {
+              "checkLink": {
+                "url": "$2"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+Use automatic detection for simple link checking, explicit tests for complex flows.
+
+## Debug detection issues
+
+### Enable debug logging
+
+See what Doc Detective detects:
+
+```json
+{
+  "logLevel": "debug",
+  "detectSteps": true
+}
+```
+
+Run tests and review the output:
+
+```bash
+npx doc-detective runTests
+```
+
+Look for messages about:
+- Files scanned
+- Patterns matched
+- Tests generated
+
+### Test patterns independently
+
+Create a small test file to verify patterns:
+
+```markdown title="test-pattern.md"
+<!-- test {"id": "pattern-test"} -->
+
+Click **Submit**
+
+<!-- test end -->
+```
+
+Run only this file:
+
+```bash
+npx doc-detective runTests --input test-pattern.md
+```
+
+### Review generated tests
+
+Check the output directory for generated test specifications to see what Doc Detective created.
+
+## Example configurations
+
+### Minimal detection (explicit tests only)
+
+```json title=".doc-detective.json"
+{
+  "input": "./docs",
+  "detectSteps": false
+}
+```
+
+### Aggressive detection (multiple patterns)
+
+```json title=".doc-detective.json"
+{
+  "input": "./docs",
+  "detectSteps": true,
+  "fileTypes": [
+    {
+      "extends": "markdown",
+      "markup": [
+        {
+          "name": "links",
+          "regex": "\\[Check\\]\\(([^)]+)\\)",
+          "actions": [{"checkLink": {"url": "$1"}}]
+        },
+        {
+          "name": "buttons",
+          "regex": "Click \\*\\*(.+?)\\*\\*",
+          "actions": [{"click": {"selector": "aria/$1"}}]
+        },
+        {
+          "name": "navigation",
+          "regex": "Go to (.+?)\\.",
+          "actions": [{"goTo": {"url": "$1"}}]
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Balanced approach
+
+```json title=".doc-detective.json"
+{
+  "input": "./docs",
+  "detectSteps": true,
+  "fileTypes": [
+    {
+      "extends": "markdown",
+      "inlineStatements": {
+        "testStart": "<!-- test (.*?) -->",
+        "testEnd": "<!-- test end -->",
+        "step": "<!-- step (.*?) -->",
+        "ignoreStart": "<!-- ignore -->",
+        "ignoreEnd": "<!-- end ignore -->"
+      },
+      "markup": [
+        {
+          "name": "basic-links",
+          "regex": "\\[Verify\\]\\(([^)]+)\\)",
+          "actions": [{"checkLink": {"url": "$1"}}]
+        }
+      ]
+    }
+  ]
+}
+```
+
+## Troubleshooting
+
+### Tests not generated from patterns
+
+**Cause:** Pattern doesn't match documentation syntax or `detectSteps` is false.
+
+**Solution:**
+- Verify `detectSteps: true` in config
+- Test regex patterns using a regex tester
+- Check pattern against actual documentation
+- Enable debug logging to see matching attempts
+
+### Too many tests generated
+
+**Cause:** Patterns too broad, matching unintended content.
+
+**Solution:**
+- Make regex patterns more specific
+- Add context requirements
+- Use `ignoreStart`/`ignoreEnd` markers to exclude sections
+- Disable detection for specific files
+
+### Tests generated incorrectly
+
+**Cause:** Capture groups not matching expected values.
+
+**Solution:**
+- Verify capture group indices in actions
+- Test patterns on sample text
+- Check for proper regex escaping
+- Review generated test specifications
+
+## What's next
+
+- Learn about [file type detection](/docs/get-started/config/how-to-configure-file-type-detection)
+- Explore [detected tests](/docs/get-started/tests/detected) for examples
+- See [inline tests](/docs/get-started/tests/inline) for explicit test markers
+- Review the [config reference](/docs/references/schemas/config) for all options

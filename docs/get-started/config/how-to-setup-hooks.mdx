@@ -1,0 +1,444 @@
+---
+title: How to set up before and after hooks
+description: Run setup and cleanup tests automatically before and after your test suite.
+sidebar_label: Set up hooks
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# How to set up before and after hooks
+
+Before and after hooks let you run setup and cleanup tests automatically, ensuring your test environment is properly configured and cleaned up. This guide shows you how to use `beforeAny` and `afterAll` hooks in Doc Detective.
+
+## Before you begin
+
+- Have Doc Detective installed
+- Understand [basic configuration](/docs/get-started/config/how-to-create-config-file)
+- Have setup or cleanup tasks that need to run with your tests
+
+## Understanding hooks
+
+Doc Detective provides two hook types:
+
+- **`beforeAny`**: Runs before any tests execute (useful for setup)
+- **`afterAll`**: Runs after all tests complete (useful for cleanup)
+
+**Use cases:**
+- Start/stop test servers or databases
+- Create/delete test data
+- Set up authentication tokens
+- Clean up temporary files
+- Reset application state
+
+## Set up a before hook
+
+### Step 1: Create a setup specification
+
+Create a test specification for your setup tasks:
+
+```json title="setup/init.spec.json"
+{
+  "tests": [
+    {
+      "id": "setup-environment",
+      "steps": [
+        {
+          "action": "runShell",
+          "command": "npm run start:test-server",
+          "background": true
+        },
+        {
+          "action": "wait",
+          "duration": 3000
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Step 2: Add to configuration
+
+Reference the setup specification in your config file:
+
+```json title=".doc-detective.json"
+{
+  "input": "./docs",
+  "output": "./test-results",
+  "beforeAny": "./setup/init.spec.json"
+}
+```
+
+Doc Detective runs the setup before executing any tests.
+
+## Set up an after hook
+
+### Step 1: Create a cleanup specification
+
+Create a test specification for cleanup tasks:
+
+```json title="cleanup/teardown.spec.json"
+{
+  "tests": [
+    {
+      "id": "cleanup-environment",
+      "steps": [
+        {
+          "action": "runShell",
+          "command": "npm run stop:test-server"
+        },
+        {
+          "action": "runShell",
+          "command": "rm -rf ./temp-test-data"
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Step 2: Add to configuration
+
+Reference the cleanup specification in your config file:
+
+```json title=".doc-detective.json"
+{
+  "input": "./docs",
+  "output": "./test-results",
+  "beforeAny": "./setup/init.spec.json",
+  "afterAll": "./cleanup/teardown.spec.json"
+}
+```
+
+Doc Detective runs the cleanup after all tests complete.
+
+## Use multiple setup files
+
+### Specify multiple hooks
+
+Use an array to run multiple setup or cleanup specifications:
+
+```json title=".doc-detective.json"
+{
+  "beforeAny": [
+    "./setup/start-server.spec.json",
+    "./setup/create-test-data.spec.json",
+    "./setup/authenticate.spec.json"
+  ],
+  "afterAll": [
+    "./cleanup/remove-test-data.spec.json",
+    "./cleanup/stop-server.spec.json"
+  ]
+}
+```
+
+Specifications run in the order listed.
+
+### Organize setup by concern
+
+Create focused setup files for different concerns:
+
+```
+setup/
+  ├── server.spec.json       # Start test server
+  ├── database.spec.json     # Initialize test database
+  └── auth.spec.json         # Set up authentication
+
+cleanup/
+  ├── files.spec.json        # Remove temporary files
+  ├── database.spec.json     # Clean up test database
+  └── server.spec.json       # Stop test server
+```
+
+## Create reusable setup specifications
+
+### Parameterize setup tasks
+
+Use environment variables for flexible setup:
+
+```json title="setup/start-server.spec.json"
+{
+  "tests": [
+    {
+      "id": "start-test-server",
+      "steps": [
+        {
+          "action": "runShell",
+          "command": "PORT=$TEST_PORT npm run start"
+        },
+        {
+          "action": "wait",
+          "duration": 2000
+        },
+        {
+          "action": "httpRequest",
+          "url": "http://localhost:$TEST_PORT/health",
+          "statusCodes": [200]
+        }
+      ]
+    }
+  ]
+}
+```
+
+Set variables in your `.env` file:
+
+```bash title=".env"
+TEST_PORT=3001
+```
+
+### Check prerequisites
+
+Verify setup completed successfully:
+
+```json title="setup/verify-environment.spec.json"
+{
+  "tests": [
+    {
+      "id": "verify-setup",
+      "steps": [
+        {
+          "action": "httpRequest",
+          "url": "$API_URL/health",
+          "statusCodes": [200]
+        },
+        {
+          "action": "runShell",
+          "command": "test -f ./test-data/users.json"
+        }
+      ]
+    }
+  ]
+}
+```
+
+## Manage test data lifecycle
+
+### Create test data before tests
+
+```json title="setup/create-test-data.spec.json"
+{
+  "tests": [
+    {
+      "id": "create-test-users",
+      "steps": [
+        {
+          "action": "httpRequest",
+          "url": "$API_URL/users",
+          "method": "POST",
+          "requestData": {
+            "username": "test-user-1",
+            "email": "test1@example.com"
+          }
+        },
+        {
+          "action": "httpRequest",
+          "url": "$API_URL/users",
+          "method": "POST",
+          "requestData": {
+            "username": "test-user-2",
+            "email": "test2@example.com"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Clean up test data after tests
+
+```json title="cleanup/remove-test-data.spec.json"
+{
+  "tests": [
+    {
+      "id": "delete-test-users",
+      "steps": [
+        {
+          "action": "httpRequest",
+          "url": "$API_URL/users/test-user-1",
+          "method": "DELETE"
+        },
+        {
+          "action": "httpRequest",
+          "url": "$API_URL/users/test-user-2",
+          "method": "DELETE"
+        }
+      ]
+    }
+  ]
+}
+```
+
+## Handle hook failures
+
+### Understand failure behavior
+
+**`beforeAny` failure:**
+- Test execution stops immediately
+- No tests run
+- `afterAll` hooks don't run
+- Exit code indicates failure
+
+**`afterAll` failure:**
+- All tests have already run
+- Cleanup may be incomplete
+- Exit code indicates failure
+
+### Add error handling
+
+Check for common failure conditions:
+
+```json title="setup/init.spec.json"
+{
+  "tests": [
+    {
+      "id": "setup-with-error-handling",
+      "steps": [
+        {
+          "action": "runShell",
+          "command": "command -v node || echo 'Node.js not found'"
+        },
+        {
+          "action": "runShell",
+          "command": "test -f package.json || echo 'package.json not found'"
+        },
+        {
+          "action": "runShell",
+          "command": "npm run start:test-server"
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Implement retries
+
+Add retries for unreliable setup tasks:
+
+```json title="setup/start-server-with-retry.spec.json"
+{
+  "tests": [
+    {
+      "id": "start-server",
+      "steps": [
+        {
+          "action": "runShell",
+          "command": "npm run start:test-server"
+        },
+        {
+          "action": "wait",
+          "duration": 2000
+        },
+        {
+          "action": "httpRequest",
+          "url": "http://localhost:3000/health",
+          "statusCodes": [200],
+          "timeout": 5000
+        }
+      ]
+    }
+  ]
+}
+```
+
+## Example configurations
+
+### Basic setup and cleanup
+
+```json title=".doc-detective.json"
+{
+  "input": "./docs",
+  "output": "./test-results",
+  "beforeAny": "./setup/init.spec.json",
+  "afterAll": "./cleanup/teardown.spec.json"
+}
+```
+
+### Multi-stage setup
+
+```json title=".doc-detective.json"
+{
+  "input": "./docs",
+  "output": "./test-results",
+  "beforeAny": [
+    "./setup/check-prerequisites.spec.json",
+    "./setup/start-services.spec.json",
+    "./setup/create-test-data.spec.json",
+    "./setup/verify-ready.spec.json"
+  ],
+  "afterAll": [
+    "./cleanup/remove-test-data.spec.json",
+    "./cleanup/stop-services.spec.json"
+  ]
+}
+```
+
+### Environment-specific setup
+
+```json title=".doc-detective.dev.json"
+{
+  "input": "./docs",
+  "output": "./test-results",
+  "loadVariables": ".env.development",
+  "beforeAny": "./setup/dev-environment.spec.json",
+  "afterAll": "./cleanup/dev-cleanup.spec.json"
+}
+```
+
+```json title=".doc-detective.ci.json"
+{
+  "input": "./docs",
+  "output": "./test-results",
+  "loadVariables": ".env.ci",
+  "beforeAny": "./setup/ci-environment.spec.json",
+  "afterAll": "./cleanup/ci-cleanup.spec.json"
+}
+```
+
+## Troubleshooting
+
+### Setup fails intermittently
+
+**Cause:** Services not fully ready when setup completes.
+
+**Solution:**
+- Add `wait` actions between steps
+- Check service health with HTTP requests
+- Increase timeouts for slow services
+
+### Tests fail after successful setup
+
+**Cause:** Setup didn't create all required resources.
+
+**Solution:**
+- Verify setup specification creates everything needed
+- Add validation steps at the end of setup
+- Check logs for setup completion
+
+### Cleanup doesn't run
+
+**Cause:** Setup failed, preventing test execution.
+
+**Solution:**
+- Fix setup issues first
+- Use try-catch logic in setup scripts
+- Implement cleanup that works even if setup fails
+
+### Resources leak between test runs
+
+**Cause:** Cleanup incomplete or failing silently.
+
+**Solution:**
+- Add logging to cleanup specifications
+- Verify cleanup actually removes resources
+- Implement idempotent cleanup (safe to run multiple times)
+
+## What's next
+
+- Learn about [environment variables](/docs/get-started/config/how-to-use-environment-variables) for parameterizing hooks
+- Configure [multiple test environments](/docs/get-started/config/how-to-setup-multiple-environments) with different hooks
+- Explore [running tests in parallel](/docs/get-started/config/how-to-run-tests-in-parallel)
+- See the [config reference](/docs/references/schemas/config) for all options
