@@ -11,13 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 #v6.0.0
 
       - name: Set up dependencies
         run: npm install -g mdx2vast
 
       - name: Run Vale
-        uses: errata-ai/vale-action@v2.1.1
+        uses: errata-ai/vale-action@d89dee975228ae261d22c15adcd03578634d429c #v2.1.1
         with:
           files: "docs/"
           fail_on_error: false
