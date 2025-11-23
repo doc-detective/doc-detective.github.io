@@ -1,0 +1,137 @@
+---
+sidebar_label: Documentation links
+description: Test documentation links to validate internal and external references
+---
+
+# Testing documentation links
+
+## When to use this
+
+Use this approach when your documentation contains many links to other pages, external resources, or API endpoints. Broken links frustrate users and damage credibility. Regular link checking ensures all references remain valid.
+
+## What this tests
+
+- Internal documentation links are valid
+- External resource links are accessible
+- API endpoint URLs return expected status codes
+- Redirects work correctly
+
+## Prerequisites
+
+- [Doc Detective installed](/docs/get-started/installation)
+- Network access to the links you're testing
+
+## Complete example
+
+```json title="link-checking.spec.json"
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Check main documentation homepage",
+          "checkLink": "https://doc-detective.com"
+        },
+        {
+          "description": "Check getting started guide",
+          "checkLink": "https://doc-detective.com/docs/get-started/installation"
+        },
+        {
+          "description": "Check API reference with multiple acceptable status codes",
+          "checkLink": {
+            "url": "https://doc-detective.com/docs/category/actions",
+            "statusCodes": [200, 301, 302]
+          }
+        },
+        {
+          "description": "Check external GitHub repository",
+          "checkLink": "https://github.com/doc-detective/doc-detective"
+        },
+        {
+          "description": "Check NPM package page",
+          "checkLink": {
+            "url": "https://www.npmjs.com/package/doc-detective",
+            "statusCodes": [200]
+          }
+        },
+        {
+          "description": "Check external API endpoint",
+          "checkLink": {
+            "url": "https://api.github.com",
+            "statusCodes": [200]
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+## Expected output
+
+When the test passes, you should see:
+
+```json
+{
+  "summary": {
+    "steps": {
+      "pass": 6,
+      "fail": 0
+    }
+  }
+}
+```
+
+All links return acceptable HTTP status codes, indicating they're accessible and valid.
+
+## Common variations
+
+**Check links with authentication:**
+
+```json
+{
+  "description": "Check protected API endpoint",
+  "checkLink": {
+    "url": "https://api.example.com/protected",
+    "statusCodes": [200, 401]
+  }
+}
+```
+
+**Accept redirects as valid:**
+
+```json
+{
+  "description": "Check URL that may redirect",
+  "checkLink": {
+    "url": "https://example.com/old-page",
+    "statusCodes": [200, 301, 302, 307, 308]
+  }
+}
+```
+
+**Batch check multiple links:**
+
+Create a test with many steps to check all your documentation links at once:
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {"checkLink": "https://example.com/page1"},
+        {"checkLink": "https://example.com/page2"},
+        {"checkLink": "https://example.com/page3"},
+        {"checkLink": "https://example.com/page4"},
+        {"checkLink": "https://example.com/page5"}
+      ]
+    }
+  ]
+}
+```
+
+## Next steps
+
+- Learn more about the [`checkLink`](/docs/get-started/actions/checkLink) action
+- Explore [troubleshooting certificate issues](/docs/get-started/actions/checkLink#checklink-fails-due-to-unrecognized-certificates)
+- Review [configuration options](/docs/references/schemas/config) for setting a default origin
