@@ -118,7 +118,7 @@ Import and use React components directly in `.mdx` files:
 
 ```mdx
 import JSONSchemaViewer from "@theme/JSONSchemaViewer";
-import { schemas } from "doc-detective-common";
+import schemas from "@site/src/schemas/schemas.json";
 
 <JSONSchemaViewer schema={ schemas.dragAndDrop_v3 } />
 ```
