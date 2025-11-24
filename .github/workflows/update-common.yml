@@ -1,4 +1,4 @@
-name: Update doc-detective-common version
+name: Update doc-detective-common schema version
 
 on:
   repository_dispatch:
@@ -19,7 +19,8 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
+
+    - name: Checkout repository
       uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 #v6.0.0
       with:
         token: ${{ secrets.DD_DEP_UPDATE_TOKEN }}
@@ -27,82 +28,49 @@ jobs:
     - name: Set version variable
       id: version
       run: |
-        VERSION="${{ github.event.client_payload.version || github.event.inputs.version || 'latest' }}"
+        VERSION="${{ github.event.client_payload.version || github.event.inputs.version }}"
+        if [ "$VERSION" = "latest" ]; then
+          VERSION=$(git ls-remote --tags --sort=-v:refname https://github.com/doc-detective/common | head -n 1 | cut -d/ -f3)
+        fi
+        VERSION_CLEAN=$(echo "$VERSION" | sed 's/^[^0-9]*//')
         echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "version_clean=$VERSION_CLEAN" >> $GITHUB_OUTPUT
         echo "Using version: $VERSION"
+        echo "Using cleaned version: $VERSION_CLEAN"
 
-    - name: Configure Git
+    - name: Fetch versioned `schemas.json` from doc-detective/common
       run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-
-    - name: Install specific version of doc-detective-common
-      run: |
-        npm install doc-detective-common@${{ steps.version.outputs.version }} || {
-          echo "Failed to install doc-detective-common@${{ steps.version.outputs.version }}"
-          exit 1
-        }
-        npm audit fix
+        curl -L -o src/schemas/schemas.json https://raw.githubusercontent.com/doc-detective/common/${{ steps.version.outputs.version }}/src/schemas/schemas.json
     
-    - name: Test the installation
-      run: |
-        npm test
-    
-    - name: Commit changes
+    - name: Commit schema changes
       id: commit
-      run: |
-        git add package.json package-lock.json
-        if git diff --staged --quiet; then
-          echo "No changes to commit"
-          echo "has_changes=false" >> $GITHUB_OUTPUT
-        else
-          git commit -m "chore: bump doc-detective-common version to ${{ steps.version.outputs.version }}"
-          git push
-          echo "has_changes=true" >> $GITHUB_OUTPUT
-        fi
+      uses: stefanzweifel/git-auto-commit-action@28e16e81777b558cc906c8750092100bbb34c5e3 #v7.0.0
+      with:
+        commit_message: "chore: update schemas.json to version ${{ steps.version.outputs.version }}"
+        file_pattern: "src/schemas/schemas.json"
 
-    - name: Bump or sync version
+    - name: Bump or sync package version
       id: patch
-      if: steps.commit.outputs.has_changes == 'true'
+      if: steps.commit.outputs.changes_detected == 'true'
       run: |
-        git checkout -- .
-        git clean -fd
-        # Get current project version
-        PROJ_VERSION=$(node -p "require('./package.json').version")
-        # Get doc-detective-common version (strip ^ or ~)
-        COMMON_VERSION=$(node -p "(require('./package.json').dependencies['doc-detective-common'] || require('./package.json').devDependencies['doc-detective-common'] || '').replace(/^[^\\d]*/, '')")
-        # Parse versions
-        PROJ_MAJOR=$(echo $PROJ_VERSION | cut -d. -f1)
-        PROJ_MINOR=$(echo $PROJ_VERSION | cut -d. -f2)
-        COMMON_MAJOR=$(echo $COMMON_VERSION | cut -d. -f1)
-        COMMON_MINOR=$(echo $COMMON_VERSION | cut -d. -f2)
-        if [ "$PROJ_MAJOR" != "$COMMON_MAJOR" ] || [ "$PROJ_MINOR" != "$COMMON_MINOR" ]; then
-          # Major or minor mismatch: set version to match doc-detective-common major.minor.0
-          NEW_VERSION="$COMMON_MAJOR.$COMMON_MINOR.0"
-          npm version --no-git-tag-version "$NEW_VERSION"
-        else
-          # Only patch changed: bump patch
-          npm version patch --no-git-tag-version
-        fi
-        git add package.json package-lock.json
-        git commit -m "bump version to match doc-detective-common"
-        git push
-        git tag "v$(node -p \"require('./package.json').version\")"
-        git push --tags
-        echo "version=$(node -p \"require('./package.json').version\")" >> $GITHUB_OUTPUT
+        # Update package.json version field
+        jq --arg version "${{ steps.version.outputs.version_clean }}" '.version = $version' package.json > package.tmp.json && mv package.tmp.json package.json
 
-    - name: Create release
-      if: steps.commit.outputs.has_changes == 'true'
-      # Install GitHub CLI for fetching PRs and release notes
-      run: |
-        sudo apt-get update && sudo apt-get install -y gh jq
+    - name: Commit package version changes
+      id: commit-package
+      if: steps.commit.outputs.changes_detected == 'true'
+      uses: stefanzweifel/git-auto-commit-action@28e16e81777b558cc906c8750092100bbb34c5e3 #v7.0.0
+      with:
+        commit_message: "chore: bump package version to match doc-detective-common"
+        file_pattern: "package.json"
 
     - name: Gather merged PRs since last release
       id: merged_prs
+      if: steps.commit-package.outputs.changes_detected == 'true'
       run: |
         # Get previous tag (before the new one)
-        PREV_TAG=$(git tag --sort=-creatordate | grep -v "v${{ steps.patch.outputs.version }}" | head -n1)
-        CURR_TAG="v${{ steps.patch.outputs.version }}"
+        PREV_TAG=$(git tag --sort=-creatordate | grep -v "${{ steps.version.outputs.version }}" | head -n1)
+        CURR_TAG="${{ steps.version.outputs.version }}"
         echo "Previous tag: $PREV_TAG, Current tag: $CURR_TAG"
         if [ -z "$PREV_TAG" ]; then
           echo "No previous tag found. Skipping PR list."
@@ -119,30 +87,28 @@ jobs:
 
     - name: Fetch doc-detective-common release notes
       id: common_release
+      if: steps.commit-package.outputs.changes_detected == 'true'
       run: |
-        COMMON_VERSION=${{ steps.version.outputs.version }}
-        # Remove ^ or ~ if present
-        COMMON_VERSION_CLEAN=$(echo "$COMMON_VERSION" | sed 's/^[^0-9]*//')
         # Query GitHub API for release notes
-        RELEASE_INFO=$(gh release view "v$COMMON_VERSION_CLEAN" --repo doc-detective/doc-detective-common --json body --jq .body || echo "No release notes found.")
+        RELEASE_INFO=$(gh release view "${{ steps.version.outputs.version }}" --repo doc-detective/doc-detective-common --json body --jq .body || echo "No release notes found.")
         echo "release_notes<<EOF" >> $GITHUB_OUTPUT
         echo "$RELEASE_INFO" >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
 
     - name: Create release with detailed notes
-      if: steps.commit.outputs.has_changes == 'true'
+      if: steps.commit-package.outputs.changes_detected == 'true'
       uses: softprops/action-gh-release@5be0e66d93ac7ed76da52eca8bb058f665c3a5fe #v2.4.2
       with:
         body: |
           # What's new
 
-          - Updated doc-detective-common to v${{ steps.patch.outputs.version }}:
+          - Updated doc-detective-common schemas to ${{ steps.version.outputs.version }}:
 
             ${{ steps.common_release.outputs.release_notes }}
 
           ${{ steps.merged_prs.outputs.prs }}
-        tag_name: "v${{ steps.patch.outputs.version }}"
-        name: "v${{ steps.patch.outputs.version }}"
+        tag_name: "${{ steps.version.outputs.version }}"
+        name: "${{ steps.version.outputs.version }}"
         generate_release_notes: false
         token: ${{ secrets.DD_DEP_UPDATE_TOKEN }}
 
