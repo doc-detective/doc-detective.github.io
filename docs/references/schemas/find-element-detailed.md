@@ -11,8 +11,13 @@
 
 Field | Type | Description | Default
 :-- | :-- | :-- | :--
-elementText | string | Optional. Display text of the element to find. If combined with `selector`, the element must match both the text and the selector. | 
-selector | string | Optional. Selector of the element to find. If combined with `elementText`, the element must match both the text and the selector. | 
+elementText | string | Optional. Display text of the element to find. If combined with other element finding fields, the element must match all specified criteria. | 
+selector | string | Optional. Selector of the element to find. If combined with other element finding fields, the element must match all specified criteria. | 
+elementId | string | Optional. ID attribute of the element to find. Supports exact match or regex pattern using /pattern/ syntax. | 
+elementTestId | string | Optional. data-testid attribute of the element to find. Supports exact match or regex pattern using /pattern/ syntax. | 
+elementClass | one of:<br/>- string<br/>- array of string | Optional. Class or array of classes that the element must have. Each class supports exact match or regex pattern using /pattern/ syntax. Element must have all specified classes. | 
+elementAttribute | object | Optional. Object of attribute key-value pairs that the element must have. Values can be strings (supporting /pattern/ regex), numbers, or booleans. Boolean true matches attribute presence, false matches absence. | 
+elementAria | string | Optional. Computed accessible name of the element per ARIA specification. Supports exact match or regex pattern using /pattern/ syntax. | 
 timeout | integer | Optional. Max duration in milliseconds to wait for the element to exist. | `5000`
 moveTo | boolean | Optional. Move to the element. If the element isn't visible, it's scrolled into view. | `true`
 click | one of:<br/>- one of:<br/>- string<br/>- object([Click element (detailed)](/docs/references/schemas/click-element-detailed))<br/>- boolean<br/>- object([Find element and click](/docs/references/schemas/find-element-and-click)) | Optional. Click the element. | 
@@ -24,6 +29,10 @@ type | unknown | Optional. Type keys after finding the element. Either a string 
 {
   "elementText": "example",
   "selector": "example",
+  "elementId": "example",
+  "elementTestId": "example",
+  "elementClass": "example",
+  "elementAria": "example",
   "timeout": 5000,
   "moveTo": true
 }
