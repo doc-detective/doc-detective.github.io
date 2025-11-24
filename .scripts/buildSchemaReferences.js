@@ -28,7 +28,7 @@ const parentChildRelationships = new Map();
 
 // Function to get schemas from local file or URL
 async function getSchemas() {
-  const localFilePath = path.join(__dirname, "schemas.json");
+  const localFilePath = path.join(__dirname, "../src/schemas/schemas.json");
   let schemas;
 
   // Check if local file exists
