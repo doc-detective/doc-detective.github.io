@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./index.module.css";
 import SchemaForm from "../SchemaForms/SchemaForm";
-import { schemas } from "doc-detective-common";
+import schemas from "@site/src/schemas/schemas.json";
 import JSONBlock from "../JSONBlock";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 

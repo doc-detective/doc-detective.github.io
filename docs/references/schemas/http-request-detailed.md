@@ -37,10 +37,7 @@ If `aboveVariation`, overwrites the existing output at `path` if the difference 
   "method": "get",
   "timeout": 60000,
   "request": {},
-  "response": {
-    "headers": {},
-    "body": {}
-  },
+  "response": {},
   "allowAdditionalFields": true,
   "path": "example",
   "directory": "example",

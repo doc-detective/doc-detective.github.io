@@ -13,6 +13,11 @@ Field | Type | Description | Default
 :-- | :-- | :-- | :--
 elementText | string | Optional. Display text of the element to screenshot. | 
 selector | string | Optional. Selector of the element to screenshot. | 
+elementId | string | Optional. ID attribute of the element to find. Supports exact match or regex pattern using /pattern/ syntax. | 
+elementTestId | string | Optional. data-testid attribute of the element to find. Supports exact match or regex pattern using /pattern/ syntax. | 
+elementClass | one of:<br/>- string<br/>- array of string | Optional. Class or array of classes that the element must have. Each class supports exact match or regex pattern using /pattern/ syntax. Element must have all specified classes. | 
+elementAttribute | object | Optional. Object of attribute key-value pairs that the element must have. Values can be strings (supporting /pattern/ regex), numbers, or booleans. Boolean true matches attribute presence, false matches absence. | 
+elementAria | string | Optional. Computed accessible name of the element per ARIA specification. Supports exact match or regex pattern using /pattern/ syntax. | 
 padding | one of:<br/>- number<br/>- object([Padding (detailed)](/docs/references/schemas/padding-detailed)) | Optional. No description provided. | 
 
 ## Examples
@@ -21,6 +26,10 @@ padding | one of:<br/>- number<br/>- object([Padding (detailed)](/docs/reference
 {
   "elementText": "example",
   "selector": "example",
+  "elementId": "example",
+  "elementTestId": "example",
+  "elementClass": "example",
+  "elementAria": "example",
   "padding": 42
 }
 ```
