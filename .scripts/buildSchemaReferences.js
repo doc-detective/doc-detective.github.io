@@ -1,7 +1,14 @@
+/*!
+ * Builds Markdown reference files from Doc Detective schemas
+ * Retrieves the file locally, or from GitHub with axios
+ * 
+ * Version 5
+ * 24/11/2025
+ */
 const fs = require("fs");
 const path = require("path");
 const parser = require("@apidevtools/json-schema-ref-parser");
-const { schemas } = require("doc-detective-common");
+const axios = require("axios"); // Add axios for HTTP requests
 const crypto = require("crypto");
 
 // Map to store schemas by their ID to prevent duplicate generation
@@ -18,6 +25,35 @@ const outputDir = path.resolve(`${__dirname}/../docs/references/schemas`);
 
 // Map for tracking parent-child relationships
 const parentChildRelationships = new Map();
+
+// Function to get schemas from local file or URL
+async function getSchemas() {
+  const localFilePath = path.join(__dirname, "schemas.json");
+  let schemas;
+
+  // Check if local file exists
+  if (fs.existsSync(localFilePath)) {
+    console.log("Using local schemas.json file.");
+    schemas = JSON.parse(fs.readFileSync(localFilePath, "utf-8"));
+  } else {
+    console.log("Local schemas.json file not found. Fetching from URL...");
+    try {
+      const response = await axios.get("https://raw.githubusercontent.com/doc-detective/common/refs/heads/main/src/schemas/schemas.json");
+      schemas = response.data;
+      console.log("Successfully fetched schemas from URL.");
+    } catch (error) {
+      console.error("Error fetching schemas from URL:", error.message);
+      process.exit(1);
+    }
+  }
+
+  if (!schemas) {
+    console.error("No schemas found. Please provide a local schemas.json file or ensure the URL is accessible.");
+    process.exit(1);
+  }
+
+  return schemas;
+}
 
 // Function to create a valid file name from a path
 function createValidFileName(str) {
@@ -405,6 +441,10 @@ function getArrayItemTypeString(items) {
 
 // Main function
 async function main() {
+
+  // Get schemas from local file or URL
+  const schemas = await getSchemas();
+
   const schemasToGenerate = [
     "checkLink_v3",
     "click_v3",
