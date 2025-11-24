@@ -62,141 +62,140 @@ const config: Config = {
 		],
 	],
 
-	themeConfig: {
-		// Replace with your project's social card
-		image: "img/social-card.jpg",
-		navbar: {
-			title: "Doc Detective",
-			logo: {
-				alt: "Doc Detective Logo",
-				src: "img/logo.svg",
-			},
-			items: [
-				{
-					type: "docSidebar",
-					sidebarId: "docsSidebar",
-					position: "left",
-					label: "Get started",
-				},
-				{
-					type: "docSidebar",
-					sidebarId: "referencesSidebar",
-					position: "left",
-					label: "References",
-				},
-				// { to: "/app", label: "Action Builder (beta)", position: "left" },
-				// {to: '/blog', label: 'Blog', position: 'left'},
-				{ to: "/support", label: "Support ❤️", position: "right" },
-				{
-					type: "docSidebar",
-					sidebarId: "contributeSidebar",
-					position: "right",
-					label: "Contribute",
-				},
-				{
-					href: "https://github.com/doc-detective",
-					label: "GitHub",
-					position: "right",
-				},
-			],
-		},
-		footer: {
-			style: "dark",
-			links: [
-				{
-					title: "Docs",
-					items: [
-						{
-							label: "Get started",
-							to: "/docs/get-started/intro",
-						},
-					],
-				},
-				{
-					title: "Community",
-					items: [
-						{
-							label: "Discord",
-							href: "https://discord.gg/2M7wXEThfF",
-						},
-						{
-							label: "LinkedIn",
-							href: "https://www.linkedin.com/company/doc-detective",
-						},
-					],
-				},
-				{
-					title: "More",
-					items: [
-						// {
-						//   label: 'Blog',
-						//   to: '/blog',
-						// },
-						{
-							label: "GitHub",
-							href: "https://github.com/doc-detective",
-						},
-					],
-				},
-			],
-			copyright: `Copyright © ${new Date().getFullYear()} Doc Detective.`,
-		},
-		prism: {
-			theme: prismThemes.github,
-			darkTheme: prismThemes.dracula,
-		},
-		inkeepConfig: {
-			baseSettings: {
-				apiKey: process.env.INKEEP_API_KEY, // required
-				integrationId: process.env.INKEEP_INTEGRATION_ID, // required
-				organizationId: process.env.INKEEP_ORGANIZATION_ID, // required
-				primaryBrandColor: "#00c122", // required -- your brand color, the widget color scheme is derived from this
-				organizationDisplayName: "Doc Detective", // required -- your organization name
-				// ...optional settings
-				theme: {
-					//   stylesheetUrls: ['/path/to/stylesheets'], // optional
-					syntaxHighlighter: {
-						lightTheme: prismThemes.github, // optional -- pass in the Prism theme you're using
-						darkTheme: prismThemes.dracula, // optional -- pass in the Prism theme you're using
-					},
-				},
-			},
-			modalSettings: {
-				// optional settings
-			},
-			searchSettings: {
-				// optional settings
-			},
-			aiChatSettings: {
-				// optional settings
-				// botAvatarSrcUrl: "/img/logo.svg", // use your own bot avatar
-				quickQuestions: [
-					"How can I test my docs with Doc Detective?",
-					"What does a test look like?",
-					"What actions can Doc Detective perform?",
-				],
-			},
-		},
-	} satisfies Preset.ThemeConfig,
-	plugins: [
-		require.resolve("./src/plugins/webpack-browserify"),
-		...(process.env.INKEEP_API_KEY
-			? ["@inkeep/docusaurus/chatButton", "@inkeep/docusaurus/searchBar"]
-			: []),
-		...(process.env.POSTHOG_API_KEY
-			? [
-					[
-						"posthog-docusaurus",
-						{
-							apiKey: process.env.POSTHOG_API_KEY,
-							appUrl: "https://us.i.posthog.com",
-							enableInDevelopment: false,
-						},
-					],
-			  ]
-			: []),
-	],
-	themes: ["@docusaurus/theme-mermaid", "docusaurus-json-schema-plugin"],
+  themeConfig: {
+    // Replace with your project's social card
+    image: "img/social-card.jpg",
+    navbar: {
+      title: "Doc Detective",
+      logo: {
+        alt: "Doc Detective Logo",
+        src: "img/logo.svg",
+      },
+      items: [
+        {
+          type: "docSidebar",
+          sidebarId: "docsSidebar",
+          position: "left",
+          label: "Get started",
+        },
+        {
+          type: "docSidebar",
+          sidebarId: "referencesSidebar",
+          position: "left",
+          label: "References",
+        },
+        // { to: "/app", label: "Action Builder (beta)", position: "left" },
+        // {to: '/blog', label: 'Blog', position: 'left'},
+        { to: "/support", label: "Support ❤️", position: "right" },
+        {
+          type: "docSidebar",
+          sidebarId: "contributeSidebar",
+          position: "right",
+          label: "Contribute",
+        },
+        {
+          href: "https://github.com/doc-detective",
+          label: "GitHub",
+          position: "right",
+        },
+      ],
+    },
+    footer: {
+      style: "dark",
+      links: [
+        {
+          title: "Docs",
+          items: [
+            {
+              label: "Get started",
+              to: "/docs/get-started/intro",
+            },
+          ],
+        },
+        {
+          title: "Community",
+          items: [
+            {
+              label: "Discord",
+              href: "https://discord.gg/2M7wXEThfF",
+            },
+            {
+              label: "LinkedIn",
+              href: "https://www.linkedin.com/company/doc-detective",
+            },
+          ],
+        },
+        {
+          title: "More",
+          items: [
+            // {
+            //   label: 'Blog',
+            //   to: '/blog',
+            // },
+            {
+              label: "GitHub",
+              href: "https://github.com/doc-detective",
+            },
+          ],
+        },
+      ],
+      copyright: `Copyright © ${new Date().getFullYear()} Doc Detective.`,
+    },
+    prism: {
+      theme: prismThemes.github,
+      darkTheme: prismThemes.dracula,
+    },
+    inkeepConfig: {
+      baseSettings: {
+        apiKey: process.env.INKEEP_API_KEY, // required
+        integrationId: process.env.INKEEP_INTEGRATION_ID, // required
+        organizationId: process.env.INKEEP_ORGANIZATION_ID, // required
+        primaryBrandColor: "#00c122", // required -- your brand color, the widget color scheme is derived from this
+        organizationDisplayName: "Doc Detective", // required -- your organization name
+        // ...optional settings
+        theme: {
+          //   stylesheetUrls: ['/path/to/stylesheets'], // optional
+          syntaxHighlighter: {
+            lightTheme: prismThemes.github, // optional -- pass in the Prism theme you're using
+            darkTheme: prismThemes.dracula, // optional -- pass in the Prism theme you're using
+          },
+        },
+      },
+      modalSettings: {
+        // optional settings
+      },
+      searchSettings: {
+        // optional settings
+      },
+      aiChatSettings: {
+        // optional settings
+        // botAvatarSrcUrl: "/img/logo.svg", // use your own bot avatar
+        quickQuestions: [
+          "How can I test my docs with Doc Detective?",
+          "What does a test look like?",
+          "What actions can Doc Detective perform?",
+        ],
+      },
+    },
+  } satisfies Preset.ThemeConfig,
+  plugins: [
+    ...(process.env.INKEEP_API_KEY
+      ? ["@inkeep/docusaurus/chatButton", "@inkeep/docusaurus/searchBar"]
+      : []),
+    ...(process.env.POSTHOG_API_KEY
+      ? [
+          [
+            "posthog-docusaurus",
+            {
+              apiKey: process.env.POSTHOG_API_KEY,
+              appUrl: "https://us.i.posthog.com",
+              enableInDevelopment: false,
+            },
+          ],
+        ]
+      : []),
+  ],
+  themes: ["@docusaurus/theme-mermaid", "docusaurus-json-schema-plugin"],
 };
 
 export default config;
