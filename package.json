@@ -33,7 +33,7 @@
     "buffer": "^6.0.3",
     "clsx": "^2.1.1",
     "crypto-browserify": "^3.12.1",
-    "doc-detective-common": "^3.5.0",
+    "doc-detective-common": "^3.5.1",
     "docusaurus-json-schema-plugin": "^1.15.0",
     "dotenv": "^17.2.3",
     "https-browserify": "^1.0.0",
