@@ -12,13 +12,13 @@ configId | string | Optional. Identifier for the configuration. |
 configPath | string | ReadOnly. Path to the configuration file. | 
 input | one of:<br/>- string<br/>- array of string | Optional. Path(s) to test specifications and documentation source files. May be paths to specific files or to directories to scan for files. | `.`
 output | string | Optional. Path of the directory in which to store the output of Doc Detective commands. If a file path is specified, Doc Detective attempts to honor the file name specified, but file path behavior is controlled by the configured reporters. | `.`
-recursive | boolean | Optional. If `true` searches `input`, `setup`, and `cleanup` paths recursively for test specifications and source files. | `true`
+recursive | boolean | Optional. If `true`, searches `input`, `setup`, and `cleanup` paths recursively for test specifications and source files. If `false`, only searches the immediate directory without descending into subdirectories. | `true`
 relativePathBase | string | Optional. Whether paths should be interpreted as relative to the current working directory (`cwd`) or to the file in which they're specified (`file`).<br/><br/>Accepted values: `cwd`, `file` | `file`
 loadVariables | string | Optional. Load environment variables from the specified `.env` file. | 
 origin | string | Optional. Default protocol and domain to use for relative URLs. | 
 beforeAny | one of:<br/>- string<br/>- array of string | Optional. Path(s) to test specifications to perform before those specified by `input`. Useful for setting up testing environments. | 
 afterAll | one of:<br/>- string<br/>- array of string | Optional. Path(s) to test specifications to perform after those specified by `input`. Useful for cleaning up testing environments. | 
-detectSteps | boolean | Optional. Whether or not to detect steps in input files based on defined markup. | `true`
+detectSteps | boolean | Optional. If `true`, detects steps in input files based on defined markup patterns. If `false`, step detection is disabled and only explicit test specifications are processed. | `true`
 allowUnsafeSteps | boolean | Optional. Whether or not to run potentially unsafe steps, such as those that might modify files or system state. | 
 crawl | boolean | Optional. If `true`, crawls sitemap.xml files specified by URL to find additional files to test. | `false`
 processDitaMaps | boolean | Optional. If `true`, processes DITA maps and includes generated files as inputs. | `true`
@@ -46,6 +46,14 @@ debug | one of:<br/>- boolean<br/>- string | Optional. Enable debugging mode. `t
   "fileTypes": [
     "markdown"
   ]
+}
+```
+
+```json
+{
+  "input": "./tests",
+  "recursive": false,
+  "detectSteps": false
 }
 ```
 
