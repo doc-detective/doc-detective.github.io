@@ -20,8 +20,27 @@ You can specify the target URL directly as a string, or use an object for more o
 - **Object Format:** Use an object with the following properties:
   - `url`: (Required) The URL to navigate to. Can be a full URL, a path, or a variable reference.
   - `origin`: (Optional) Protocol and domain prepended to `url` when `url` is a path. Overrides the global `origin` if set.
+  - `waitUntil`: (Optional) Object specifying conditions to wait for after navigation. See [Waiting for elements after navigation](#waiting-for-elements-after-navigation) below.
 
 > For comprehensive options, see the [`goTo`](/docs/references/schemas/goto) reference.
+
+### Waiting for elements after navigation
+
+The `waitUntil` property lets you wait for specific conditions before considering the page load complete. This is useful when you need to ensure certain elements are present or the page has fully rendered before continuing with your test.
+
+The `waitUntil` object supports:
+
+- `find`: (Required) Element finding criteria. Supports all the same element finding properties as the [`find`](/docs/get-started/actions/find) action:
+  - `selector`: (Optional) CSS or XPath selector of the element.
+  - `elementText`: (Optional) Display text of the element. Supports regex patterns using `/pattern/` syntax.
+  - `elementId`: (Optional) ID attribute of the element. Supports regex patterns using `/pattern/` syntax.
+  - `elementTestId`: (Optional) data-testid attribute of the element. Supports regex patterns using `/pattern/` syntax.
+  - `elementClass`: (Optional) Class name or array of class names that the element must have. Supports regex patterns.
+  - `elementAttribute`: (Optional) Object of attribute key-value pairs that the element must have. Values can be strings (supporting `/pattern/` regex), numbers, or booleans.
+  - `elementAria`: (Optional) Computed accessible name of the element per ARIA specification. Supports regex patterns using `/pattern/` syntax.
+  - `timeout`: (Optional) Maximum duration in milliseconds to wait for the element to exist.
+
+When you specify multiple element finding properties, the element must match all of them for precise targeting. For complete details on element finding options, see the [`find`](/docs/get-started/actions/find) action.
 
 ## Examples
 
@@ -94,6 +113,59 @@ Assumes the browser is currently at `https://example.com` or a global `origin` i
           "goTo": {
             "url": "/search",
             "origin": "https://www.google.com"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Navigate and wait for a specific element
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Navigate to dashboard and wait for the status indicator.",
+          "goTo": {
+            "url": "https://example.com/dashboard",
+            "waitUntil": {
+              "find": {
+                "selector": ".status-indicator",
+                "elementText": "System operational"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Navigate and wait using enhanced element finding
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Navigate and wait for a button with specific attributes.",
+          "goTo": {
+            "url": "http://localhost:8092",
+            "waitUntil": {
+              "find": {
+                "elementTestId": "standard-btn",
+                "elementClass": ["btn"],
+                "elementAttribute": {
+                  "type": "button"
+                }
+              }
+            }
           }
         }
       ]
