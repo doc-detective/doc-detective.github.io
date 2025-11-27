@@ -265,6 +265,51 @@ For a complete list of patterns, see the [configuration reference](/docs/referen
 }
 ```
 
+## DITA map processing
+
+Doc Detective processes DITA map files (`.ditamap`) to organize and structure your documentation tests.
+
+### File path resolution
+
+DITA maps can reference topics in different directory structures:
+
+- Topics in the same directory as the map
+- Topics in subdirectories
+- Topics in parent directories (using `../` paths)
+- Topics in sibling directories
+
+Doc Detective resolves all relative paths, including those requiring parent directory traversal (`../`). If your ditamap references topics with `../` paths, Doc Detective finds a common ancestor directory containing all files, temporarily rewrites paths, and processes the ditamap.
+
+### Example directory structure
+
+**Directory structure:**
+
+```
+docs/
+├── maps/
+│   └── user-guide.ditamap
+├── topics/
+│   ├── getting-started.dita
+│   └── installation.dita
+└── reference/
+    └── api-overview.dita
+```
+
+**user-guide.ditamap:**
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd">
+<map>
+  <title>User Guide</title>
+  <topicref href="../topics/getting-started.dita"/>
+  <topicref href="../topics/installation.dita"/>
+  <topicref href="../reference/api-overview.dita"/>
+</map>
+```
+
+Doc Detective processes this ditamap without changes to your file structure or paths.
+
 ## Next steps
 
 - Learn about [inline tests](/docs/get-started/tests/inline) for manual test definition
