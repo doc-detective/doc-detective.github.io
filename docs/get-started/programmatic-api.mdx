@@ -1,0 +1,304 @@
+---
+sidebar_label: Programmatic API
+---
+
+# Programmatic API
+
+Use Doc Detective as a library in your Node.js applications. Instead of running Doc Detective from the CLI, you can import it and create browser instances for automation.
+
+## When to use the programmatic API
+
+Use the programmatic API when you need to:
+
+- Integrate Doc Detective's browser automation into your Node.js applications
+- Create custom testing workflows
+- Build automation scripts with programmatic control over browser instances
+- Extend Doc Detective with your own custom logic
+
+For simple documentation testing, the [CLI installation](/docs/get-started/installation) is easier.
+
+## Prerequisites
+
+Before using the programmatic API, ensure you have:
+
+- [Node.js](https://nodejs.org/) v18 or later installed
+- [Chrome browser](https://www.google.com/chrome/) installed and accessible on your system
+- Basic familiarity with JavaScript/Node.js async/await syntax
+
+## Installation
+
+Install the `doc-detective-core` package in your Node.js project:
+
+```bash
+npm install doc-detective-core
+```
+
+## The getRunner() function
+
+The `getRunner()` function creates a Chrome WebDriver instance with an Appium server.
+
+### Syntax
+
+```javascript
+const { getRunner } = require('doc-detective-core');
+
+const result = await getRunner(options);
+```
+
+### Parameters
+
+The `options` parameter is an object with the following optional properties:
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `config` | Object | `{}` | Doc Detective configuration object for logging and other settings. |
+| `width` | Number | `1200` | Browser window width in pixels. |
+| `height` | Number | `800` | Browser window height in pixels. |
+| `headless` | Boolean | `true` | Whether to run the browser in headless mode (without a visible window). |
+
+### Return value
+
+`getRunner()` returns a Promise that resolves to an object with the following properties:
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `runner` | Object | WebDriver instance for browser automation. Use standard WebDriver methods like `url()`, `getTitle()`, `$()`, etc. |
+| `appium` | Object | Appium server process. Managed automatically, but accessible if needed. |
+| `cleanup` | Function | Async function that closes the browser session and terminates the Appium server. Always call this when you're done. |
+| `runStep` | Function | Function to execute Doc Detective test steps. See [Using runStep](#using-runstep) for details. |
+
+### Errors
+
+`getRunner()` throws an error if:
+
+- Chrome browser is not installed or not accessible
+- The WebDriver initialization fails
+- Appium server fails to start
+
+## Usage examples
+
+### Basic example
+
+Create a browser instance, navigate to a webpage, and get the page title:
+
+```javascript
+const { getRunner } = require('doc-detective-core');
+
+async function main() {
+  // Create the runner with default options
+  const { runner, cleanup } = await getRunner();
+  
+  try {
+    // Navigate to a webpage
+    await runner.url('https://example.com');
+    
+    // Get the page title
+    const title = await runner.getTitle();
+    console.log('Page title:', title);
+    
+    // Find an element
+    const heading = await runner.$('h1');
+    const headingText = await heading.getText();
+    console.log('Heading text:', headingText);
+  } finally {
+    // Always clean up when done
+    await cleanup();
+  }
+}
+
+main().catch(console.error);
+```
+
+### Custom dimensions and non-headless mode
+
+Create a visible browser window with custom dimensions:
+
+```javascript
+const { getRunner } = require('doc-detective-core');
+
+async function main() {
+  // Create a visible browser with custom dimensions
+  const { runner, cleanup } = await getRunner({
+    width: 1920,
+    height: 1080,
+    headless: false  // Show the browser window
+  });
+  
+  try {
+    await runner.url('https://example.com');
+    
+    // The browser window will be visible at 1920x1080
+    // Useful for debugging or demonstrations
+    await new Promise(resolve => setTimeout(resolve, 5000)); // Wait 5 seconds
+  } finally {
+    await cleanup();
+  }
+}
+
+main().catch(console.error);
+```
+
+### Using runStep
+
+The `runStep` function lets you execute Doc Detective test steps like `find`, `click`, `screenshot`, etc.:
+
+```javascript
+const { getRunner } = require('doc-detective-core');
+
+async function main() {
+  const { runner, runStep, cleanup } = await getRunner();
+  
+  try {
+    // Use runStep to execute Doc Detective actions
+    await runStep({
+      step: {
+        action: 'goTo',
+        url: 'https://example.com'
+      },
+      driver: runner
+    });
+    
+    // Use the find action
+    await runStep({
+      step: {
+        action: 'find',
+        elementText: 'Example Domain'
+      },
+      driver: runner
+    });
+    
+    // Take a screenshot
+    await runStep({
+      step: {
+        action: 'screenshot',
+        path: 'example-screenshot.png'
+      },
+      driver: runner
+    });
+    
+    console.log('Test steps completed successfully!');
+  } finally {
+    await cleanup();
+  }
+}
+
+main().catch(console.error);
+```
+
+### Using with custom configuration
+
+Pass a Doc Detective configuration object to control logging and other behaviors:
+
+```javascript
+const { getRunner } = require('doc-detective-core');
+
+async function main() {
+  const customConfig = {
+    logLevel: 'debug',  // Enable debug logging
+    // Add other Doc Detective config options as needed
+  };
+  
+  const { runner, cleanup } = await getRunner({
+    config: customConfig,
+    headless: true
+  });
+  
+  try {
+    await runner.url('https://example.com');
+    // Debug logs will be output to the console
+  } finally {
+    await cleanup();
+  }
+}
+
+main().catch(console.error);
+```
+
+## Best practices
+
+### Always use cleanup
+
+Always call the `cleanup()` function when you're done with the runner, even if an error occurs. Use a `try...finally` block:
+
+```javascript
+const { runner, cleanup } = await getRunner();
+
+try {
+  // Your automation code here
+} finally {
+  // This always runs, even if an error occurred
+  await cleanup();
+}
+```
+
+The `cleanup()` function:
+- Closes the browser session
+- Terminates the Appium server process
+- Releases system resources
+- Is safe to call multiple times (idempotent)
+
+### Handle errors
+
+Wrap your automation code in try-catch blocks to handle errors:
+
+```javascript
+const { getRunner } = require('doc-detective-core');
+
+async function main() {
+  let cleanup;
+  
+  try {
+    const result = await getRunner();
+    cleanup = result.cleanup;
+    const runner = result.runner;
+    
+    // Your automation code
+    await runner.url('https://example.com');
+  } catch (error) {
+    console.error('Error during automation:', error.message);
+    // Handle the error
+  } finally {
+    if (cleanup) {
+      await cleanup();
+    }
+  }
+}
+
+main();
+```
+
+### Use headless mode for CI/CD
+
+When running in CI/CD environments or for automated testing, use headless mode (the default):
+
+```javascript
+const { runner, cleanup } = await getRunner({
+  headless: true  // This is the default
+});
+```
+
+Use non-headless mode only for debugging or when you need to see the browser.
+
+### Reuse the runner for multiple operations
+
+Don't create a new runner for every operation. Reuse the same runner instance for better performance:
+
+```javascript
+const { runner, cleanup } = await getRunner();
+
+try {
+  // Good: Reuse the same runner
+  await runner.url('https://example.com');
+  await runner.url('https://example.com/page2');
+  await runner.url('https://example.com/page3');
+} finally {
+  await cleanup();
+}
+```
+
+## Next steps
+
+- [Installation](/docs/get-started/installation) - CLI installation instructions
+- [Actions](/docs/category/actions) - Available Doc Detective actions for use with `runStep`
+- [Configuration](/docs/category/configuration) - Doc Detective configuration options
+- [doc-detective-core repository](https://github.com/doc-detective/doc-detective-core) - Source code and additional examples
