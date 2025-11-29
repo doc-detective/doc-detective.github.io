@@ -22,6 +22,7 @@ const sidebars: SidebarsConfig = {
         "get-started/concepts",
         "get-started/create-your-first-test",
         "get-started/sample-tests",
+        "get-started/programmatic-api",
         "get-started/resources",
       ],
     },
