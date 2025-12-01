@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 #v6.0.0
-      - uses: ekline-io/ekline-github-action@6f79f8e33a245e231d3cc822e51a6a1d93d78638 #v6.46.2
+      - uses: ekline-io/ekline-github-action@b799d8711a8da9e7a5d916d9fbfe317b91ec1580 #v6.46.2
         with:
           content_dir: ./docs
           ek_token: ${{ secrets.ek_token }}
