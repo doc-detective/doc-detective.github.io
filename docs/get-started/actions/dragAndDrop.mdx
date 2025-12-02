@@ -42,11 +42,20 @@ The `dragAndDrop` action requires an object with the following properties:
 
 ### Source and target element properties
 
-When using detailed objects for `source` or `target`, you can specify:
+When using detailed objects for `source` or `target`, you can specify elements using various criteria:
 
-- `elementText`: (Optional) Display text of the element. If combined with `selector`, the element must match both the text and the selector.
-- `selector`: (Optional) [CSS selector](/docs/get-started/selectors/css) or [XPath selector](/docs/get-started/selectors/xpath) of the element. If combined with `elementText`, the element must match both the text and the selector.
+- `elementText`: (Optional) Display text of the element. Supports exact match or regex pattern using `/pattern/` syntax.
+- `elementId`: (Optional) ID attribute of the element. Supports exact match or regex pattern using `/pattern/` syntax.
+- `elementTestId`: (Optional) data-testid attribute of the element. Supports exact match or regex pattern using `/pattern/` syntax.
+- `elementClass`: (Optional) Class name or array of class names that the element must have. Each class supports exact match or regex pattern using `/pattern/` syntax. The element must have all specified classes.
+- `elementAttribute`: (Optional) Object of attribute key-value pairs that the element must have. Values can be strings (supporting `/pattern/` regex), numbers, or booleans. Boolean `true` matches attribute presence, `false` matches attribute absence.
+- `elementAria`: (Optional) Computed accessible name of the element per ARIA specification. Supports exact match or regex pattern using `/pattern/` syntax.
+- `selector`: (Optional) [CSS selector](/docs/get-started/selectors/css) or [XPath selector](/docs/get-started/selectors/xpath) of the element.
 - `timeout`: (Optional) Maximum duration in milliseconds to wait for this specific element to exist.
+
+When you specify multiple element finding properties (like `selector`, `elementText`, `elementId`, etc.), the element must match all of them. This lets you target elements very precisely.
+
+For complete details on element finding options, see the [`find`](/docs/get-started/actions/find) action.
 
 > For comprehensive options, see the full [`dragAndDrop`](/docs/references/schemas/draganddrop) reference.
 
@@ -91,6 +100,80 @@ Here are several ways you might use the `dragAndDrop` action:
             "target": {
               "selector": ".column",
               "elementText": "In Progress"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Drag and drop using element IDs
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Drag an item by its ID to a drop zone by its ID.",
+          "dragAndDrop": {
+            "source": {
+              "elementId": "draggable-item-1"
+            },
+            "target": {
+              "elementId": "drop-zone-main"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Drag and drop using test IDs and classes
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Drag a card to a column using test IDs and class names.",
+          "dragAndDrop": {
+            "source": {
+              "elementTestId": "task-card-42",
+              "elementClass": "draggable"
+            },
+            "target": {
+              "elementTestId": "column-in-progress",
+              "elementClass": ["drop-zone", "active"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Drag and drop using ARIA names
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Drag an element by its accessible name to a target.",
+          "dragAndDrop": {
+            "source": {
+              "elementAria": "Move task: Complete documentation"
+            },
+            "target": {
+              "elementAria": "Done column"
             }
           }
         }

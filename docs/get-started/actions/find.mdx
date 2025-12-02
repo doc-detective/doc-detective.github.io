@@ -12,21 +12,30 @@ import JSONSchemaViewer from "@theme/JSONSchemaViewer";
 
 # find
 
-The `find` action locates an element in the current interface based on its display text or a CSS/XPath selector. After finding the element, you can optionally interact with it, such as clicking it or typing into it.
+The `find` action locates an element in the current interface based on various criteria such as display text, CSS/XPath selector, ID, classes, attributes, or ARIA name. After finding the element, you can optionally interact with it, such as clicking it or typing into it.
 
-If multiple elements match the specified criteria (`elementText` and/or `selector`), the step operates on the first matched element. Ensure your criteria uniquely identify the target element.
+If multiple elements match the specified criteria, the step operates on the first matched element. Ensure your criteria uniquely identify the target element.
 
 You can specify the target element directly using a string (for basic text or selector lookup) or use an object for more detailed options and interactions:
 
-- **String Shorthand:** Provide the display text or CSS/XPath selector directly as the value for the `find` key. If elements are found by both text and selector, the element found by matching text is used.
+- **String Shorthand:** Provide the display text, CSS/XPath selector, ID, `data-testid` value, or ARIA name directly as the value for the `find` key. Doc Detective searches across all these types in parallel and uses the first match found with this precedence: elementText → elementAria → elementId → elementTestId → selector.
   - Example: `"find": "Login"` or `"find": "#username"`.
 - **Object Format:** Use an object with the following properties:
-  - `elementText`: (Optional) The display text of the element to find. If combined with `selector`, the element must match both.
-  - `selector`: (Optional) The [CSS selector](/docs/get-started/selectors/css) or [XPath selector](/docs/get-started/selectors/xpath) of the element to find. If combined with `elementText`, the element must match both. *At least one of `elementText` or `selector` is required.*
+  - `elementText`: (Optional) The display text of the element to find. If combined with other properties, the element must match all criteria.
+  - `elementId`: (Optional) The ID attribute of the element to find (e.g., `"submit-button"`). Supports exact match or regex pattern using `/pattern/` syntax.
+  - `elementTestId`: (Optional) The `data-testid` attribute of the element to find. Supports exact match or regex pattern using `/pattern/` syntax. Useful for targeting elements in modern testing frameworks.
+  - `elementClass`: (Optional) Class name or array of class names that the element must have. Each class supports exact match or regex pattern using `/pattern/` syntax. If you provide an array, the element must have all specified classes.
+  - `elementAttribute`: (Optional) Object of attribute key-value pairs that the element must have. Values can be strings (supporting `/pattern/` regex), numbers, or booleans. Boolean `true` matches attribute presence, `false` matches attribute absence.
+  - `elementAria`: (Optional) The computed accessible name of the element per ARIA specification. Supports exact match or regex pattern using `/pattern/` syntax. Useful for targeting elements by their accessible label.
+  - `selector`: (Optional) The [CSS selector](/docs/get-started/selectors/css) or [XPath selector](/docs/get-started/selectors/xpath) of the element to find. If combined with other properties, the element must match all criteria.
   - `timeout`: (Optional) Maximum duration in milliseconds to wait for the element to exist (default: 5000).
   - `moveTo`: (Optional) Move the cursor to the element. If the element isn't visible, it's scrolled into view (default: `true`).
   - `click`: (Optional) Click the element after finding it. Can be `true` (for a default left click), `"left"`, `"right"`, `"middle"`, or an object like `{ "button": "right" }`.
   - `type`: (Optional) Type keys after finding the element. Requires the element to be made active first (for example, by using `click: true`). Accepts a string or an object like `{ "keys": "my text", "inputDelay": 100 }`. See [`type`](type) for details.
+
+**Combining Criteria:** When you specify multiple element finding properties (like `selector`, `elementText`, `elementId`, etc.), the element must match all of them. This lets you target elements very precisely.
+
+**Regex patterns:** Most element finding properties support regex patterns. To use a regex pattern, wrap it in forward slashes like `/pattern/`. For example, `elementId: "/button-\\d+/"` matches IDs like "button-1", "button-2", etc.
 
 **Setting Variables:** To capture a found element's attributes into variables for later steps, use the step-level `variables` object. You can assign values based on the element using expressions like `$$element.text`.
 
@@ -164,6 +173,165 @@ Here are a few ways you might use the `find` action:
           "find": {
             "elementText": "Open New Tab",
             "click": "middle"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Find an element by ID attribute
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Find the submit button by its ID.",
+          "find": {
+            "elementId": "submit-button"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Find an element by test ID (data-testid)
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Find an element by its test ID attribute.",
+          "find": {
+            "elementTestId": "login-form"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Find an element by class name
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Find an element with a specific class.",
+          "find": {
+            "elementClass": "primary-button"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Find an element by multiple classes
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Find an element that has all specified classes.",
+          "find": {
+            "elementClass": ["btn", "btn-primary", "btn-large"]
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Find an element by attribute
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Find an element by its data attribute.",
+          "find": {
+            "elementAttribute": {
+              "data-action": "submit"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Find an element by ARIA name
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Find an element by its accessible name.",
+          "find": {
+            "elementAria": "Close dialog"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Find an element using regex pattern
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Find an element with an ID matching a pattern.",
+          "find": {
+            "elementId": "/form-step-\\d+/"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Find an element combining multiple criteria
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Find a specific button using multiple criteria.",
+          "find": {
+            "selector": "button",
+            "elementClass": "primary",
+            "elementAttribute": {
+              "type": "submit"
+            },
+            "elementText": "Submit"
           }
         }
       ]
