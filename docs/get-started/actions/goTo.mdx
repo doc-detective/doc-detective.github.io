@@ -121,6 +121,126 @@ Assumes the browser is currently at `https://example.com` or a global `origin` i
 }
 ```
 
+## Wait conditions
+
+The `goTo` action supports advanced waiting conditions after navigation to ensure pages are fully loaded and ready before the next step runs.
+
+When using the object format, you can configure:
+
+- `timeout`: (Optional) Maximum time in milliseconds to wait for all conditions to be met. If exceeded, the goTo action fails (default: 30000).
+- `waitUntil`: (Optional) Object specifying conditions to wait for:
+  - `networkIdleTime`: (Optional) Wait for network activity to be idle (no new requests) for this duration in milliseconds. Set to `null` to skip this check (default: 500).
+  - `domIdleTime`: (Optional) Wait for DOM mutations to stop for this duration in milliseconds. Set to `null` to skip this check (default: 1000).
+- `find`: (Optional) Wait for a specific element to be present in the DOM. At least one of `selector` or `elementText` must be specified.
+  - `selector`: (Optional) CSS selector for the element to wait for.
+  - `elementText`: (Optional) Text content the element must contain.
+
+### Wait for network idle
+
+Navigate to a page and wait for network activity to settle.
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Navigate and wait for network idle.",
+          "goTo": {
+            "url": "https://www.example.com",
+            "waitUntil": {
+              "networkIdleTime": 500
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Wait for a specific element
+
+Navigate to a dashboard and wait for a specific element to appear.
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Navigate to dashboard and wait for it to load.",
+          "goTo": {
+            "url": "https://www.example.com/dashboard",
+            "waitUntil": {
+              "find": {
+                "selector": "[data-testid='dashboard-loaded']"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Wait for element with text
+
+Wait for an element containing specific text to appear.
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Navigate to status page and wait for operational message.",
+          "goTo": {
+            "url": "https://www.example.com/status",
+            "waitUntil": {
+              "find": {
+                "elementText": "System operational"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Combine multiple wait conditions
+
+Use multiple wait conditions together with a custom timeout.
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Navigate to app with comprehensive wait conditions.",
+          "goTo": {
+            "url": "https://www.example.com/app",
+              "timeout": 60000,
+            "waitUntil": {
+              "networkIdleTime": 500,
+              "domIdleTime": 1000,
+              "find": {
+                "selector": ".main-content",
+                "elementText": "Dashboard"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
 ### Navigate and wait for a specific element
 
 ```json

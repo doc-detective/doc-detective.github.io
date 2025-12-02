@@ -21,7 +21,7 @@ You can specify the screenshot action in several ways:
 - **Object Format:** Use an object for more control over the path, visual comparison, and cropping:
   - `path`: (Optional) The file path where the screenshot will be saved. Can include directories. If omitted, a default path is generated.
   - `directory`: (Optional) The directory where the screenshot will be saved. If `path` includes a directory, this is ignored. Defaults to the configured output directory.
-  - `maxVariation`: (Optional) The maximum acceptable visual difference (0 to 1) when comparing against a reference image. If the variation exceeds this threshold, the step fails. If set, visual comparison is enabled.
+  - `maxVariation`: (Optional) The maximum acceptable visual difference (0 to 1) when comparing against a reference image. If the variation exceeds this threshold, the step returns WARNING. If set, visual comparison is enabled.
   - `overwrite`: (Optional) Controls when to overwrite the reference image. Options:
     - `never`: Never overwrite the reference image (default).
     - `always`: Always overwrite the reference image with the new capture.
@@ -38,7 +38,7 @@ You can specify the screenshot action in several ways:
     
     If you specify multiple element finding properties, the element must match all of them. For complete details on element finding, see the [`find`](/docs/get-started/actions/find) action.
 
-**Visual Regression Testing:** If `maxVariation` is set and a reference image exists at the target `path`, the action compares the new screenshot to the reference. If the difference is within `maxVariation`, the step passes. If it exceeds the threshold, the step fails, and behavior depends on the `overwrite` setting.
+**Visual Regression Testing:** If `maxVariation` is set and a reference image exists at the target `path`, the action compares the new screenshot to the reference. If the difference is within `maxVariation`, the step passes. If it exceeds the threshold, the step returns WARNING, and behavior depends on the `overwrite` setting.
 
 > For comprehensive options, see the [`screenshot`](/docs/references/schemas/screenshot) reference.
 
