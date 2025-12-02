@@ -16,7 +16,7 @@ The `click` action allows you to click or tap an element on the page. You can sp
 
 The `click` action works in several ways:
 
-- **String Shorthand:** The display text, selector, or other identifier of the element to find and click.
+- **String Shorthand:** Provide the display text, CSS/XPath selector, ID, `data-testid` value, or ARIA name directly as the value for the `click` key. Doc Detective searches across all these types in parallel and uses the first match found with this precedence: elementText → elementAria → elementId → elementTestId → selector.
 - **Object Format:** Use an object with detailed properties for more control over the click action.
 
 If you need to find an element before clicking it, consider using the [`find`](/docs/get-started/actions/find) action, which lets you locate elements using additional criteria and optionally click them in a single step.
