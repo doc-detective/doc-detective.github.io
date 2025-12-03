@@ -111,7 +111,7 @@ HTML comments and processing instructions work identically. You can use whicheve
 Here's an example using **JSON syntax** in Markdown:
 
 ```markdown
-[comment]: # 'test {"testId": "kitten-search"}'
+[comment]: # 'test {"testId": "kitten-search", "detectSteps": false}'
 
 To search for American Shorthair kittens,
 
@@ -134,7 +134,10 @@ To search for American Shorthair kittens,
 Here's the same example using **YAML syntax** in Markdown:
 
 ```markdown
-{/* test testId: kitten-search */}
+{/* test
+  testId: kitten-search
+  detectSteps: false
+*/}
 
 To search for American Shorthair kittens,
 
@@ -144,17 +147,26 @@ To search for American Shorthair kittens,
 
 2. In the search bar, enter "American Shorthair kittens", then press Enter.
 
-   {/* step find: selector: "[title=Search]" click: true */} {/* step type: - "American Shorthair kittens" - "$ENTER$" */} {/* step wait: 5000 */}
+   {/* step find:
+     selector: "[title=Search]"
+     click: true
+   */}
+   {/* step type:
+     - "American Shorthair kittens"
+     - "$ENTER$"
+   */}
+   {/* step wait: 5000 */}
 
 ![Search results](search-results.png)
 
-{/* step screenshot: search-results.png */} {/* test end */}
+{/* step screenshot: search-results.png */}
+{/* test end */}
 ```
 
 **HTML example**:
 
 ```html
-<!-- test { "testId": "navigation-test" } -->
+<!-- test { "testId": "navigation-test", "detectSteps": false } -->
 <p>Navigate to our homepage:</p>
 <!-- step { "goTo": "https://example.com" } -->
 
@@ -167,7 +179,7 @@ To search for American Shorthair kittens,
 **AsciiDoc example**:
 
 ```asciidoc
-// (test { "testId": "doc-test" })
+// (test { "testId": "doc-test", "detectSteps": false })
 == Getting Started
 
 Navigate to the application:
