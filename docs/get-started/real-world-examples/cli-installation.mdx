@@ -1,0 +1,163 @@
+---
+sidebar_label: CLI installation guide
+description: Test command-line tool installation guides with version checks and functionality validation
+---
+
+# Testing a CLI installation guide
+
+## When to use this
+
+Use this approach when you document command-line tools that users install via package managers like npm, pip, or apt. Installation guides must have accurate commands that work across different environments.
+
+## What this tests
+
+- Installation command executes without errors
+- Installed tool is accessible from the command line
+- Version output matches expectations
+- Basic functionality works after installation
+
+## Prerequisites
+
+- [Doc Detective installed](/docs/get-started/installation)
+- Access to run shell commands on your system
+- The CLI tool you're testing (or a test environment)
+
+## Complete example
+
+```json title="cli-installation.spec.json"
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Install the CLI tool using npm",
+          "runShell": {
+            "command": "npm install -g doc-detective",
+            "exitCodes": [0]
+          }
+        },
+        {
+          "description": "Verify installation by checking the version",
+          "runShell": {
+            "command": "doc-detective --version",
+            "stdio": "/^\\d+\\.\\d+\\.\\d+/"
+          }
+        },
+        {
+          "description": "Test basic functionality with help command",
+          "runShell": {
+            "command": "doc-detective --help",
+            "stdio": "Usage:"
+          }
+        },
+        {
+          "description": "Run a simple test to validate the tool works",
+          "runShell": {
+            "command": "echo '{\"tests\": [{\"steps\": [{\"checkLink\": \"https://example.com\"}]}]}' > /tmp/test.json && doc-detective --input /tmp/test.json",
+            "exitCodes": [0]
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+## Expected output
+
+When the test passes, you should see output indicating all steps completed successfully:
+
+```json
+{
+  "summary": {
+    "steps": {
+      "pass": 4,
+      "fail": 0
+    }
+  }
+}
+```
+
+Each shell command executes without errors, version output matches the expected pattern, and the basic functionality test runs successfully.
+
+## Common variations
+
+**Test installation with version pinning:**
+
+```json
+{
+  "description": "Install a specific version",
+  "runShell": {
+    "command": "npm install -g doc-detective@3.0.0",
+    "exitCodes": [0]
+  }
+}
+```
+
+**Test platform-specific installation:**
+
+Use the [`runOn`](/docs/references/schemas/test#fields) property to run different commands based on the platform:
+
+```json
+{
+  "tests": [
+    {
+      "runOn": [
+        {
+          "platforms": ["linux", "mac"]
+        }
+      ],
+      "steps": [
+        {
+          "description": "Install on Unix-like systems",
+          "runShell": "sudo apt-get install -y your-tool"
+        }
+      ]
+    },
+    {
+      "runOn": [
+        {
+          "platforms": ["windows"]
+        }
+      ],
+      "steps": [
+        {
+          "description": "Install on Windows",
+          "runShell": "choco install your-tool"
+        }
+      ]
+    }
+  ]
+}
+```
+
+**Validate command output with variables:**
+
+```json
+{
+  "steps": [
+    {
+      "description": "Get installed version",
+      "runShell": {
+        "command": "doc-detective --version",
+        "stdio": "/.+/"
+      },
+      "variables": {
+        "INSTALLED_VERSION": "$$stdio.stdout"
+      }
+    },
+    {
+      "description": "Echo the captured version",
+      "runShell": {
+        "command": "echo Installed version: $INSTALLED_VERSION"
+      }
+    }
+  ]
+}
+```
+
+## Next steps
+
+- Learn more about the [`runShell`](/docs/get-started/actions/runShell) action
+- Explore [test contexts](/docs/get-started/config/contexts) for cross-platform testing
+- Review [variables](/docs/get-started/actions/loadVariables) for capturing command output

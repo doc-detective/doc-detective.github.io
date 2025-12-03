@@ -21,6 +21,23 @@ const sidebars: SidebarsConfig = {
         "get-started/installation/index",
         "get-started/concepts",
         "get-started/create-your-first-test",
+        {
+          type: "category",
+          label: "Real-world examples",
+          link: {
+            type: "doc",
+            id: "get-started/real-world-examples/overview",
+          },
+          items: [
+            "get-started/real-world-examples/overview",
+            "get-started/real-world-examples/cli-installation",
+            "get-started/real-world-examples/rest-api",
+            "get-started/real-world-examples/ui-screenshots",
+            "get-started/real-world-examples/user-workflow",
+            "get-started/real-world-examples/code-examples",
+            "get-started/real-world-examples/documentation-links",
+          ],
+        },
         "get-started/sample-tests",
         "get-started/resources",
       ],
