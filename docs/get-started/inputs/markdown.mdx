@@ -35,13 +35,26 @@ Markdown files support multiple comment styles for inline tests:
 ```
 
 **Markdown link comments**:
+
 ```markdown
 [comment]: # (test { "testId": "my-test" })
 [comment]: # (step { "goTo": "https://example.com" })
 [comment]: # (test end)
 ```
 
-All three styles work identically. Choose the style that fits your documentation workflow.
+```markdown
+[comment]: # 'test { "testId": "my-test" }'
+[comment]: # 'step { "goTo": "https://example.com" }'
+[comment]: # 'test end'
+```
+
+```markdown
+[comment]: # "test { \"testId\": \"my-test\" }"
+[comment]: # "step { \"goTo\": \"https://example.com\" }"
+[comment]: # "test end"
+```
+
+All three styles work identically. When using double quotes, escape internal quotes with backslashes. Choose the style that fits your documentation workflow.
 
 ## Best practices
 

@@ -45,10 +45,12 @@ Doc Detective supports different comment patterns depending on your file type. F
 
 - JSX-style comments: `{/* test { "testId": "my-test" } */}`
 - HTML comments: `<!-- test { "testId": "my-test" } -->`
-- Markdown link comments: `[comment]: # (test { "testId": "my-test" })`
+- Markdown link comments: `[comment]: # (test { "testId": "my-test" })`, `[comment]: # 'test { "testId": "my-test" }'`, or `[comment]: # "test { \"testId\": \"my-test\" }"`
 - Step comments: `{/* step { "goTo": "https://example.com" } */}`
 - Test end: `{/* test end */}`, `<!-- test end -->`, or `[comment]: # (test end)`
 - Ignore blocks: `{/* test ignore start */}` and `{/* test ignore end */}`
+
+> When using Markdown link comments with double quotes, escape internal quotes with backslashes.
 
 **HTML files** (`.html`, `.htm`):
 
