@@ -1,0 +1,297 @@
+---
+title: How to create a configuration file
+description: Learn the basics of creating and using Doc Detective configuration files.
+sidebar_label: Create a config file
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# How to create a configuration file
+
+Doc Detective uses configuration files to control test behavior, set defaults, and define testing environments. This guide shows you how to create and use a configuration file for your tests.
+
+## Before you begin
+
+- Have Doc Detective installed (via NPX or Docker)
+- Understand basic Doc Detective concepts like [tests](/docs/get-started/tests/overview) and [contexts](/docs/get-started/config/contexts/)
+
+## Configuration file basics
+
+Configuration files are JSON or YAML files that control Doc Detective behavior. By default, Doc Detective looks for a file named `.doc-detective.json` in your current working directory. You can also specify a custom config file using the `--config` flag.
+
+### Create your first config file
+
+1. In your project directory, create a file named `.doc-detective.json`:
+
+   ```json title=".doc-detective.json"
+   {
+     "input": ".",
+     "output": "./test-results",
+     "recursive": true
+   }
+   ```
+
+2. Run Doc Detective to use the configuration:
+
+   <Tabs>
+     <TabItem value="npx" label="NPX" default>
+
+   ```bash
+   npx doc-detective runTests
+   ```
+
+     </TabItem>
+     <TabItem value="docker" label="Docker">
+
+   ```bash
+   docker run -v .:/app docdetective/docdetective runTests --config /app/.doc-detective.json
+   ```
+
+   :::note
+   The `-v` argument mounts your current directory (`.`) to `/app` in the container.
+   :::
+
+     </TabItem>
+   </Tabs>
+
+This basic configuration tells Doc Detective to:
+- Look for tests in the current directory (`"input": "."`)
+- Save results to the `test-results` directory (`"output": "./test-results"`)
+- Search subdirectories for test files (`"recursive": true`)
+
+## Understanding configuration cascading
+
+Doc Detective uses a three-level configuration system with cascading overrides. Settings at more specific levels override settings at more general levels:
+
+1. **Config level** (most general): Settings in your config file apply to all tests
+2. **Spec level**: Settings in a test specification file override config-level settings
+3. **Test level** (most specific): Settings in an individual test override both config and spec levels
+
+### Example: Cascading contexts
+
+This example shows how contexts cascade from config to spec to test:
+
+**Config file** (`.doc-detective.json`):
+```json
+{
+  "runOn": [
+    {
+      "platforms": ["windows", "mac", "linux"],
+      "browsers": "chrome"
+    }
+  ]
+}
+```
+
+**Spec file** (`api-tests.spec.json`):
+```json
+{
+  "runOn": [
+    {
+      "platforms": ["windows"],
+      "browsers": "firefox"
+    }
+  ],
+  "tests": [
+    {
+      "id": "test-1",
+      "steps": []
+    },
+    {
+      "id": "test-2",
+      "runOn": [
+        {
+          "platforms": ["mac"],
+          "browsers": "webkit"
+        }
+      ],
+      "steps": []
+    }
+  ]
+}
+```
+
+In this example:
+- `test-1` runs on Windows with Firefox (from the spec level, overriding the config)
+- `test-2` runs on macOS with WebKit (from the test level, overriding both spec and config)
+- Any tests not in `api-tests.spec.json` run on all platforms with Chrome (from the config)
+
+## Commonly used configuration options
+
+### Input and output paths
+
+Control where Doc Detective finds tests and saves results:
+
+```json
+{
+  "input": "./docs",
+  "output": "./test-results",
+  "recursive": true
+}
+```
+
+- `input`: Path to test specifications and documentation files (default: `"."`)
+- `output`: Path for test results and artifacts (default: `"."`)
+- `recursive`: Search subdirectories for test files (default: `true`)
+
+### Test execution contexts
+
+Define where tests run using the `runOn` array. See [Contexts](/docs/get-started/config/contexts/) for details:
+
+```json
+{
+  "runOn": [
+    {
+      "platforms": ["windows", "mac", "linux"],
+      "browsers": {
+        "name": "chrome",
+        "headless": false
+      }
+    }
+  ]
+}
+```
+
+### Environment variables
+
+Load environment variables from a `.env` file:
+
+```json
+{
+  "loadVariables": ".env"
+}
+```
+
+This makes environment variables available in your tests using `$variableName` syntax.
+
+### Setup and cleanup tests
+
+Run tests before and after your main test suite:
+
+```json
+{
+  "beforeAny": "./setup/create-test-data.spec.json",
+  "afterAll": "./cleanup/remove-test-data.spec.json"
+}
+```
+
+- `beforeAny`: Runs before any tests (useful for environment setup)
+- `afterAll`: Runs after all tests complete (useful for cleanup)
+
+### File types
+
+Specify which file types Doc Detective should process. See [Input formats](/docs/get-started/inputs/overview) for details:
+
+```json
+{
+  "fileTypes": ["markdown", "asciidoc", "html"]
+}
+```
+
+You can also define [custom file types](/docs/get-started/inputs/custom) with custom markup detection.
+
+### Log level
+
+Control the amount of detail in test output:
+
+```json
+{
+  "logLevel": "info"
+}
+```
+
+Options: `silent`, `error`, `warning`, `info` (default), `debug`
+
+### Concurrent test runners
+
+Run tests in parallel to speed up execution:
+
+```json
+{
+  "concurrentRunners": 4
+}
+```
+
+- Set to a number for a specific count of runners
+- Set to `true` to use your CPU core count (capped at 4)
+- Set to `1` (default) to run tests sequentially
+
+## Telemetry
+
+Doc Detective collects anonymous usage telemetry to help improve the tool. Telemetry data includes:
+
+- Number and types of tests run
+- Actions used in tests
+- Error types encountered
+- No personal information or test content
+
+### Opt out of telemetry
+
+To disable telemetry, set `send` to `false`:
+
+```json
+{
+  "telemetry": {
+    "send": false
+  }
+}
+```
+
+### Add a user identifier
+
+Organizations can add a user identifier to help correlate usage across their team:
+
+```json
+{
+  "telemetry": {
+    "send": true,
+    "userId": "my-organization"
+  }
+}
+```
+
+This identifier is not used to identify individual users, only to understand organizational usage patterns.
+
+## Complete configuration example
+
+Here's a comprehensive configuration file that uses many common options:
+
+```json title=".doc-detective.json"
+{
+  "$schema": "https://raw.githubusercontent.com/doc-detective/common/refs/heads/main/dist/schemas/config_v3.schema.json",
+  "input": "./docs",
+  "output": "./test-results",
+  "recursive": true,
+  "loadVariables": ".env",
+  "logLevel": "info",
+  "runOn": [
+    {
+      "platforms": ["windows", "mac", "linux"],
+      "browsers": {
+        "name": "chrome",
+        "headless": false,
+        "viewport": {
+          "width": 1280,
+          "height": 720
+        }
+      }
+    }
+  ],
+  "fileTypes": ["markdown", "html"],
+  "concurrentRunners": 2,
+  "beforeAny": "./setup/init.spec.json",
+  "afterAll": "./cleanup/teardown.spec.json",
+  "telemetry": {
+    "send": true,
+    "userId": "my-team"
+  }
+}
+```
+
+## What's next
+
+- Learn about [contexts](/docs/get-started/config/contexts/) to control where tests run
+- Set up an [OpenAPI integration](/docs/get-started/config/how-to-setup-openapi) for API testing
+- Explore [input formats](/docs/get-started/inputs/overview) to customize test detection
+- See the [config reference](/docs/references/schemas/config) for all available options

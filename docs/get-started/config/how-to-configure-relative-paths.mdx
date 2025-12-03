@@ -1,0 +1,229 @@
+---
+title: How to configure relative paths
+description: Understand and configure how Doc Detective resolves relative paths.
+sidebar_label: Configure relative paths
+---
+
+# How to configure relative paths
+
+Relative paths can be interpreted differently depending on context. This guide shows you how to configure the `relativePathBase` option to control path resolution in Doc Detective.
+
+## Before you begin
+
+- Have Doc Detective installed
+- Understand [basic configuration](/docs/get-started/config/how-to-create-config-file)
+- Have tests using relative paths
+
+## Understanding relative path resolution
+
+The `relativePathBase` option controls how Doc Detective interprets relative paths in configuration and tests.
+
+### Two options
+
+**`cwd` (Current Working Directory):**
+- Paths resolved relative to where you run Doc Detective
+- More predictable for command-line usage
+- Better for CI/CD consistency
+
+**`file`** (default):
+- Paths resolved relative to the file containing them
+- More intuitive for distributed test specs
+- Better for modular test organization
+
+## Configure path resolution
+
+### Use current working directory
+
+```json title=".doc-detective.json"
+{
+  "relativePathBase": "cwd",
+  "input": "./docs",
+  "beforeAny": "./setup/init.spec.json"
+}
+```
+
+Paths resolve from where you run `npx doc-detective`.
+
+### Use file location (default)
+
+```json title=".doc-detective.json"
+{
+  "relativePathBase": "file",
+  "input": "./docs",
+  "beforeAny": "./setup/init.spec.json"
+}
+```
+
+Paths resolve from the config file's directory.
+
+## When to use each approach
+
+### Use `cwd` when:
+- Running tests from a consistent location
+- Using CI/CD with fixed working directories
+- Preferring explicit, absolute-like behavior
+- Sharing configs across teams
+
+### Use `file` when:
+- Distributing test specs across directories
+- Tests reference files near themselves
+- Building modular test suites
+- Following "tests live with docs" pattern
+
+## Examples
+
+### Project structure
+
+```
+project/
+  ├── .doc-detective.json
+  ├── docs/
+  │   ├── api/
+  │   │   ├── api.md
+  │   │   └── api-tests.spec.json
+  │   └── ui/
+  │       ├── ui.md
+  │       └── ui-tests.spec.json
+  └── setup/
+      └── init.spec.json
+```
+
+### With `relativePathBase: "cwd"`
+
+Running from `project/`:
+
+```json title=".doc-detective.json"
+{
+  "relativePathBase": "cwd",
+  "beforeAny": "./setup/init.spec.json"
+}
+```
+
+```json title="docs/api/api-tests.spec.json"
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "action": "screenshot",
+          "path": "./screenshots/api.png"
+        }
+      ]
+    }
+  ]
+}
+```
+
+Screenshot saved to: `project/screenshots/api.png`
+
+### With `relativePathBase: "file"`
+
+```json title=".doc-detective.json"
+{
+  "relativePathBase": "file",
+  "beforeAny": "./setup/init.spec.json"
+}
+```
+
+```json title="docs/api/api-tests.spec.json"
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "action": "screenshot",
+          "path": "./screenshots/api.png"
+        }
+      ]
+    }
+  ]
+}
+```
+
+Screenshot saved to: `project/docs/api/screenshots/api.png`
+
+## Impact on portability
+
+### Portable with `cwd`
+
+```json
+{
+  "relativePathBase": "cwd"
+}
+```
+
+**Pros:**
+- Consistent across different execution contexts
+- Works well in CI/CD
+- Easier to reason about
+
+**Cons:**
+- Must always run from same directory
+- Less flexible for modular tests
+
+### Portable with `file`
+
+```json
+{
+  "relativePathBase": "file"
+}
+```
+
+**Pros:**
+- Tests can be moved with their directories
+- Self-contained test suites
+- More intuitive for co-located tests
+
+**Cons:**
+- Harder to predict without knowing file locations
+- Can be confusing with deep directory structures
+
+## CI/CD considerations
+
+### GitHub Actions example (cwd)
+
+```yaml
+- name: Run tests
+  run: npx doc-detective runTests
+  working-directory: ./project
+```
+
+With `relativePathBase: "cwd"`, all paths resolve from `./project`.
+
+### Docker example
+
+```dockerfile
+WORKDIR /app
+COPY . .
+RUN npx doc-detective runTests
+```
+
+With `relativePathBase: "cwd"`, paths resolve from `/app`.
+
+## Troubleshooting
+
+### Paths not resolving correctly
+
+**Symptoms:**
+- "File not found" errors
+- Tests loading wrong files
+
+**Solution:**
+- Check your `relativePathBase` setting
+- Verify you're running from the expected directory
+- Use absolute paths for debugging: `/absolute/path/to/file`
+
+### Different behavior in CI vs local
+
+**Cause:** Different working directories.
+
+**Solution:**
+- Set `relativePathBase: "cwd"`
+- Ensure CI runs from consistent directory
+- Document required working directory
+
+## What's next
+
+- Learn about [multiple environments](/docs/get-started/config/how-to-setup-multiple-environments)
+- Configure [API origin](/docs/get-started/config/how-to-configure-api-origin) for URLs
+- See the [config reference](/docs/references/schemas/config)

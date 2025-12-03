@@ -1,0 +1,462 @@
+---
+title: How to debug failing tests
+description: Use debug configuration options to troubleshoot test failures.
+sidebar_label: Debug failing tests
+---
+
+# How to debug failing tests
+
+When tests fail, Doc Detective provides several debugging tools to help you identify and fix issues. This guide shows you how to use debug configuration options and techniques to troubleshoot test failures.
+
+## Before you begin
+
+- Have Doc Detective installed
+- Have failing tests to debug
+- Understand [basic configuration](/docs/get-started/config/how-to-create-config-file)
+
+## Quick debugging checklist
+
+1. Enable debug logging: `"logLevel": "debug"`
+2. Run tests in headed mode: `"headless": false"`
+3. Use step-through mode: `"debug": "stepThrough"`
+4. Check test output for error messages
+5. Verify selectors and URLs are correct
+6. Test in isolation (run single test)
+
+## Enable debug logging
+
+### Set log level to debug
+
+Add detailed logging to your configuration:
+
+```json title=".doc-detective.json"
+{
+  "input": "./docs",
+  "output": "./test-results",
+  "logLevel": "debug"
+}
+```
+
+### Log levels
+
+- `silent`: No output
+- `error`: Only errors
+- `warning`: Errors and warnings
+- `info` (default): General information
+- `debug`: Detailed debugging information
+
+### Run with debug logging
+
+```bash
+npx doc-detective runTests
+```
+
+Review the output for detailed information about:
+- Which files are processed
+- Which tests are executed
+- Selector resolution
+- Action execution
+- Error details
+
+## Use debug mode
+
+### Enable breakpoint support
+
+Allow pausing at breakpoints:
+
+```json title=".doc-detective.debug.json"
+{
+  "input": "./docs",
+  "output": "./test-results",
+  "debug": true,
+  "logLevel": "debug"
+}
+```
+
+### Use step-through mode
+
+Pause at every step, waiting for input:
+
+```json title=".doc-detective.debug.json"
+{
+  "input": "./docs",
+  "output": "./test-results",
+  "debug": "stepThrough",
+  "logLevel": "debug"
+}
+```
+
+Press Enter to proceed to the next step.
+
+### Disable debugging
+
+```json
+{
+  "debug": false
+}
+```
+
+## Run tests in headed mode
+
+### See what the browser is doing
+
+Run browser tests with the browser visible:
+
+```json title=".doc-detective.debug.json"
+{
+  "runOn": [
+    {
+      "platforms": ["windows", "mac", "linux"],
+      "browsers": {
+        "name": "chrome",
+        "headless": false
+      }
+    }
+  ]
+}
+```
+
+This lets you watch the test execute and see where it fails.
+
+### Slow down test execution
+
+Add wait actions to see each step:
+
+```json
+{
+  "steps": [
+    {
+      "action": "goTo",
+      "url": "https://example.com"
+    },
+    {
+      "action": "wait",
+      "duration": 2000
+    },
+    {
+      "action": "click",
+      "selector": "#submit"
+    }
+  ]
+}
+```
+
+## Understand test output
+
+### Read error messages
+
+Error messages indicate what went wrong:
+
+```
+[ERROR] Step failed: find
+[ERROR] Element not found: #submit-button
+[ERROR] Selector: #submit-button
+[ERROR] Timeout: 5000ms
+```
+
+Key information:
+- Action that failed
+- Reason for failure
+- Relevant details (selector, timeout, etc.)
+
+### Check test results
+
+Review the test results file in your output directory:
+
+```json title="test-results/results.json"
+{
+  "tests": [
+    {
+      "id": "my-test",
+      "status": "fail",
+      "steps": [
+        {
+          "action": "find",
+          "status": "fail",
+          "error": "Element not found"
+        }
+      ]
+    }
+  ]
+}
+```
+
+## Test in isolation
+
+### Run a single test file
+
+```bash
+npx doc-detective runTests --input ./docs/specific-test.spec.json
+```
+
+### Run a single test from a spec
+
+Create a separate spec with just the failing test:
+
+```json title="debug-single-test.spec.json"
+{
+  "tests": [
+    {
+      "id": "failing-test",
+      "steps": []
+    }
+  ]
+}
+```
+
+### Disable parallel execution
+
+Run tests sequentially for clearer output:
+
+```json
+{
+  "concurrentRunners": 1
+}
+```
+
+## Common debugging scenarios
+
+### Element not found
+
+**Symptoms:**
+- "Element not found" error
+- Selector timeout
+
+**Debug steps:**
+1. Verify the selector is correct
+2. Check if element exists on the page
+3. Ensure page fully loaded before finding element
+4. Try different selector types (CSS, XPath, ARIA)
+
+**Solution:**
+```json
+{
+  "steps": [
+    {
+      "action": "goTo",
+      "url": "https://example.com"
+    },
+    {
+      "action": "wait",
+      "duration": 2000
+    },
+    {
+      "action": "find",
+      "selector": "#element",
+      "timeout": 10000
+    }
+  ]
+}
+```
+
+### Page not loading
+
+**Symptoms:**
+- Timeout errors
+- Navigation failures
+
+**Debug steps:**
+1. Verify URL is correct
+2. Check network connectivity
+3. Ensure page responds to requests
+4. Increase timeout values
+
+**Solution:**
+```json
+{
+  "action": "goTo",
+  "url": "https://example.com",
+  "timeout": 30000
+}
+```
+
+### Timing issues
+
+**Symptoms:**
+- Tests pass sometimes, fail others
+- "Element not ready" errors
+
+**Debug steps:**
+1. Add explicit waits
+2. Use element state checks
+3. Wait for specific conditions
+
+**Solution:**
+```json
+{
+  "steps": [
+    {
+      "action": "goTo",
+      "url": "https://example.com"
+    },
+    {
+      "action": "wait",
+      "selector": "#content",
+      "state": "visible"
+    },
+    {
+      "action": "click",
+      "selector": "#submit"
+    }
+  ]
+}
+```
+
+### Authentication failures
+
+**Symptoms:**
+- 401 or 403 errors
+- "Unauthorized" messages
+
+**Debug steps:**
+1. Verify credentials are correct
+2. Check authentication token is valid
+3. Ensure headers are set properly
+4. Test authentication separately
+
+**Solution:**
+```json
+{
+  "loadVariables": ".env",
+  "steps": [
+    {
+      "action": "httpRequest",
+      "url": "$API_URL/login",
+      "method": "POST",
+      "requestData": {
+        "username": "$USERNAME",
+        "password": "$PASSWORD"
+      }
+    }
+  ]
+}
+```
+
+## Debug configuration examples
+
+### Complete debug configuration
+
+```json title=".doc-detective.debug.json"
+{
+  "input": "./docs",
+  "output": "./test-results",
+  "logLevel": "debug",
+  "debug": "stepThrough",
+  "concurrentRunners": 1,
+  "runOn": [
+    {
+      "platforms": ["windows", "mac", "linux"],
+      "browsers": {
+        "name": "chrome",
+        "headless": false,
+        "viewport": {
+          "width": 1280,
+          "height": 720
+        }
+      }
+    }
+  ]
+}
+```
+
+### Quick debug mode
+
+```json title=".doc-detective.quick-debug.json"
+{
+  "input": "./docs",
+  "logLevel": "debug",
+  "debug": true,
+  "runOn": [
+    {
+      "browsers": {
+        "name": "chrome",
+        "headless": false
+      }
+    }
+  ]
+}
+```
+
+## Use browser developer tools
+
+When running in headed mode, use browser DevTools:
+
+1. Run tests with `headless: false`
+2. Open browser DevTools (F12)
+3. Inspect elements to verify selectors
+4. Check Console for JavaScript errors
+5. Use Network tab to debug API calls
+
+## Troubleshooting tips
+
+### Save screenshots on failure
+
+Capture what the browser sees when tests fail:
+
+```json
+{
+  "steps": [
+    {
+      "action": "screenshot",
+      "path": "./screenshots/before-failure.png"
+    },
+    {
+      "action": "click",
+      "selector": "#element"
+    }
+  ]
+}
+```
+
+### Add descriptive step descriptions
+
+Make error messages more helpful:
+
+```json
+{
+  "action": "find",
+  "description": "Find the submit button in the login form",
+  "selector": "#login-submit"
+}
+```
+
+### Use verbose selectors
+
+Be explicit about what you're selecting:
+
+```json
+{
+  "action": "click",
+  "selector": "form#login button[type='submit']"
+}
+```
+
+### Test smaller units
+
+Break complex tests into smaller, focused tests:
+
+```json
+{
+  "tests": [
+    {
+      "id": "test-navigation",
+      "steps": []
+    },
+    {
+      "id": "test-form-filling",
+      "steps": []
+    },
+    {
+      "id": "test-submission",
+      "steps": []
+    }
+  ]
+}
+```
+
+## What's next
+
+- Learn about [environment variables](/docs/get-started/config/how-to-use-environment-variables) for managing test data
+- Configure [log levels](/docs/get-started/config/how-to-create-config-file#log-level) for different environments
+- Explore [contexts](/docs/get-started/config/contexts/) for browser configuration
+- See the [config reference](/docs/references/schemas/config) for all debug options

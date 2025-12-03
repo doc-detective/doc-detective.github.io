@@ -1,0 +1,215 @@
+---
+title: How to configure API origin
+description: Set a default origin for relative URLs in tests.
+sidebar_label: Configure API origin
+---
+
+# How to configure API origin
+
+The `origin` configuration option sets a default protocol and domain for relative URLs in your tests. This guide shows you how to use it to simplify test maintenance and switch between environments.
+
+## Before you begin
+
+- Have Doc Detective installed
+- Understand [basic configuration](/docs/get-started/config/how-to-create-config-file)
+- Have tests using URLs
+
+## Set a default origin
+
+### Basic configuration
+
+```json title=".doc-detective.json"
+{
+  "origin": "https://api.example.com",
+  "input": "./docs"
+}
+```
+
+Now relative URLs in tests automatically use this origin.
+
+### In tests
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "action": "httpRequest",
+          "url": "/users"
+        }
+      ]
+    }
+  ]
+}
+```
+
+Doc Detective resolves `/users` to `https://api.example.com/users`.
+
+## Testing different environments
+
+### Development
+
+```json title=".doc-detective.dev.json"
+{
+  "origin": "http://localhost:3000"
+}
+```
+
+### Staging
+
+```json title=".doc-detective.staging.json"
+{
+  "origin": "https://staging-api.example.com"
+}
+```
+
+### Production
+
+```json title=".doc-detective.prod.json"
+{
+  "origin": "https://api.example.com"
+}
+```
+
+Same test works across all environments:
+
+```json
+{
+  "action": "httpRequest",
+  "url": "/api/data"
+}
+```
+
+## Combine with environment variables
+
+### Configuration
+
+```json title=".doc-detective.json"
+{
+  "loadVariables": ".env",
+  "origin": "$API_URL"
+}
+```
+
+### Environment file
+
+```bash title=".env"
+API_URL=https://api.example.com
+```
+
+Change environments by updating `.env` file.
+
+## Use with browser tests
+
+### Navigate to pages
+
+```json
+{
+  "origin": "https://example.com",
+  "tests": [
+    {
+      "steps": [
+        {
+          "action": "goTo",
+          "url": "/login"
+        }
+      ]
+    }
+  ]
+}
+```
+
+Navigates to `https://example.com/login`.
+
+### Check links
+
+```json
+{
+  "origin": "https://example.com",
+  "steps": [
+    {
+      "action": "checkLink",
+      "url": "/about"
+    }
+  ]
+}
+```
+
+Checks `https://example.com/about`.
+
+## Override origin in tests
+
+Absolute URLs override the origin:
+
+```json
+{
+  "origin": "https://api.example.com",
+  "steps": [
+    {
+      "action": "httpRequest",
+      "url": "/users"
+    },
+    {
+      "action": "httpRequest",
+      "url": "https://other-api.com/data"
+    }
+  ]
+}
+```
+
+- First request: `https://api.example.com/users`
+- Second request: `https://other-api.com/data` (uses full URL)
+
+## Best practices
+
+### Use origin for API testing
+
+```json
+{
+  "origin": "https://api.example.com",
+  "tests": [
+    {
+      "steps": [
+        {"action": "httpRequest", "url": "/users"},
+        {"action": "httpRequest", "url": "/products"},
+        {"action": "httpRequest", "url": "/orders"}
+      ]
+    }
+  ]
+}
+```
+
+### Use origin for site navigation
+
+```json
+{
+  "origin": "https://example.com",
+  "tests": [
+    {
+      "steps": [
+        {"action": "goTo", "url": "/"},
+        {"action": "goTo", "url": "/products"},
+        {"action": "goTo", "url": "/checkout"}
+      ]
+    }
+  ]
+}
+```
+
+### Document origin requirements
+
+```json
+{
+  "$schema": "https://raw.githubusercontent.com/doc-detective/common/refs/heads/main/dist/schemas/config_v3.schema.json",
+  "// NOTE": "Set origin to your API base URL",
+  "origin": "https://api.example.com"
+}
+```
+
+## What's next
+
+- Learn about [environment variables](/docs/get-started/config/how-to-use-environment-variables)
+- Configure [multiple environments](/docs/get-started/config/how-to-setup-multiple-environments)
+- Explore [httpRequest action](/docs/get-started/actions/httpRequest)
+- See the [config reference](/docs/references/schemas/config)

@@ -1,0 +1,254 @@
+---
+title: How to configure browsers for testing
+description: Deep dive into browser configuration options for different testing scenarios.
+sidebar_label: Configure browsers
+---
+
+# How to configure browsers for testing
+
+Browser configuration affects how your tests run and what features are available. This guide covers browser configuration options in depth.
+
+## Before you begin
+
+- Have Doc Detective installed
+- Understand [contexts](/docs/get-started/config/contexts/)
+- Know which browsers you want to test
+
+## Choose between Chrome, Firefox, and WebKit
+
+### Chrome (Chromium)
+
+**Best for:**
+- Video recording (only browser supporting `record` action)
+- Widest feature support
+- Most common user browser
+
+**Available on:** Windows, macOS, Linux
+
+```json
+{
+  "runOn": [
+    {
+      "platforms": ["windows", "mac", "linux"],
+      "browsers": "chrome"
+    }
+  ]
+}
+```
+
+### Firefox
+
+**Best for:**
+- Firefox-specific features
+- Alternative browser testing
+- Open-source preference
+
+**Available on:** Windows, macOS, Linux
+
+```json
+{
+  "runOn": [
+    {
+      "platforms": ["windows", "mac", "linux"],
+      "browsers": "firefox"
+    }
+  ]
+}
+```
+
+### WebKit/Safari
+
+**Best for:**
+- Safari-specific features
+- iOS web testing
+- macOS testing
+
+**Available on:** macOS only
+
+**Note:** Requires setup: `safaridriver --enable`
+
+```json
+{
+  "runOn": [
+    {
+      "platforms": "mac",
+      "browsers": "webkit"
+    }
+  ]
+}
+```
+
+## Configure headless vs headed mode
+
+### Headless mode (browser hidden)
+
+**Best for:**
+- CI/CD pipelines
+- Faster execution
+- Server environments
+
+```json
+{
+  "browsers": {
+    "name": "chrome",
+    "headless": true
+  }
+}
+```
+
+### Headed mode (browser visible)
+
+**Best for:**
+- Debugging
+- Development
+- Watching test execution
+
+```json
+{
+  "browsers": {
+    "name": "chrome",
+    "headless": false
+  }
+}
+```
+
+**Note:** WebKit/Safari doesn't support headless mode.
+
+## Set viewport and window dimensions
+
+### Configure viewport (content area)
+
+```json
+{
+  "browsers": {
+    "name": "chrome",
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    }
+  }
+}
+```
+
+### Configure window size
+
+```json
+{
+  "browsers": {
+    "name": "chrome",
+    "window": {
+      "width": 1400,
+      "height": 900
+    }
+  }
+}
+```
+
+### Responsive testing
+
+Test different screen sizes:
+
+```json
+{
+  "runOn": [
+    {
+      "platforms": ["linux"],
+      "browsers": {
+        "name": "chrome",
+        "viewport": {"width": 375, "height": 667}
+      }
+    },
+    {
+      "platforms": ["linux"],
+      "browsers": {
+        "name": "chrome",
+        "viewport": {"width": 768, "height": 1024}
+      }
+    },
+    {
+      "platforms": ["linux"],
+      "browsers": {
+        "name": "chrome",
+        "viewport": {"width": 1920, "height": 1080}
+      }
+    }
+  ]
+}
+```
+
+## Browser-specific limitations
+
+### Chrome
+- ✅ Video recording
+- ✅ Headless mode
+- ✅ All platforms
+
+### Firefox
+- ❌ No video recording
+- ✅ Headless mode
+- ✅ All platforms
+
+### WebKit/Safari
+- ❌ No video recording
+- ❌ No headless mode
+- ⚠️ macOS only
+
+## Optimize for CI/CD
+
+### CI configuration
+
+```json
+{
+  "runOn": [
+    {
+      "platforms": ["linux"],
+      "browsers": {
+        "name": "chrome",
+        "headless": true,
+        "viewport": {
+          "width": 1280,
+          "height": 720
+        }
+      }
+    }
+  ],
+  "concurrentRunners": true,
+  "logLevel": "error"
+}
+```
+
+### Why these settings:
+- `headless: true` - No display needed in CI
+- `platforms: ["linux"]` - Most CI runners are Linux
+- `concurrentRunners: true` - Faster execution
+- `logLevel: "error"` - Less noise in logs
+
+## Cross-browser testing
+
+Test across multiple browsers:
+
+```json
+{
+  "runOn": [
+    {
+      "platforms": ["windows", "mac", "linux"],
+      "browsers": "chrome"
+    },
+    {
+      "platforms": ["windows", "mac", "linux"],
+      "browsers": "firefox"
+    },
+    {
+      "platforms": "mac",
+      "browsers": "webkit"
+    }
+  ]
+}
+```
+
+## What's next
+
+- Learn about [contexts](/docs/get-started/config/contexts/) for platform configuration
+- Configure [multiple environments](/docs/get-started/config/how-to-setup-multiple-environments)
+- Set up [debugging](/docs/get-started/config/how-to-debug-failing-tests) in headed mode
+- See the [config reference](/docs/references/schemas/config) for all options
