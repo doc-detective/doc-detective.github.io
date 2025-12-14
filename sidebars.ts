@@ -33,7 +33,10 @@ const sidebars: SidebarsConfig = {
         description:
           "Doc Detective tries to have sane defaults, but it also allows for a lot of customization. This section covers the various configuration options available to you.",
       },
-      items: ["get-started/config/contexts/index"],
+      items: [
+        "get-started/config/contexts/index",
+        "get-started/config/heretto-integration",
+      ],
     },
     {
       type: "category",
