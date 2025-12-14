@@ -1,0 +1,224 @@
+---
+title: Heretto CMS Integration
+sidebar_position: 2
+description: Configure Doc Detective to test DITA content from Heretto CCMS.
+---
+
+# Heretto CMS Integration
+
+Doc Detective can download and test DITA map content from Heretto CCMS. When configured, Doc Detective connects to your Heretto instance, downloads the specified DITA maps, and runs tests against the content.
+
+## Prerequisites
+
+Before configuring the Heretto integration, you need:
+
+- A Heretto CCMS account with API access
+- Your organization ID (the subdomain for your Heretto instance, like `thunderbird` from `thunderbird.heretto.com`)
+- A valid API token from Heretto CCMS
+- At least one DITA map in your Heretto instance
+
+### Generating an API token
+
+To generate an API token in Heretto CCMS:
+
+1. Log in to your Heretto CCMS instance
+2. Navigate to your user settings or API configuration
+3. Generate a new API token
+4. Copy the token for use in your Doc Detective configuration
+
+For detailed instructions, see [Heretto's API authentication documentation](https://help.heretto.com/en/heretto-ccms/api/ccms-api-authentication/basic-authentication#ariaid-title3).
+
+## Configuration
+
+Configure the Heretto integration in your Doc Detective configuration file using the `integrations.heretto` array. Each entry represents a connection to a Heretto instance.
+
+```json
+{
+  "integrations": {
+    "heretto": [
+      {
+        "name": "my-heretto-instance",
+        "organizationId": "your-organization-id",
+        "username": "your-email@example.com",
+        "apiToken": "your-api-token"
+      }
+    ]
+  }
+}
+```
+
+### Configuration options
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `name` | string | Yes | Unique identifier for this Heretto integration. Used in logs and results. |
+| `organizationId` | string | Yes | The organization subdomain used to access Heretto CCMS. For example, if you access Heretto at `thunderbird.heretto.com`, your organization ID is `thunderbird`. |
+| `username` | string | Yes | Your Heretto CCMS username, typically your email address. |
+| `apiToken` | string | Yes | API token generated in Heretto CCMS for authentication. |
+| `scenarioName` | string | No | Name of the scenario to build and test. Defaults to `"Doc Detective"`. |
+| `outputPath` | string | No | Local path where Heretto content will be downloaded. Set automatically during processing—don't configure manually. |
+
+### Multiple instances
+
+You can configure multiple Heretto integrations:
+
+```json
+{
+  "integrations": {
+    "heretto": [
+      {
+        "name": "production",
+        "organizationId": "myorg-prod",
+        "username": "user@example.com",
+        "apiToken": "prod-api-token"
+      },
+      {
+        "name": "staging",
+        "organizationId": "myorg-staging",
+        "username": "user@example.com",
+        "apiToken": "staging-api-token"
+      }
+    ]
+  }
+}
+```
+
+## Using with DITA maps
+
+The Heretto integration works with Doc Detective's DITA processing. When configured, Doc Detective downloads DITA map files from your Heretto instance and processes them according to the `processDitaMaps` configuration option.
+
+:::tip
+Make sure `processDitaMaps` is enabled in your configuration to process DITA content from Heretto.
+:::
+
+```json
+{
+  "processDitaMaps": true,
+  "integrations": {
+    "heretto": [
+      {
+        "name": "my-instance",
+        "organizationId": "your-organization-id",
+        "username": "your-email@example.com",
+        "apiToken": "your-api-token"
+      }
+    ]
+  }
+}
+```
+
+## Security
+
+:::warning
+Never commit API tokens directly in your configuration files. Use environment variables or `.env` files instead.
+:::
+
+Store your API token in an environment variable:
+
+```bash
+export HERETTO_API_TOKEN="your-api-token"
+```
+
+Reference the environment variable in your configuration:
+
+```json
+{
+  "integrations": {
+    "heretto": [
+      {
+        "name": "my-instance",
+        "organizationId": "your-organization-id",
+        "username": "your-email@example.com",
+        "apiToken": "${HERETTO_API_TOKEN}"
+      }
+    ]
+  }
+}
+```
+
+Alternatively, use the `loadVariables` option to load from a `.env` file:
+
+```json
+{
+  "loadVariables": ".env",
+  "integrations": {
+    "heretto": [
+      {
+        "name": "my-instance",
+        "organizationId": "your-organization-id",
+        "username": "your-email@example.com",
+        "apiToken": "${HERETTO_API_TOKEN}"
+      }
+    ]
+  }
+}
+```
+
+## Example
+
+Here's a complete example using environment variables:
+
+**Configuration file (`.doc-detective.json`):**
+
+```json
+{
+  "loadVariables": ".env",
+  "processDitaMaps": true,
+  "integrations": {
+    "heretto": [
+      {
+        "name": "documentation",
+        "organizationId": "mycompany",
+        "username": "docs@mycompany.com",
+        "apiToken": "${HERETTO_API_TOKEN}"
+      }
+    ]
+  },
+  "detectSteps": true,
+  "logLevel": "info"
+}
+```
+
+**Environment file (`.env`):**
+
+```
+HERETTO_API_TOKEN=your-actual-api-token-here
+```
+
+**Running tests:**
+
+```bash
+npx doc-detective
+```
+
+## Troubleshooting
+
+### Authentication errors
+
+If you receive authentication errors:
+
+- Verify your `username` and `apiToken` are correct
+- Ensure your API token hasn't expired
+- Check that your `organizationId` matches your Heretto subdomain
+
+### DITA maps not processing
+
+If DITA maps aren't being processed:
+
+- Confirm `processDitaMaps` is set to `true` in your configuration
+- Check that your Heretto instance contains the expected DITA maps
+- Review the logs with `logLevel: "debug"` for detailed information
+
+### Connection issues
+
+If Doc Detective can't connect to Heretto:
+
+- Verify your internet connection
+- Ensure your organization has API access enabled in Heretto
+- Check for firewall or proxy issues blocking the connection
+
+## Related topics
+
+- [DITA input format](/docs/get-started/inputs/dita) - Learn about Doc Detective's DITA support and test detection
+- [Configuration reference](/docs/references/schemas/config) - Complete configuration options
+- [Environment variables](/docs/get-started/actions/loadVariables) - Using variables in your configuration
