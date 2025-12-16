@@ -83,6 +83,99 @@ You can configure multiple Heretto integrations:
 }
 ```
 
+## Usage
+
+After you configure the Heretto integration, reference it as an input source using the `heretto:<name>` syntax, where `<name>` matches the `name` field from your integration configuration.
+
+Add `heretto:<name>` to any of these configuration arrays:
+
+- `input` - Test files to process
+- `beforeAll` - Sources to load before running tests
+- `afterAll` - Sources to load after running tests
+
+When Doc Detective encounters a `heretto:` reference:
+
+1. Connects to your Heretto instance using the credentials from the matching integration
+2. Triggers a publishing job using the configured scenario
+3. Downloads and extracts the DITA content to a temporary directory
+4. Processes the DITA maps and topics according to your `processDitaMaps` setting
+5. Runs tests against the content
+
+### Single source example
+
+```json
+{
+  "input": ["heretto:production"],
+  "processDitaMaps": true,
+  "integrations": {
+    "heretto": [
+      {
+        "name": "production",
+        "organizationId": "mycompany",
+        "username": "docs@mycompany.com",
+        "apiToken": "${HERETTO_API_TOKEN}"
+      }
+    ]
+  }
+}
+```
+
+### Multiple sources example
+
+Combine Heretto sources with local files:
+
+```json
+{
+  "input": [
+    "heretto:production",
+    "docs/local-tests/*.spec.json",
+    "heretto:staging"
+  ],
+  "processDitaMaps": true,
+  "integrations": {
+    "heretto": [
+      {
+        "name": "production",
+        "organizationId": "mycompany-prod",
+        "username": "docs@mycompany.com",
+        "apiToken": "${HERETTO_PROD_TOKEN}"
+      },
+      {
+        "name": "staging",
+        "organizationId": "mycompany-staging",
+        "username": "docs@mycompany.com",
+        "apiToken": "${HERETTO_STAGING_TOKEN}"
+      }
+    ]
+  }
+}
+```
+
+### Using beforeAll and afterAll
+
+```json
+{
+  "beforeAll": ["heretto:documentation"],
+  "input": "tests/",
+  "afterAll": ["cleanup/*.spec.json"],
+  "processDitaMaps": true,
+  "integrations": {
+    "heretto": [
+      {
+        "name": "documentation",
+        "organizationId": "mycompany",
+        "username": "docs@mycompany.com",
+        "apiToken": "${HERETTO_API_TOKEN}"
+      }
+    ]
+  }
+}
+```
+
+:::tip
+The first time Doc Detective downloads content from a Heretto source, it caches the output path for the session. Subsequent references to the same `heretto:<name>` source reuse the downloaded content without triggering another publishing job.
+:::
+
 ## Using with DITA maps
 
 The Heretto integration works with Doc Detective's DITA processing. When configured, Doc Detective downloads DITA map files from your Heretto instance and processes them according to the `processDitaMaps` configuration option.
@@ -156,12 +249,13 @@ Alternatively, use the `loadVariables` option to load from a `.env` file:
 
 ## Example
 
-Here's a complete example using environment variables:
+Here's a complete example using environment variables and the `heretto:` input syntax:
 
 **Configuration file (`.doc-detective.json`):**
 
 ```json
 {
+  "input": ["heretto:documentation"],
   "loadVariables": ".env",
   "processDitaMaps": true,
   "integrations": {
@@ -190,6 +284,8 @@ HERETTO_API_TOKEN=your-actual-api-token-here
 ```bash
 npx doc-detective
 ```
+
+Doc Detective connects to the Heretto instance, downloads the DITA content, and runs tests against it.
 
 ## Troubleshooting
 
