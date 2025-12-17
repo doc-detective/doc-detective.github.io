@@ -9,4 +9,4 @@ The most common entrypoint for most users, [`doc-detective`](https://github.com/
 This repo depends on
 - [`doc-detective-core`](doc-detective-core) for the primary testing logic.
 - [`doc-detective-common`](doc-detective-common) for JSON schema definitions, schema validation logic, and path resolution logic.
-- [`doc-detective-resolver`](resolver) for detecting and resolving documentation into Doc Detective tests.
+- [`doc-detective-resolver`](https://github.com/doc-detective/resolver) for detecting and resolving documentation into Doc Detective tests.
