@@ -28,6 +28,57 @@ To generate an API token in Heretto CCMS:
 
 For detailed instructions, see [Heretto's API authentication documentation](https://help.heretto.com/en/heretto-ccms/api/ccms-api-authentication/basic-authentication#ariaid-title3).
 
+## Set up a publishing scenario
+
+Before Doc Detective can download content from Heretto, create a publishing scenario in your Heretto CCMS instance. Doc Detective looks for a scenario named "Doc Detective" (by default) and validates that it's configured correctly.
+
+### Required scenario parameters
+
+Your scenario needs three parameters:
+
+- **transtype**: Set to "dita"
+- **tool-kit-name**: A valid DITA-OT toolkit value (like "default/dita-ot-3.6.1")
+- **file_uuid_picker**: A valid DITA map in your Heretto instance
+
+### Create the scenario
+
+To create a publishing scenario in Heretto:
+
+1. Log in to your Heretto CCMS instance.
+2. Navigate to **Publishing Scenarios**.
+3. Create a new scenario named "Doc Detective" (or another name you'll reference in your configuration).
+4. Configure the scenario parameters:
+   - Set **transtype** to "dita"
+   - Select a **tool-kit-name** (any DITA-OT toolkit version)
+   - Choose a **DITA map** to publish (this sets the file_uuid_picker parameter)
+5. Save the scenario.
+
+:::note
+
+For more details on creating publishing scenarios, see [Heretto's publishing documentation](https://help.heretto.com/).
+
+:::
+
+### Use a custom scenario name
+
+If you use a different scenario name, specify it in your Doc Detective configuration using the `scenarioName` field:
+
+```json
+{
+  "integrations": {
+    "heretto": [
+      {
+        "name": "my-instance",
+        "organizationId": "your-org",
+        "username": "user@example.com",
+        "apiToken": "your-token",
+        "scenarioName": "My Custom Scenario"
+      }
+    ]
+  }
+}
+```
+
 ## Configuration
 
 Configure the Heretto integration in your Doc Detective configuration file using the `integrations.heretto` array. Each entry represents a connection to a Heretto instance.
@@ -288,6 +339,16 @@ npx doc-detective
 Doc Detective connects to the Heretto instance, downloads the DITA content, and runs tests against it.
 
 ## Troubleshooting
+
+### Scenario configuration errors
+
+If you receive errors about scenario configuration (like "incorrect 'transtype' parameter settings" or "incorrect 'file_uuid_picker' parameter settings"):
+
+- Verify a publishing scenario named "Doc Detective" (or your custom `scenarioName`) exists in Heretto
+- Ensure the scenario's **transtype** parameter is set to "dita"
+- Confirm the scenario has a **tool-kit-name** parameter with a valid DITA-OT toolkit
+- Check that the scenario has a **DITA map** selected (the file_uuid_picker parameter)
+- See [Set up a publishing scenario](#set-up-a-publishing-scenario) for detailed setup instructions
 
 ### Authentication errors
 
