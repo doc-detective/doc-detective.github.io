@@ -148,6 +148,47 @@ Assuming a global `origin` of `https://www.google.com` is set in the configurati
 ## Troubleshooting
 
 - [`checkLink` fails due to unrecognized certificates](#checklink-fails-due-to-unrecognized-certificates)
+- [`checkLink` fails with 403, 401, or other HTTP status codes](#checklink-fails-with-403-401-or-other-http-status-codes)
+
+### `checkLink` fails with 403, 401, or other HTTP status codes
+
+If `checkLink` returns an error like "Returned 403. Expected one of [200,301,302,307,308]", the target URL is accessible but returning a status code that isn't in your `statusCodes` list.
+
+#### Common causes
+
+- **403 Forbidden**: The server is blocking access. Common reasons:
+  - Bot protection or anti-scraping measures
+  - Geographic restrictions
+  - Required authentication or API keys
+  - IP-based access controls
+  
+- **401 Unauthorized**: The URL requires authentication credentials that weren't provided.
+
+- **404 Not Found**: The URL doesn't exist or has been moved.
+
+- **Other status codes**: The server returned a redirect or error status not in your expected list.
+
+#### Solutions
+
+1. **Verify the URL is correct**: Open the URL in a browser to confirm it loads as expected.
+
+2. **Adjust expected status codes**: If the URL returns a different status code (like a redirect), add it to your `statusCodes` array:
+
+   ```json
+   {
+     "checkLink": {
+       "url": "https://example.com/redirect",
+       "statusCodes": [200, 301, 302, 403]
+     }
+   }
+   ```
+
+3. **For 403/401 errors on legitimate URLs**: Doc Detective automatically sends browser-like headers, but some websites still block automated tools. If you're testing internal URLs or APIs that require authentication, you can:
+   - Use the [`httpRequest`](/docs/get-started/actions/httpRequest) action with custom headers
+   - Whitelist the Doc Detective testing environment
+   - Skip these checks for heavily protected resources
+
+4. **For 404 errors**: Update the URL or remove the check if the link is no longer valid.
 
 ### `checkLink` fails due to unrecognized certificates
 
