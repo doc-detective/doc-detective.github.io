@@ -188,7 +188,13 @@ If `checkLink` returns an error like "Returned 403. Expected one of [200,301,302
    - Whitelist the Doc Detective testing environment
    - Skip these checks for heavily protected resources
 
-4. **For 404 errors**: Update the URL or remove the check if the link is no longer valid.
+4. **Alternative for anti-bot protection**: If a URL fails due to bot detection (403 errors from anti-scraping measures), you can use the [`goTo`](/docs/get-started/actions/goTo) action instead. This simulates full browser actions more accurately and may bypass anti-bot measures. However, note that:
+   - `goTo` is a heavier operation than `checkLink`
+   - It doesn't validate HTTP status codes
+   - It checks if the page can load correctly in a browser instead
+   - It may be more suitable for validating user-facing pages rather than API endpoints
+
+5. **For 404 errors**: Update the URL or remove the check if the link is no longer valid.
 
 ### `checkLink` fails due to unrecognized certificates
 
