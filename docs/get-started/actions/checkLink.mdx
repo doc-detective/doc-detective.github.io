@@ -16,6 +16,14 @@ import JSONSchemaViewer from "@theme/JSONSchemaViewer";
 
 The `checkLink` action checks if a URL returns an acceptable status code from a GET request. This action is useful for verifying that a hyperlink or image URL is valid.
 
+## Automatic Request Headers
+
+Every `checkLink` request includes browser-like headers to improve compatibility with modern websites. These headers include a User-Agent string, Accept headers, and language preferences that prevent false failures from sites that reject requests without proper headers. For example, sites like Wikipedia and JFrog Artifactory return 403 errors when requests don't include a User-Agent.
+
+The action includes a 10-second timeout and follows up to 5 redirects automatically.
+
+## Parameters
+
 You can specify the target URL directly as a string, or use an object for more options:
 
 - `url`: (Required in object format) The URL to check. Can be a full URL or a path. If a path is provided, an `origin` must be specified either in the step or in the configuration file.
@@ -156,8 +164,8 @@ If `checkLink` returns an error like "Returned 403. Expected one of [200,301,302
 
 #### Common causes
 
-- **403 Forbidden**: The server is blocking access. Common reasons:
-  - Bot protection or anti-scraping measures
+- **403 Forbidden**: The server is blocking access. Doc Detective automatically sends browser-like headers (User-Agent, Accept, Accept-Language) to avoid most common 403 errors from modern websites. If you still get 403 errors, common reasons include:
+  - Bot detection or anti-scraping tools
   - Geographic restrictions
   - Required authentication or API keys
   - IP-based access controls
@@ -183,7 +191,7 @@ If `checkLink` returns an error like "Returned 403. Expected one of [200,301,302
    }
    ```
 
-3. **For 403/401 errors on legitimate URLs**: Doc Detective automatically sends browser-like headers, but some websites still block automated tools. If you're testing internal URLs or APIs that require authentication, you can:
+3. **For 403/401 errors on legitimate URLs**: Some websites block automated tools even with browser-like headers. If you're testing internal URLs or APIs that require authentication, you can:
    - Use the [`httpRequest`](/docs/get-started/actions/httpRequest) action with custom headers
    - Whitelist the Doc Detective testing environment
    - Skip these checks for heavily protected resources
