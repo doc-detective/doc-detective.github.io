@@ -107,6 +107,7 @@ Configure the Heretto integration in your Doc Detective configuration file using
 | `username` | string | Yes | Your Heretto CCMS username, typically your email address. |
 | `apiToken` | string | Yes | API token generated in Heretto CCMS for authentication. |
 | `scenarioName` | string | No | Name of the scenario to build and test. Defaults to `"Doc Detective"`. |
+| `uploadOnChange` | boolean | No | If `true`, uploads changed screenshots and other media files back to Heretto CMS after test execution. Defaults to `false`. See [Screenshot Synchronization](#screenshot-synchronization) for details. |
 | `outputPath` | string | No | Local path where Heretto content will be downloaded. Set automatically during processing—don't configure manually. |
 
 ### Multiple instances
@@ -226,6 +227,80 @@ Combine Heretto sources with local files:
 :::tip
 The first time Doc Detective downloads content from a Heretto source, it caches the output path for the session. Subsequent references to the same `heretto:<name>` source reuse the downloaded content without triggering another publishing job.
 :::
+
+## Screenshot Synchronization
+
+Doc Detective can automatically upload changed screenshots back to Heretto when testing DITA content from Heretto CMS. This keeps your screenshots synchronized between test runs and your source content.
+
+### How it works
+
+When you enable screenshot synchronization with `uploadOnChange: true`, Doc Detective:
+
+1. Downloads DITA content from Heretto and tracks image file locations
+2. Marks any screenshot that gets created or updated during test execution as changed
+3. Uploads changed screenshots back to Heretto at their original locations
+4. Replaces the existing versions in Heretto CMS
+
+This workflow is useful for updating screenshots, verifying screenshot accuracy against your product UI, and keeping screenshots synchronized without manual uploads.
+
+### Enable screenshot synchronization
+
+Set `uploadOnChange: true` in your Heretto integration configuration:
+
+```json
+{
+  "integrations": {
+    "heretto": [
+      {
+        "name": "my-heretto-instance",
+        "organizationId": "your-organization-id",
+        "username": "your-email@example.com",
+        "apiToken": "your-api-token",
+        "uploadOnChange": true
+      }
+    ]
+  }
+}
+```
+
+Doc Detective automatically tracks which files came from Heretto and uploads only the files that changed during testing.
+
+:::note
+Screenshot synchronization only works for image files that are part of your DITA content in Heretto. Screenshots saved to paths outside the Heretto content tree won't be uploaded.
+:::
+
+### Example with screenshot tests
+
+Here's a complete example with DITA content testing:
+
+**Configuration (`.doc-detective.json`):**
+
+```json
+{
+  "input": ["heretto:documentation"],
+  "loadVariables": ".env",
+  "processDitaMaps": true,
+  "integrations": {
+    "heretto": [
+      {
+        "name": "documentation",
+        "organizationId": "mycompany",
+        "username": "docs@mycompany.com",
+        "apiToken": "${HERETTO_API_TOKEN}",
+        "uploadOnChange": true
+      }
+    ]
+  },
+  "logLevel": "info"
+}
+```
+
+With this configuration:
+
+1. Doc Detective downloads DITA maps from Heretto
+2. Tests run against the content, including screenshot actions
+3. Updated screenshots are automatically uploaded back to Heretto
+4. Your Heretto content stays synchronized with the latest screenshots
 
 ## Using with DITA maps
 
