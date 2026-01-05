@@ -107,7 +107,7 @@ Configure the Heretto integration in your Doc Detective configuration file using
 | `username` | string | Yes | Your Heretto CCMS username, typically your email address. |
 | `apiToken` | string | Yes | API token generated in Heretto CCMS for authentication. |
 | `scenarioName` | string | No | Name of the scenario to build and test. Defaults to `"Doc Detective"`. |
-| `uploadOnChange` | boolean | No | If `true`, uploads changed screenshots and other media files back to Heretto CMS after test execution. Defaults to `false`. See [Screenshot Synchronization](#screenshot-synchronization) for details. |
+| `uploadOnChange` | boolean | No | Automatically uploads changed screenshots and media files back to Heretto CMS after test execution. Set to `false` to disable automatic uploads. Defaults to `true`. See [Screenshot Synchronization](#screenshot-synchronization) for details. |
 | `outputPath` | string | No | Local path where Heretto content will be downloaded. Set automatically during processing—don't configure manually. |
 
 ### Multiple instances
@@ -230,22 +230,24 @@ The first time Doc Detective downloads content from a Heretto source, it caches 
 
 ## Screenshot Synchronization
 
-Doc Detective can automatically upload changed screenshots back to Heretto when testing DITA content from Heretto CMS. This keeps your screenshots synchronized between test runs and your source content.
+Doc Detective automatically uploads changed screenshots back to Heretto when testing DITA content from Heretto CMS. This keeps your screenshots synchronized between test runs and your source content.
 
 ### How it works
 
-When you enable screenshot synchronization with `uploadOnChange: true`, Doc Detective:
+By default, screenshot synchronization runs automatically after test execution. When enabled (which it is by default), Doc Detective:
 
 1. Downloads DITA content from Heretto and tracks image file locations
 2. Marks any screenshot that gets created or updated during test execution as changed
-3. Uploads changed screenshots back to Heretto at their original locations
+3. Uploads changed screenshots back to Heretto at their original locations after all tests complete
 4. Replaces the existing versions in Heretto CMS
 
 This workflow is useful for updating screenshots, verifying screenshot accuracy against your product UI, and keeping screenshots synchronized without manual uploads.
 
-### Enable screenshot synchronization
+Upload operations run on a best-effort basis and won't cause test failures. If an upload fails, Doc Detective logs a warning and continues. Upload results appear in the test report under `uploadResults`.
 
-Set `uploadOnChange: true` in your Heretto integration configuration:
+### Configure screenshot synchronization
+
+Screenshot synchronization is enabled by default. To explicitly configure it, set `uploadOnChange` in your Heretto integration configuration:
 
 ```json
 {
@@ -256,7 +258,25 @@ Set `uploadOnChange: true` in your Heretto integration configuration:
         "organizationId": "your-organization-id",
         "username": "your-email@example.com",
         "apiToken": "your-api-token",
-        "uploadOnChange": true
+        "uploadOnChange": true  // Enabled by default, can set to false to disable
+      }
+    ]
+  }
+}
+```
+
+To disable automatic uploads for a specific integration, set `uploadOnChange: false`:
+
+```json
+{
+  "integrations": {
+    "heretto": [
+      {
+        "name": "read-only-instance",
+        "organizationId": "your-organization-id",
+        "username": "your-email@example.com",
+        "apiToken": "your-api-token",
+        "uploadOnChange": false  // Disable automatic uploads
       }
     ]
   }
@@ -268,6 +288,40 @@ Doc Detective automatically tracks which files came from Heretto and uploads onl
 :::note
 Screenshot synchronization only works for image files that are part of your DITA content in Heretto. Screenshots saved to paths outside the Heretto content tree won't be uploaded.
 :::
+
+### Upload results
+
+After tests complete, upload results appear in the test report under the `uploadResults` field:
+
+```json
+{
+  "uploadResults": {
+    "total": 3,
+    "successful": 2,
+    "failed": 1,
+    "skipped": 0,
+    "details": [
+      {
+        "localPath": "images/screenshot1.png",
+        "status": "PASS",
+        "description": "Uploaded successfully"
+      },
+      {
+        "localPath": "images/screenshot2.png",
+        "status": "PASS",
+        "description": "Uploaded successfully"
+      },
+      {
+        "localPath": "images/screenshot3.png",
+        "status": "FAIL",
+        "reason": "Network timeout"
+      }
+    ]
+  }
+}
+```
+
+Failed uploads won't cause test failures - they're logged as warnings so you can investigate and retry if needed.
 
 ### Example with screenshot tests
 
