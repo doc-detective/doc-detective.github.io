@@ -88,6 +88,7 @@ const sidebars: SidebarsConfig = {
         "get-started/actions/saveCookie",
         "get-started/actions/screenshot",
         "get-started/actions/stopRecord",
+        "get-started/actions/terminateScope",
         "get-started/actions/type",
         "get-started/actions/wait",
       ],

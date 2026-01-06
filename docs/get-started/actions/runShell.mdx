@@ -26,6 +26,11 @@ You can specify the command directly as a string or use an object for more optio
   - `timeout`: (Optional) Maximum duration in milliseconds to wait for the command to complete.
   - `exitCodes`: (Optional) An array of acceptable exit codes. If the command's exit code is not in this list, the step fails (default: `[0]`).
   - `stdio`: (Optional) A string or regular expression to validate against the command's combined stdout and stderr. If the output doesn't match, the step fails. Regex must start and end with `/` (for example, `/^hello world.*/`).
+  - `scope`: (Optional) Named scope for a persistent terminal session. When specified, the command runs in a persistent terminal that you can reuse across multiple steps with the same scope name. Useful for long-running processes like development servers or background tasks. Scope names must be alphanumeric with hyphens or underscores (1-64 characters). When using scopes with long-running processes, use the `terminateScope` action to clean up the process when you're done.
+  - `waitUntil`: (Optional) Conditions to wait for before considering the step complete. Useful when running long-running processes or commands that need time to initialize. You can specify patterns to match in stdout or stderr output:
+    - `stdio.stdout`: A string or regular expression pattern to match in stdout. The step waits until this pattern appears.
+    - `stdio.stderr`: A string or regular expression pattern to match in stderr. The step waits until this pattern appears.
+    - Regular expressions must start and end with `/` (for example, `/Server started/` or `/ERROR.*critical/`).
   - *Output Saving:* You can also save the command's output using `path`, `directory`, `maxVariation`, and `overwrite` properties. See the [`runShell`](/docs/references/schemas/runshell) reference for details.
 
 **Output Regression Testing:** You can save command output to a file and perform regression testing on subsequent runs. If `path` is specified, `maxVariation` is set, and a reference file exists at the target `path`, the action compares the new output to the reference file. If the difference is within `maxVariation`, the step passes. If it exceeds the threshold, the step returns WARNING, and behavior depends on the `overwrite` setting:
@@ -151,6 +156,66 @@ The first step echoes "setup", validates the output using a regex, and captures 
           "runShell": {
             "command": "echo $TEST",
             "stdio": "setup"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Start a development server and wait for it to be ready
+
+This example starts a Node.js development server in a persistent scope and waits for it to be ready.
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Start development server and wait for it to be ready.",
+          "runShell": {
+            "command": "npm",
+            "args": ["run", "dev"],
+            "scope": "dev-server",
+            "waitUntil": {
+              "stdio": {
+                "stdout": "Server listening on"
+              }
+            }
+          }
+        },
+        {
+          "description": "Run tests against the server.",
+          "runShell": "npm test"
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Monitor logs and wait for a specific pattern
+
+This example starts a log monitoring process and waits for a critical error pattern.
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Monitor application logs for critical errors.",
+          "runShell": {
+            "command": "tail",
+            "args": ["-f", "/var/log/app.log"],
+            "scope": "log-monitor",
+            "waitUntil": {
+              "stdio": {
+                "stdout": "/ERROR.*critical/"
+              }
+            }
           }
         }
       ]

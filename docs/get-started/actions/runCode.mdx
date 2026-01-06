@@ -28,6 +28,11 @@ You must specify the `runCode` action using an object format with the following 
   - `timeout`: (Optional) Maximum duration in milliseconds to wait for the code execution to complete.
   - `exitCodes`: (Optional) An array of acceptable exit codes. If the code execution's exit code is not in this list, the step fails (default: `[0]`).
   - `stdio`: (Optional) A string or regular expression to validate against the code's combined stdout and stderr. If the output doesn't match, the step fails. Regex must start and end with `/` (for example, `/^hello world.*/`).
+  - `scope`: (Optional) A named scope for running code in a persistent execution context that you can reuse across multiple steps. Useful for long-running processes or maintaining state between code executions. Scope names must be alphanumeric with hyphens or underscores (1-64 characters). Use the `terminateScope` action to clean up when you're done.
+  - `waitUntil`: (Optional) Conditions to wait for before considering the step complete. Useful when running long-running processes or code that needs time to initialize. You can specify patterns to match in stdout or stderr output:
+    - `stdio.stdout`: A string or regular expression pattern to match in stdout. The step waits until this pattern appears.
+    - `stdio.stderr`: A string or regular expression pattern to match in stderr. The step waits until this pattern appears.
+    - Regex must start and end with `/` (for example, `/Server started/` or `/Ready/`).
   - *Output Saving:* You can also save the code's output using `path`, `directory`, `maxVariation`, and `overwrite` properties. See the [`runCode`](/docs/references/schemas/runcode) reference for details.
 
 **Output Regression Testing:** If `path` is specified and `maxVariation` is set, and a reference file exists at the target `path`, the action compares the new code output to the reference file content. If the difference is within `maxVariation`, the step passes. If it exceeds the threshold, the step returns WARNING, and behavior depends on the `overwrite` setting:
@@ -140,6 +145,62 @@ The first step runs Python code to print "setup", validates the output using a r
             "language": "bash",
             "code": "echo $SETUP_VAL",
             "stdio": "setup"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Start a Python background process
+
+This example starts a Python process in a persistent scope and waits for it to be ready.
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Start background process and wait for it to be ready.",
+          "runCode": {
+            "language": "python",
+            "code": "import time\nwhile True:\n    print('Running')\n    time.sleep(1)",
+            "scope": "background-process",
+            "waitUntil": {
+              "stdio": {
+                "stdout": "Running"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Start an HTTP server
+
+This example starts a Node.js HTTP server and waits for the startup message.
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Start HTTP server.",
+          "runCode": {
+            "language": "javascript",
+            "code": "const http = require('http');\nconst server = http.createServer();\nserver.listen(3000, () => console.log('Server started'));",
+            "scope": "http-server",
+            "waitUntil": {
+              "stdio": {
+                "stdout": "/Server started/"
+              }
+            }
           }
         }
       ]
