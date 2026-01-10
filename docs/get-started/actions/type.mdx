@@ -90,6 +90,18 @@ Here's a list of special keys you can use:
 | F11            | $F11$              |
 | F12            | $F12$              |
 
+### Terminal control keys
+
+When targeting a terminal with `scope`, you can use these additional control keys:
+
+| Key            | Code               | Description                                      |
+| -------------- | ------------------ | ------------------------------------------------ |
+| Ctrl+C         | $CTRL_C$           | Sends interrupt signal (SIGINT) to the process   |
+| Ctrl+D         | $CTRL_D$           | Sends end-of-file (EOF) to the terminal          |
+| Ctrl+Z         | $CTRL_Z$           | Sends suspend signal (SIGTSTP) to the process    |
+
+These keys only work when `type` targets a terminal scope.
+
 ## Examples
 
 ### Perform a search (array shorthand)
