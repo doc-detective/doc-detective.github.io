@@ -7,6 +7,39 @@ sidebar_position: 3
 [`doc-detective-common`](https://github.com/doc-detective/doc-detective-common) is an NPM package that contains shared schemas and logic used across Doc Detective repos. It's installable via NPM (`npm i doc-detective-common`). This package contains the JSON schemas that define each test action.
 
 This repo doesn't depend on any other Doc Detective repos.
+
+## TypeScript codebase
+
+Source code is in TypeScript (`.ts` files in `src/`) and compiles to JavaScript for distribution. Tests run against the compiled output in `dist/`.
+
+### Building
+
+```bash
+npm run build
+```
+
+This command:
+
+- Processes JSON schemas
+- Generates TypeScript type definitions from schemas
+- Compiles TypeScript to JavaScript
+- Creates both CommonJS and ESM outputs
+
+Build output in `dist/`:
+
+- `dist/*.js` - CommonJS modules
+- `dist/*.mjs` - ESM modules
+- `dist/*.d.ts` - TypeScript declarations
+
+### Development workflow
+
+1. Edit TypeScript files in `src/`
+2. Build with `npm run build`
+3. Run tests with `npm test`
+4. Verify coverage with `npm run test:coverage:ratchet`
+
+Tests are written in JavaScript and run against the compiled output to ensure the published package works correctly.
+
 ## Contributing code
 
 `doc-detective-common` is shared across all Doc Detective repos, so keeping it stable and reliable is critical. That's why all code changes need tests that maintain 100% code coverage—it helps catch bugs before they affect multiple projects.
@@ -23,9 +56,9 @@ Test file locations:
 
 | Source file | Test file |
 |-------------|-----------|
-| `src/validate.js` | `test/validate.test.js` |
-| `src/resolvePaths.js` | `test/resolvePaths.test.js` |
-| `src/files.js` | `test/files.test.js` |
+| `src/validate.ts` | `test/validate.test.js` |
+| `src/resolvePaths.ts` | `test/resolvePaths.test.js` |
+| `src/files.ts` | `test/files.test.js` |
 
 ### Running tests
 
