@@ -34,7 +34,7 @@ You can specify the screenshot action in several ways:
     - `elementClass`: (Optional) Class name or array of class names that the element must have.
     - `elementAttribute`: (Optional) Object of attribute key-value pairs that the element must have.
     - `elementAria`: (Optional) The computed accessible name of the element. Supports regex patterns.
-    - `padding`: (Optional) Add padding around the element before cropping. Can be a single number (all sides) or an object `{ top, right, bottom, left }`.
+    - `padding`: (Optional) Add padding around the element before cropping. Can be a single number (all sides) or an object `{ top, right, bottom, left }`. Padding that extends beyond the viewport is automatically clamped.
     
     If you specify multiple element finding properties, the element must match all of them. For complete details on element finding, see the [`find`](/docs/get-started/actions/find) action.
 
