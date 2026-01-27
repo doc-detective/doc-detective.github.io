@@ -59,6 +59,7 @@ Test file locations:
 | `src/validate.ts` | `test/validate.test.js` |
 | `src/resolvePaths.ts` | `test/resolvePaths.test.js` |
 | `src/files.ts` | `test/files.test.js` |
+| `src/schemas/index.ts` | `test/schema.test.js` |
 
 ### Running tests
 
