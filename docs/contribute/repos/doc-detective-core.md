@@ -4,6 +4,12 @@ sidebar_position: 2
 
 # `doc-detective-core`
 
-[`doc-detective-core`](https://github.com/doc-detective/doc-detective-core) is an NPM package that contains config and test logic and actually runs tests. It's installable via NPM (`npm i doc-detective-core`). This package contains the logic for performing each test action.
+:::note
 
-This repo depends on [`doc-detective-common`](doc-detective-common) for JSON schema definitions, schema validation logic, and path resolution logic.
+As of v4.0.0, core functionality is bundled into the main [`doc-detective`](doc-detective) package. `doc-detective-core` is no longer published as a separate NPM package.
+
+:::
+
+[`doc-detective-core`](https://github.com/doc-detective/doc-detective-core) was an NPM package that contained config and the logic for performing each test action.
+
+This repo depended on [`doc-detective-common`](doc-detective-common) for JSON schema definitions, schema validation logic, and path resolution logic.
