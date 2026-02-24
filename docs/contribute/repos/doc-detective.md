@@ -8,4 +8,4 @@ sidebar_position: 1
 
 As of v4.0.0, `doc-detective` bundles the core testing logic directly (previously provided by the separate `doc-detective-core` package). The codebase is written in TypeScript and supports both ESM and CommonJS module systems.
 
-This repo depends on [`doc-detective-common`](doc-detective-common) for JSON schema definitions, schema validation logic, and path resolution logic.
+This repo depends on [`doc-detective-common`](doc-detective-common) for JSON schema definitions and schema validation logic.
