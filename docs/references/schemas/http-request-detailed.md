@@ -21,7 +21,7 @@ response | object([Response](/docs/references/schemas/response)) | Optional. No 
 allowAdditionalFields | boolean | Optional. If `false`, the step fails when the response data contains fields not specified in the response body. | `true`
 path | string | Optional. File path to save the command's output, relative to `directory`. Specify a file extension that matches the expected response type, such as `.json` for JSON content or `.txt` for strings. | 
 directory | string | Optional. Directory to save the command's output. If the directory doesn't exist, creates the directory. If not specified, the directory is your media directory. | 
-maxVariation | number | Optional. Allowed variation in percentage of text different between the current output and previously saved output. If the difference between the current output and the previous output is greater than `maxVariation`, the step fails. If output doesn't exist at `path`, this value is ignored.<br/><br/>Minimum: 0. Maximum: 1 | `0`
+maxVariation | number | Optional. Maximum acceptable fractional difference in text (0 to 1) between the current output and previously saved output. For example, 0.1 allows up to 10% of the text to differ. If the difference is greater than `maxVariation`, the step fails. If output doesn't exist at `path`, this value is ignored.<br/><br/>Minimum: 0. Maximum: 1 | `0`
 overwrite | string | Optional. If `true`, overwrites the existing output at `path` if it exists.
 If `aboveVariation`, overwrites the existing output at `path` if the difference between the new output and the existing output is greater than `maxVariation`.<br/><br/>Accepted values: `true`, `false`, `aboveVariation` | `aboveVariation`
 
