@@ -1,0 +1,510 @@
+---
+title: Heretto CMS Integration
+sidebar_position: 2
+description: Configure Doc Detective to test DITA content from Heretto CCMS.
+---
+
+# Heretto CMS Integration
+
+Doc Detective can download and test DITA map content from Heretto CCMS. When configured, Doc Detective connects to your Heretto instance, downloads the specified DITA maps, and runs tests against the content.
+
+## Prerequisites
+
+Before configuring the Heretto integration, you need:
+
+- A Heretto CCMS account with API access
+- Your organization ID (the subdomain for your Heretto instance, like `thunderbird` from `thunderbird.heretto.com`)
+- A valid API token from Heretto CCMS
+- At least one DITA map in your Heretto instance
+
+### Generating an API token
+
+To generate an API token in Heretto CCMS:
+
+1. Log in to your Heretto CCMS instance
+2. Navigate to your user settings or API configuration
+3. Generate a new API token
+4. Copy the token for use in your Doc Detective configuration
+
+For detailed instructions, see [Heretto's API authentication documentation](https://help.heretto.com/en/heretto-ccms/api/ccms-api-authentication/basic-authentication#ariaid-title3).
+
+## Set up a publishing scenario
+
+Before Doc Detective can download content from Heretto, create a publishing scenario in your Heretto CCMS instance. Doc Detective looks for a scenario named "Doc Detective" (by default) and validates that it's configured correctly.
+
+### Required scenario parameters
+
+Your scenario needs three parameters:
+
+- **transtype**: Set to "dita"
+- **tool-kit-name**: A valid DITA-OT toolkit value (like "default/dita-ot-3.6.1")
+- **file_uuid_picker**: A valid DITA map in your Heretto instance
+
+### Create the scenario
+
+To create a publishing scenario in Heretto:
+
+1. Log in to your Heretto CCMS instance.
+2. Navigate to **Publishing Scenarios**.
+3. Create a new scenario named "Doc Detective" (or another name you'll reference in your configuration).
+4. Configure the scenario parameters:
+   - Set **transtype** to "dita"
+   - Select a **tool-kit-name** (any DITA-OT toolkit version)
+   - Choose a **DITA map** to publish (this sets the file_uuid_picker parameter)
+5. Save the scenario.
+
+:::note
+
+For more details on creating publishing scenarios, see [Heretto's publishing documentation](https://help.heretto.com/).
+
+:::
+
+### Use a custom scenario name
+
+If you use a different scenario name, specify it in your Doc Detective configuration using the `scenarioName` field:
+
+```json
+{
+  "integrations": {
+    "heretto": [
+      {
+        "name": "my-instance",
+        "organizationId": "your-org",
+        "username": "user@example.com",
+        "apiToken": "your-token",
+        "scenarioName": "My Custom Scenario"
+      }
+    ]
+  }
+}
+```
+
+## Configuration
+
+Configure the Heretto integration in your Doc Detective configuration file using the `integrations.heretto` array. Each entry represents a connection to a Heretto instance.
+
+```json
+{
+  "integrations": {
+    "heretto": [
+      {
+        "name": "my-heretto-instance",
+        "organizationId": "your-organization-id",
+        "username": "your-email@example.com",
+        "apiToken": "your-api-token"
+      }
+    ]
+  }
+}
+```
+
+### Configuration options
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `name` | string | Yes | Unique identifier for this Heretto integration. Used in logs and results. |
+| `organizationId` | string | Yes | The organization subdomain used to access Heretto CCMS. For example, if you access Heretto at `thunderbird.heretto.com`, your organization ID is `thunderbird`. |
+| `username` | string | Yes | Your Heretto CCMS username, typically your email address. |
+| `apiToken` | string | Yes | API token generated in Heretto CCMS for authentication. |
+| `scenarioName` | string | No | Name of the scenario to build and test. Defaults to `"Doc Detective"`. |
+| `uploadOnChange` | boolean | No | Automatically uploads changed screenshots and media files back to Heretto CMS after test execution. Set to `false` to disable automatic uploads. Defaults to `true`. See [Screenshot Synchronization](#screenshot-synchronization) for details. |
+| `outputPath` | string | No | Local path where Heretto content will be downloaded. Set automatically during processing—don't configure manually. |
+
+### Multiple instances
+
+You can configure multiple Heretto integrations:
+
+```json
+{
+  "integrations": {
+    "heretto": [
+      {
+        "name": "production",
+        "organizationId": "myorg-prod",
+        "username": "user@example.com",
+        "apiToken": "prod-api-token"
+      },
+      {
+        "name": "staging",
+        "organizationId": "myorg-staging",
+        "username": "user@example.com",
+        "apiToken": "staging-api-token"
+      }
+    ]
+  }
+}
+```
+
+## Usage
+
+After you configure the Heretto integration, reference it as an input source using the `heretto:<name>` syntax, where `<name>` matches the `name` field from your integration configuration.
+
+Add `heretto:<name>` to any of these configuration arrays:
+
+- `input` - Test files to process
+- `beforeAll` - Sources to load before running tests
+- `afterAll` - Sources to load after running tests
+
+When Doc Detective encounters a `heretto:` reference:
+
+1. Connects to your Heretto instance using the credentials from the matching integration
+2. Triggers a publishing job using the configured scenario
+3. Downloads and extracts the DITA content to a temporary directory
+4. Processes the DITA maps and topics according to your `processDitaMaps` setting
+5. Runs tests against the content
+
+### Single source example
+
+```json
+{
+  "input": ["heretto:production"],
+  "processDitaMaps": true,
+  "integrations": {
+    "heretto": [
+      {
+        "name": "production",
+        "organizationId": "mycompany",
+        "username": "docs@mycompany.com",
+        "apiToken": "${HERETTO_API_TOKEN}"
+      }
+    ]
+  }
+}
+```
+
+### Multiple sources example
+
+Combine Heretto sources with local files:
+
+```json
+{
+  "input": [
+    "heretto:production",
+    "docs/local-tests/*.spec.json",
+    "heretto:staging"
+  ],
+  "processDitaMaps": true,
+  "integrations": {
+    "heretto": [
+      {
+        "name": "production",
+        "organizationId": "mycompany-prod",
+        "username": "docs@mycompany.com",
+        "apiToken": "${HERETTO_PROD_TOKEN}"
+      },
+      {
+        "name": "staging",
+        "organizationId": "mycompany-staging",
+        "username": "docs@mycompany.com",
+        "apiToken": "${HERETTO_STAGING_TOKEN}"
+      }
+    ]
+  }
+}
+```
+
+### Using beforeAll and afterAll
+
+```json
+{
+  "beforeAll": ["heretto:documentation"],
+  "input": "tests/",
+  "afterAll": ["cleanup/*.spec.json"],
+  "processDitaMaps": true,
+  "integrations": {
+    "heretto": [
+      {
+        "name": "documentation",
+        "organizationId": "mycompany",
+        "username": "docs@mycompany.com",
+        "apiToken": "${HERETTO_API_TOKEN}"
+      }
+    ]
+  }
+}
+```
+
+:::tip
+The first time Doc Detective downloads content from a Heretto source, it caches the output path for the session. Subsequent references to the same `heretto:<name>` source reuse the downloaded content without triggering another publishing job.
+:::
+
+## Screenshot Synchronization
+
+Doc Detective automatically uploads changed screenshots back to Heretto when testing DITA content from Heretto CMS. This keeps your screenshots synchronized between test runs and your source content.
+
+### How it works
+
+By default, screenshot synchronization runs automatically after test execution. When enabled (which it is by default), Doc Detective:
+
+1. Downloads DITA content from Heretto and tracks image file locations
+2. Marks any screenshot that gets created or updated during test execution as changed
+3. Uploads changed screenshots back to Heretto at their original locations after all tests complete
+4. Replaces the existing versions in Heretto CMS
+
+This workflow is useful for updating screenshots, verifying screenshot accuracy against your product UI, and keeping screenshots synchronized without manual uploads.
+
+Upload operations run on a best-effort basis and won't cause test failures. If an upload fails, Doc Detective logs a warning and continues. Upload results appear in the test report under `uploadResults`.
+
+### Configure screenshot synchronization
+
+Screenshot synchronization is enabled by default. To explicitly configure it, set `uploadOnChange` in your Heretto integration configuration:
+
+```json
+{
+  "integrations": {
+    "heretto": [
+      {
+        "name": "my-heretto-instance",
+        "organizationId": "your-organization-id",
+        "username": "your-email@example.com",
+        "apiToken": "your-api-token",
+        "uploadOnChange": true  // Enabled by default, can set to false to disable
+      }
+    ]
+  }
+}
+```
+
+To disable automatic uploads for a specific integration, set `uploadOnChange: false`:
+
+```json
+{
+  "integrations": {
+    "heretto": [
+      {
+        "name": "read-only-instance",
+        "organizationId": "your-organization-id",
+        "username": "your-email@example.com",
+        "apiToken": "your-api-token",
+        "uploadOnChange": false  // Disable automatic uploads
+      }
+    ]
+  }
+}
+```
+
+Doc Detective automatically tracks which files came from Heretto and uploads only the files that changed during testing.
+
+:::note
+Screenshot synchronization only works for image files that are part of your DITA content in Heretto. Screenshots saved to paths outside the Heretto content tree won't be uploaded.
+:::
+
+### Upload results
+
+After tests complete, upload results appear in the test report under the `uploadResults` field:
+
+```json
+{
+  "uploadResults": {
+    "total": 3,
+    "successful": 2,
+    "failed": 1,
+    "skipped": 0,
+    "details": [
+      {
+        "localPath": "images/screenshot1.png",
+        "status": "PASS",
+        "description": "Uploaded successfully"
+      },
+      {
+        "localPath": "images/screenshot2.png",
+        "status": "PASS",
+        "description": "Uploaded successfully"
+      },
+      {
+        "localPath": "images/screenshot3.png",
+        "status": "FAIL",
+        "reason": "Network timeout"
+      }
+    ]
+  }
+}
+```
+
+Failed uploads won't cause test failures - they're logged as warnings so you can investigate and retry if needed.
+
+### Example with screenshot tests
+
+Here's a complete example with DITA content testing:
+
+**Configuration (`.doc-detective.json`):**
+
+```json
+{
+  "input": ["heretto:documentation"],
+  "loadVariables": ".env",
+  "processDitaMaps": true,
+  "integrations": {
+    "heretto": [
+      {
+        "name": "documentation",
+        "organizationId": "mycompany",
+        "username": "docs@mycompany.com",
+        "apiToken": "${HERETTO_API_TOKEN}",
+        "uploadOnChange": true
+      }
+    ]
+  },
+  "logLevel": "info"
+}
+```
+
+With this configuration:
+
+1. Doc Detective downloads DITA maps from Heretto
+2. Tests run against the content, including screenshot actions
+3. Updated screenshots are automatically uploaded back to Heretto
+4. Your Heretto content stays synchronized with the latest screenshots
+
+## Using with DITA maps
+
+The Heretto integration works with Doc Detective's DITA processing. When configured, Doc Detective downloads DITA map files from your Heretto instance and processes them according to the `processDitaMaps` configuration option.
+
+:::tip
+Make sure `processDitaMaps` is enabled in your configuration to process DITA content from Heretto.
+:::
+
+```json
+{
+  "processDitaMaps": true,
+  "integrations": {
+    "heretto": [
+      {
+        "name": "my-instance",
+        "organizationId": "your-organization-id",
+        "username": "your-email@example.com",
+        "apiToken": "your-api-token"
+      }
+    ]
+  }
+}
+```
+
+## Security
+
+:::warning
+Never commit API tokens directly in your configuration files. Use environment variables or `.env` files instead.
+:::
+
+Store your API token in an environment variable:
+
+```bash
+export HERETTO_API_TOKEN="your-api-token"
+```
+
+Reference the environment variable in your configuration:
+
+```json
+{
+  "integrations": {
+    "heretto": [
+      {
+        "name": "my-instance",
+        "organizationId": "your-organization-id",
+        "username": "your-email@example.com",
+        "apiToken": "${HERETTO_API_TOKEN}"
+      }
+    ]
+  }
+}
+```
+
+Alternatively, use the `loadVariables` option to load from a `.env` file:
+
+```json
+{
+  "loadVariables": ".env",
+  "integrations": {
+    "heretto": [
+      {
+        "name": "my-instance",
+        "organizationId": "your-organization-id",
+        "username": "your-email@example.com",
+        "apiToken": "${HERETTO_API_TOKEN}"
+      }
+    ]
+  }
+}
+```
+
+## Example
+
+Here's a complete example using environment variables and the `heretto:` input syntax:
+
+**Configuration file (`.doc-detective.json`):**
+
+```json
+{
+  "input": ["heretto:documentation"],
+  "loadVariables": ".env",
+  "processDitaMaps": true,
+  "integrations": {
+    "heretto": [
+      {
+        "name": "documentation",
+        "organizationId": "mycompany",
+        "username": "docs@mycompany.com",
+        "apiToken": "${HERETTO_API_TOKEN}"
+      }
+    ]
+  },
+  "detectSteps": true,
+  "logLevel": "info"
+}
+```
+
+**Environment file (`.env`):**
+
+```
+HERETTO_API_TOKEN=your-actual-api-token-here
+```
+
+**Running tests:**
+
+```bash
+npx doc-detective
+```
+
+Doc Detective connects to the Heretto instance, downloads the DITA content, and runs tests against it.
+
+## Troubleshooting
+
+### Scenario configuration errors
+
+If you receive errors about scenario configuration (like "incorrect 'transtype' parameter settings" or "incorrect 'file_uuid_picker' parameter settings"):
+
+- Verify a publishing scenario named "Doc Detective" (or your custom `scenarioName`) exists in Heretto
+- Ensure the scenario's **transtype** parameter is set to "dita"
+- Confirm the scenario has a **tool-kit-name** parameter with a valid DITA-OT toolkit
+- Check that the scenario has a **DITA map** selected (the file_uuid_picker parameter)
+- See [Set up a publishing scenario](#set-up-a-publishing-scenario) for detailed setup instructions
+
+### Authentication errors
+
+If you receive authentication errors:
+
+- Verify your `username` and `apiToken` are correct
+- Ensure your API token hasn't expired
+- Check that your `organizationId` matches your Heretto subdomain
+
+### DITA maps not processing
+
+If DITA maps aren't being processed:
+
+- Confirm `processDitaMaps` is set to `true` in your configuration
+- Check that your Heretto instance contains the expected DITA maps
+- Review the logs with `logLevel: "debug"` for detailed information
+
+### Connection issues
+
+If Doc Detective can't connect to Heretto:
+
+- Verify your internet connection
+- Ensure your organization has API access enabled in Heretto
+- Check for firewall or proxy issues blocking the connection
+
+## Related topics
+
+- [DITA input format](/docs/get-started/inputs/dita) - Learn about Doc Detective's DITA support and test detection
+- [Configuration reference](/docs/references/schemas/config) - Complete configuration options
+- [Environment variables](/docs/get-started/actions/loadVariables) - Using variables in your configuration

@@ -14,6 +14,13 @@ description: Use Doc Detective with DITA XML files and semantic markup.
 
 DITA (Darwin Information Typing Architecture) is an XML-based format for technical documentation. Doc Detective supports DITA task topics and can extract tests from semantic markup elements.
 
+## Content sources
+
+You can test DITA content from:
+
+- **Local files**: DITA files stored in your project directory
+- **Heretto CCMS**: Download and test DITA maps directly from your Heretto instance using the [Heretto integration](/docs/get-started/config/heretto-integration)
+
 ## File extensions
 
 Doc Detective processes DITA files with the following extensions:
@@ -66,6 +73,40 @@ You can also use HTML comment syntax as an alternative:
 ```
 
 HTML comments and processing instructions work identically. Use whichever fits your workflow better.
+
+### DITA `<data>` element format
+
+You can embed test steps using the DITA `<data>` element with the `name="step"` attribute.
+
+```xml
+<data name="step">{"checkLink": "https://example.com"}</data>
+```
+
+The `<data>` element supports JSON, YAML, or XML attribute formats:
+
+**JSON format:**
+
+```xml
+<data name="step">{"click": "Submit"}</data>
+```
+
+**YAML format:**
+
+```xml
+<data name="step">
+click: Submit
+</data>
+```
+
+**XML attribute format:**
+
+```xml
+<data name="step" click="Submit"></data>
+```
+
+The `<data>` element can appear anywhere inline elements are allowed. This makes it easy to embed test actions directly alongside your documentation content.
+
+Use the `<data>` element when you want test definitions in your DITA content model or when processing instructions and comments don't fit your workflow.
 
 ## DITA semantic elements
 
