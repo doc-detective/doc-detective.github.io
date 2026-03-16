@@ -16,6 +16,14 @@ import JSONSchemaViewer from "@theme/JSONSchemaViewer";
 
 The `checkLink` action checks if a URL returns an acceptable status code from a GET request. This action is useful for verifying that a hyperlink or image URL is valid.
 
+## Automatic Request Headers
+
+Every `checkLink` request includes browser-like headers to improve compatibility with modern websites. These headers include a User-Agent string, Accept headers, and language preferences that prevent false failures from sites that reject requests without proper headers. For example, sites like Wikipedia and JFrog Artifactory return 403 errors when requests don't include a User-Agent.
+
+The action includes a 10-second timeout and follows up to 5 redirects automatically.
+
+## Parameters
+
 You can specify the target URL directly as a string, or use an object for more options:
 
 - `url`: (Required in object format) The URL to check. Can be a full URL or a path. If a path is provided, an `origin` must be specified either in the step or in the configuration file.
@@ -148,6 +156,53 @@ Assuming a global `origin` of `https://www.google.com` is set in the configurati
 ## Troubleshooting
 
 - [`checkLink` fails due to unrecognized certificates](#checklink-fails-due-to-unrecognized-certificates)
+- [`checkLink` fails with 403, 401, or other HTTP status codes](#checklink-fails-with-403-401-or-other-http-status-codes)
+
+### `checkLink` fails with 403, 401, or other HTTP status codes
+
+If `checkLink` returns an error like "Returned 403. Expected one of [200,301,302,307,308]", the target URL is accessible but returning a status code that isn't in your `statusCodes` list.
+
+#### Common causes
+
+- **403 Forbidden**: The server is blocking access. Doc Detective automatically sends browser-like headers (User-Agent, Accept, Accept-Language) to avoid most common 403 errors from modern websites. If you still get 403 errors, common reasons include:
+  - Bot detection or anti-scraping tools
+  - Geographic restrictions
+  - Required authentication or API keys
+  - IP-based access controls
+  
+- **401 Unauthorized**: The URL requires authentication credentials that weren't provided.
+
+- **404 Not Found**: The URL doesn't exist or has been moved.
+
+- **Other status codes**: The server returned a redirect or error status not in your expected list.
+
+#### Solutions
+
+1. **Verify the URL is correct**: Open the URL in a browser to confirm it loads as expected.
+
+2. **Adjust expected status codes**: If the URL returns a different status code (like a redirect), add it to your `statusCodes` array:
+
+   ```json
+   {
+     "checkLink": {
+       "url": "https://example.com/redirect",
+       "statusCodes": [200, 301, 302, 403]
+     }
+   }
+   ```
+
+3. **For 403/401 errors on legitimate URLs**: Some websites block automated tools even with browser-like headers. If you're testing internal URLs or APIs that require authentication, you can:
+   - Use the [`httpRequest`](/docs/get-started/actions/httpRequest) action with custom headers
+   - Whitelist the Doc Detective testing environment
+   - Skip these checks for heavily protected resources
+
+4. **Alternative for anti-bot protection**: If a URL fails due to bot detection (403 errors from anti-scraping measures), you can use the [`goTo`](/docs/get-started/actions/goTo) action instead. This simulates full browser actions more accurately and may bypass anti-bot measures. However, note that:
+   - `goTo` is a heavier operation than `checkLink`
+   - It doesn't validate HTTP status codes
+   - It checks if the page can load correctly in a browser instead
+   - It may be more suitable for validating user-facing pages rather than API endpoints
+
+5. **For 404 errors**: Update the URL or remove the check if the link is no longer valid.
 
 ### `checkLink` fails due to unrecognized certificates
 
