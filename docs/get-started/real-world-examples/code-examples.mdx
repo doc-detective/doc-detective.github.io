@@ -1,0 +1,156 @@
+---
+sidebar_label: Code examples
+description: Test code examples across multiple programming languages with validation
+---
+
+# Testing code examples with multiple languages
+
+## When to use this
+
+Use this approach when your SDK or API documentation provides code examples in multiple programming languages. Each language's examples must be syntactically correct and produce expected results.
+
+## What this tests
+
+- Code examples execute without errors
+- Output matches documentation
+- Dependencies are available
+- Cross-language consistency
+
+## Prerequisites
+
+- [Doc Detective installed](/docs/get-started/installation)
+- Programming language runtimes installed (Python, Node.js, etc.)
+- Required libraries/packages for code examples
+
+## Complete example
+
+```json title="code-examples.spec.json"
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Test Python example - Hello World",
+          "runCode": {
+            "language": "python",
+            "code": "print('Hello from Python!')",
+            "stdio": "Hello from Python!"
+          }
+        },
+        {
+          "description": "Test Python example - API request",
+          "runCode": {
+            "language": "python",
+            "code": "import json\ndata = {'status': 'success', 'message': 'API working'}\nprint(json.dumps(data))",
+            "stdio": "/.*success.*/"
+          }
+        },
+        {
+          "description": "Test JavaScript example - Hello World",
+          "runCode": {
+            "language": "javascript",
+            "code": "console.log('Hello from Node.js!');",
+            "stdio": "Hello from Node.js!"
+          }
+        },
+        {
+          "description": "Test JavaScript example - JSON parsing",
+          "runCode": {
+            "language": "javascript",
+            "code": "const data = {status: 'success', message: 'API working'}; console.log(JSON.stringify(data));",
+            "stdio": "/.*success.*/"
+          }
+        },
+        {
+          "description": "Test Bash example - environment check",
+          "runCode": {
+            "language": "bash",
+            "code": "echo \"Shell: $SHELL\" && echo \"Path configured\"",
+            "stdio": "/Path configured/"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+## Expected output
+
+When the test passes, you should see:
+
+```json
+{
+  "summary": {
+    "steps": {
+      "pass": 5,
+      "fail": 0
+    }
+  }
+}
+```
+
+Each code example executes in its respective language runtime and produces the expected output.
+
+## Common variations
+
+**Test code with dependencies:**
+
+```json
+{
+  "steps": [
+    {
+      "description": "Install required package",
+      "runShell": {
+        "command": "pip install requests"
+      }
+    },
+    {
+      "description": "Test code using the package",
+      "runCode": {
+        "language": "python",
+        "code": "import requests\nresponse = requests.get('https://httpbin.org/status/200')\nprint(response.status_code)",
+        "stdio": "200"
+      }
+    }
+  ]
+}
+```
+
+**Validate error handling:**
+
+```json
+{
+  "description": "Test Python exception handling",
+  "runCode": {
+    "language": "python",
+    "code": "try:\n    x = 1 / 0\nexcept ZeroDivisionError:\n    print('Caught division by zero')",
+    "stdio": "Caught division by zero"
+  }
+}
+```
+
+**Test multi-line code blocks:**
+
+```json
+{
+  "description": "Test Python function definition",
+  "runCode": {
+    "language": "python",
+    "code": [
+      "def greet(name):",
+      "    return f'Hello, {name}!'",
+      "",
+      "result = greet('Developer')",
+      "print(result)"
+    ],
+    "stdio": "Hello, Developer!"
+  }
+}
+```
+
+## Next steps
+
+- Learn more about the [`runCode`](/docs/get-started/actions/runCode) action
+- Explore [`runShell`](/docs/get-started/actions/runShell) for managing dependencies
+- Review [variables](/docs/get-started/actions/loadVariables) for sharing data between steps
