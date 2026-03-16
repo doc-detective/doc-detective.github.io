@@ -21,6 +21,7 @@ You can specify the keys to type in several ways:
 - **Object Format:** Use an object for more control:
   - `keys`: (Required) A string or an array of strings representing the keys to type.
   - `inputDelay`: (Optional) Delay in milliseconds between each key press. Useful for making recordings more legible.
+  - `scope`: (Optional) Named scope of an existing terminal or code session to type into. When you specify this, the action sends input to the scoped process instead of the browser. This is useful for sending commands to long-running processes started with `runShell` or `runCode`. Scope names must be alphanumeric with hyphens or underscores (1-64 characters).
 
 > For comprehensive options, see the [`type`](/docs/references/schemas/type) reference.
 
@@ -88,6 +89,18 @@ Here's a list of special keys you can use:
 | F10            | $F10$              |
 | F11            | $F11$              |
 | F12            | $F12$              |
+
+### Terminal control keys
+
+When targeting a terminal with `scope`, you can use these additional control keys:
+
+| Key            | Code               | Description                                      |
+| -------------- | ------------------ | ------------------------------------------------ |
+| Ctrl+C         | $CTRL_C$           | Sends interrupt signal (SIGINT) to the process   |
+| Ctrl+D         | $CTRL_D$           | Sends end-of-file (EOF) to the terminal          |
+| Ctrl+Z         | $CTRL_Z$           | Sends suspend signal (SIGTSTP) to the process    |
+
+These keys only work when `type` targets a terminal scope.
 
 ## Examples
 
@@ -188,6 +201,41 @@ Here's a list of special keys you can use:
         {
           "description": "Stop recording",
           "stopRecord": true
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Type commands into a scoped terminal
+
+This example starts a development server in a scoped terminal and then types a command into that same terminal.
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Start development server.",
+          "runShell": {
+            "command": "npm",
+            "args": ["run", "dev"],
+            "scope": "dev-server",
+            "waitUntil": {
+              "stdio": {
+                "stdout": "Server listening"
+              }
+            }
+          }
+        },
+        {
+          "description": "List files in the terminal.",
+          "type": {
+            "keys": "ls -la\n",
+            "scope": "dev-server"
+          }
         }
       ]
     }

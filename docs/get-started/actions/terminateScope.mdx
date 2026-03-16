@@ -1,0 +1,103 @@
+---
+title: terminateScope
+layout: default
+nav_order: 1
+parent: Actions
+grand_parent: Tests
+description: Terminate a scoped process.
+---
+
+import { schemas } from "doc-detective-common";
+import JSONSchemaViewer from "@theme/JSONSchemaViewer";
+
+# terminateScope
+
+The `terminateScope` action terminates a named scope and its associated process. Use this action to clean up long-running processes that were started with the `scope` property in `runShell`, `runCode`, or `type` actions.
+
+When you terminate a scope, the process receives a SIGTERM signal first, allowing it to shut down gracefully. If the process doesn't terminate after a grace period, it receives a SIGKILL signal to force termination.
+
+You can specify the scope to terminate in two ways:
+
+- **String Shorthand:** Provide the scope name directly as the value for the `terminateScope` key.
+- **Object Format:** Use an object with the following property:
+  - `scope`: (Required) Name of the scope to terminate.
+
+## Examples
+
+### Terminate a scoped process (string shorthand)
+
+This example starts a development server in a scoped process, runs tests against it, and then terminates the server.
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Start development server.",
+          "runShell": {
+            "command": "npm",
+            "args": ["run", "dev"],
+            "scope": "dev-server",
+            "waitUntil": {
+              "stdio": {
+                "stdout": "Server listening"
+              }
+            }
+          }
+        },
+        {
+          "description": "Run tests against the server.",
+          "runShell": "npm test"
+        },
+        {
+          "description": "Terminate the development server.",
+          "terminateScope": "dev-server"
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Terminate a scoped process (object format)
+
+This example starts a background process, performs other work, and then cleans up the background process.
+
+```json
+{
+  "tests": [
+    {
+      "steps": [
+        {
+          "description": "Start background process.",
+          "runCode": {
+            "language": "python",
+            "code": "import time\nwhile True:\n    print('Running')\n    time.sleep(1)",
+            "scope": "background-process",
+            "waitUntil": {
+              "stdio": {
+                "stdout": "Running"
+              }
+            }
+          }
+        },
+        {
+          "description": "Do other work while process runs.",
+          "wait": 5000
+        },
+        {
+          "description": "Clean up the background process.",
+          "terminateScope": {
+            "scope": "background-process"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+## Schema reference
+
+<JSONSchemaViewer schema={ schemas.terminateScope_v3 } />
