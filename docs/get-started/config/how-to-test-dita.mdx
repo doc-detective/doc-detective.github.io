@@ -1,0 +1,198 @@
+---
+title: How to test DITA documentation
+description: Configure Doc Detective for DITA documentation testing.
+sidebar_label: Test DITA documentation
+---
+
+# How to test DITA documentation
+
+DITA (Darwin Information Typing Architecture) is an XML-based documentation standard. This guide shows you how to configure Doc Detective to test DITA documentation.
+
+## Before you begin
+
+- Have Doc Detective installed
+- Have DITA documentation files
+- Understand [basic configuration](/docs/get-started/config/how-to-create-config-file)
+
+## Enable DITA processing
+
+### Process DITA maps
+
+```json title=".doc-detective.json"
+{
+  "input": "./docs",
+  "fileTypes": ["dita"],
+  "processDitaMaps": true
+}
+```
+
+The `processDitaMaps` option tells Doc Detective to process DITA maps and include referenced topics.
+
+### Process only DITA files
+
+```json
+{
+  "input": "./docs",
+  "fileTypes": ["dita"]
+}
+```
+
+## DITA file structure
+
+Doc Detective recognizes these DITA files:
+- `.dita` - DITA topic files
+- `.xml` - XML files (with DITA markup)
+- `.ditamap` - DITA map files
+
+### Example DITA topic
+
+```xml title="installation.dita"
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="install">
+  <title>Installation</title>
+  <taskbody>
+    <steps>
+      <step>
+        <cmd>Navigate to the downloads page</cmd>
+      </step>
+      <step>
+        <cmd>Click the Download button</cmd>
+      </step>
+    </steps>
+  </taskbody>
+</task>
+```
+
+## Add inline tests to DITA
+
+Use XML comments for inline tests:
+
+```xml
+<!-- test {"id": "installation-test"} -->
+<task id="install">
+  <title>Installation</title>
+  <taskbody>
+    <steps>
+      <!-- step {"action": "goTo", "url": "https://example.com/download"} -->
+      <step>
+        <cmd>Navigate to the downloads page</cmd>
+      </step>
+      <!-- step {"action": "click", "selector": "#download-button"} -->
+      <step>
+        <cmd>Click the Download button</cmd>
+      </step>
+    </steps>
+  </taskbody>
+</task>
+<!-- test end -->
+```
+
+## Configure DITA-specific detection
+
+### Customize inline markers
+
+```json
+{
+  "fileTypes": [
+    {
+      "extends": "dita",
+      "inlineStatements": {
+        "testStart": "<!--\\s*test\\s*(.*?)\\s*-->",
+        "testEnd": "<!-- test end -->",
+        "step": "<!--\\s*step\\s*(.*?)\\s*-->"
+      }
+    }
+  ]
+}
+```
+
+### Add markup patterns
+
+Detect tests from DITA structure:
+
+```json
+{
+  "fileTypes": [
+    {
+      "extends": "dita",
+      "markup": [
+        {
+          "name": "dita-xrefs",
+          "regex": "<xref\\s+href=\"([^\"]+)\"",
+          "actions": [
+            {
+              "checkLink": {
+                "url": "$1"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+## Test DITA maps
+
+### Example DITA map
+
+```xml title="documentation.ditamap"
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd">
+<map>
+  <title>Product Documentation</title>
+  <topicref href="installation.dita"/>
+  <topicref href="configuration.dita"/>
+  <topicref href="usage.dita"/>
+</map>
+```
+
+When `processDitaMaps: true`, Doc Detective:
+1. Reads the DITA map
+2. Finds referenced topics
+3. Tests each topic
+4. Follows nested references
+
+## Best practices
+
+### Organize DITA files
+
+```
+docs/
+  ├── maps/
+  │   └── product-docs.ditamap
+  ├── topics/
+  │   ├── installation.dita
+  │   ├── configuration.dita
+  │   └── usage.dita
+  └── tests/
+      └── integration-tests.spec.json
+```
+
+### Use reusable content
+
+DITA's conref feature works with Doc Detective:
+
+```xml
+<step conref="common-steps.dita#login-step"/>
+```
+
+### Test generated output
+
+If you transform DITA to HTML, test the output:
+
+```json
+{
+  "input": "./build/html",
+  "fileTypes": ["html"]
+}
+```
+
+## What's next
+
+- Learn about [file type detection](/docs/get-started/config/how-to-configure-file-type-detection)
+- Explore [DITA input format](/docs/get-started/inputs/dita) for details
+- See [inline tests](/docs/get-started/tests/inline) for test markers
+- Review the [config reference](/docs/references/schemas/config)
